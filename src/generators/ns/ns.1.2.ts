@@ -105,8 +105,9 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
     units: skin.unit,
     figure: {
       kind: (variant === "zero-pair" ? "zero-pairs" : "number-line") as "zero-pairs" | "number-line",
+      // Plot the terms, never the total: the figure is the workspace, not the key.
       ...numberLineSpan([0, ...terms, correct]),
-      points: [0, correct],
+      points: terms,
       labels: terms.map((t) => fmtInt(t)),
     },
   };

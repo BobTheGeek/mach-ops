@@ -209,3 +209,49 @@ export function describeGenerator(spec: GeneratorSpec): void {
 }
 
 export type { Rational };
+
+/* ------------------------------------------------------------------------ */
+
+/**
+ * A figure is the workspace, not the answer key. GENERATOR_SPEC section 3 says
+ * figures are described by data the renderer draws, so every plotted point must
+ * come from the problem's own parameters - a value the player can already read
+ * in the prompt - and never from the computed answer.
+ *
+ * Plotting a given that happens to equal the answer is fine: "which of these two
+ * is greater" must show both. Plotting a value that appears nowhere in the
+ * givens is the leak this catches.
+ */
+export function describeFigureDiscretion(spec: Pick<GeneratorSpec, "skill" | "generate">): void {
+  describe(`${spec.skill} figures`, () => {
+    it("only plots values that appear in the givens", () => {
+      for (const tier of TIERS) {
+        for (let seed = 0; seed < 2000; seed++) {
+          const p = spec.generate(tier, seed);
+          const points = p.prompt.figure?.points;
+          if (!points || points.length === 0) continue;
+
+          // Every number reachable from params, as a decimal.
+          const given = new Set<number>([0]);
+          for (const raw of Object.values(p.params)) {
+            for (const token of String(raw).split(/[\s,]+/)) {
+              const frac = /^(-?\d+)\/(\d+)$/.exec(token);
+              if (frac) given.add(Number(frac[1]) / Number(frac[2]));
+              else if (/^-?\d+(\.\d+)?$/.test(token)) given.add(Number(token));
+            }
+          }
+
+          for (const pt of points) {
+            const known = [...given].some((v) => Math.abs(v - pt) < 1e-9);
+            if (!known) {
+              expect.fail(
+                `${spec.skill} T${tier} seed ${seed}: figure plots ${pt}, which is not one of the givens ` +
+                `(${JSON.stringify(p.params)})`,
+              );
+            }
+          }
+        }
+      }
+    });
+  });
+}

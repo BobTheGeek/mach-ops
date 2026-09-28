@@ -19,7 +19,7 @@
     "noUnusedParameters": true,
     "exactOptionalPropertyTypes": false,
 
-    "types": ["node", "vitest/globals"]
+    "types": ["node", "vite/client", "vitest/globals"]
   },
   "include": ["src", "tests", "scripts", "vitest.config.ts"]
 }

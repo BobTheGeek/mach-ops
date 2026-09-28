@@ -1,4 +1,4 @@
-import { describeGenerator, isInteger } from "./harness";
+import { describeGenerator, describeFigureDiscretion, isInteger } from "./harness";
 import { generate, VARIANTS } from "../../src/generators/ns/ns.1.1";
 
 describeGenerator({
@@ -9,3 +9,5 @@ describeGenerator({
   minUnique: { 1: 5000, 2: 9500, 3: 9900, 4: 9500 },
   tier1Form: isInteger, // registry T1: compare two integers; |n| for an integer
 });
+
+describeFigureDiscretion({ skill: "ns.1.1", generate });

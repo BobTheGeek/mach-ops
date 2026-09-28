@@ -147,8 +147,9 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
     units: skin.unit,
     figure: {
       kind: (variant === "decimals" ? "number-line" : "debt-table") as "number-line" | "debt-table",
+      // Plot the terms, never the total: the figure is the workspace, not the key.
       ...numberLineSpan(terms.map(toNumber).concat(toNumber(correct)), 2),
-      points: [0, toNumber(correct)],
+      points: terms.map(toNumber),
       rows: terms.map((t, i) => [show(t, decimalForm[i]!)]),
     },
   };
