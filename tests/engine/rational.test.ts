@@ -3,6 +3,7 @@ import fc from "fast-check";
 import {
   rat, fromDecimal, add, sub, mul, neg, abs, toNumber, eq, cmp, isInteger, isRational,
   isTerminating, decimalPlaces, parseRational, fmtInt, fmtFraction, fmtDecimal, fmtImproper, MINUS,
+  decimalParts, fmtRepeating, isRepeating, OVERLINE,
 } from "../../src/engine/rational";
 
 describe("construction", () => {
@@ -122,6 +123,54 @@ describe("parsing learner input", () => {
     fc.assert(fc.property(anyRat, (a) => {
       const parsed = parseRational(fmtFraction(a));
       return parsed !== null && eq(parsed, a);
+    }));
+  });
+});
+
+describe("repeating decimals", () => {
+  it("splits a terminating value into whole and fixed digits", () => {
+    expect(decimalParts(rat(1, 4))).toEqual({ negative: false, whole: "0", fixed: "25", repeat: "" });
+    expect(decimalParts(rat(-9, 4))).toEqual({ negative: true, whole: "2", fixed: "25", repeat: "" });
+    expect(decimalParts(rat(3))).toEqual({ negative: false, whole: "3", fixed: "", repeat: "" });
+  });
+
+  it("finds the repetend by long division", () => {
+    expect(decimalParts(rat(1, 3))).toMatchObject({ whole: "0", fixed: "", repeat: "3" });
+    expect(decimalParts(rat(1, 6))).toMatchObject({ whole: "0", fixed: "1", repeat: "6" });
+    expect(decimalParts(rat(1, 7))).toMatchObject({ whole: "0", fixed: "", repeat: "142857" });
+    expect(decimalParts(rat(5, 12))).toMatchObject({ whole: "0", fixed: "41", repeat: "6" });
+  });
+
+  it("agrees with isTerminating", () => {
+    for (const d of [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 20, 25]) {
+      const r = rat(1, d);
+      expect(isRepeating(r), `1/${d}`).toBe(!isTerminating(r));
+    }
+  });
+
+  it("writes the bar only over the repeating digits", () => {
+    expect(fmtRepeating(rat(1, 3))).toBe(`0.3${OVERLINE}`);
+    expect(fmtRepeating(rat(1, 6))).toBe(`0.1${"6" + OVERLINE}`);
+    expect(fmtRepeating(rat(1, 4))).toBe("0.25");
+    expect(fmtRepeating(rat(-1, 3))).toBe(`${MINUS}0.3${OVERLINE}`);
+  });
+
+  it("round-trips: the parts rebuild the value", () => {
+    const anyRat = fc.tuple(fc.integer({ min: -200, max: 200 }), fc.integer({ min: 1, max: 60 })).map(([n, d]) => rat(n, d));
+    fc.assert(fc.property(anyRat, (a) => {
+      const p = decimalParts(a);
+      // value = whole.fixed + repeat / (10^|fixed| * (10^|repeat| - 1))
+      // 1/58 has a 28-digit repetend, and 10^28 is past Number.MAX_SAFE_INTEGER,
+      // so the *check* cannot be done exactly in doubles. Skip those: the value
+      // under test is still exact, only this reconstruction is not.
+      if (p.fixed.length + p.repeat.length > 15) return true;
+      const whole = rat(Number(p.whole));
+      const fixed = p.fixed ? rat(Number(p.fixed), 10 ** p.fixed.length) : rat(0);
+      const repeat = p.repeat
+        ? rat(Number(p.repeat), (10 ** p.repeat.length - 1) * 10 ** p.fixed.length)
+        : rat(0);
+      const magnitude = add(add(whole, fixed), repeat);
+      return eq(p.negative ? neg(magnitude) : magnitude, a);
     }));
   });
 });

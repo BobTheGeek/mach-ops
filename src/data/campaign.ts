@@ -86,7 +86,65 @@ export const CH1_MISSIONS: Mission[] = [
   },
 ];
 
-export const MISSIONS: Mission[] = [...CH1_MISSIONS];
+/**
+ * Chapter 2. Same shape as Chapter 1: one sortie per skill, then mixed work, then
+ * the unit boss. Chapter 2 is the multiply-and-divide unit, so the boss unlocks
+ * the F-4E (DESIGN_RECONCILIATION section 4 unlock chain).
+ */
+export const CH2_MISSIONS: Mission[] = [
+  {
+    id: "ch2-01", n: 1, unitId: "ch2", name: "THRUST GATE", kind: "intercept",
+    brief: "Rate times time. Count the negatives before you multiply anything.",
+    focus: ["ns.2.1"], prep: 2, problems: 6, bogeys: 3, fuelSeconds: 240,
+  },
+  {
+    id: "ch2-02", n: 2, unitId: "ch2", name: "AVERAGE DESCENT", kind: "intercept",
+    brief: "A total over a time gives a rate. Same sign rule, the other direction.",
+    focus: ["ns.2.2"], prep: 2, problems: 6, bogeys: 3, fuelSeconds: 240,
+  },
+  {
+    id: "ch2-03", n: 3, unitId: "ch2", name: "GAUGE CHECK", kind: "intercept",
+    brief: "The mechanical gauge and the digital readout must agree. Long division decides.",
+    focus: ["ns.2.3"], prep: 2, problems: 7, bogeys: 3, fuelSeconds: 260,
+  },
+  {
+    id: "ch2-04", n: 4, unitId: "ch2", name: "PARTIAL LOAD", kind: "intercept",
+    brief: "Fractions of a tank, several legs. Decide the sign first, then simplify.",
+    focus: ["ns.2.4"], prep: 2, problems: 8, bogeys: 3, fuelSeconds: 280,
+  },
+  {
+    id: "ch2-05", n: 5, unitId: "ch2", name: "TANK SPLIT", kind: "intercept",
+    brief: "Keep, change, flip. A complex fraction is a division problem in disguise.",
+    focus: ["ns.2.5"], prep: 3, problems: 8, bogeys: 3, fuelSeconds: 280,
+  },
+  {
+    id: "ch2-06", n: 6, unitId: "ch2", name: "ENGINE MAP", kind: "patrol",
+    brief: "Everything Chapter 2 has taught you, in any order.",
+    focus: [], prep: 3, problems: 9, bogeys: 3, fuelSeconds: 300,
+  },
+  {
+    id: "ch2-07", n: 7, unitId: "ch2", name: "LONG LEG", kind: "intercept",
+    brief: "The engine leans on whatever is weakest, Chapter 1 included.",
+    focus: [], prep: 3, problems: 10, bogeys: 3, fuelSeconds: 300,
+  },
+  {
+    id: "ch2-08", n: 8, unitId: "ch2", name: "HIGH ALPHA", kind: "patrol",
+    brief: "Thin margins and honors problems in the deck. Keep the streak alive.",
+    focus: [], prep: 3, problems: 11, bogeys: 3, fuelSeconds: 320,
+  },
+  {
+    id: "ch2-09", n: 9, unitId: "ch2", name: "PRE-QUAL", kind: "intercept",
+    brief: "Last check before the qualification. Transfer problems are in the deck.",
+    focus: [], prep: 3, problems: 12, bogeys: 3, fuelSeconds: 320,
+  },
+  {
+    id: "ch2-10", n: 10, unitId: "ch2", name: "PHANTOM QUALIFICATION", kind: "boss",
+    brief: "Unit 2 boss sortie. Mixed review of Chapters 1 and 2. Passing earns the F-4E.",
+    focus: [], prep: 3, problems: 12, bogeys: 3, fuelSeconds: 360,
+  },
+];
+
+export const MISSIONS: Mission[] = [...CH1_MISSIONS, ...CH2_MISSIONS];
 
 export function missionsFor(unitId: string): Mission[] {
   return MISSIONS.filter((m) => m.unitId === unitId).sort((a, b) => a.n - b.n);

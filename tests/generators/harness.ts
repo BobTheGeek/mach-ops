@@ -51,6 +51,13 @@ export interface GeneratorSpec {
    * registry ranges can produce and the test holds the generator to it.
    */
   minUnique: Record<Tier, number>;
+  /**
+   * Largest share of the sweep any single hash may take, as a fraction.
+   * Defaults to 1%. A tier that mixes a large-space variant with a small one —
+   * ns.2.1 tier 4 draws (-a)^2 from only 22 possibilities — concentrates more
+   * than that without being biased, so those skills declare a higher ceiling.
+   */
+  maxShare?: number;
   /** what the registry says a tier-1 answer looks like */
   tier1Form: (answer: Answer) => boolean;
 }
@@ -106,7 +113,8 @@ export function describeGenerator(spec: GeneratorSpec): void {
         }
         expect(freq.size, `${skill} T${tier} distinct hashes`).toBeGreaterThanOrEqual(spec.minUnique[tier]);
         // No single draw may dominate: a biased generator repeats the same card.
-        expect(Math.max(...freq.values()), `${skill} T${tier} most-repeated hash`).toBeLessThanOrEqual(SWEEP * 0.01);
+        expect(Math.max(...freq.values()), `${skill} T${tier} most-repeated hash`)
+          .toBeLessThanOrEqual(SWEEP * (spec.maxShare ?? 0.01));
       }
     });
 

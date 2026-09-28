@@ -32,9 +32,22 @@ export interface WorkedStep {
   math?: string;
 }
 
+/**
+ * Figure names are the registry's own `reps` strings, so a generator can name
+ * what the Math Kit should draw without a translation table. The union grows one
+ * chapter at a time: these are the reps Chapters 1-2 and the Q1 honors skills
+ * use. GENERATOR_SPEC section 9 lists the full vocabulary.
+ */
 export type FigureKind =
+  // Chapter 1
   | "number-line" | "vertical-number-line" | "zero-pairs" | "debt-table"
-  | "coordinate-plane" | "table" | "tape" | "hanger" | "area-model"
+  // Chapter 2
+  | "velocity-time" | "fact-family" | "long-division" | "area-model" | "tape-diagram"
+  // Q1 honors
+  | "powers-of-ten-line" | "bracketing" | "expanded-form" | "place-value-shift"
+  | "square-and-cube-models" | "algebra-trick-10x" | "vertical-format" | "equation"
+  // later chapters
+  | "coordinate-plane" | "table" | "tape" | "hanger"
   | "tree" | "box-plot" | "dot-plot" | "angle" | "net" | "solid"
   | "scale-drawing" | "scatter" | "two-way-table";
 

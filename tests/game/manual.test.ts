@@ -2,6 +2,9 @@ import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { parseManual, SECTIONS } from "../../src/game/manual";
+import curriculum from "../../src/data/curriculum.json";
+
+const registry = (curriculum as unknown as { skills: { id: string; chapter?: string }[] }).skills;
 
 const DIR = join(import.meta.dirname, "..", "..", "src", "data", "manual");
 const pages = readdirSync(DIR).filter((f) => f.endsWith(".md"));
@@ -14,7 +17,8 @@ describe("parseManual", () => {
       expect(page.skill, f).toBe(f.replace(/\.md$/, ""));
       expect(page.title.length, f).toBeGreaterThan(0);
       expect(page.standards.length, f).toBeGreaterThan(0);
-      expect(page.chapter, f).toBe(1);
+      const chapter = registry.find((s) => s.id === page.skill)?.chapter;
+      expect(`ch${page.chapter}`, `${f} chapter`).toBe(chapter);
       expect(page.khan, f).toMatch(/^https:\/\//);
     }
   });

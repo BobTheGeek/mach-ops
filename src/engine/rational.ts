@@ -130,3 +130,67 @@ export function parseRational(raw: string): Rational | null {
   if (out === null) return null;
   return percent ? mul(out, rat(1, 100)) : out;
 }
+
+/* -------------------------------------------------- repeating decimals */
+
+export interface DecimalParts {
+  negative: boolean;
+  /** digits before the point */
+  whole: string;
+  /** digits after the point that do not repeat */
+  fixed: string;
+  /** the repetend; empty when the decimal terminates */
+  repeat: string;
+}
+
+/**
+ * Long division with remainder tracking: when a remainder comes back, the digits
+ * since its first appearance are the repetend. ns.2.3 is exactly this method, so
+ * the generator and the manual page describe the same steps.
+ */
+export function decimalParts(a: Rational): DecimalParts {
+  const negative = a.n < 0;
+  let n = Math.abs(a.n);
+  const d = a.d;
+
+  const whole = String(Math.floor(n / d));
+  let rem = n % d;
+
+  const digits: string[] = [];
+  const seen = new Map<number, number>();
+  let repeatAt = -1;
+
+  while (rem !== 0) {
+    const prior = seen.get(rem);
+    if (prior !== undefined) { repeatAt = prior; break; }
+    seen.set(rem, digits.length);
+    n = rem * 10;
+    digits.push(String(Math.floor(n / d)));
+    rem = n % d;
+  }
+
+  if (repeatAt < 0) return { negative, whole, fixed: digits.join(""), repeat: "" };
+  return {
+    negative,
+    whole,
+    fixed: digits.slice(0, repeatAt).join(""),
+    repeat: digits.slice(repeatAt).join(""),
+  };
+}
+
+/** U+0305 combining overline: the vinculum over a repeating block. */
+export const OVERLINE = "̅";
+
+export function overline(digits: string): string {
+  return digits.split("").map((d) => d + OVERLINE).join("");
+}
+
+/** Exact decimal form, with a bar over the repetend when there is one. */
+export function fmtRepeating(a: Rational): string {
+  const p = decimalParts(a);
+  const sign = p.negative ? MINUS : "";
+  if (!p.fixed && !p.repeat) return `${sign}${p.whole}`;
+  return `${sign}${p.whole}.${p.fixed}${p.repeat ? overline(p.repeat) : ""}`;
+}
+
+export const isRepeating = (a: Rational): boolean => decimalParts(a).repeat.length > 0;

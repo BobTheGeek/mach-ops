@@ -74,10 +74,20 @@ describe("schedule.json", () => {
   });
 });
 
-describe("Phase 1 coverage", () => {
-  it("implements every Chapter 1 skill and nothing that is not in the registry", () => {
-    const ch1 = curriculum.skills.filter((s) => s.chapter === "ch1").map((s) => s.id).sort();
-    expect(IMPLEMENTED_SKILLS.slice().sort()).toEqual(ch1);
+describe("generator coverage", () => {
+  it("implements whole chapters at a time, and nothing outside the registry", () => {
+    const known = new Set(curriculum.skills.map((s) => s.id));
+    for (const id of IMPLEMENTED_SKILLS) expect(known, id).toContain(id);
+
+    // Chapters ship complete: a chapter with any generator has all of them.
+    const chapters = new Set(
+      curriculum.skills.filter((s) => IMPLEMENTED_SKILLS.includes(s.id) && s.chapter).map((s) => s.chapter!),
+    );
+    for (const ch of chapters) {
+      const all = curriculum.skills.filter((s) => s.chapter === ch).map((s) => s.id).sort();
+      const done = IMPLEMENTED_SKILLS.filter((id) => all.includes(id)).sort();
+      expect(done, `${ch} is only part-implemented`).toEqual(all);
+    }
   });
 
   it("ships a Flight Manual page for every implemented skill", () => {

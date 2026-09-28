@@ -1,12 +1,42 @@
 import { describe, it, expect } from "vitest";
-import { CH1_MISSIONS, MISSIONS, missionsFor, mission } from "../../src/data/campaign";
+import { CH1_MISSIONS, CH2_MISSIONS, MISSIONS, missionsFor, mission } from "../../src/data/campaign";
 import { DOSSIERS, dossier, CARDS_PER_AIRFRAME, FIRST_TRY_HITS_FOR_CARD } from "../../src/data/intel";
 import { IMPLEMENTED_SKILLS } from "../../src/generators/index";
 import curriculum from "../../src/data/curriculum.json";
 
-const ch1Skills = (curriculum as unknown as { skills: { id: string; chapter?: string }[] }).skills
-  .filter((s) => s.chapter === "ch1")
-  .map((s) => s.id);
+const skillsIn = (chapter: string): string[] =>
+  (curriculum as unknown as { skills: { id: string; chapter?: string }[] }).skills
+    .filter((s) => s.chapter === chapter)
+    .map((s) => s.id);
+
+const ch1Skills = skillsIn("ch1");
+
+const UNITS: [string, typeof CH1_MISSIONS][] = [["ch1", CH1_MISSIONS], ["ch2", CH2_MISSIONS]];
+
+describe.each(UNITS)("%s campaign", (unitId, missions) => {
+  const unitSkills = skillsIn(unitId);
+
+  it("has 8 to 12 sorties", () => {
+    expect(missions.length).toBeGreaterThanOrEqual(8);
+    expect(missions.length).toBeLessThanOrEqual(12);
+  });
+
+  it("ends with exactly one boss sortie", () => {
+    const bosses = missions.filter((m) => m.kind === "boss");
+    expect(bosses).toHaveLength(1);
+    expect(bosses[0]!.n).toBe(missions.length);
+  });
+
+  it("introduces every skill of its own chapter in its own sortie", () => {
+    const introduced = missions.filter((m) => m.focus.length === 1).map((m) => m.focus[0]!);
+    expect(introduced.slice().sort()).toEqual(unitSkills.slice().sort());
+  });
+
+  it("belongs to its unit and numbers 1..n", () => {
+    expect(missions.every((m) => m.unitId === unitId)).toBe(true);
+    expect(missions.map((m) => m.n)).toEqual(missions.map((_, i) => i + 1));
+  });
+});
 
 describe("Chapter 1 campaign", () => {
   it("has 8 to 12 sorties, as the build plan asks", () => {
