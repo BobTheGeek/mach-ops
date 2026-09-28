@@ -10,6 +10,9 @@ import { C, N, SIZE, TEXT, TRACK, CANVAS, SCREEN_PAD, RADIUS, STROKE, HIT, hex, 
 import { panel, capsLabel, button } from "../ui/kit";
 import { gameState } from "../state";
 import { isoToMs } from "../../engine/scheduler";
+import { SYSTEMS, systemStatus } from "../systems";
+import { statusPill } from "../ui/kit";
+import { IMPLEMENTED_SKILLS } from "../../generators/index";
 
 const BAND_GAP = 16;
 const BAND_PAD = 12;
@@ -40,7 +43,7 @@ export class HangarScene extends Phaser.Scene {
       ["FLIGHT MANUAL", () => this.scene.start("Manual")],
       ["HOW TO PLAY", () => this.scene.start("HowToPlay", { returnTo: "Hangar" })],
       ["DOSSIER", () => this.scene.start("Dossier")],
-      ["FLIGHT SCHOOL", () => this.scene.start("FlightSchool")],
+      ["SETTINGS", () => this.scene.start("Settings", { returnTo: "Hangar" })],
     ];
     const bw = 160;
     bar.forEach(([label, go], i) => {
@@ -59,8 +62,24 @@ export class HangarScene extends Phaser.Scene {
     rule.lineBetween(SCREEN_PAD, 58, CANVAS.width - SCREEN_PAD, 58);
   }
 
+  /** FS4's four systems, one per skill group, read from the live save. */
+  private systemsStrip(y: number): void {
+    const gap = 10;
+    const w = (CANVAS.width - SCREEN_PAD * 2 - gap * (SYSTEMS.length - 1)) / SYSTEMS.length;
+    SYSTEMS.forEach((name, i) => {
+      const x = SCREEN_PAD + i * (w + gap);
+      panel(this, x, y, w, 46, { fill: C.panelRaised });
+      const label = capsLabel(this, x + 14, y + 16, name, C.text, TRACK.readout);
+      void label;
+      const status = systemStatus(IMPLEMENTED_SKILLS, (s) => gameState.statusOf(s), name);
+      const pill = statusPill(this, x + w - 14 - 150, y + 11, status);
+      void pill;
+    });
+  }
+
   private quarters(): void {
-    const top = 74;
+    const top = 130;
+    this.systemsStrip(72);
     const w = (CANVAS.width - SCREEN_PAD * 2 - BAND_GAP) / 2;
     const h = (CANVAS.height - top - SCREEN_PAD - BAND_GAP) / 2;
 

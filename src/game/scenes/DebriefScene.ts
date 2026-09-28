@@ -10,6 +10,7 @@ import { hasPage } from "../manual";
 import { completeSortie } from "../save";
 import { mission as findMission } from "../../data/campaign";
 import { dossier, CARDS_PER_AIRFRAME, FIRST_TRY_HITS_FOR_CARD, type IntelCard } from "../../data/intel";
+import { audio } from "../audio";
 
 export interface DebriefData {
   unitId: string;
@@ -53,6 +54,8 @@ export class DebriefScene extends Phaser.Scene {
     this.cardEarned = result.cardEarned
       ? dossier(airframe)?.cards.find((c) => c.n === result.cardEarned) ?? null
       : null;
+    audio.setVolume(gameState.file.settings.volume);
+    if (this.cardEarned) this.time.delayedCall(400, () => audio.play("intelCard"));
 
     const title = this.add.text(SCREEN_PAD, 14, this.debrief.failed ? "SORTIE ENDED" : "DEBRIEF", { ...TEXT.h3 });
     title.setLetterSpacing(TRACK.display * SIZE.h3);

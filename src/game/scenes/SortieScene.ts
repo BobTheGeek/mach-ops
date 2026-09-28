@@ -18,6 +18,8 @@ import { capsLabel, readout, resourceBar, missilePips, button, panel, dim } from
 import { ProblemCard, CARD_W } from "../ui/problemCard";
 import { ManualPanel } from "../ui/manualPanel";
 import { gameState, now } from "../state";
+import { audio } from "../audio";
+import { showTip } from "../ui/firstTimeTip";
 import { buildMission, type MissionProblem } from "../missionBuilder";
 import { recordAttempt, spendCredits, HINT_COST } from "../save";
 import { applyAttempt, initialTierState } from "../../engine/tiers";
@@ -29,7 +31,18 @@ import { mission as findMission, type Mission } from "../../data/campaign";
 
 const BINGO_SECONDS = 90;
 const SHIELD_HIT = 0.2;
+/** design/README.md: the player sprite sits at (592, 450) at 120 px. */
 const PLAYER_POS = { x: 592, y: 450 };
+
+/** Flight model. Arcade, not a simulator: the stick steers a heading and the
+ *  aircraft always moves forward, which is what an intercept needs. */
+const TURN_RATE = 140;      // degrees per second at full deflection
+const SPEED = 190;          // pixels per second
+const LOCK_RANGE = 340;     // pixels; SPACE locks the nearest bogey inside this
+/** Screen scale for the HUD's range readout: 60 px reads as one nautical mile. */
+const PX_PER_NM = 60;
+/** Bogeys outside lock range are dimmed, so range is visible and not guesswork. */
+const OUT_OF_RANGE_ALPHA = 0.4;
 const BOGEY_SPRITES = ["bogey1-top", "bogey2-top", "bogey3-top"];
 
 interface Bogey {
@@ -53,6 +66,16 @@ export class SortieScene extends Phaser.Scene {
   private fuelLeft = 0;
   private sharpened = new Set<string>();
 
+  private player!: Phaser.GameObjects.Image;
+  /** compass heading in degrees; 0 is north, which is up the screen */
+  private heading = 0;
+  private keys!: {
+    left: Phaser.Input.Keyboard.Key[];
+    right: Phaser.Input.Keyboard.Key[];
+  };
+  private hdgOut!: ReturnType<typeof readout>;
+  private altOut!: ReturnType<typeof readout>;
+  private tgtOut!: ReturnType<typeof readout>;
   private bogeys: Bogey[] = [];
   private lockedBogey = -1;
   private locked = false;
@@ -77,6 +100,8 @@ export class SortieScene extends Phaser.Scene {
   private streakOut!: ReturnType<typeof readout>;
   private statusText!: Phaser.GameObjects.Text;
   private bingo?: Phaser.GameObjects.Container;
+  /** what the shield bar is currently showing, so a drain can tween from it */
+  private shieldShown = 1;
 
   constructor() {
     super("Sortie");
@@ -89,6 +114,7 @@ export class SortieScene extends Phaser.Scene {
     this.shields = data.shields;
     this.missiles = data.missiles;
     this.fuelLeft = this.mission.fuelSeconds * data.fuel;
+    this.shieldShown = data.shields;
     this.index = 0;
     this.firstTryHits = 0;
     this.attemptedThisLock = false;
@@ -111,9 +137,17 @@ export class SortieScene extends Phaser.Scene {
       seed: gameState.file.log.length + 101,
     });
 
+    audio.setVolume(gameState.file.settings.volume);
+
     this.world();
     this.hud();
     this.spawnBogeys();
+
+    const kb = this.input.keyboard;
+    this.keys = {
+      left: [kb?.addKey("A"), kb?.addKey("LEFT")].filter(Boolean) as Phaser.Input.Keyboard.Key[],
+      right: [kb?.addKey("D"), kb?.addKey("RIGHT")].filter(Boolean) as Phaser.Input.Keyboard.Key[],
+    };
 
     this.input.keyboard?.on("keydown-SPACE", () => this.tryLock());
     // ESC pauses; quitting from the pause menu is what ends the sortie.
@@ -129,8 +163,8 @@ export class SortieScene extends Phaser.Scene {
     for (let x = 0; x <= CANVAS.width; x += 64) g.lineBetween(x, 0, x, CANVAS.height);
     for (let y = 0; y <= CANVAS.height; y += 64) g.lineBetween(0, y, CANVAS.width, y);
 
-    const player = this.add.image(PLAYER_POS.x, PLAYER_POS.y, "t38-top-flame");
-    player.setDisplaySize(85, 120);
+    this.player = this.add.image(PLAYER_POS.x, PLAYER_POS.y, "t38-top-flame");
+    this.player.setDisplaySize(85, 120);
   }
 
   private spawnBogeys(): void {
@@ -148,9 +182,10 @@ export class SortieScene extends Phaser.Scene {
 
   private hud(): void {
     const y = TOPBAR_PAD_Y;
-    readout(this, SCREEN_PAD, y, "ALT", "12,400 FT");
+    this.altOut = readout(this, SCREEN_PAD, y, "ALT", "12,400 FT");
     readout(this, SCREEN_PAD + 150, y, "SPD", "430 KT");
-    readout(this, SCREEN_PAD + 300, y, "HDG", "085°");
+    this.hdgOut = readout(this, SCREEN_PAD + 300, y, "HDG", "000°");
+    this.tgtOut = readout(this, SCREEN_PAD + 450, y, "TGT", "— NM", C.textMuted);
 
     this.statusText = this.add.text(0, y + 10, "SCANNING", { ...TEXT.label, color: C.hud });
     this.statusText.setLetterSpacing(TRACK.label * SIZE.label);
@@ -167,7 +202,7 @@ export class SortieScene extends Phaser.Scene {
     const aimLabel = capsLabel(this, CANVAS.width - SCREEN_PAD - MAX_MISSILES * 16, CANVAS.height - 88, "AIM", C.textMuted, TRACK.readout);
     void aimLabel;
 
-    const hint = capsLabel(this, 0, CANVAS.height - 26, "SPACE · LOCK   M · MANUAL   ESC · PAUSE", C.textMuted, TRACK.readout);
+    const hint = capsLabel(this, 0, CANVAS.height - 26, "A D · STEER   SPACE · LOCK   M · MANUAL   ESC · PAUSE", C.textMuted, TRACK.readout);
     hint.setX((CANVAS.width - hint.width) / 2);
 
     this.refreshHud();
@@ -193,18 +228,86 @@ export class SortieScene extends Phaser.Scene {
     this.refreshHud();
 
     if (this.fuelLeft <= BINGO_SECONDS && !this.bingo) this.showBingo();
-    if (this.fuelLeft <= 0) { this.endSortie("BINGO FUEL"); return; }
+    if (this.fuelLeft <= 0) { audio.play("flameOut"); this.endSortie("BINGO FUEL"); return; }
 
     const dt = deltaMs / 1000;
+    this.fly(dt);
+
     for (const b of this.bogeys) {
       if (!b.alive) continue;
       b.image.y += b.speed * dt * 10;
-      if (b.image.y > CANVAS.height + 80) { b.image.y = -80; }
+      if (b.image.y > CANVAS.height + 80) b.image.y = -80;
     }
+  }
+
+  /**
+   * The player holds station at the centre of the screen and the world moves
+   * around them, which is how a top-down intercept reads: turning changes where
+   * the bogeys go, not where you are.
+   */
+  private fly(dt: number): void {
+    const down = (keys: Phaser.Input.Keyboard.Key[]): boolean => keys.some((k) => k.isDown);
+    const turn = (down(this.keys.right) ? 1 : 0) - (down(this.keys.left) ? 1 : 0);
+    if (turn !== 0) this.heading = (this.heading + turn * TURN_RATE * dt + 360) % 360;
+
+    this.player.setAngle(0); // the airframe stays nose-up; the world rotates
+    const rad = Phaser.Math.DegToRad(this.heading);
+    const dx = -Math.sin(rad) * SPEED * dt;
+    const dy = Math.cos(rad) * SPEED * dt;
+
+    for (const b of this.bogeys) {
+      b.image.x += dx;
+      b.image.y += dy;
+      // Wrap so a bogey flown past comes round again rather than vanishing.
+      if (b.image.x < -100) b.image.x = CANVAS.width + 100;
+      if (b.image.x > CANVAS.width + 100) b.image.x = -100;
+    }
+
+    this.hdgOut.set(`${String(Math.round(this.heading)).padStart(3, "0")}°`);
+
+    // Range to the nearest bogey, and dim anything out of lock range so the
+    // player can see why SPACE will or will not take.
+    let nearest = Infinity;
+    for (const b of this.bogeys) {
+      if (!b.alive) continue;
+      const d = Phaser.Math.Distance.Between(PLAYER_POS.x, PLAYER_POS.y, b.image.x, b.image.y);
+      b.image.setAlpha(d <= LOCK_RANGE ? 1 : OUT_OF_RANGE_ALPHA);
+      nearest = Math.min(nearest, d);
+    }
+    if (Number.isFinite(nearest)) {
+      const inRange = nearest <= LOCK_RANGE;
+      this.tgtOut.set(`${(nearest / PX_PER_NM).toFixed(1)} NM`);
+      this.tgtOut.value.setColor(inRange ? C.lock : C.textMuted);
+      if (inRange && !this.locked) {
+        this.statusText.setText("IN RANGE · SPACE TO LOCK");
+        this.statusText.setColor(C.lock);
+      } else if (!this.locked && this.statusText.text !== "NO TARGET IN RANGE") {
+        this.statusText.setText("SCANNING");
+        this.statusText.setColor(C.hud);
+      }
+    } else {
+      this.tgtOut.set("— NM");
+    }
+    // Altitude drifts with the turn, so the ALT readout is live rather than a prop.
+    const alt = 12400 + Math.round(Math.cos(rad) * 600);
+    this.altOut.set(`${alt.toLocaleString("en-US")} FT`);
+  }
+
+  /** The nearest live bogey inside lock range, or -1. */
+  private nearestBogey(): number {
+    let best = -1;
+    let bestDist = LOCK_RANGE;
+    this.bogeys.forEach((b, i) => {
+      if (!b.alive) return;
+      const d = Phaser.Math.Distance.Between(PLAYER_POS.x, PLAYER_POS.y, b.image.x, b.image.y);
+      if (d < bestDist) { best = i; bestDist = d; }
+    });
+    return best;
   }
 
   /** 04B: bingo fuel warning at 90 s remaining. */
   private showBingo(): void {
+    audio.play("bingoWarn");
     const w = 300;
     const x = (CANVAS.width - w) / 2;
     const g = panel(this, x, 96, w, 54, { fill: C.panel, border: C.alert });
@@ -219,8 +322,15 @@ export class SortieScene extends Phaser.Scene {
     if (this.locked || this.paused) return;
     if (this.index >= this.queue.length) { this.endSortie("ALL TARGETS ENGAGED"); return; }
 
-    const target = this.bogeys.findIndex((b) => b.alive);
-    if (target < 0) { this.endSortie("ALL TARGETS ENGAGED"); return; }
+    if (this.bogeys.every((b) => !b.alive)) { this.endSortie("ALL TARGETS ENGAGED"); return; }
+
+    const target = this.nearestBogey();
+    if (target < 0) {
+      // Nothing in range: say so rather than silently doing nothing.
+      this.statusText.setText("NO TARGET IN RANGE");
+      this.statusText.setColor(C.alert);
+      return;
+    }
 
     this.lockedBogey = target;
     this.locked = true;
@@ -230,9 +340,24 @@ export class SortieScene extends Phaser.Scene {
     this.statusText.setText("LOCKED");
     this.statusText.setColor(C.lock);
 
+    audio.play("lockAcquire");
     this.drawReticle(this.bogeys[target]!.image);
     this.bulletTimeIn();
     this.showProblem();
+  }
+
+  /** tokens.motion.lockBreak: the reticle corners scatter and the ring snaps out. */
+  private breakLock(): void {
+    audio.play("lockBreak");
+    if (!this.reticle || gameState.file.settings.reducedMotion) return;
+    this.tweens.killTweensOf(this.reticle);
+    this.tweens.add({
+      targets: this.reticle,
+      scale: 1.6,
+      alpha: 0,
+      duration: MOTION.lockBreak.duration,
+      ease: "Cubic.easeOut",
+    });
   }
 
   private drawReticle(target: Phaser.GameObjects.Image): void {
@@ -258,6 +383,8 @@ export class SortieScene extends Phaser.Scene {
   }
 
   private bulletTimeIn(): void {
+    audio.play("bulletTimeIn");
+    audio.setDucked(true);
     this.worldDim = dim(this, 0);
     this.tweens.add({
       targets: this.worldDim,
@@ -294,6 +421,11 @@ export class SortieScene extends Phaser.Scene {
       duration: MOTION.cardSlideIn.duration,
       ease: "Cubic.easeIn",
     });
+
+    // FT1: the first transfer problem the pilot ever sees.
+    if (mp.item.transfer) {
+      showTip(this, "FT1", SCREEN_PAD, CANVAS.height - 300);
+    }
 
     this.tickTimer();
   }
@@ -343,6 +475,9 @@ export class SortieScene extends Phaser.Scene {
     );
 
     if (correct) {
+      audio.play(fast ? "hitFast" : "hit");
+      audio.play("streakTick", gameState.file.streak);
+      this.streakTick();
       this.sharpened.add(mp.problem.skill);
       // A first-try hit is one answered right with no earlier attempt on this
       // lock and no hint taken; six of them earn an intel card.
@@ -355,8 +490,11 @@ export class SortieScene extends Phaser.Scene {
     // Wrong: shields -20%, lock breaks, streak reset (recordAttempt did that).
     this.attemptedThisLock = true;
     this.wrongRun += 1;
+    audio.play("miss");
+    audio.play("shieldDrain");
+    this.breakLock();
     this.shields = Math.max(0, this.shields - SHIELD_HIT);
-    this.refreshHud();
+    this.drainShields();
     this.hitFlash();
 
     if (fast) {
@@ -372,7 +510,40 @@ export class SortieScene extends Phaser.Scene {
     }
   }
 
+  /**
+   * Shields animate down rather than jumping, over tokens.motion.shieldDrain.
+   * A bar that snaps reads as a rendering glitch; a bar that drains reads as damage.
+   */
+  private drainShields(): void {
+    const from = this.shieldShown;
+    const to = this.shields;
+    this.shieldShown = to;
+    if (gameState.file.settings.reducedMotion) { this.shieldBar.set(to); this.refreshHud(); return; }
+    this.tweens.addCounter({
+      from: from * 100,
+      to: to * 100,
+      duration: MOTION.shieldDrain.duration,
+      ease: "Cubic.easeOut",
+      onUpdate: (tween) => this.shieldBar.set(tween.getValue()! / 100),
+    });
+    this.refreshHud();
+  }
+
+  /** tokens.motion.streakTick: the counter pops as it increments. */
+  private streakTick(): void {
+    if (gameState.file.settings.reducedMotion) { this.refreshHud(); return; }
+    const t = this.streakOut.value;
+    this.tweens.add({
+      targets: t,
+      scale: 1.3,
+      duration: MOTION.streakTick.duration / 2,
+      yoyo: true,
+      ease: "Back.easeOut",
+    });
+  }
+
   private hitFlash(): void {
+    if (gameState.file.settings.reducedMotion) return;
     const flash = this.add
       .rectangle(0, 0, CANVAS.width, CANVAS.height, hex(MOTION.hitFlash.color), MOTION.hitFlash.opacity)
       .setOrigin(0, 0);
@@ -387,6 +558,7 @@ export class SortieScene extends Phaser.Scene {
   /** M6: fast-wrong pop-in. Neutral, never a penalty tone. */
   private showWorkedPopIn(mp: MissionProblem): void {
     this.paused = true;
+    showTip(this, "FT3", SCREEN_PAD, CANVAS.height - 300);
     const w = 620;
     const x = (CANVAS.width - w) / 2;
     const scrim = dim(this, 0.55);
@@ -451,6 +623,7 @@ export class SortieScene extends Phaser.Scene {
   }
 
   private clearLock(): void {
+    audio.setDucked(false);
     this.locked = false;
     this.card?.destroy();
     this.card = undefined;
@@ -489,6 +662,7 @@ export class SortieScene extends Phaser.Scene {
   /** M4: manual during a lock. Timer PAUSED, lock held, bonus forfeit, no shield cost. */
   private openManual(mp: MissionProblem): void {
     if (this.manual) return;
+    audio.play("manualOpen");
     this.paused = true;
     this.bonusForfeit = true;
     const pausedAt = this.time.now;

@@ -8,6 +8,8 @@ import { panel, capsLabel, button, resourceBar, missilePips } from "../ui/kit";
 import { ProblemCard, CARD_W } from "../ui/problemCard";
 import { ManualPanel } from "../ui/manualPanel";
 import { gameState, now } from "../state";
+import { audio } from "../audio";
+import { showTip } from "../ui/firstTimeTip";
 import { mission as findMission, type Mission } from "../../data/campaign";
 import { buildMission, type MissionProblem } from "../missionBuilder";
 import { recordAttempt } from "../save";
@@ -83,8 +85,12 @@ export class BriefingScene extends Phaser.Scene {
       seed: gameState.file.log.length + 1,
     });
 
+    audio.setVolume(gameState.file.settings.volume);
     this.chrome();
     this.showPrep();
+
+    // FT2: the first boss briefing.
+    if (this.mission.kind === "boss") showTip(this, "FT2", SCREEN_PAD, CANVAS.height - 200);
   }
 
   private chrome(): void {
@@ -201,6 +207,7 @@ export class BriefingScene extends Phaser.Scene {
     );
 
     if (correct) {
+      audio.play("hit");
       if (resource === "fuel") this.fuel = Math.min(1, this.fuel + 0.2);
       if (resource === "shields") this.shields = Math.min(1, this.shields + 0.25);
       if (resource === "missiles") this.missiles = Math.min(MAX_MISSILES, this.missiles + 2);
@@ -209,6 +216,7 @@ export class BriefingScene extends Phaser.Scene {
       this.index += 1;
       this.time.delayedCall(700, () => this.showPrep());
     } else {
+      audio.play("miss");
       // Wrong answers cost nothing here; retry freely.
       this.fillNote.setText("");
       this.time.delayedCall(900, () => this.card?.unlock());
@@ -217,6 +225,7 @@ export class BriefingScene extends Phaser.Scene {
 
   private openManual(mp: MissionProblem): void {
     if (this.manual) return;
+    audio.play("manualOpen");
     this.manual = new ManualPanel({
       scene: this,
       skill: mp.problem.skill,

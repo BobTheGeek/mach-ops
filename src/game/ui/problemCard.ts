@@ -14,6 +14,7 @@ import { C, N, SIZE, FONT, TEXT, TRACK, RADIUS, STROKE, HIT, INPUT, hex } from "
 import { panel, capsLabel } from "./kit";
 import { renderFigure } from "./figures";
 import { parseRational, fmtFraction, MINUS } from "../../engine/rational";
+import { audio } from "../audio";
 import type { Problem } from "../../engine/types";
 
 export type CardMode = "lock" | "briefing";
@@ -333,8 +334,8 @@ export class ProblemCard {
       }
 
       // typed entry: digits, minus, dot, slash, space (mixed numbers), percent
-      if (k === "Backspace") { e.preventDefault(); this.typed = this.typed.slice(0, -1); this.refreshTyped(); return; }
-      if (/^[0-9./%\- ]$/.test(k)) { e.preventDefault(); this.typed += k === "-" ? MINUS : k; this.refreshTyped(); }
+      if (k === "Backspace") { e.preventDefault(); this.typed = this.typed.slice(0, -1); audio.play("keyTick"); this.refreshTyped(); return; }
+      if (/^[0-9./%\- ]$/.test(k)) { e.preventDefault(); this.typed += k === "-" ? MINUS : k; audio.play("keyTick"); this.refreshTyped(); }
     };
     window.addEventListener("keydown", this.keyHandler);
   }
@@ -349,6 +350,7 @@ export class ProblemCard {
   }
 
   private pick(i: number): void {
+    audio.play("uiMove");
     this.picked = i;
     const x = PAD + (this.problem.prompt.figure ? FIGURE_W + GAP : 0);
     const w = CARD_W - x - PAD;

@@ -15,8 +15,9 @@ pnpm curriculum   # merge + validate content/curriculum/*.json -> src/data/curri
 pnpm mission      # print a 20-problem mission for a sample attempt log
 ```
 
-Title -> Hangar -> Briefing -> Sortie -> Debrief is playable end to end with
-Chapter 1 content, T-38 and the Intercept mission.
+Playable end to end: Flight School, hangar, twenty sorties across Chapters 1 and
+2, briefing, sortie with a steerable T-38 and synthesised avionics audio, debrief,
+intel cards, Flight Manual, How to Play and settings.
 
-Phase status: see `docs/engine-rules.md` "Build plan", `docs/PHASE1-NOTES.md`
-and `docs/PHASE2-NOTES.md`.
+Phase status: see `docs/engine-rules.md` "Build plan" and the phase notes in
+`docs/` (`PHASE1-NOTES.md`, `PHASE2-NOTES.md`, `PHASE3-NOTES.md`).

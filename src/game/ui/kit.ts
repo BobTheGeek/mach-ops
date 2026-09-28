@@ -9,6 +9,7 @@
 
 import Phaser from "phaser";
 import { C, N, TEXT, TRACK, RADIUS, STROKE, HIT, SIZE, FONT, hex } from "../../ui/tokens";
+import { audio } from "../audio";
 import type { SystemsStatus } from "../../engine/types";
 
 /* ----------------------------------------------------------------- panel */
@@ -134,7 +135,12 @@ export function button(scene: Phaser.Scene, o: ButtonOpts): Button {
   // container's children are laid out.
   const zone = scene.add.zone(0, 0, w, h).setOrigin(0, 0).setInteractive({ useHandCursor: true });
   zone.on("pointerup", () => {
-    if (variant !== "disabled") o.onClick?.();
+    if (variant === "disabled") return;
+    audio.play("uiConfirm");
+    o.onClick?.();
+  });
+  zone.on("pointerover", () => {
+    if (variant !== "disabled") audio.play("uiMove");
   });
 
   const container = scene.add.container(o.x, o.y, [g, label, zone]);

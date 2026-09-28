@@ -30,7 +30,7 @@ export class PauseScene extends Phaser.Scene {
     dim(this, 0.55);
 
     const w = 420;
-    const h = 420;
+    const h = 480;
     const x = (CANVAS.width - w) / 2;
     const y = (CANVAS.height - h) / 2;
     panel(this, x, y, w, h, { fill: C.panel });
@@ -45,6 +45,7 @@ export class PauseScene extends Phaser.Scene {
       { label: "RESUME", key: "ESC", variant: "primary", go: () => this.resume() },
       { label: "HOW TO PLAY", key: "?", variant: "secondary", go: () => this.open("HowToPlay") },
       { label: "FLIGHT MANUAL", key: "M", variant: "secondary", go: () => this.open("Manual") },
+      { label: "SETTINGS", key: "S", variant: "secondary", go: () => this.open("Settings") },
       { label: "HANGAR · ENDS SORTIE", key: "Q", variant: "ghost", go: () => this.quit() },
     ];
 
@@ -61,6 +62,7 @@ export class PauseScene extends Phaser.Scene {
     this.input.keyboard?.on("keydown-ESC", () => this.resume());
     this.input.keyboard?.on("keydown-Q", () => this.quit());
     this.input.keyboard?.on("keydown-M", () => this.open("Manual"));
+    this.input.keyboard?.on("keydown-S", () => this.open("Settings"));
   }
 
   private resume(): void {
