@@ -106,9 +106,11 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
   const candidates: Candidate[] = [
     { tag: "double-neg", value: rat(first - Math.abs(second)) },          // 7 − (−3) = 4
     { tag: "negate-first", value: rat(-first - second) },                 // negates the wrong number
-    { tag: "commute", value: rat(second - first) },                       // b − a
+    // In the change variant "compute b − a" and "change computed backwards" are
+    // the same arithmetic, so each tag owns the variant where it is the real
+    // mistake; otherwise one silently shadows the other.
+    { tag: "commute", value: rat(second - first), when: !isChange },      // b − a
     { tag: "initial-minus-final", value: rat(a - b), when: isChange },    // change computed backwards
-    { tag: "neg-distance", value: rat(-Math.abs(a - b)), when: isDistance },
   ];
 
   const fmtAnswer = (x: Answer): string => fmtInt(Math.round(Number((x as { n: number; d: number }).n / (x as { n: number; d: number }).d)));
@@ -122,9 +124,11 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
     format: tier >= 3 || rng() < 0.5 ? "numeric" : "multiple-choice",
     prompt,
     answer: rat(correct),
+    answerText: fmtAnswer(rat(correct)),
     accept: acceptRational(rat(correct)),
     distractors: choice.distractors,
     options: choice.options,
+    optionText: choice.optionText,
     correctIndex: choice.correctIndex,
     worked,
     errorTagsByAnswer: choice.errorTagsByAnswer,

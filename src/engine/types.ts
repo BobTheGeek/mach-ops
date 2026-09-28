@@ -79,6 +79,13 @@ export interface Problem {
    */
   options?: Answer[];
   correctIndex?: number;
+  /**
+   * The canonical answer as the game draws it, in the app's math-text style.
+   * GENERATOR_SPEC section 4 requires option text to be formatted identically to
+   * the correct answer, so the formatted form has to leave the generator with it.
+   */
+  answerText: string;
+  optionText?: string[];
   /** one step per numbered step in the manual's "How to solve it" */
   worked: WorkedStep[];
   /** formatted wrong-answer text -> registry error tag */

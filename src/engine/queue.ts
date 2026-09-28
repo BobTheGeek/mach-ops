@@ -83,15 +83,15 @@ export function sliceSizes(count: number, weakCap = WEAK_CAP): Record<Slice, num
  * Lay items out so no two neighbours share a skill.
  * Greedy: always take the most-common remaining skill that is not the previous one.
  */
-export function deinterleave(items: readonly QueueItem[]): QueueItem[] {
-  const bySkill = new Map<string, QueueItem[]>();
+export function deinterleave<T extends { skill: string }>(items: readonly T[]): T[] {
+  const bySkill = new Map<string, T[]>();
   for (const it of items) {
     const list = bySkill.get(it.skill);
     if (list) list.push(it);
     else bySkill.set(it.skill, [it]);
   }
 
-  const out: QueueItem[] = [];
+  const out: T[] = [];
   let prev: string | null = null;
 
   while (out.length < items.length) {
@@ -167,7 +167,11 @@ export function buildQueue(input: QueueInput): QueueItem[] {
   take(currentPool, sizes.current, "current");
   take(warmPool, sizes.warm, "warm");
 
-  // --- tier and transfer marking ---------------------------------------
+  // --- layout, then tier and transfer marking ---------------------------
+  // The cadence has to be counted in the order the problems are actually served,
+  // so the no-consecutive-repeat layout happens first and marking follows it.
+  const ordered = deinterleave(picks);
+
   // Serve counts continue from the saved log, so transfers land on the real cadence.
   const served = new Map<string, number>();
   for (const a of log) served.set(a.skill, (served.get(a.skill) ?? 0) + 1);
@@ -175,7 +179,7 @@ export function buildQueue(input: QueueInput): QueueItem[] {
   const cadence = new Map<string, number>();
   for (const s of available) cadence.set(s.id, int(rng, TRANSFER_EVERY_MIN, TRANSFER_EVERY_MAX));
 
-  const items: QueueItem[] = picks.map(({ skill, slice }) => {
+  return ordered.map(({ skill, slice }) => {
     const n = (served.get(skill) ?? 0) + 1;
     served.set(skill, n);
     const every = cadence.get(skill) ?? TRANSFER_EVERY_MAX;
@@ -187,6 +191,4 @@ export function buildQueue(input: QueueInput): QueueItem[] {
       transfer,
     };
   });
-
-  return deinterleave(items);
 }

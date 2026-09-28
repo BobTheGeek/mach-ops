@@ -79,8 +79,14 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
       const places = int(rng, 1, 2);
       const scale = 10 ** places;
       const negFirst = rng() < 0.5; // registry: one negative
-      a = fromDecimal(((negFirst ? -1 : 1) * int(rng, 1, 25 * scale - 1)) / scale, places);
-      b = fromDecimal(((negFirst ? 1 : -1) * int(rng, 1, 25 * scale - 1)) / scale, places);
+      // Not a whole number: tier 1 is explicitly about decimals.
+      const units = (): number => {
+        let u = int(rng, 1, 25 * scale - 1);
+        if (u % scale === 0) u += 1;
+        return u;
+      };
+      a = fromDecimal(((negFirst ? -1 : 1) * units()) / scale, places);
+      b = fromDecimal(((negFirst ? 1 : -1) * units()) / scale, places);
       decimalForm = true;
       break;
     }
@@ -176,9 +182,11 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
     format: decimalForm ? (rng() < 0.5 ? "numeric" : "multiple-choice") : rng() < 0.5 ? "fraction" : "multiple-choice",
     prompt,
     answer: correct,
+    answerText: fmtAnswer(correct),
     accept: acceptRational(correct),
     distractors: choice.distractors,
     options: choice.options,
+    optionText: choice.optionText,
     correctIndex: choice.correctIndex,
     worked,
     errorTagsByAnswer: choice.errorTagsByAnswer,

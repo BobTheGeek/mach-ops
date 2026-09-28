@@ -197,23 +197,39 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
           ];
 
   // --- 4. distractors from registry error tags --------------------------
+  //
+  // A comparison has exactly two possible answers, so it carries one distractor
+  // (the other value) rather than the spec's three: with two options there is no
+  // third distinct wrong answer to compute. The tag still records *why* the wrong
+  // one gets picked, which is what the engine logs.
   const lesser = cmp(a, b) > 0 ? b : a;
-  const candidates: Candidate[] = [
-    // neg-magnitude: treats -8 as greater than -3, i.e. reverses the comparison
-    { tag: "neg-magnitude", value: lesser, when: isCompare },
-    { tag: "neg-magnitude", value: neg(abs(sub(a, b))), when: variant === "distance-context" },
-    // abs-negates: thinks |x| flips the sign of every number
-    { tag: "abs-negates", value: neg(abs(a)), when: isAbs },
-    { tag: "abs-negates", value: neg(abs(sub(a, b))), when: variant === "distance-context" },
-    // frac-size: -1/2 > -1/4 because 2 > 4, i.e. compares by denominator
-    { tag: "frac-size", value: a.d > b.d ? a : b, when: variant === "compare-mixed" },
-    { tag: "frac-size", value: sub(a, b), when: variant === "distance-context" },
-  ];
+  const isTrueFraction = (r: Rational): boolean => r.d !== 1;
+  const comparesByDenominator = isTrueFraction(a) && isTrueFraction(b) && a.d !== b.d;
+
+  const candidates: Candidate[] = isCompare
+    ? [
+        // frac-size: -1/2 > -1/4 because 2 > 4, i.e. ranks by denominator
+        { tag: "frac-size", value: lesser, when: comparesByDenominator },
+        // neg-magnitude: treats -8 as greater than -3, i.e. reverses the comparison
+        { tag: "neg-magnitude", value: lesser, when: !comparesByDenominator },
+      ]
+    : isAbs
+      ? [
+          // abs-negates: thinks |x| flips the sign of every number
+          { tag: "abs-negates", value: neg(abs(a)), when: toNumber(a) !== 0 },
+        ]
+      : [
+          { tag: "abs-negates", value: neg(abs(sub(a, b))) },
+          // neg-magnitude: subtracts the sizes instead of taking the difference
+          { tag: "neg-magnitude", value: sub(abs(a), abs(b)) },
+        ];
 
   const fmtAnswer = (x: Answer): string => (Array.isArray(x) ? x.map((v) => show(v as Rational)).join(", ") : show(x as Rational));
-  const choice = isOrder ? null : buildChoice(rng, correct, candidates, fmtAnswer);
+  const choice = isOrder
+    ? null
+    : buildChoice(rng, correct, candidates, fmtAnswer, isCompare ? 2 : 4);
 
-  const format = isOrder ? "order" : isCompare || rng() < 0.4 ? "multiple-choice" : "numeric";
+  const format = isOrder ? "order" : isCompare ? "pick-one:greater" : rng() < 0.4 ? "multiple-choice" : "numeric";
 
   const params = {
     variant,
@@ -230,7 +246,8 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
     prompt,
     answer: correct,
     accept: isOrder ? acceptOrder(sorted) : acceptRational(correct as Rational),
-    ...(choice ? { distractors: choice.distractors, options: choice.options, correctIndex: choice.correctIndex } : {}),
+    ...(choice ? { distractors: choice.distractors, options: choice.options, optionText: choice.optionText, correctIndex: choice.correctIndex } : {}),
+    answerText: fmtAnswer(correct),
     worked,
     errorTagsByAnswer: choice?.errorTagsByAnswer ?? {},
     params,

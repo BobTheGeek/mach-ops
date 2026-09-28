@@ -31,6 +31,7 @@ function sameAnswer(a: Answer, b: Answer): boolean {
 export interface Choice {
   distractors: Distractor[];
   options: Answer[];
+  optionText: string[];
   correctIndex: number;
   errorTagsByAnswer: Record<string, string>;
 }
@@ -48,7 +49,9 @@ export function buildChoice(
   correct: Answer,
   candidates: readonly Candidate[],
   fmt: (a: Answer) => string,
+  optionCount: number = OPTION_COUNT,
 ): Choice {
+  const wanted = optionCount - 1;
   const distractors: Distractor[] = [];
 
   for (const c of candidates) {
@@ -56,11 +59,11 @@ export function buildChoice(
     if (sameAnswer(c.value, correct)) continue;
     if (distractors.some((d) => sameAnswer(d.value, c.value))) continue;
     distractors.push({ tag: c.tag, value: c.value });
-    if (distractors.length === DISTRACTOR_COUNT) break;
+    if (distractors.length === wanted) break;
   }
 
   let bump = 0;
-  while (distractors.length < DISTRACTOR_COUNT) {
+  while (distractors.length < wanted) {
     const value = magnitudeFallback(correct, bump++);
     if (sameAnswer(value, correct)) continue;
     if (distractors.some((d) => sameAnswer(d.value, value))) continue;
@@ -73,6 +76,7 @@ export function buildChoice(
   return {
     distractors,
     options: order,
+    optionText: order.map(fmt),
     correctIndex,
     errorTagsByAnswer: Object.fromEntries(distractors.map((d) => [fmt(d.value), d.tag])),
   };
