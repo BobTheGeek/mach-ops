@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mach Ops skill registry file",
+  "type": "object",
+  "required": ["skills"],
+  "properties": {
+    "chapters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "n", "quarter", "name"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^ch[0-9]{1,2}$" },
+          "n": { "type": "integer", "minimum": 1, "maximum": 10 },
+          "quarter": { "type": "integer", "minimum": 1, "maximum": 4 },
+          "name": { "type": "string" },
+          "tnCluster": { "type": "string" }
+        }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "standards", "reps", "formats", "key", "tiers", "gen", "errors", "skin", "honors"],
+        "properties": {
+          "id": { "type": "string", "description": "ns.1.4 style for core (cluster.chapter.section); h8.<cluster>.<standard> for honors" },
+          "chapter": { "type": "string", "description": "core skills: the chapter they belong to" },
+          "section": { "type": "string" },
+          "quarter": { "type": "integer", "description": "honors skills: the quarter they open in" },
+          "attachTo": { "type": "array", "items": { "type": "string" }, "description": "honors skills: campaigns whose mission lists include them" },
+          "honors": { "type": "boolean" },
+          "name": { "type": "string" },
+          "standards": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+          "im": { "type": "array", "items": { "type": "string" }, "description": "Open Up Resources IM 6-8 Math lesson refs, G7.U5.L4 = grade 7 unit 5 lesson 4. CC BY 4.0 edition only." },
+          "khan": { "type": "string", "description": "unit key from the content source map plus a search phrase" },
+          "reps": { "type": "array", "items": { "type": "string" }, "description": "representations the Math kit must render for this skill" },
+          "formats": { "type": "array", "items": { "type": "string" }, "description": "answer input formats: numeric, fraction, expression, multiple-choice, yes-no, order, table-fill, plot-point, drag-line, shade-region, number-line-select, graph-select, sci-notation, pick-one:a|b|c, shape-select, box-plot-read, likelihood-select" },
+          "key": { "type": "string", "description": "the one idea; opens the Flight Manual page" },
+          "tiers": { "type": "array", "items": { "type": "string" }, "minItems": 4, "maxItems": 4 },
+          "gen": { "type": "string", "description": "parameter ranges and structural variants for the generator" },
+          "errors": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": ["tag", "desc", "distractor"],
+              "properties": {
+                "tag": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+                "desc": { "type": "string" },
+                "distractor": { "type": "string", "description": "how to compute the wrong answer from the parameters" }
+              }
+            }
+          },
+          "skin": { "type": "string", "description": "cockpit framings the mission text can draw on" },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  }
+}

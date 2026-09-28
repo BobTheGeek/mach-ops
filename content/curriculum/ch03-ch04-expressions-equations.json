@@ -1,0 +1,248 @@
+{
+  "$schema": "./skill.schema.json",
+  "chapters": [
+    { "id": "ch3", "n": 3, "quarter": 1, "name": "Expressions", "tnCluster": "7.EE.A" },
+    { "id": "ch4", "n": 4, "quarter": 2, "name": "Equations and Inequalities", "tnCluster": "7.EE.B" }
+  ],
+  "skills": [
+    {
+      "id": "ee.3.1", "chapter": "ch3", "section": "3.1", "honors": false,
+      "name": "Algebraic expressions: evaluate and combine like terms",
+      "standards": ["7.EE.A.1", "7.EE.A.2"],
+      "im": ["G7.U6.L20", "G7.U6.L21"], "khan": "K-EXP:combining like terms",
+      "reps": ["tape-diagram", "tiles"],
+      "formats": ["expression", "numeric", "multiple-choice"],
+      "key": "Like terms have the same variable part. Add their coefficients; the variable stays the same. 3x + 2 is not 5x.",
+      "tiers": [
+        "evaluate ax + b for a given x (integers)",
+        "combine two or three like terms with integer coefficients",
+        "combine with rational coefficients and constants, both signs",
+        "identify terms and coefficients; write an expression from a loadout description"
+      ],
+      "gen": "T1: a in [-9,9], b in [-20,20], x in [-5,5]. T2: e.g. 4x - 7 + 2x. T3: 1/2 x + 3 - 3/4 x - 5. T4: 'each missile weighs m, plus 300 lb of fuel' -> 4m + 300.",
+      "errors": [
+        { "tag": "constant-into-x", "desc": "3x + 2 = 5x", "distractor": "(a+b)x" },
+        { "tag": "lost-negative", "desc": "drops a negative on a term", "distractor": "sign flipped on one coefficient" },
+        { "tag": "x-as-zero", "desc": "treats a bare x as 0x", "distractor": "coefficient off by 1" }
+      ],
+      "skin": "loadout weight expressions, fuel + ordnance totals, thrust expressions"
+    },
+    {
+      "id": "ee.3.2", "chapter": "ch3", "section": "3.2", "honors": false,
+      "name": "Adding and subtracting linear expressions",
+      "standards": ["7.EE.A.1", "7.EE.A.2"],
+      "im": ["G7.U6.L18", "G7.U6.L21", "G7.U6.L22"], "khan": "K-EXP:adding and subtracting linear expressions",
+      "reps": ["vertical-format", "add-the-opposite"],
+      "formats": ["expression", "multiple-choice"],
+      "key": "To subtract an expression, add the opposite of every term inside it. -(2x - 4) is -2x + 4.",
+      "tiers": [
+        "add two expressions, integer coefficients",
+        "subtract two expressions, positive terms only inside",
+        "subtract with negatives inside the second expression",
+        "rational coefficients; context (two aircraft weights compared)"
+      ],
+      "gen": "Coefficients in [-9,9] excluding 0; constants in [-20,20]. T3 must include a negative constant in the subtrahend.",
+      "errors": [
+        { "tag": "distribute-minus-once", "desc": "(5x+3) - (2x-4) = 3x - 1", "distractor": "only first term negated" },
+        { "tag": "no-distribute", "desc": "subtracts only the first term of the second expression", "distractor": "3x + 3 - 4" }
+      ],
+      "skin": "difference in weight between two loadouts, fuel remaining minus reserve expression"
+    },
+    {
+      "id": "ee.3.3", "chapter": "ch3", "section": "3.3", "honors": false,
+      "name": "The distributive property",
+      "standards": ["7.EE.A.1", "7.EE.A.2"],
+      "im": ["G7.U6.L19"], "khan": "K-EXP:distributive property with variables",
+      "reps": ["area-model"],
+      "formats": ["expression", "multiple-choice"],
+      "key": "Multiply the outside number by EVERY term inside, including the sign. -3(x - 4) = -3x + 12.",
+      "tiers": [
+        "positive factor, positive terms",
+        "negative factor",
+        "negative factor with subtraction inside; then combine with an outside term",
+        "rational factor (1/2, 0.5, -2/3) and equivalent-expression identification"
+      ],
+      "gen": "T1: a in [2,9]. T2: a in [-9,-2]. T3: a(x - b) + c. T4: fractional a with terms chosen so results are clean.",
+      "errors": [
+        { "tag": "forgot-second-term", "desc": "-3(x - 4) = -3x - 4", "distractor": "second term not multiplied" },
+        { "tag": "sign-inside", "desc": "-(x + 5) = -x + 5", "distractor": "sign not distributed" },
+        { "tag": "multiply-constant-only", "desc": "3(2x + 4) = 2x + 12", "distractor": "first term not multiplied" }
+      ],
+      "skin": "n squadrons each with (x fighters + 4 tankers), area of a hangar bay grid"
+    },
+    {
+      "id": "ee.3.4", "chapter": "ch3", "section": "3.4", "honors": false,
+      "name": "Factoring linear expressions",
+      "standards": ["7.EE.A.1", "7.EE.A.2"],
+      "im": ["G7.U6.L19", "G7.U6.L22"], "khan": "K-EXP:factoring expressions",
+      "reps": ["area-model-reverse"],
+      "formats": ["expression", "multiple-choice"],
+      "key": "Find the greatest common factor of the terms, divide each term by it, write GCF(...). Check by distributing back.",
+      "tiers": [
+        "factor out a GCF from two terms, positive",
+        "GCF with a negative constant inside",
+        "factor out a negative GCF",
+        "factor out a fraction (1/2 x + 3/2 = 1/2(x + 3))"
+      ],
+      "gen": "Build from a factored form: g(ax + b) with g in [2,12], a in [1,9], b in [-15,15]; expand to present. T4: g = 1/2, 1/3, 1/4.",
+      "errors": [
+        { "tag": "not-greatest", "desc": "factors out a common factor that is not the greatest", "distractor": "2(3x + 6) for 6x + 12" },
+        { "tag": "zero-term", "desc": "6(x + 0) style loss of a term", "distractor": "missing constant" },
+        { "tag": "sign-error", "desc": "sign wrong inside parentheses", "distractor": "g(ax - b)" }
+      ],
+      "skin": "group identical aircraft loads, rewrite a fuel expression per tank"
+    },
+    {
+      "id": "ee.4.1", "chapter": "ch4", "section": "4.1", "honors": false,
+      "name": "Solving equations using addition or subtraction",
+      "standards": ["7.EE.B.4a"],
+      "im": ["G7.U5.L15", "G6.U6.hangers"], "khan": "K-EXP:one-step addition and subtraction equations",
+      "reps": ["hanger-diagram"],
+      "formats": ["numeric", "fraction", "multiple-choice"],
+      "key": "Do the inverse operation to BOTH sides. Check by substituting back.",
+      "tiers": [
+        "x + a = b with integers",
+        "x - a = b with negatives",
+        "rational constants (decimals and fractions)",
+        "one-step context: x + reserve = total fuel"
+      ],
+      "gen": "a,b in [-40,40]; T3 use tenths or denominators 2..8 with clean results.",
+      "errors": [
+        { "tag": "one-side-only", "desc": "operates on one side only", "distractor": "b or b + a" },
+        { "tag": "same-op", "desc": "uses the same operation instead of the inverse", "distractor": "b + a for x + a = b" }
+      ],
+      "skin": "fuel plus reserve equals total, altitude plus climb equals target"
+    },
+    {
+      "id": "ee.4.2", "chapter": "ch4", "section": "4.2", "honors": false,
+      "name": "Solving equations using multiplication or division",
+      "standards": ["7.EE.B.4a"],
+      "im": ["G7.U5.L15", "G7.U5.L16"], "khan": "K-EXP:one-step multiplication and division equations",
+      "reps": ["hanger-diagram", "tape-diagram"],
+      "formats": ["numeric", "fraction", "multiple-choice"],
+      "key": "Undo multiplication by dividing both sides by the coefficient; undo division by multiplying. A fraction coefficient: multiply by its reciprocal.",
+      "tiers": [
+        "ax = b, integers, exact",
+        "negative coefficient or negative b",
+        "x/a = b and fraction coefficients",
+        "context: rate x time = distance, solve for time"
+      ],
+      "gen": "a in [-12,12] excluding 0,1; choose x in [-15,15] and compute b. T3: a = p/q with q in [2,6].",
+      "errors": [
+        { "tag": "subtract-coefficient", "desc": "3x = 12 -> x = 9", "distractor": "b - a" },
+        { "tag": "sign-lost", "desc": "-4x = 20 -> x = 5", "distractor": "|correct|" },
+        { "tag": "reciprocal-missed", "desc": "(2/3)x = 8 -> x = 16/3", "distractor": "b * (a) instead of b / a" }
+      ],
+      "skin": "burn rate x minutes = fuel, speed x time = distance to bogey"
+    },
+    {
+      "id": "ee.4.3", "chapter": "ch4", "section": "4.3", "honors": false,
+      "name": "Solving two-step equations",
+      "standards": ["7.EE.B.4a"],
+      "im": ["G7.U6.L1", "G7.U6.L2", "G7.U6.L3", "G7.U6.L4", "G7.U6.L5", "G7.U6.L6", "G7.U6.L7", "G7.U6.L8", "G7.U6.L9", "G7.U6.L10", "G7.U6.L11"], "khan": "K-EXP:two-step equations",
+      "reps": ["tape-diagram", "hanger-diagram"],
+      "formats": ["numeric", "fraction", "multiple-choice"],
+      "key": "Undo addition or subtraction first, then undo multiplication or division. For p(x + q) = r, divide both sides by p first (or distribute).",
+      "tiers": [
+        "px + q = r, positive integers, x positive",
+        "negative coefficients or constants; unknown on either side of the equals sign",
+        "p(x + q) = r; fraction/decimal coefficients; like terms to combine first",
+        "word problem: write the equation, solve, compare to the arithmetic path"
+      ],
+      "gen": "Choose x in [-20,20] first, p in [2,12] (T3 also 1/2..1/4 and decimals), q in [-40,40], compute r. Rotate forms: px+q=r, r=px+q, q+px=r, px-q=r, p(x+q)=r.",
+      "errors": [
+        { "tag": "divide-one-term", "desc": "divides only the x-term by p", "distractor": "(r - q) with p applied to x only" },
+        { "tag": "wrong-order", "desc": "divides before subtracting", "distractor": "(r/p) - q" },
+        { "tag": "paren-confusion", "desc": "p(x+q) treated as px + q", "distractor": "(r-q)/p vs r/p - q swapped" },
+        { "tag": "sign-error", "desc": "sign slip on q", "distractor": "(r + q)/p" }
+      ],
+      "skin": "time to waypoint: 4t + 12 = 60, fuel: 3 tanks + reserve = total, cost: p missiles plus a fee"
+    },
+    {
+      "id": "ee.4.4", "chapter": "ch4", "section": "4.4", "honors": false,
+      "name": "Writing and graphing inequalities",
+      "standards": ["7.EE.B.4b"],
+      "im": ["G7.U6.L13"], "khan": "K-EXP:inequalities on a number line",
+      "reps": ["number-line"],
+      "formats": ["multiple-choice", "number-line-select", "expression"],
+      "key": "'At least' means >=, 'no more than' means <=. Open circle for < and >, closed circle for <= and >=. Shade toward the solutions.",
+      "tiers": [
+        "match a phrase to a symbol",
+        "graph x < a or x >= a on a number line",
+        "write the inequality from a graph, including negatives",
+        "write from a context (max payload, minimum altitude)"
+      ],
+      "gen": "a in [-15,15]; rotate the four symbols and the four phrase families (at least, at most, more than, fewer than).",
+      "errors": [
+        { "tag": "phrase-flip", "desc": "'at least' mapped to <=", "distractor": "reversed symbol" },
+        { "tag": "circle-type", "desc": "open vs closed circle swapped", "distractor": "same direction, wrong circle" },
+        { "tag": "one-solution", "desc": "thinks the inequality has a single answer", "distractor": "x = a" }
+      ],
+      "skin": "minimum safe altitude, maximum takeoff weight, ceiling limits"
+    },
+    {
+      "id": "ee.4.5", "chapter": "ch4", "section": "4.5", "honors": false,
+      "name": "Solving inequalities using addition or subtraction",
+      "standards": ["7.EE.B.4b"],
+      "im": ["G7.U6.L14", "G7.U6.L15"], "khan": "K-EXP:one-step inequalities",
+      "reps": ["number-line"],
+      "formats": ["expression", "number-line-select", "multiple-choice"],
+      "key": "Add or subtract on both sides just like an equation. The symbol does not flip for adding or subtracting.",
+      "tiers": [
+        "x + a < b, positive integers",
+        "negatives on either side",
+        "rational constants",
+        "context, then graph the solution"
+      ],
+      "gen": "a,b in [-30,30]; T3 tenths or simple fractions.",
+      "errors": [
+        { "tag": "needless-flip", "desc": "flips the symbol after subtracting", "distractor": "reversed symbol" },
+        { "tag": "shade-wrong", "desc": "shades the wrong direction for 5 < x", "distractor": "reversed shading" }
+      ],
+      "skin": "fuel above reserve, altitude margin above terrain"
+    },
+    {
+      "id": "ee.4.6", "chapter": "ch4", "section": "4.6", "honors": false,
+      "name": "Solving inequalities using multiplication or division",
+      "standards": ["7.EE.B.4b"],
+      "im": ["G7.U6.L15"], "khan": "K-EXP:one-step inequalities",
+      "reps": ["number-line", "test-point"],
+      "formats": ["expression", "multiple-choice"],
+      "key": "Divide or multiply both sides. If you divide or multiply by a NEGATIVE, reverse the inequality symbol.",
+      "tiers": [
+        "ax > b with a positive",
+        "a negative: flip required",
+        "x/a with a negative; fraction coefficients",
+        "context with a negative rate (descent) and a limit"
+      ],
+      "gen": "a in [-12,12] excluding 0; choose boundary x in [-20,20]. Half of T2-T4 items must require a flip.",
+      "errors": [
+        { "tag": "no-flip", "desc": "does not reverse when dividing by a negative", "distractor": "correct value, wrong symbol" },
+        { "tag": "flip-on-negative-constant", "desc": "flips because b is negative", "distractor": "wrong symbol, positive divisor" }
+      ],
+      "skin": "descent rate limits: -500t > -6000 (how long before minimum altitude)"
+    },
+    {
+      "id": "ee.4.7", "chapter": "ch4", "section": "4.7", "honors": false,
+      "name": "Solving two-step inequalities",
+      "standards": ["7.EE.B.4b"],
+      "im": ["G7.U6.L15", "G7.U6.L16", "G7.U6.L17"], "khan": "K-EXP:two-step inequalities",
+      "reps": ["number-line"],
+      "formats": ["expression", "number-line-select", "multiple-choice"],
+      "key": "Undo addition/subtraction, then multiplication/division, reversing the symbol only when multiplying or dividing by a negative. Graph and interpret.",
+      "tiers": [
+        "px + q < r, all positive",
+        "negative p (flip) or negative constants",
+        "p(x + q) >= r; rational coefficients",
+        "context: max ordnance weight 2w + 300 <= 1100; interpret whole-number answers"
+      ],
+      "gen": "As ee.4.3 with symbols rotated; T2+ include flips in half the items. T4 answers must be interpreted (round down for counts).",
+      "errors": [
+        { "tag": "divide-one-term", "desc": "same as two-step equations", "distractor": "wrong value" },
+        { "tag": "no-flip", "desc": "missed flip", "distractor": "wrong symbol" },
+        { "tag": "fractional-count", "desc": "reports 3.5 missiles", "distractor": "unrounded count" }
+      ],
+      "skin": "max payload, minimum fuel for a leg count, credits budget for n upgrades"
+    }
+  ]
+}

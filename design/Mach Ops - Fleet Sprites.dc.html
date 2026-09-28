@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="./sprites.js"></script>
+<style>body{margin:0;background:#06090E;} a{color:#86F0A3;} a:hover{color:#F5B841;}</style>
+</helmet>
+<div style="width:1600px;padding:56px 64px 64px;box-sizing:border-box;background:#0A1018;color:#E6EDF5;font-family:'IBM Plex Sans',sans-serif;display:flex;flex-direction:column;gap:32px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid #223347;padding-bottom:20px;">
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#86F0A3;letter-spacing:0.18em;">ASSETS · 02 · FLEET SPRITES · TOP-DOWN</div>
+      <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:44px;line-height:1;letter-spacing:0.02em;">MACH OPS <span style="color:#86F0A3;font-size:24px;letter-spacing:0.08em;">WEAPONS-GRADE MATH</span></div>
+    </div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;text-align:right;line-height:1.6;">viewBox −400 0 800 1000 · layers: airframe · canopy · control-surfaces · flame · markings<br>row 1 at 360 px · row 2 at in-game 120 px · row 3 silhouette</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:16px;">
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+      <x-import component-from-global-scope="mo-sprite" type="t38" length="360" flame="" hint-size="288px,360px"></x-import>
+      <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;margin-top:36px;">T-38 TALON</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;text-align:center;line-height:1.5;">14.1 m · 7.6 m span<br>USAF white · blue trim</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+      <x-import component-from-global-scope="mo-sprite" type="f16" length="360" flame="" hint-size="288px,360px"></x-import>
+      <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;margin-top:36px;">F-16C FALCON</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;text-align:center;line-height:1.5;">14.8 m · 9.8 m span<br>Have Glass grey</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+      <x-import component-from-global-scope="mo-sprite" type="f15" length="360" flame="" hint-size="288px,360px"></x-import>
+      <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;margin-top:36px;">F-15C EAGLE</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;text-align:center;line-height:1.5;">19.4 m · 13.1 m span<br>Mod Eagle grey</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+      <x-import component-from-global-scope="mo-sprite" type="f18" length="360" flame="" hint-size="288px,360px"></x-import>
+      <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;margin-top:36px;">F/A-18E SUPER HORNET</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;text-align:center;line-height:1.5;">18.5 m · 13.7 m span<br>Navy grey · low-vis</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+      <x-import component-from-global-scope="mo-sprite" type="f22" length="360" flame="" hint-size="288px,360px"></x-import>
+      <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;margin-top:36px;">F-22A RAPTOR</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;text-align:center;line-height:1.5;">18.9 m · 13.6 m span<br>two-tone metallic grey</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+      <x-import component-from-global-scope="mo-sprite" type="f35" length="360" flame="" hint-size="288px,360px"></x-import>
+      <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;margin-top:36px;">F-35A LIGHTNING II</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;text-align:center;line-height:1.5;">15.7 m · 10.7 m span<br>uniform dark grey</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+      <x-import component-from-global-scope="mo-sprite" type="sr71" length="360" flame="" hint-size="288px,360px"></x-import>
+      <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;margin-top:36px;">SR-71 BLACKBIRD</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;text-align:center;line-height:1.5;">32.7 m · 16.9 m span<br>near-black · red tail no.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+      <x-import component-from-global-scope="mo-sprite" type="f4" length="360" flame="" hint-size="288px,360px"></x-import>
+      <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;margin-top:36px;">F-4E PHANTOM II</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;text-align:center;line-height:1.5;">19.2 m · 11.7 m span<br>gunship grey · side intakes</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+      <x-import component-from-global-scope="mo-sprite" type="a10" length="360" flame="" hint-size="288px,360px"></x-import>
+      <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;margin-top:36px;">A-10C THUNDERBOLT II</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;text-align:center;line-height:1.5;">16.3 m · 17.5 m span<br>dark grey · podded engines</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+      <x-import component-from-global-scope="mo-sprite" type="f14" length="360" flame="" hint-size="288px,360px"></x-import>
+      <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;margin-top:36px;">F-14 TOMCAT</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;text-align:center;line-height:1.5;">19.1 m · 19.5 m span (unswept)<br>TPS grey · variable sweep</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+      <x-import component-from-global-scope="mo-sprite" type="f117" length="360" flame="" hint-size="288px,360px"></x-import>
+      <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;margin-top:36px;">F-117 NIGHTHAWK</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;text-align:center;line-height:1.5;">20.1 m · 13.2 m span<br>black · faceted · V-tail</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:center;background:#0B1B2B;border:1px solid #223347;border-radius:8px;padding:24px;background-image:linear-gradient(#0F2438 1px,transparent 1px),linear-gradient(90deg,#0F2438 1px,transparent 1px);background-size:40px 40px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;line-height:1.6;letter-spacing:0.1em;">IN-GAME SCALE<br><span style="color:#E6EDF5;">player 120 px</span><br><span style="color:#FF6B4A;">bogeys 72 px</span><br>over sea tile</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+      <x-import component-from-global-scope="mo-sprite" type="t38" length="120" flame="" hint-size="96px,120px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f16" length="120" flame="" hint-size="96px,120px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f15" length="120" flame="" hint-size="96px,120px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f18" length="120" flame="" hint-size="96px,120px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f22" length="120" flame="" hint-size="96px,120px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f35" length="120" flame="" hint-size="96px,120px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="sr71" length="120" flame="" hint-size="96px,120px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f4" length="120" flame="" hint-size="96px,120px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="a10" length="120" flame="" hint-size="96px,120px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f14" length="120" flame="" hint-size="96px,120px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f117" length="120" flame="" hint-size="96px,120px"></x-import>
+      <div style="width:1px;height:100px;background:#223347;"></div>
+      <x-import component-from-global-scope="mo-sprite" type="bogey1" length="72" flame="" heading="180" hint-size="58px,50px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="bogey2" length="72" flame="" heading="180" hint-size="58px,50px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="bogey3" length="72" flame="" heading="180" hint-size="58px,50px"></x-import>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;line-height:1.6;letter-spacing:0.1em;">SILHOUETTE<br><span style="color:#F5B841;">locked · next unlock</span><br>fill #111B27<br>stroke #223347</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+      <x-import component-from-global-scope="mo-sprite" type="t38" length="160" variant="silhouette" hint-size="128px,160px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f16" length="160" variant="silhouette" hint-size="128px,160px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f15" length="160" variant="silhouette" hint-size="128px,160px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f18" length="160" variant="silhouette" hint-size="128px,160px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f22" length="160" variant="silhouette" hint-size="128px,160px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f35" length="160" variant="silhouette" hint-size="128px,160px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="sr71" length="160" variant="silhouette" hint-size="128px,160px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f4" length="160" variant="silhouette" hint-size="128px,160px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="a10" length="160" variant="silhouette" hint-size="128px,160px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f14" length="160" variant="silhouette" hint-size="128px,160px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="f117" length="160" variant="silhouette" hint-size="128px,160px"></x-import>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">SIDE PROFILES · HANGAR + DOSSIER HERO · viewBox 0 0 1000 340 · nose left</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+        <x-import component-from-global-scope="mo-sprite" type="t38" view="side" length="320" hint-size="320px,118px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">T-38 · tandem canopy · tall fin</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+        <x-import component-from-global-scope="mo-sprite" type="f16" view="side" length="320" hint-size="320px,118px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">F-16C · chin intake · bubble</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+        <x-import component-from-global-scope="mo-sprite" type="f15" view="side" length="320" hint-size="320px,118px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">F-15C · box intake · flat nose</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+        <x-import component-from-global-scope="mo-sprite" type="f18" view="side" length="320" hint-size="320px,118px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">F/A-18E · LERX · canted fin</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+        <x-import component-from-global-scope="mo-sprite" type="f22" view="side" length="320" hint-size="320px,118px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">F-22A · raked intake · sawtooth</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+        <x-import component-from-global-scope="mo-sprite" type="f35" view="side" length="320" hint-size="320px,118px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">F-35A · DSI bump · big canopy</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+        <x-import component-from-global-scope="mo-sprite" type="sr71" view="side" length="320" flame="" hint-size="320px,118px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">SR-71 · spike · nacelle fin</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+        <x-import component-from-global-scope="mo-sprite" type="f4" view="side" length="320" hint-size="320px,118px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">F-4E · tandem · anhedral stab</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+        <x-import component-from-global-scope="mo-sprite" type="a10" view="side" length="320" hint-size="320px,118px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">A-10C · gun nose · pod engines</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+        <x-import component-from-global-scope="mo-sprite" type="f14" view="side" length="320" hint-size="320px,118px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">F-14 · glove · twin fin</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+        <x-import component-from-global-scope="mo-sprite" type="f117" view="side" length="320" hint-size="320px,118px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">F-117 · facets · V-tail</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;">
+        <x-import component-from-global-scope="mo-sprite" type="f15" view="side" variant="silhouette" length="320" hint-size="320px,118px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F5B841;letter-spacing:0.1em;">silhouette · next unlock teaser</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">ALTERNATE LIVERIES · livery="nasa" / "blueangels" · LANDING GEAR LAYER · gear (hangar only)</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+        <x-import component-from-global-scope="mo-sprite" type="t38" length="220" livery="nasa" flame="" hint-size="176px,220px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;margin-top:28px;">T-38 · NASA · 400 CR</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+        <x-import component-from-global-scope="mo-sprite" type="t38" view="side" livery="nasa" gear="" length="320" hint-size="320px,118px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">T-38 · NASA · side + gear</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+        <x-import component-from-global-scope="mo-sprite" type="f18" length="220" livery="blueangels" flame="" hint-size="176px,220px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;margin-top:28px;">F/A-18E · BLUE ANGELS · UNIT 4</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px 16px;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:24px 24px;">
+        <x-import component-from-global-scope="mo-sprite" type="f18" view="side" livery="blueangels" gear="" length="320" hint-size="320px,118px"></x-import>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">F/A-18E · BLUE ANGELS · side + gear</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;">
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;"><x-import component-from-global-scope="mo-sprite" type="f16" view="side" gear="" length="260" hint-size="260px,96px"></x-import><div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">F16 · gear down</div></div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;"><x-import component-from-global-scope="mo-sprite" type="f15" view="side" gear="" length="260" hint-size="260px,96px"></x-import><div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">F15 · gear down</div></div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;"><x-import component-from-global-scope="mo-sprite" type="f22" view="side" gear="" length="260" hint-size="260px,96px"></x-import><div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">F22 · gear down</div></div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;"><x-import component-from-global-scope="mo-sprite" type="f35" view="side" gear="" length="260" hint-size="260px,96px"></x-import><div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">F35 · gear down</div></div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px 12px;"><x-import component-from-global-scope="mo-sprite" type="sr71" view="side" gear="" length="260" hint-size="260px,96px"></x-import><div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">SR71 · gear down</div></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:center;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;line-height:1.6;letter-spacing:0.1em;">BOGEYS · FICTIONAL<br><span style="color:#FF6B4A;">red-brown #8C3B2E</span><br>Dart · Vulture · Wedge</div>
+    <div style="display:flex;gap:64px;align-items:flex-end;">
+      <x-import component-from-global-scope="mo-sprite" type="bogey1" length="240" flame="" hint-size="192px,168px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="bogey2" length="240" flame="" hint-size="192px,168px"></x-import>
+      <x-import component-from-global-scope="mo-sprite" type="bogey3" length="240" flame="" hint-size="192px,168px"></x-import>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,249 @@
+{
+  "$schema": "./skill.schema.json",
+  "chapters": [
+    { "id": "ch9", "n": 9, "quarter": 4, "name": "Geometric Shapes and Angles", "tnCluster": "7.G.A / 7.G.B" },
+    { "id": "ch10", "n": 10, "quarter": 4, "name": "Surface Area and Volume", "tnCluster": "7.G.B" }
+  ],
+  "skills": [
+    {
+      "id": "g.9.1", "chapter": "ch9", "section": "9.1", "honors": false,
+      "name": "Circles and circumference",
+      "standards": ["7.G.B.3"],
+      "im": ["G7.U3.L1", "G7.U3.L2", "G7.U3.L3", "G7.U3.L4", "G7.U3.L5"], "khan": "K-GEO:circumference",
+      "reps": ["circle-labelled", "C-vs-d-graph"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "Diameter = 2 x radius. C = pi x d = 2 x pi x r. Circumference / diameter is always pi.",
+      "tiers": [
+        "radius <-> diameter",
+        "C from d or r using 3.14 or leaving in terms of pi",
+        "d or r from C",
+        "context: turn radius to distance flown in a full circle; wheel rotations"
+      ],
+      "gen": "r in [1,50]; accept answers within 0.5% for 3.14 and exact for 'pi' form.",
+      "errors": [
+        { "tag": "c-equals-pi-r", "desc": "C = pi r", "distractor": "half the answer" },
+        { "tag": "c-vs-a", "desc": "uses the area formula", "distractor": "pi r^2" },
+        { "tag": "r-d-swap", "desc": "uses r where d is given", "distractor": "2x or 1/2x" }
+      ],
+      "skin": "holding-pattern circle, turn radius, radar dish rim"
+    },
+    {
+      "id": "g.9.2", "chapter": "ch9", "section": "9.2", "honors": false,
+      "name": "Areas of circles",
+      "standards": ["7.G.B.3"],
+      "im": ["G7.U3.L6", "G7.U3.L7", "G7.U3.L8", "G7.U3.L9", "G7.U3.L10"], "khan": "K-GEO:area of circles",
+      "reps": ["wedges-to-parallelogram"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "A = pi x r^2. Square the radius FIRST, then multiply by pi. If given the diameter, halve it first.",
+      "tiers": [
+        "A from r",
+        "A from d; semicircle area",
+        "r from A",
+        "circumference vs area: which is asked, in context"
+      ],
+      "gen": "r in [1,40]; T2 semicircles; T3 A chosen so r is a whole number.",
+      "errors": [
+        { "tag": "a-equals-pi-d-squared", "desc": "uses d instead of r", "distractor": "4x too large" },
+        { "tag": "pi-r-squared-whole", "desc": "(pi r)^2", "distractor": "pi^2 r^2" },
+        { "tag": "forgot-square", "desc": "pi x r", "distractor": "pi r" }
+      ],
+      "skin": "radar sweep area, area covered by a flare, circular landing pad"
+    },
+    {
+      "id": "g.9.3", "chapter": "ch9", "section": "9.3", "honors": false,
+      "name": "Perimeters and areas of composite figures",
+      "standards": ["7.G.B.3", "7.G.B.5"],
+      "im": ["G7.U3.L9", "G7.U3.L10", "G7.U3.L11", "G7.U7.L13"], "khan": "K-GEO:area of composite figures",
+      "reps": ["grid-decomposition"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "Cut the figure into rectangles, triangles, and half-circles; add (or subtract a cutout). Perimeter counts only the OUTSIDE edges.",
+      "tiers": [
+        "L-shape from rectangles",
+        "rectangle plus semicircle (apron/runway end)",
+        "area with a cutout; perimeter with a curved edge",
+        "area between two shapes"
+      ],
+      "gen": "Dimensions in [2,40]; semicircle diameters even; grid drawings supplied.",
+      "errors": [
+        { "tag": "interior-edges", "desc": "counts interior segments in the perimeter", "distractor": "perimeter plus cut line" },
+        { "tag": "full-circle", "desc": "uses full circle for a semicircle", "distractor": "2x the curved part" },
+        { "tag": "add-cutout", "desc": "adds the cutout instead of subtracting", "distractor": "sum" }
+      ],
+      "skin": "runway and apron layouts, hangar floor with a cutout, target zone shapes"
+    },
+    {
+      "id": "g.9.4", "chapter": "ch9", "section": "9.4", "honors": false,
+      "name": "Constructing polygons and the triangle inequality",
+      "standards": ["7.G.A.2"],
+      "im": ["G7.U7.L6", "G7.U7.L7", "G7.U7.L8", "G7.U7.L9", "G7.U7.L10"], "khan": "K-GEO:triangle inequality",
+      "reps": ["straws", "compass-construction"],
+      "formats": ["multiple-choice", "yes-no", "numeric"],
+      "key": "Three side lengths make a triangle only if the two shorter ones add to MORE than the longest. Three sides fix one unique triangle; three angles (summing to 180) allow infinitely many.",
+      "tiers": [
+        "can these three sides form a triangle?",
+        "unique / many / none from given conditions",
+        "possible range for the third side",
+        "draw a quadrilateral from side and angle descriptions (multiple choice of figures)"
+      ],
+      "gen": "Sides in [1,20]; include exact-equality foils (2,3,5).",
+      "errors": [
+        { "tag": "equality-passes", "desc": "accepts 2, 3, 5", "distractor": "yes" },
+        { "tag": "angles-unique", "desc": "three angles give a unique triangle", "distractor": "unique" }
+      ],
+      "skin": "triangular intercept geometry, three legs of a patrol route"
+    },
+    {
+      "id": "g.9.5", "chapter": "ch9", "section": "9.5", "honors": false,
+      "name": "Finding unknown angle measures",
+      "standards": ["7.G.B.4"],
+      "im": ["G7.U7.L1", "G7.U7.L2", "G7.U7.L3", "G7.U7.L4", "G7.U7.L5"], "khan": "K-GEO:unknown angles",
+      "reps": ["angle-diagram"],
+      "formats": ["numeric", "expression", "multiple-choice"],
+      "key": "Complementary = 90, supplementary = 180, vertical angles are equal, adjacent angles share a side. Name the relationship, write the equation, solve, then answer the ANGLE (not just x).",
+      "tiers": [
+        "name the relationship; find the other angle",
+        "vertical and adjacent angles at a crossing",
+        "write and solve an equation: (3x) and (2x + 20) supplementary",
+        "multi-step figure combining relationships"
+      ],
+      "gen": "Angles in [10,170]; T3 choose x so all angles are whole.",
+      "errors": [
+        { "tag": "comp-supp-swap", "desc": "uses 90 for 180 or vice versa", "distractor": "off by 90" },
+        { "tag": "stop-at-x", "desc": "reports x instead of the angle", "distractor": "x" },
+        { "tag": "vertical-supp", "desc": "treats vertical angles as supplementary", "distractor": "180 - a" }
+      ],
+      "skin": "crossing flight paths, intercept headings, bank angle relationships"
+    },
+    {
+      "id": "g.10.1", "chapter": "ch10", "section": "10.1", "honors": false,
+      "name": "Surface areas of prisms",
+      "standards": ["7.G.B.5"],
+      "im": ["G7.U7.L14", "G7.U7.L15", "G7.U7.L16"], "khan": "K-GEO:surface area",
+      "reps": ["net"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "Surface area is the total area of ALL the faces. Use a net or S = 2B + Ph (two bases plus the lateral faces).",
+      "tiers": [
+        "rectangular prism from a net",
+        "cube; triangular prism",
+        "lateral area only; missing dimension from S",
+        "context: paint needed for a container, compare volume and surface area"
+      ],
+      "gen": "Dimensions in [1,20]; triangular prisms with 3-4-5 style bases.",
+      "errors": [
+        { "tag": "missing-face", "desc": "forgets a face", "distractor": "S minus one face" },
+        { "tag": "sa-vs-volume", "desc": "computes volume", "distractor": "lwh" },
+        { "tag": "one-base", "desc": "counts one base", "distractor": "B + Ph" }
+      ],
+      "skin": "paint for a fuel crate, hangar wall panels, ordnance container"
+    },
+    {
+      "id": "g.10.2", "chapter": "ch10", "section": "10.2", "honors": false,
+      "name": "Surface areas of cylinders",
+      "standards": ["7.G.B.3"],
+      "im": [], "khan": "HS-GEO:surface area of cylinders",
+      "reps": ["can-label-net"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "Unroll it: two circles plus a rectangle whose width is the circumference. S = 2 pi r^2 + 2 pi r h.",
+      "tiers": [
+        "S from r and h with pi = 3.14",
+        "S from d and h; leave in terms of pi",
+        "lateral area only",
+        "context: label on a fuel drum"
+      ],
+      "gen": "r in [1,15], h in [1,30].",
+      "errors": [
+        { "tag": "diameter-as-width", "desc": "uses d for the rectangle width", "distractor": "2 pi r^2 + d h" },
+        { "tag": "one-circle", "desc": "counts one circular face", "distractor": "pi r^2 + 2 pi r h" }
+      ],
+      "skin": "external fuel tank, engine nacelle, drum labels",
+      "note": "No IM 6-8 match; Big Ideas maps this to 7.G.B.3. Treat as core because it is on the syllabus topics list."
+    },
+    {
+      "id": "g.10.3", "chapter": "ch10", "section": "10.3", "honors": false,
+      "name": "Surface areas of pyramids",
+      "standards": ["7.G.B.5"],
+      "im": ["G6.U1.nets"], "khan": "K-GEO:surface area",
+      "reps": ["net"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "S = base area + the triangular faces. Each triangle uses the SLANT height, not the pyramid's height.",
+      "tiers": [
+        "square pyramid from a net",
+        "triangular pyramid",
+        "lateral area with slant height given",
+        "distinguish slant height from height"
+      ],
+      "gen": "Base edge in [2,20], slant height in [3,25].",
+      "errors": [
+        { "tag": "height-not-slant", "desc": "uses height instead of slant height", "distractor": "with h" },
+        { "tag": "missing-base", "desc": "forgets the base", "distractor": "lateral only" }
+      ],
+      "skin": "radar cone housing, tent hangar, pyramidal target marker",
+      "note": "TN 7.G.B.5 names cubes and right prisms only; keep as enrichment tier within the campaign."
+    },
+    {
+      "id": "g.10.4", "chapter": "ch10", "section": "10.4", "honors": false,
+      "name": "Volumes of prisms",
+      "standards": ["7.G.B.5"],
+      "im": ["G7.U7.L12", "G7.U7.L13", "G7.U7.L15", "G7.U7.L16", "G7.U7.L17"], "khan": "K-GEO:volume",
+      "reps": ["layers-of-cubes", "base-times-height"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "V = B x h: area of the base times the height. Works for any prism; the base is the face that repeats.",
+      "tiers": [
+        "rectangular prism V = Bh",
+        "triangular and trapezoidal prisms",
+        "missing dimension from V; fractional dimensions",
+        "context: fuel tank capacity, compare two tanks"
+      ],
+      "gen": "Dimensions in [1,30]; T3 use halves.",
+      "errors": [
+        { "tag": "wrong-base", "desc": "uses a non-base face for B", "distractor": "wrong face x h" },
+        { "tag": "add-not-multiply", "desc": "adds dimensions", "distractor": "l+w+h" },
+        { "tag": "v-vs-sa", "desc": "computes surface area", "distractor": "S" }
+      ],
+      "skin": "fuel tank in liters, cargo bay, hangar volume"
+    },
+    {
+      "id": "g.10.5", "chapter": "ch10", "section": "10.5", "honors": false,
+      "name": "Volumes of pyramids",
+      "standards": ["7.G.B.5"],
+      "im": [], "khan": "HS-GEO:volume of pyramids",
+      "reps": ["pour-demo"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "A pyramid holds one third of the prism with the same base and height: V = (1/3) B h.",
+      "tiers": [
+        "square pyramid V",
+        "triangular pyramid V",
+        "compare pyramid to prism with the same base",
+        "missing height from V"
+      ],
+      "gen": "Base edges in [2,20], heights chosen so V is whole.",
+      "errors": [
+        { "tag": "drop-third", "desc": "forgets the 1/3", "distractor": "Bh" },
+        { "tag": "slant-not-height", "desc": "uses slant height", "distractor": "with slant" }
+      ],
+      "skin": "nose cone volume approximated by a pyramid, ordnance crate",
+      "note": "Enrichment per TN standard text; on the syllabus topics list."
+    },
+    {
+      "id": "g.10.6", "chapter": "ch10", "section": "10.6", "honors": false,
+      "name": "Cross sections of three-dimensional figures",
+      "standards": ["7.G.B.5"],
+      "im": ["G7.U7.L11"], "khan": "K-GEO:cross sections",
+      "reps": ["slice-visual"],
+      "formats": ["multiple-choice", "shape-select"],
+      "key": "A slice parallel to the base is a copy of the base. A slice perpendicular to the base of a prism is a rectangle. A pyramid sliced parallel to its base gives a smaller version of the base.",
+      "tiers": [
+        "cross section of a prism parallel to the base",
+        "perpendicular slices of prisms and cylinders",
+        "pyramids and cones sliced parallel and perpendicular",
+        "diagonal slices; identify the solid from a set of cross sections"
+      ],
+      "gen": "Solids: rectangular prism, triangular prism, cylinder, square pyramid, cone; slice directions rotated.",
+      "errors": [
+        { "tag": "pyramid-always-triangle", "desc": "every slice of a pyramid is a triangle", "distractor": "triangle for a parallel slice" },
+        { "tag": "cylinder-circle-only", "desc": "cylinder slices are always circles", "distractor": "circle for a perpendicular slice" }
+      ],
+      "skin": "fuselage and wing cross sections, fuel tank baffles"
+    }
+  ]
+}

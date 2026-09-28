@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="./sprites.js"></script>
+<style>body{margin:0;background:#06090E;} a{color:#86F0A3;} a:hover{color:#F5B841;}</style>
+</helmet>
+<div style="width:1600px;padding:56px 64px 64px;box-sizing:border-box;background:#0A1018;color:#E6EDF5;font-family:'IBM Plex Mono',monospace;display:flex;flex-direction:column;gap:40px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid #223347;padding-bottom:20px;">
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <div style="font-size:14px;color:#86F0A3;letter-spacing:0.18em;">ASSETS · 03 · COMPONENT LIBRARY</div>
+      <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:44px;line-height:1;letter-spacing:0.02em;">MACH OPS <span style="color:#86F0A3;font-size:24px;letter-spacing:0.08em;">WEAPONS-GRADE MATH</span></div>
+    </div>
+    <div style="font-size:14px;color:#8BA0B8;text-align:right;line-height:1.6;">8 px grid · 8 px radius · 14 px minimum · 44 / 56 px targets<br>tokens.json drives every value here</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">01 · HUD KIT</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+      <div style="padding:20px;background:#0B1B2B;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:14px;font-size:14px;letter-spacing:0.14em;color:#86F0A3;">
+        <div style="color:#8BA0B8;">READOUTS</div>
+        <div style="display:flex;gap:24px;"><span>ALT <b style="font-weight:600;color:#E6EDF5;font-size:20px;">24500</b></span><span>SPD <b style="font-weight:600;color:#E6EDF5;font-size:20px;">480</b></span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:200px;"><div style="display:flex;gap:18px;color:#8BA0B8;"><span>070</span><span style="color:#E6EDF5;font-weight:600;font-size:20px;">087</span><span>100</span></div><div style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:8px solid #86F0A3;"></div></div>
+        <div style="display:flex;gap:24px;align-items:baseline;"><span style="color:#F5B841;">STREAK <b style="font-weight:600;font-size:20px;">6</b></span><span style="color:#E6EDF5;font-size:20px;font-weight:600;">02:14</span></div>
+      </div>
+      <div style="padding:20px;background:#0B1B2B;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:14px;font-size:14px;letter-spacing:0.14em;color:#86F0A3;">
+        <div style="color:#8BA0B8;">BARS · PIPS</div>
+        <div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;">FUEL</span><div style="flex:1;height:10px;background:#111B27;border:1px solid #223347;"><div style="width:62%;height:100%;background:#86F0A3;"></div></div></div>
+        <div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;color:#F5B841;">FUEL</span><div style="flex:1;height:10px;background:#111B27;border:1px solid #223347;"><div style="width:18%;height:100%;background:#F5B841;"></div></div></div>
+        <div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;color:#7DD3FC;">SHLD</span><div style="flex:1;height:10px;background:#111B27;border:1px solid #223347;position:relative;"><div style="width:60%;height:100%;background:#7DD3FC;"></div><div style="position:absolute;left:60%;top:0;width:25%;height:100%;background:#FF6B4A;opacity:0.7;"></div></div></div>
+        <div style="display:flex;gap:6px;align-items:center;color:#F5B841;"><span style="margin-right:6px;">AIM-9</span><div style="width:12px;height:16px;background:#F5B841;"></div><div style="width:12px;height:16px;background:#F5B841;"></div><div style="width:12px;height:16px;border:1px solid #F5B841;"></div><div style="width:12px;height:16px;border:1px solid #F5B841;"></div></div>
+      </div>
+      <div style="padding:20px;background:#0B1B2B;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:14px;font-size:14px;letter-spacing:0.14em;">
+        <div style="color:#8BA0B8;">LOCK RETICLE · 4 STATES</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;">
+          <div style="position:relative;width:56px;height:56px;border:1px solid #86F0A3;opacity:0.5;"></div>
+          <div style="position:relative;width:56px;height:56px;"><div style="position:absolute;left:0;top:0;width:14px;height:14px;border-left:2px solid #86F0A3;border-top:2px solid #86F0A3;"></div><div style="position:absolute;right:0;top:0;width:14px;height:14px;border-right:2px solid #86F0A3;border-top:2px solid #86F0A3;"></div><div style="position:absolute;left:0;bottom:0;width:14px;height:14px;border-left:2px solid #86F0A3;border-bottom:2px solid #86F0A3;"></div><div style="position:absolute;right:0;bottom:0;width:14px;height:14px;border-right:2px solid #86F0A3;border-bottom:2px solid #86F0A3;"></div><div style="position:absolute;left:-8px;top:-8px;width:72px;height:72px;border-radius:50%;border:2px solid #223347;border-top-color:#86F0A3;"></div></div>
+          <div style="position:relative;width:56px;height:56px;"><div style="position:absolute;left:0;top:0;width:14px;height:14px;border-left:3px solid #F5B841;border-top:3px solid #F5B841;"></div><div style="position:absolute;right:0;top:0;width:14px;height:14px;border-right:3px solid #F5B841;border-top:3px solid #F5B841;"></div><div style="position:absolute;left:0;bottom:0;width:14px;height:14px;border-left:3px solid #F5B841;border-bottom:3px solid #F5B841;"></div><div style="position:absolute;right:0;bottom:0;width:14px;height:14px;border-right:3px solid #F5B841;border-bottom:3px solid #F5B841;"></div><div style="position:absolute;left:-8px;top:-8px;width:72px;height:72px;border-radius:50%;border:2px solid #223347;border-top-color:#86F0A3;border-right-color:#86F0A3;border-bottom-color:#86F0A3;"></div></div>
+          <div style="position:relative;width:56px;height:56px;"><div style="position:absolute;left:-6px;top:-6px;width:14px;height:14px;border-left:3px solid #FF6B4A;border-top:3px solid #FF6B4A;transform:rotate(-12deg);"></div><div style="position:absolute;right:-8px;top:-4px;width:14px;height:14px;border-right:3px solid #FF6B4A;border-top:3px solid #FF6B4A;transform:rotate(10deg);"></div><div style="position:absolute;left:-4px;bottom:-8px;width:14px;height:14px;border-left:3px solid #FF6B4A;border-bottom:3px solid #FF6B4A;transform:rotate(8deg);"></div><div style="position:absolute;right:-6px;bottom:-6px;width:14px;height:14px;border-right:3px solid #FF6B4A;border-bottom:3px solid #FF6B4A;transform:rotate(-14deg);"></div></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;"><span>IDLE</span><span>LOCKING</span><span style="color:#F5B841;">LOCKED</span><span style="color:#FF6B4A;">BROKEN</span></div>
+        <div style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">FAST-BONUS RING DEPLETES CLOCKWISE OVER 5 S</div>
+      </div>
+      <div style="position:relative;padding:20px;background:#0B1B2B;border:1px solid #223347;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;gap:14px;font-size:14px;letter-spacing:0.14em;">
+        <div style="position:absolute;inset:0;box-shadow:inset 0 0 80px rgba(255,107,74,0.5);pointer-events:none;"></div>
+        <div style="color:#8BA0B8;position:relative;">DAMAGE VIGNETTE</div>
+        <div style="position:relative;color:#FF6B4A;font-size:20px;font-weight:600;">LOCK BROKEN</div>
+        <div style="position:relative;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;line-height:1.6;">inset 0 0 160px rgba(255,107,74,.45)<br>fades over 400 ms with shield drain</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">02 · PROBLEM CARD · DEFAULT / CORRECT / WRONG / HINT / TRANSFER · TYPED + MULTIPLE CHOICE</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;align-items:start;">
+      <div style="background:#0D1520;border:1px solid #F5B841;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#F5B841;"><span>INTERCEPT SOLUTION</span><span>5 / 8</span></div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">Bogey at 2.4 NM closing 0.6 NM every 10 s. Set the timer to fire at 0.6 NM.</div>
+        <div style="display:flex;align-items:center;gap:10px;border:1px solid #86F0A3;border-radius:8px;padding:10px 12px;font-size:20px;"><span style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">TIMER</span><span style="flex:1;"><span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">SEC</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;"><span>ENTER · FIRE</span><span style="color:#F5B841;">H · HINT</span></div>
+      </div>
+      <div style="background:#0D1520;border:1px solid #86F0A3;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#86F0A3;"><span>HIT · ×1.5 FAST</span><span>5 / 8</span></div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;color:#8BA0B8;">Bogey at 2.4 NM closing 0.6 NM every 10 s. Set the timer to fire at 0.6 NM.</div>
+        <div style="display:flex;align-items:center;gap:10px;border:1px solid #86F0A3;background:rgba(134,240,163,0.1);border-radius:8px;padding:10px 12px;font-size:20px;"><span style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">TIMER</span><span style="flex:1;color:#86F0A3;">30</span><span style="font-size:14px;color:#8BA0B8;">SEC</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#F5B841;letter-spacing:0.1em;"><span>+40 CR · +60 XP</span><span>STREAK 7</span></div>
+      </div>
+      <div style="background:#0D1520;border:1px solid #FF6B4A;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#FF6B4A;"><span>MISS · RETRY</span><span>5 / 8</span></div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">Bogey at 2.4 NM closing 0.6 NM every 10 s. Set the timer to fire at 0.6 NM.</div>
+        <div style="display:flex;align-items:center;gap:10px;border:1px solid #FF6B4A;border-radius:8px;padding:10px 12px;font-size:20px;color:#8BA0B8;text-decoration:line-through;"><span style="font-size:14px;letter-spacing:0.1em;">TIMER</span><span style="flex:1;">40</span><span style="font-size:14px;">SEC</span></div>
+        <div style="display:flex;align-items:center;gap:10px;border:1px solid #86F0A3;border-radius:8px;padding:10px 12px;font-size:20px;"><span style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">TIMER</span><span style="flex:1;"><span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">SEC</span></div>
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">SHIELD −25 · NO FAST BONUS</div>
+      </div>
+      <div style="background:#0D1520;border:1px solid #F5B841;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#F5B841;"><span>INTERCEPT SOLUTION</span><span>HINT −50 CR</span></div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">Bogey at 2.4 NM closing 0.6 NM every 10 s. Set the timer to fire at 0.6 NM.</div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;color:#E6EDF5;padding:10px 12px;background:#111B27;border-left:2px solid #F5B841;border-radius:0 8px 8px 0;">Distance to close: 2.4 − 0.6. Then count 0.6 NM steps; each is 10 s.</div>
+        <div style="display:flex;align-items:center;gap:10px;border:1px solid #86F0A3;border-radius:8px;padding:10px 12px;font-size:20px;"><span style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">TIMER</span><span style="flex:1;"><span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">SEC</span></div>
+      </div>
+      <div style="background:#0D1520;border:1px solid #F5B841;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;position:relative;">
+        <div style="position:absolute;right:16px;top:-1px;padding:2px 8px;background:#F5B841;color:#0A1018;font-size:14px;font-weight:600;letter-spacing:0.1em;border-radius:0 0 6px 6px;">★ SPECIAL</div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#F5B841;"><span>FUEL TRANSFER</span></div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">A tanker pumps 900 lb in 4 min. At that rate, how long to take on 3,150 lb?</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:16px;">
+          <div style="height:44px;display:flex;align-items:center;gap:12px;padding:0 12px;border:1px solid #223347;border-radius:8px;"><span style="color:#8BA0B8;font-size:14px;">A</span>12 MIN</div>
+          <div style="height:44px;display:flex;align-items:center;gap:12px;padding:0 12px;border:1px solid #86F0A3;border-radius:8px;background:rgba(134,240,163,0.08);"><span style="color:#86F0A3;font-size:14px;">B</span>14 MIN</div>
+          <div style="height:44px;display:flex;align-items:center;gap:12px;padding:0 12px;border:1px solid #223347;border-radius:8px;"><span style="color:#8BA0B8;font-size:14px;">C</span>15 MIN</div>
+          <div style="height:44px;display:flex;align-items:center;gap:12px;padding:0 12px;border:1px solid #223347;border-radius:8px;"><span style="color:#8BA0B8;font-size:14px;">D</span>21 MIN</div>
+        </div>
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">1–4 OR CLICK · ENTER</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:320px 1fr 1fr;gap:40px;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">03 · NUMERIC KEYPAD · TOUCHPAD</div>
+      <div style="background:#0D1520;border:1px solid #223347;border-radius:8px;padding:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font-size:20px;">
+        <div style="height:56px;display:flex;align-items:center;justify-content:center;background:#111B27;border:1px solid #223347;border-radius:8px;">7</div><div style="height:56px;display:flex;align-items:center;justify-content:center;background:#111B27;border:1px solid #223347;border-radius:8px;">8</div><div style="height:56px;display:flex;align-items:center;justify-content:center;background:#111B27;border:1px solid #223347;border-radius:8px;">9</div><div style="height:56px;display:flex;align-items:center;justify-content:center;background:#111B27;border:1px solid #223347;border-radius:8px;font-size:14px;color:#8BA0B8;">DEL</div>
+        <div style="height:56px;display:flex;align-items:center;justify-content:center;background:#111B27;border:1px solid #223347;border-radius:8px;">4</div><div style="height:56px;display:flex;align-items:center;justify-content:center;background:#111B27;border:1px solid #86F0A3;border-radius:8px;">5</div><div style="height:56px;display:flex;align-items:center;justify-content:center;background:#111B27;border:1px solid #223347;border-radius:8px;">6</div><div style="height:56px;display:flex;align-items:center;justify-content:center;background:#111B27;border:1px solid #223347;border-radius:8px;">.</div>
+        <div style="height:56px;display:flex;align-items:center;justify-content:center;background:#111B27;border:1px solid #223347;border-radius:8px;">1</div><div style="height:56px;display:flex;align-items:center;justify-content:center;background:#111B27;border:1px solid #223347;border-radius:8px;">2</div><div style="height:56px;display:flex;align-items:center;justify-content:center;background:#111B27;border:1px solid #223347;border-radius:8px;">3</div><div style="height:56px;display:flex;align-items:center;justify-content:center;background:#111B27;border:1px solid #223347;border-radius:8px;">−</div>
+        <div style="height:56px;display:flex;align-items:center;justify-content:center;background:#111B27;border:1px solid #223347;border-radius:8px;grid-column:span 2;">0</div><div style="height:56px;display:flex;align-items:center;justify-content:center;background:#86F0A3;color:#0A1018;border-radius:8px;font-size:14px;font-weight:600;letter-spacing:0.1em;grid-column:span 2;font-family:'Chakra Petch',sans-serif;">FIRE</div>
+        <div style="height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #223347;border-radius:8px;grid-column:span 2;font-size:14px;color:#8BA0B8;">/ FRACTION</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #223347;border-radius:8px;grid-column:span 2;font-size:14px;color:#F5B841;">HINT</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">04 · BUTTONS · 56 / 44</div>
+      <div style="background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+          <div style="height:56px;display:flex;align-items:center;justify-content:center;background:#86F0A3;color:#0A1018;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;">PRIMARY</div>
+          <div style="height:56px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;color:#86F0A3;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;">SECONDARY</div>
+          <div style="height:56px;display:flex;align-items:center;justify-content:center;color:#E6EDF5;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;">GHOST</div>
+          <div style="height:56px;display:flex;align-items:center;justify-content:center;background:#111B27;color:#8BA0B8;border:1px solid #223347;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;">DISABLED</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;font-size:14px;letter-spacing:0.1em;">
+          <div style="height:44px;display:flex;align-items:center;justify-content:center;background:#86F0A3;color:#0A1018;border-radius:8px;font-weight:600;">PRIMARY</div>
+          <div style="height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;color:#86F0A3;border-radius:8px;">SECONDARY</div>
+          <div style="height:44px;display:flex;align-items:center;justify-content:center;color:#E6EDF5;border-radius:8px;">GHOST</div>
+          <div style="height:44px;display:flex;align-items:center;justify-content:center;background:#111B27;color:#8BA0B8;border:1px solid #223347;border-radius:8px;">DISABLED</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;font-size:14px;letter-spacing:0.1em;">
+          <div style="height:44px;display:flex;align-items:center;justify-content:center;background:#F5B841;color:#0A1018;border-radius:8px;font-weight:600;">REWARD</div>
+          <div style="height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #FF6B4A;color:#FF6B4A;border-radius:8px;">DESTRUCTIVE</div>
+          <div style="height:44px;display:flex;align-items:center;justify-content:center;background:#A3F7BA;color:#0A1018;border-radius:8px;font-weight:600;">HOVER</div>
+          <div style="height:44px;display:flex;align-items:center;justify-content:center;background:#6BD98A;color:#0A1018;border-radius:8px;font-weight:600;box-shadow:inset 0 0 0 2px #0A1018,inset 0 0 0 4px #86F0A3;">FOCUS</div>
+        </div>
+      </div>
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">04B · BADGES · 24 PX · OUTLINE</div>
+      <div style="background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+        <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border:1px solid #F5B841;border-radius:4px;color:#F5B841;font-size:14px;letter-spacing:0.14em;font-weight:500;white-space:nowrap;"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M1 7 L5 2 L9 7" fill="none" stroke="#F5B841" stroke-width="1.6"></path></svg>HONORS</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border:1px solid #86F0A3;border-radius:4px;color:#86F0A3;font-size:14px;letter-spacing:0.14em;font-weight:500;white-space:nowrap;"><svg width="10" height="10" viewBox="0 0 10 10"><rect x="1.5" y="1.5" width="7" height="7" fill="none" stroke="#86F0A3" stroke-width="1.6"></rect></svg>KNEEBOARD OUT</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border:1px solid #F5B841;background:#F5B841;border-radius:4px;color:#0A1018;font-size:14px;letter-spacing:0.14em;font-weight:600;white-space:nowrap;"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M1 7 L5 2 L9 7" fill="none" stroke="#0A1018" stroke-width="1.6"></path></svg>HONORS · DONE</span>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;line-height:1.6;">HONORS amber = Grade 8 skill · KNEEBOARD OUT green = briefing prep, untimed, no shield risk · filled = completed</div>
+      </div>
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">05 · STATUS PILLS</div>
+      <div style="background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px;display:flex;gap:12px;flex-wrap:wrap;font-size:14px;letter-spacing:0.14em;">
+        <div style="padding:8px 14px;border:1px solid #223347;border-radius:999px;color:#8BA0B8;display:flex;align-items:center;gap:8px;"><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div>OFFLINE</div>
+        <div style="padding:8px 14px;border:1px solid #F5B841;border-radius:999px;color:#F5B841;display:flex;align-items:center;gap:8px;"><div style="width:8px;height:8px;background:#F5B841;transform:rotate(45deg);"></div>CALIBRATING</div>
+        <div style="padding:8px 14px;border:1px solid #86F0A3;border-radius:999px;color:#86F0A3;display:flex;align-items:center;gap:8px;"><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div>ONLINE</div>
+        <div style="padding:8px 14px;background:#86F0A3;border-radius:999px;color:#0A1018;font-weight:600;display:flex;align-items:center;gap:8px;"><div style="width:8px;height:8px;background:#0A1018;border-radius:50%;"></div>OPTIMIZED</div>
+        <div style="width:100%;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">SHAPE + LABEL CARRY STATE WHEN COLORBLIND-SAFE HUD IS ON</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">06 · INTEL CARD · LOCKED / UNLOCKED / NEW</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        <div style="padding:14px;background:#0D1520;border:1px dashed #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;min-height:140px;"><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">05</div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;color:#8BA0B8;">WING</div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">LOCKED · SORTIE 05</div></div>
+        <div style="padding:14px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;min-height:140px;"><div style="font-size:14px;color:#86F0A3;letter-spacing:0.1em;">03</div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;">CHIN INTAKE</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.4;">Single intake under the cockpit feeds one engine.</div></div>
+        <div style="padding:14px;background:#111B27;border:1px solid #F5B841;border-radius:8px;display:flex;flex-direction:column;gap:8px;min-height:140px;"><div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.1em;"><span style="color:#86F0A3;">04</span><span style="color:#F5B841;">NEW</span></div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;">STRAKES</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.4;">Strakes run forward from the wing root along the fuselage.</div></div>
+      </div>
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">07 · ICONS · 24 PX · 2 PX STROKE</div>
+      <div style="background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px;display:grid;grid-template-columns:repeat(6,1fr);gap:16px 8px;font-size:14px;color:#8BA0B8;letter-spacing:0.08em;text-align:center;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="4"></circle><path d="M12 12 L19 5"></path></svg>RADAR</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="10" height="10" rx="2"></rect><path d="M14 9 L21 12 L14 15"></path><path d="M8 12 H10"></path></svg>ENGINES</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M7 15 L10 10 L13 14 L17 9"></path></svg>AVIONICS</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 L15 8 V17 H9 V8 Z"></path><path d="M9 14 L6 18 M15 14 L18 18 M12 17 V21"></path></svg>WEAPONS</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="10" height="16" rx="2"></rect><path d="M15 9 H18 V16 M8 20 V15 H12 V20"></path></svg>FUEL</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5B841" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9 A4 4 0 1 1 13 13 L12 15"></path><path d="M12 19 V19.5"></path><circle cx="12" cy="12" r="10"></circle></svg>HINT</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round"><path d="M8 5 V19 M16 5 V19"></path></svg>PAUSE</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 2 V5 M12 19 V22 M2 12 H5 M19 12 H22 M5 5 L7 7 M17 17 L19 19 M5 19 L7 17 M17 7 L19 5"></path></svg>SETTINGS</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6 H10 L12 8 H21 V19 H3 Z"></path><path d="M3 11 H21"></path></svg>DOSSIER</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20 V10 L12 4 L21 10 V20"></path><path d="M3 20 H21 M8 20 V14 H16 V20"></path></svg>HANGAR</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6 L9 4 L15 6 L21 4 V18 L15 20 L9 18 L3 20 Z"></path><path d="M9 4 V18 M15 6 V20"></path></svg>MAP</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7DD3FC" stroke-width="2" stroke-linejoin="round"><path d="M12 3 L21 12 L12 21 L3 12 Z"></path><circle cx="12" cy="12" r="2"></circle></svg>WAYPOINT</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF6B4A" stroke-width="2" stroke-linejoin="round"><path d="M12 3 L20 20 L12 16 L4 20 Z"></path></svg>BOGEY</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10"></rect><path d="M12 10 V3 L17 5 L12 7"></path></svg>BASE</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5B841" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 L6 13 H12 L11 22 L18 10 H12 Z"></path></svg>STREAK</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5B841" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M15 9 A4 4 0 1 0 15 15"></path></svg>CREDITS</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14 L12 6 L20 14"></path><path d="M4 20 L12 12 L20 20"></path></svg>XP</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7DD3FC" stroke-width="2" stroke-linejoin="round"><path d="M12 3 L20 6 V12 C20 17 16 20 12 21 C8 20 4 17 4 12 V6 Z"></path></svg>SHIELD</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">08 · TERRAIN TILES · 128 PX · SEAMLESS GRID 64</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;">
+        <div style="display:flex;flex-direction:column;gap:8px;"><div style="aspect-ratio:1;background:#0B1B2B;border:1px solid #223347;border-radius:8px;background-image:linear-gradient(#0F2438 1px,transparent 1px),linear-gradient(90deg,#0F2438 1px,transparent 1px);background-size:32px 32px;"></div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">SEA #0B1B2B</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;"><div style="aspect-ratio:1;background:#0B1B2B;border:1px solid #223347;border-radius:8px;position:relative;overflow:hidden;background-image:linear-gradient(#0F2438 1px,transparent 1px),linear-gradient(90deg,#0F2438 1px,transparent 1px);background-size:32px 32px;"><div style="position:absolute;inset:0;background:#1D3A3A;clip-path:polygon(0 0,55% 0,68% 20%,50% 38%,62% 58%,42% 72%,50% 100%,0 100%);"></div><div style="position:absolute;inset:0;background:#2A4A44;clip-path:polygon(0 0,38% 0,48% 22%,34% 40%,44% 60%,28% 76%,32% 100%,0 100%);"></div></div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">COAST #1D3A3A</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;"><div style="aspect-ratio:1;background:#3A3224;border:1px solid #223347;border-radius:8px;position:relative;overflow:hidden;background-image:linear-gradient(#463D2C 1px,transparent 1px),linear-gradient(90deg,#463D2C 1px,transparent 1px);background-size:32px 32px;"><div style="position:absolute;left:20%;top:30%;width:50%;height:30%;background:#4A4030;clip-path:polygon(10% 40%,50% 0,100% 50%,70% 100%,20% 90%);"></div></div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">DESERT #3A3224</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;"><div style="aspect-ratio:1;background:#0B1B2B;border:1px solid #223347;border-radius:8px;position:relative;overflow:hidden;"><div style="position:absolute;left:-10%;top:20%;width:80%;height:40%;background:#2A3644;opacity:0.85;border-radius:50%;"></div><div style="position:absolute;left:30%;top:50%;width:80%;height:36%;background:#33404F;opacity:0.85;border-radius:50%;"></div></div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">CLOUD LAYER</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;"><div style="aspect-ratio:1;background:#05080D;border:1px solid #223347;border-radius:8px;background-image:linear-gradient(#0D1520 1px,transparent 1px),linear-gradient(90deg,#0D1520 1px,transparent 1px);background-size:32px 32px;position:relative;"><div style="position:absolute;left:30%;top:40%;width:3px;height:3px;background:#F5B841;border-radius:50%;"></div><div style="position:absolute;left:60%;top:70%;width:3px;height:3px;background:#F5B841;border-radius:50%;"></div></div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">NIGHT #05080D</div></div>
+      </div>
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">09 · EFFECTS · FLAK / MISSILE TRAIL / HIT / MISS</div>
+      <div style="background:#0B1B2B;border:1px solid #223347;border-radius:8px;padding:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;background-image:linear-gradient(#0F2438 1px,transparent 1px),linear-gradient(90deg,#0F2438 1px,transparent 1px);background-size:32px 32px;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;text-align:center;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px;"><div style="position:relative;width:72px;height:72px;"><div style="position:absolute;left:24px;top:24px;width:24px;height:24px;background:#FF6B4A;border-radius:50%;"></div><div style="position:absolute;left:12px;top:12px;width:48px;height:48px;border:2px solid #FF6B4A;border-radius:50%;opacity:0.6;"></div><div style="position:absolute;left:0;top:0;width:72px;height:72px;border:1px solid #FF6B4A;border-radius:50%;opacity:0.3;"></div></div>FLAK BURST</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px;"><div style="position:relative;width:72px;height:72px;"><div style="position:absolute;left:34px;top:0;width:4px;height:72px;background:linear-gradient(#F5B841,rgba(245,184,65,0));"></div><div style="position:absolute;left:32px;top:0;width:8px;height:14px;background:#E6EDF5;"></div></div>MISSILE TRAIL</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px;"><div style="position:relative;width:72px;height:72px;"><div style="position:absolute;left:12px;top:12px;width:48px;height:48px;background:#FFF3C4;transform:rotate(45deg);"></div><div style="position:absolute;left:0;top:34px;width:72px;height:4px;background:#F5B841;"></div><div style="position:absolute;left:34px;top:0;width:4px;height:72px;background:#F5B841;"></div></div>HIT FLASH · 120 MS</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px;"><div style="position:relative;width:72px;height:72px;"><div style="position:absolute;left:16px;top:20px;width:40px;height:40px;background:#8BA0B8;opacity:0.35;border-radius:50%;"></div><div style="position:absolute;left:8px;top:28px;width:28px;height:28px;background:#8BA0B8;opacity:0.3;border-radius:50%;"></div><div style="position:absolute;left:36px;top:12px;width:24px;height:24px;background:#8BA0B8;opacity:0.3;border-radius:50%;"></div></div>MISS PUFF</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">10 · WORDMARK · APP ICON · UNIT BADGES (6) · RANK INSIGNIA (5)</div>
+      <div style="background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px;display:flex;gap:24px;align-items:center;">
+        <div style="width:96px;height:96px;background:#0A1018;border:2px solid #86F0A3;border-radius:20px;display:flex;align-items:center;justify-content:center;flex:none;"><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:40px;color:#86F0A3;line-height:1;letter-spacing:-0.02em;">MO</div></div>
+        <div style="display:flex;flex-direction:column;gap:6px;"><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:56px;line-height:1;letter-spacing:0.02em;">MACH OPS</div><div style="font-size:14px;color:#86F0A3;letter-spacing:0.3em;">WEAPONS-GRADE MATH</div></div>
+      </div>
+      <div style="background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px;display:grid;grid-template-columns:repeat(6,1fr);gap:12px;font-size:14px;color:#8BA0B8;letter-spacing:0.08em;text-align:center;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="width:56px;height:56px;border:2px solid #86F0A3;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;color:#86F0A3;">1</div>RATIOS</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="width:56px;height:56px;border:2px solid #86F0A3;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;color:#86F0A3;transform:rotate(45deg);"><span style="transform:rotate(-45deg);">2</span></div>INTEGERS</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="width:56px;height:56px;border:2px solid #223347;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;color:#8BA0B8;">3</div>EXPRESSIONS</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="width:56px;height:56px;border:2px solid #223347;border-radius:8px 8px 28px 28px;display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;color:#8BA0B8;">4</div>EQUATIONS</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="position:relative;width:56px;height:56px;display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;color:#8BA0B8;"><svg width="56" height="56" viewBox="0 0 56 56" style="position:absolute;inset:0;"><polygon points="28,1 55,14.5 55,41.5 28,55 1,41.5 1,14.5" fill="none" stroke="#223347" stroke-width="2"></polygon></svg><span style="position:relative;">5</span></div>GEOMETRY</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="width:56px;height:56px;border:2px solid #223347;border-radius:28px 8px 28px 8px;display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;color:#8BA0B8;">6</div>STATISTICS</div>
+      </div>
+      <div style="background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px;display:grid;grid-template-columns:repeat(5,1fr);gap:12px;font-size:14px;color:#8BA0B8;letter-spacing:0.08em;text-align:center;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="width:56px;height:56px;border:2px solid #7DD3FC;border-radius:8px;display:flex;align-items:center;justify-content:center;"><div style="width:24px;height:4px;background:#7DD3FC;"></div></div>CADET</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="width:56px;height:56px;border:2px solid #7DD3FC;border-radius:8px;display:flex;align-items:center;justify-content:center;"><div style="width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:18px solid #7DD3FC;"></div></div>2ND LT</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="width:56px;height:56px;border:2px solid #7DD3FC;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:4px;"><div style="width:6px;height:24px;background:#7DD3FC;"></div><div style="width:6px;height:24px;background:#7DD3FC;"></div></div>CAPTAIN</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="width:56px;height:56px;border:2px solid #7DD3FC;border-radius:8px;display:flex;align-items:center;justify-content:center;"><div style="width:22px;height:22px;background:#7DD3FC;transform:rotate(45deg);"></div></div>MAJOR</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="width:56px;height:56px;border:2px solid #F5B841;border-radius:8px;display:flex;align-items:center;justify-content:center;"><div style="width:24px;height:24px;border:5px solid #F5B841;border-radius:50%;"></div></div>COLONEL</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;border-top:1px solid #223347;padding-top:32px;">
+    <div style="font-size:14px;color:#86F0A3;letter-spacing:0.18em;">LEARNING SUPPORT ADDITIONS</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">11 · MANUAL PAGE BLOCKS · 6 · ICON + LABEL + BODY</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="padding:12px 14px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 8 V8.5 M12 11 V16" stroke-linecap="round"></path></svg>1 · WHAT IT IS</div><div style="padding:8px 10px;background:#111B27;border:1px solid #86F0A3;border-radius:8px;font-size:14px;color:#86F0A3;">KEY IDEA · highlighted</div></div>
+          <div style="padding:12px 14px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 9 L10 11 L13 7 M8 16 H16"></path></svg>2 · HOW TO SOLVE IT</div><div style="display:flex;gap:10px;align-items:center;font-family:'IBM Plex Sans',sans-serif;font-size:14px;"><div style="width:16px;height:16px;border:1px solid #86F0A3;border-radius:3px;"></div>Kneeboard checklist step</div></div>
+          <div style="padding:12px 14px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="display:flex;justify-content:space-between;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><span>3 · WORKED EXAMPLE</span><span style="display:flex;align-items:center;gap:6px;color:#8BA0B8;letter-spacing:0.1em;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8BA0B8" stroke-width="2" stroke-linecap="round"><path d="M20 12 A8 8 0 1 1 17 5.7 M17 3 V7 H13"></path></svg>GENERATED</span></div><div style="padding:6px 10px;background:#111B27;border-radius:8px;font-size:14px;color:#8BA0B8;">01 step · <span style="color:#86F0A3;">04 = ANSWER</span></div></div>
+          <div style="padding:12px 14px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#F5B841;letter-spacing:0.14em;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5B841" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3 L22 20 H2 Z"></path><path d="M12 10 V14 M12 17 V17.5"></path></svg>4 · WATCH OUT FOR</div><div style="padding:6px 10px;background:#111B27;border-left:2px solid #F5B841;border-radius:0 8px 8px 0;font-family:'IBM Plex Sans',sans-serif;font-size:14px;"><b style="font-weight:500;">Mistake.</b> <span style="color:#8BA0B8;">Fix: one line.</span></div></div>
+          <div style="padding:12px 14px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linejoin="round"><path d="M12 3 L20 20 L12 16 L4 20 Z"></path></svg>5 · TRY ONE</div><div style="display:flex;gap:8px;"><div style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #F5B841;color:#F5B841;border-radius:8px;font-size:14px;letter-spacing:0.1em;">HINT</div><div style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;background:#86F0A3;color:#0A1018;border-radius:8px;font-size:14px;font-weight:600;letter-spacing:0.1em;">CHECK</div></div><div style="font-size:14px;color:#8BA0B8;">Practice doesn't count for or against you.</div></div>
+          <div style="padding:12px 14px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6 L9 4 L15 6 L21 4 V18 L15 20 L9 18 L3 20 Z"></path><path d="M9 4 V18 M15 6 V20"></path></svg>6 · WHERE IT SHOWS UP</div><div style="display:flex;gap:6px;font-size:14px;letter-spacing:0.1em;"><div style="padding:6px 10px;border:1px solid #223347;border-radius:999px;">MISSION</div><div style="padding:6px 10px;border:1px solid #7DD3FC;color:#7DD3FC;border-radius:999px;">SYSTEM</div></div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">12 · TUTORIAL CALLOUT · NEXT / DO IT · LEADER LINE</div>
+        <div style="padding:20px;background:#0B1B2B;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;gap:24px;align-items:flex-start;">
+            <div style="display:flex;flex-direction:column;gap:0;"><div style="width:1px;height:24px;background:#86F0A3;margin-left:24px;"></div><div style="padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;max-width:240px;display:flex;flex-direction:column;gap:6px;box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;">One sentence about the element above.</div><div style="font-size:14px;letter-spacing:0.1em;color:#86F0A3;">NEXT · ENTER</div></div></div>
+            <div style="display:flex;flex-direction:column;gap:0;"><div style="width:1px;height:24px;background:#86F0A3;margin-left:24px;"></div><div style="padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;max-width:240px;display:flex;flex-direction:column;gap:6px;box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;">One sentence, then the player acts.</div><div style="font-size:14px;letter-spacing:0.1em;color:#F5B841;">DO IT</div></div></div>
+          </div>
+          <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;line-height:1.7;">1 PX LEADER · 8 PX RADIUS · MAX 300 PX · LESSON PROGRESS IN HUD TOP-RIGHT<br>HIGHLIGHTED TARGET: 2 PX #86F0A3 + 24 PX GLOW · AMBER FOR UNLOCK TEASERS</div>
+        </div>
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">13 · FIRST-TIME TIP · SHOWN ONCE · DISMISSED · SEEN</div>
+        <div style="padding:20px;background:#0B1B2B;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,0.5);align-self:flex-start;"><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;flex:none;"></div><span style="font-family:'IBM Plex Sans',sans-serif;">One-line tip anchored to an element</span><span style="color:#8BA0B8;margin-left:8px;">✕</span></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;font-size:14px;opacity:0.25;align-self:flex-start;"><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;flex:none;"></div><span style="font-family:'IBM Plex Sans',sans-serif;">Dismissed · fades 200 ms</span></div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;letter-spacing:0.1em;color:#8BA0B8;"><div style="width:6px;height:6px;background:#86F0A3;border-radius:50%;"></div>SEEN INDICATOR · 6 PX DOT ON THE ANCHOR · CLEARS AFTER 1 SORTIE</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">14 · PAUSE MENU · 5 ROWS · 56 PX</div>
+        <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+          <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:#86F0A3;color:#0A1018;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;"><span>RESUME</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;">ESC</span></div>
+          <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border:1px solid #223347;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;"><span>HOW TO PLAY</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;">?</span></div>
+          <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border:1px solid #223347;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;"><span>FLIGHT MANUAL</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;">M</span></div>
+          <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border:1px solid #223347;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;"><span>SETTINGS</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;">S</span></div>
+          <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border:1px solid #223347;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;color:#8BA0B8;"><span>HANGAR</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;">Q</span></div>
+        </div>
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">15 · PAGING DOTS · 16 · MANUAL STATUS TILE</div>
+        <div style="padding:20px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;gap:8px;align-items:center;"><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:24px;height:8px;background:#86F0A3;border-radius:4px;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><span style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;margin-left:8px;">ACTIVE 24×8 · OTHERS 8×8 · GAP 8 · ARROWS PAGE</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:14px;">
+            <div style="padding:6px 10px;background:#111B27;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;color:#8BA0B8;"><span>Divide integers</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#111B27;border:1px solid #F5B841;border-radius:8px;display:flex;justify-content:space-between;align-items:center;"><span>Percent change</span><div style="width:8px;height:8px;background:#F5B841;transform:rotate(45deg);"></div></div>
+            <div style="padding:6px 10px;background:#111B27;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;"><span>Unit rates</span><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#111B27;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;"><span>Ratios</span><div style="width:8px;height:8px;background:#86F0A3;"></div></div>
+          </div>
+          <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;line-height:1.7;">TILE STATES: OFFLINE ring · CALIBRATING diamond + amber border · ONLINE dot · OPTIMIZED square<br>FOCUSED TILE: 1 PX #86F0A3 BORDER · OFFLINE TEXT #8BA0B8</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

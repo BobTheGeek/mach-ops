@@ -1,0 +1,270 @@
+{
+  "$schema": "./skill.schema.json",
+  "chapters": [
+    { "id": "ch5", "n": 5, "quarter": 2, "name": "Ratios and Proportions", "tnCluster": "7.RP.A / 7.G.A" },
+    { "id": "ch6", "n": 6, "quarter": 3, "name": "Percents", "tnCluster": "7.RP.A / 7.EE.B" }
+  ],
+  "skills": [
+    {
+      "id": "rp.5.1", "chapter": "ch5", "section": "5.1", "honors": false,
+      "name": "Ratios and ratio tables",
+      "standards": ["7.RP.A.1", "7.RP.A.3"],
+      "im": ["G7.U4.L2", "G7.U2.L2"], "khan": "K-RP:ratio tables",
+      "reps": ["ratio-table", "double-number-line"],
+      "formats": ["numeric", "table-fill", "multiple-choice"],
+      "key": "Equivalent ratios come from multiplying or dividing BOTH quantities by the same number. Never add the same number to both.",
+      "tiers": [
+        "complete a ratio table with a whole-number multiplier",
+        "find the missing value across a non-adjacent row (scale factor not obvious)",
+        "ratios with fractions (3/4 cup : 2 servings)",
+        "compare two ratios from tables in a context"
+      ],
+      "gen": "Base ratio a:b with a,b in [1,12]; multipliers in [2,9]; T3 use halves/quarters.",
+      "errors": [
+        { "tag": "additive-scaling", "desc": "adds the same amount to both parts", "distractor": "a+k : b+k" },
+        { "tag": "inverted-ratio", "desc": "swaps the two quantities", "distractor": "b:a scaled" }
+      ],
+      "skin": "fuel to distance tables, missiles per sortie, pilots per aircraft"
+    },
+    {
+      "id": "rp.5.2", "chapter": "ch5", "section": "5.2", "honors": false,
+      "name": "Rates and unit rates, including complex fractions",
+      "standards": ["7.RP.A.1", "7.RP.A.2b", "7.RP.A.3"],
+      "im": ["G7.U4.L2", "G7.U4.L3", "G7.U2.L3"], "khan": "K-RP:unit rates with fractions",
+      "reps": ["double-number-line"],
+      "formats": ["numeric", "fraction", "multiple-choice"],
+      "key": "A unit rate is 'per 1'. Divide the first quantity by the second. With fractions, divide by multiplying by the reciprocal. Label the units.",
+      "tiers": [
+        "whole-number rate: 240 L in 8 min -> per minute",
+        "decimal result, and 'which is the better rate' comparisons",
+        "fraction in numerator or denominator: 1/2 mile in 1/4 hour",
+        "fractions in both; convert units in the same problem"
+      ],
+      "gen": "T1: divisible pairs. T2: 2-decimal results. T3/T4: fractions with denominators 2..8, results simple.",
+      "errors": [
+        { "tag": "divide-backwards", "desc": "divides the wrong way (min per liter)", "distractor": "b/a" },
+        { "tag": "fraction-divide", "desc": "(1/2)/(1/4) = 1/8", "distractor": "multiplied instead of divided" },
+        { "tag": "unit-mismatch", "desc": "answer in the wrong unit", "distractor": "unconverted value" }
+      ],
+      "skin": "fuel burn per minute, km per liter, Mach per throttle percent"
+    },
+    {
+      "id": "rp.5.3", "chapter": "ch5", "section": "5.3", "honors": false,
+      "name": "Identifying proportional relationships",
+      "standards": ["7.RP.A.2a", "7.RP.A.2b"],
+      "im": ["G7.U2.L2", "G7.U2.L3", "G7.U2.L7", "G7.U2.L8"], "khan": "K-RP:proportional relationships from tables",
+      "reps": ["ratio-table", "arrow-table"],
+      "formats": ["multiple-choice", "yes-no", "numeric"],
+      "key": "Proportional means every y/x is the same number k, and (0, 0) fits. Check EVERY row, not just two.",
+      "tiers": [
+        "is this table proportional? (yes/no)",
+        "find k from a proportional table",
+        "is y = 3x + 2 proportional? equations and words",
+        "which of three tables/equations is proportional and what is k"
+      ],
+      "gen": "Build proportional tables from k in {2..12, 1/2, 1/4, 1.5, 2.5}; build non-proportional ones by adding a constant or breaking one row.",
+      "errors": [
+        { "tag": "linear-not-proportional", "desc": "calls y = x + 2 proportional", "distractor": "yes for additive tables" },
+        { "tag": "two-rows-only", "desc": "checks two rows and stops", "distractor": "yes for a table broken in row 3" },
+        { "tag": "k-inverted", "desc": "k = x/y", "distractor": "1/k" }
+      ],
+      "skin": "fuel vs distance tables, missiles vs credits, thrust vs throttle"
+    },
+    {
+      "id": "rp.5.4", "chapter": "ch5", "section": "5.4", "honors": false,
+      "name": "Writing and solving proportions",
+      "standards": ["7.RP.A.3"],
+      "im": ["G7.U2.L4", "G7.U2.L5", "G7.U2.L6", "G7.U2.L9"], "khan": "K-RP:solving proportions",
+      "reps": ["ratio-table", "y=kx"],
+      "formats": ["numeric", "fraction", "multiple-choice"],
+      "key": "Match units to matching positions (top with top). Solve with y = kx, a scale factor, or cross products.",
+      "tiers": [
+        "a/b = x/d with a clean scale factor",
+        "no clean scale factor; cross products needed",
+        "unknown in the denominator; decimals",
+        "context with a unit conversion or a two-step setup"
+      ],
+      "gen": "Pick k and x first, compute the other values; T2 ensure the scale factor is non-integer.",
+      "errors": [
+        { "tag": "mismatched-setup", "desc": "units in different positions", "distractor": "a/b = d/x" },
+        { "tag": "additive-reasoning", "desc": "adds the difference instead of scaling", "distractor": "x = d + (b - a)" }
+      ],
+      "skin": "fuel for a longer leg from a known rate, missiles needed for n bogeys"
+    },
+    {
+      "id": "rp.5.5", "chapter": "ch5", "section": "5.5", "honors": false,
+      "name": "Graphs of proportional relationships",
+      "standards": ["7.RP.A.2a", "7.RP.A.2b", "7.RP.A.2c", "7.RP.A.2d"],
+      "im": ["G7.U2.L10", "G7.U2.L11", "G7.U2.L12", "G7.U2.L13", "G7.U2.L14"], "khan": "K-RP:graphs of proportional relationships",
+      "reps": ["coordinate-plane", "table-graph-equation"],
+      "formats": ["multiple-choice", "numeric", "plot-point", "graph-select"],
+      "key": "A proportional graph is a straight line through (0, 0). k is the y-value at x = 1, the point (1, k). The point (x, y) means 'x of this gives y of that'.",
+      "tiers": [
+        "which graph is proportional (line through origin)",
+        "read k from a graph; find (1, k)",
+        "write y = kx from a graph; plot points from k",
+        "explain what a point means; compare two graphs' rates"
+      ],
+      "gen": "k in {0.5, 1, 1.5, 2, 2.5, 3, 4, 5}; grid 0..10; non-proportional foils have nonzero intercepts or curves.",
+      "errors": [
+        { "tag": "any-line", "desc": "any straight line is proportional", "distractor": "line with intercept" },
+        { "tag": "k-as-x-over-y", "desc": "reads k backwards", "distractor": "1/k" },
+        { "tag": "point-meaning", "desc": "swaps what x and y mean", "distractor": "reversed interpretation" }
+      ],
+      "skin": "fuel vs distance graph, altitude gained vs minutes, credits vs missions"
+    },
+    {
+      "id": "rp.5.6", "chapter": "ch5", "section": "5.6", "honors": false,
+      "name": "Scale drawings",
+      "standards": ["7.G.A.1"],
+      "im": ["G7.U1.L1", "G7.U1.L2", "G7.U1.L3", "G7.U1.L4", "G7.U1.L5", "G7.U1.L6", "G7.U1.L7", "G7.U1.L8", "G7.U1.L9", "G7.U1.L10", "G7.U1.L11", "G7.U1.L12", "G7.U1.L13"], "khan": "K-SCALE:scale drawings",
+      "reps": ["scale-drawing", "grid", "scale-bar"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "A scale is a ratio (drawing : actual). Multiply a drawing length by the scale factor to get the real length. Areas scale by the factor SQUARED.",
+      "tiers": [
+        "drawing length -> actual length with a scale like 1 cm : 25 km",
+        "actual -> drawing; find the scale from one pair",
+        "area from a scale drawing (factor squared); scales without units (1:72)",
+        "reproduce at a different scale; compare two scales"
+      ],
+      "gen": "Scales: 1cm:5km..1cm:50km, 1in:20ft, 1:48, 1:72, 1:144. Lengths to 1 decimal. T3 area problems use rectangles on a grid.",
+      "errors": [
+        { "tag": "area-linear", "desc": "scales area by k instead of k^2", "distractor": "k * area" },
+        { "tag": "inverted-scale", "desc": "divides when it should multiply", "distractor": "length / k" },
+        { "tag": "additive", "desc": "adds the scale instead of multiplying", "distractor": "length + k" }
+      ],
+      "skin": "tactical map distances, 1:72 model builds, hangar blueprints"
+    },
+    {
+      "id": "rp.6.1", "chapter": "ch6", "section": "6.1", "honors": false,
+      "name": "Fractions, decimals, and percents",
+      "standards": ["7.EE.B.3a"],
+      "im": ["G7.U4.L5"], "khan": "K-RP:converting percents",
+      "reps": ["hundred-grid"],
+      "formats": ["numeric", "fraction", "multiple-choice", "order"],
+      "key": "Percent means 'per 100'. Percent to decimal: divide by 100 (move the point two places left). Decimal to percent: multiply by 100.",
+      "tiers": [
+        "whole-number percents to decimals and fractions",
+        "fractions with denominators 4, 5, 8, 20, 25 to percents",
+        "percents under 1% and over 100%; repeating (1/3 = 33.3%)",
+        "order a mixed set of fractions, decimals, and percents"
+      ],
+      "gen": "T1 in [1,99]. T3 includes 0.5%, 250%, 1/3, 2/3. T4 five values close together.",
+      "errors": [
+        { "tag": "point-direction", "desc": "moves the decimal the wrong way", "distractor": "x100 instead of /100" },
+        { "tag": "half-percent", "desc": "0.5% read as 50%", "distractor": "0.5" },
+        { "tag": "over-100", "desc": "250% = 0.25", "distractor": "misplaced point" }
+      ],
+      "skin": "shield and fuel gauges as fractions, decimals, percents"
+    },
+    {
+      "id": "rp.6.2", "chapter": "ch6", "section": "6.2", "honors": false,
+      "name": "The percent proportion",
+      "standards": ["7.RP.A.3", "7.EE.B.3"],
+      "im": ["G7.U4.L7", "G7.U4.L11"], "khan": "K-RP:percent problems",
+      "reps": ["double-number-line", "part-whole-bar"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "part / whole = percent / 100. Identify the whole first: it is what the percent is OF.",
+      "tiers": [
+        "find the part: 25% of 80",
+        "find the percent: 18 is what % of 60",
+        "find the whole: 15 is 30% of what",
+        "context where the whole is not the largest number stated"
+      ],
+      "gen": "Choose whole in [20,400], percent from {5,10,12.5,15,20,25,30,40,50,60,75,80,90}; compute part; rotate which is unknown.",
+      "errors": [
+        { "tag": "part-whole-swap", "desc": "puts the part as the whole", "distractor": "whole/part * 100" },
+        { "tag": "percent-as-number", "desc": "uses 25 not 25/100", "distractor": "25 * whole" }
+      ],
+      "skin": "percent of missiles fired, percent of the squadron ready, damage taken"
+    },
+    {
+      "id": "rp.6.3", "chapter": "ch6", "section": "6.3", "honors": false,
+      "name": "The percent equation (tax, tip, commission, fees)",
+      "standards": ["7.RP.A.3", "7.EE.B.3"],
+      "im": ["G7.U4.L8", "G7.U4.L10", "G7.U4.L12"], "khan": "K-RP:percent word problems",
+      "reps": ["equation", "tape-diagram"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "part = percent (as a decimal) x whole. Tax and tip are ADDED to the price; a fee can be a percent of a total.",
+      "tiers": [
+        "a = p% x w with clean numbers",
+        "total with tax or tip added (price x 1.08)",
+        "find the percent or the whole from a total",
+        "multi-step: tax plus tip plus fee on a purchase"
+      ],
+      "gen": "Prices to cents in [10,2000]; rates from {5,6,7,7.5,8,8.25,10,15,18,20}.",
+      "errors": [
+        { "tag": "percent-not-decimal", "desc": "multiplies by 8 instead of 0.08", "distractor": "100x too large" },
+        { "tag": "tax-not-added", "desc": "reports the tax as the total", "distractor": "just the tax" },
+        { "tag": "add-percents-to-price", "desc": "adds 8 to the price", "distractor": "price + rate" }
+      ],
+      "skin": "base shop: missile price plus tax, hangar fee as a percent, pilot commission per kill"
+    },
+    {
+      "id": "rp.6.4", "chapter": "ch6", "section": "6.4", "honors": false,
+      "name": "Percents of increase and decrease; percent error",
+      "standards": ["7.RP.A.3", "7.EE.B.3"],
+      "im": ["G7.U4.L6", "G7.U4.L7", "G7.U4.L8", "G7.U4.L9", "G7.U4.L13", "G7.U4.L14", "G7.U4.L15"], "khan": "K-RP:percent change",
+      "reps": ["tape-diagram-100"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "Percent change = (new - original) / ORIGINAL x 100. Percent error = |estimate - actual| / actual x 100.",
+      "tiers": [
+        "percent increase with clean numbers",
+        "percent decrease; decimals",
+        "find the new value from a percent change; percent error",
+        "two successive changes (up 50% then down 50% is not back to start)"
+      ],
+      "gen": "Original in [20,2000]; percent from {5..90 step 5}; T3 estimates within 30% of actual.",
+      "errors": [
+        { "tag": "divide-by-new", "desc": "divides by the new value", "distractor": "(new-orig)/new" },
+        { "tag": "difference-only", "desc": "reports the raw difference as a percent", "distractor": "new - orig" },
+        { "tag": "successive-cancel", "desc": "+50% then -50% returns to start", "distractor": "original value" }
+      ],
+      "skin": "top speed increase after an upgrade, fuel estimate vs actual (percent error), squadron size change"
+    },
+    {
+      "id": "rp.6.5", "chapter": "ch6", "section": "6.5", "honors": false,
+      "name": "Discounts and markups",
+      "standards": ["7.RP.A.3", "7.EE.B.3", "7.EE.A.2"],
+      "im": ["G7.U4.L10", "G7.U4.L11", "G7.U4.L12"], "khan": "K-RP:discount and markup",
+      "reps": ["tape-diagram"],
+      "formats": ["numeric", "multiple-choice", "expression"],
+      "key": "Sale price = price x (1 - discount). Selling price = cost x (1 + markup). A 25% discount means you pay 75%.",
+      "tiers": [
+        "sale price from a percent off",
+        "markup: cost to selling price",
+        "find the original price from a sale price; which coupon is better",
+        "stacked discounts and the equivalent single percent; write C - 0.25C = 0.75C"
+      ],
+      "gen": "Prices in [10,5000]; rates from {10,15,20,25,30,40,50,60}. T4 pairs like 20% then 10%.",
+      "errors": [
+        { "tag": "discount-as-price", "desc": "reports the discount amount as the sale price", "distractor": "price x d" },
+        { "tag": "stack-add", "desc": "20% then 10% = 30%", "distractor": "price x 0.70" },
+        { "tag": "markup-subtract", "desc": "subtracts the markup", "distractor": "cost x (1 - m)" }
+      ],
+      "skin": "base shop discounts, black-market markups on parts, stacked coupons for paint schemes"
+    },
+    {
+      "id": "rp.6.6", "chapter": "ch6", "section": "6.6", "honors": false,
+      "name": "Simple interest",
+      "standards": ["7.RP.A.3", "7.EE.B.3a"],
+      "im": ["G7.U4.L11"], "khan": "K-RP:simple interest",
+      "reps": ["balance-table"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "I = P x r x t, with r as a decimal and t in YEARS. Balance = P + I.",
+      "tiers": [
+        "I from P, r, t in whole years",
+        "balance after t years; months converted to years",
+        "find r or t from I",
+        "compare two loans/accounts over different times"
+      ],
+      "gen": "P in [100,10000]; r from {2,2.5,3,4,4.5,5,6,7.5,8}; t in [1,10] years or [6,36] months.",
+      "errors": [
+        { "tag": "rate-not-decimal", "desc": "uses 5 not 0.05", "distractor": "100x" },
+        { "tag": "months-as-years", "desc": "t = 18 for 18 months", "distractor": "12x" },
+        { "tag": "interest-as-balance", "desc": "reports I when the balance was asked", "distractor": "I only" }
+      ],
+      "skin": "squadron credit account, hangar loan for a new airframe"
+    }
+  ]
+}

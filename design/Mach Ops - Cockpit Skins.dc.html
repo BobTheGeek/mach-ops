@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#06090E;} a{color:#86F0A3;} a:hover{color:#F5B841;}</style>
+</helmet>
+<div style="padding:48px;display:flex;flex-direction:column;gap:40px;font-family:'IBM Plex Mono',monospace;color:#E6EDF5;width:1424px;">
+
+  <div style="display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #223347;padding-bottom:20px;">
+    <div style="font-size:14px;color:#86F0A3;letter-spacing:0.18em;">CANVAS · COCKPIT SKINS</div>
+    <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:44px;line-height:1;letter-spacing:0.02em;">COCKPIT SKINS <span style="color:#86F0A3;font-size:24px;letter-spacing:0.08em;">8 NEW PROBLEM TYPES AS FLIGHT INPUTS</span></div>
+    <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;color:#8BA0B8;max-width:900px;line-height:1.5;margin-top:8px;">Each is the bullet-time problem card (640 wide) as it appears over the dimmed sortie. Diagram on the left from the Math kit, input on the right from Answer inputs. The math never looks like a quiz box: the card title is a systems readout, the prompt is a pilot instruction.</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(2,640px);gap:48px;">
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">CS-1 · SYSTEMS BY GRAPHING → TWO FLIGHT PATHS INTERCEPTING</div>
+      <div data-screen-label="CS1 Systems intercept" style="width:640px;box-sizing:border-box;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 48px rgba(0,0,0,0.5);">
+        <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#F5B841;"><span>INTERCEPT GEOMETRY · CH 9</span><span>×1.5 FAST · 0:12</span></div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">Your track is y = 2x + 1. Bogey track is y = −x + 7. Set the merge point.</div>
+        <div style="display:grid;grid-template-columns:260px 1fr;gap:16px;align-items:start;">
+          <svg viewBox="0 0 260 220" width="260" style="display:block;background:#0A1018;border:1px solid #223347;border-radius:8px;"><g stroke="#152131" stroke-width="1"><path d="M30 10V210M60 10V210M90 10V210M120 10V210M150 10V210M180 10V210M210 10V210M240 10V210M10 20H250M10 50H250M10 80H250M10 110H250M10 140H250M10 170H250M10 200H250"></path></g><line x1="10" y1="200" x2="250" y2="200" stroke="#8BA0B8" stroke-width="2"></line><line x1="30" y1="10" x2="30" y2="210" stroke="#8BA0B8" stroke-width="2"></line><line x1="30" y1="170" x2="120" y2="-10" stroke="#7DD3FC" stroke-width="3"></line><line x1="30" y1="-10" x2="240" y2="200" stroke="#F5B841" stroke-width="3" stroke-dasharray="8 6"></line><circle cx="90" cy="50" r="9" fill="#0A1018" stroke="#86F0A3" stroke-width="3"></circle><g font-family="IBM Plex Mono" font-size="12"><text x="36" y="26" fill="#7DD3FC">YOU</text><text x="200" y="176" fill="#F5B841">BOGEY</text></g><g font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8" text-anchor="middle"><text x="60" y="216">1</text><text x="120" y="216">3</text><text x="180" y="216">5</text><text x="240" y="216">7</text></g></svg>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">MERGE POINT</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:20px;"><span style="color:#8BA0B8;">(</span><div style="width:80px;height:44px;border:2px solid #86F0A3;border-radius:8px;display:flex;align-items:center;justify-content:center;">2<span style="color:#86F0A3;">_</span></div><span style="color:#8BA0B8;">,</span><div style="width:80px;height:44px;border:1px solid #223347;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#8BA0B8;">—</div><span style="color:#8BA0B8;">)</span></div>
+            <div style="font-size:14px;color:#8BA0B8;line-height:1.6;">x = NM east<br>y = NM north</div>
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;margin-top:auto;">OR TAP THE CROSSING</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;"><span>ENTER · COMMIT</span><span><span style="color:#86F0A3;">M · MANUAL</span> · <span style="color:#F5B841;">H · HINT −50 CR</span></span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">CS-2 · FUNCTIONS → THROTTLE SETTING TO THRUST OUTPUT</div>
+      <div data-screen-label="CS2 Throttle function" style="width:640px;box-sizing:border-box;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 48px rgba(0,0,0,0.5);">
+        <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#F5B841;"><span>ENGINE MAP · F110 · CH 9</span><span>×1.5 FAST · 0:14</span></div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">Thrust is a function of throttle. Fill the missing output, then call it: function or not?</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
+          <div style="display:grid;grid-template-columns:1fr 24px 1fr;border:1px solid #223347;border-radius:8px;overflow:hidden;font-size:16px;text-align:center;"><div style="padding:8px;background:#111B27;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;border-bottom:1px solid #223347;">THROTTLE %</div><div style="background:#111B27;border-bottom:1px solid #223347;"></div><div style="padding:8px;background:#111B27;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;border-bottom:1px solid #223347;">THRUST LB</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #223347;">40</div><div style="display:flex;align-items:center;justify-content:center;border-bottom:1px solid #223347;color:#8BA0B8;">→</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #223347;">7,200</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #223347;">60</div><div style="display:flex;align-items:center;justify-content:center;border-bottom:1px solid #223347;color:#8BA0B8;">→</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #223347;">10,800</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #223347;">80</div><div style="display:flex;align-items:center;justify-content:center;border-bottom:1px solid #223347;color:#8BA0B8;">→</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #223347;box-shadow:inset 0 0 0 2px #86F0A3;">14,<span style="color:#86F0A3;">_</span></div><div style="height:44px;display:flex;align-items:center;justify-content:center;">100</div><div style="display:flex;align-items:center;justify-content:center;color:#8BA0B8;">→</div><div style="height:44px;display:flex;align-items:center;justify-content:center;">18,000</div></div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="height:56px;display:flex;align-items:center;gap:12px;padding:0 14px;border:1px solid #223347;border-radius:8px;font-size:16px;"><span style="width:24px;height:24px;border:1px solid #223347;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#8BA0B8;">1</span>FUNCTION</div>
+            <div style="height:56px;display:flex;align-items:center;gap:12px;padding:0 14px;border:1px solid #223347;border-radius:8px;font-size:16px;"><span style="width:24px;height:24px;border:1px solid #223347;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#8BA0B8;">2</span>NOT A FUNCTION</div>
+            <div style="font-size:14px;color:#8BA0B8;line-height:1.5;">one throttle → one thrust?</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;"><span>TAB · NEXT FIELD · ENTER · COMMIT</span><span><span style="color:#86F0A3;">M · MANUAL</span> · <span style="color:#F5B841;">H · HINT</span></span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">CS-3 · SCATTER / LINE OF FIT → RADAR TRACK · ALTITUDE VS TIME</div>
+      <div data-screen-label="CS3 Radar track fit" style="width:640px;box-sizing:border-box;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 48px rgba(0,0,0,0.5);">
+        <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#F5B841;"><span>RADAR TRACK · BOGEY 2 · CH 10</span><span>UNTIMED · TRANSFER ◆</span></div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">Bogey is climbing. Drag the fit line through the track, then read its climb rate.</div>
+        <div style="display:grid;grid-template-columns:300px 1fr;gap:16px;align-items:start;">
+          <svg viewBox="0 0 300 200" width="300" style="display:block;background:#0A1018;border:1px solid #223347;border-radius:8px;"><g stroke="#152131" stroke-width="1"><path d="M40 10V190M90 10V190M140 10V190M190 10V190M240 10V190M290 10V190M10 30H290M10 70H290M10 110H290M10 150H290"></path></g><line x1="40" y1="170" x2="290" y2="170" stroke="#8BA0B8" stroke-width="2"></line><line x1="40" y1="10" x2="40" y2="170" stroke="#8BA0B8" stroke-width="2"></line><g fill="#7DD3FC"><circle cx="60" cy="150" r="4"></circle><circle cx="80" cy="146" r="4"></circle><circle cx="100" cy="130" r="4"></circle><circle cx="120" cy="128" r="4"></circle><circle cx="140" cy="110" r="4"></circle><circle cx="160" cy="112" r="4"></circle><circle cx="180" cy="92" r="4"></circle><circle cx="200" cy="80" r="4"></circle><circle cx="220" cy="74" r="4"></circle><circle cx="240" cy="56" r="4"></circle><circle cx="260" cy="50" r="4"></circle></g><line x1="50" y1="158" x2="280" y2="42" stroke="#F5B841" stroke-width="3"></line><circle cx="50" cy="158" r="11" fill="#0A1018" stroke="#F5B841" stroke-width="3"></circle><circle cx="280" cy="42" r="11" fill="#0A1018" stroke="#F5B841" stroke-width="3"></circle><g font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8"><text x="150" y="188" text-anchor="middle">TIME · MIN</text><text x="14" y="90" transform="rotate(-90 14 90)" text-anchor="middle">ALT · KFT</text><text x="34" y="174" text-anchor="end">0</text><text x="34" y="34" text-anchor="end">30</text></g></svg>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">FIT LINE · LIVE</div>
+            <div style="font-size:20px;line-height:1.5;">slope <span style="color:#F5B841;">2.0</span> KFT/MIN<br>intercept <span style="color:#F5B841;">3</span> KFT</div>
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">CLIMB RATE</div>
+            <div style="display:flex;align-items:center;gap:10px;border:1px solid #86F0A3;border-radius:8px;padding:8px 12px;font-size:20px;"><span style="flex:1;"><span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">FT/MIN</span></div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;"><span>ANY REASONABLE FIT ACCEPTED · ±15%</span><span><span style="color:#86F0A3;">M · MANUAL</span></span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">CS-4 · TWO-WAY TABLE → MAINTENANCE LOG · AIRCRAFT × FAULT</div>
+      <div data-screen-label="CS4 Maintenance log" style="width:640px;box-sizing:border-box;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 48px rgba(0,0,0,0.5);">
+        <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#F5B841;"><span>MAINTENANCE LOG · WEEK 14 · CH 10</span><span>×1.5 FAST · 0:18</span></div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">Complete the log totals. Then: what fraction of F-15 write-ups were hydraulic?</div>
+        <div style="display:grid;grid-template-columns:1fr 200px;gap:16px;align-items:start;">
+          <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr 1fr;border:1px solid #223347;border-radius:8px;overflow:hidden;font-size:16px;text-align:center;"><div style="padding:8px;background:#111B27;border-right:1px solid #223347;border-bottom:1px solid #223347;"></div><div style="padding:8px;background:#111B27;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;border-right:1px solid #223347;border-bottom:1px solid #223347;">HYD</div><div style="padding:8px;background:#111B27;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;border-right:1px solid #223347;border-bottom:1px solid #223347;">AVIO</div><div style="padding:8px;background:#111B27;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;border-right:1px solid #223347;border-bottom:1px solid #223347;">ENG</div><div style="padding:8px;background:#111B27;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;border-bottom:1px solid #223347;">TOTAL</div>
+            <div style="padding:8px;background:#111B27;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;text-align:left;border-right:1px solid #223347;border-bottom:1px solid #223347;height:28px;display:flex;align-items:center;">F-16</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-right:1px solid #223347;border-bottom:1px solid #223347;">12</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-right:1px solid #223347;border-bottom:1px solid #223347;">8</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-right:1px solid #223347;border-bottom:1px solid #223347;">5</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #223347;background:#0F1F1A;box-shadow:inset 0 0 0 2px #86F0A3;">25 <span style="color:#86F0A3;font-size:14px;margin-left:4px;">✓</span></div>
+            <div style="padding:8px;background:#111B27;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;text-align:left;border-right:1px solid #223347;border-bottom:1px solid #223347;display:flex;align-items:center;">F-15</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-right:1px solid #223347;border-bottom:1px solid #223347;">6</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-right:1px solid #223347;border-bottom:1px solid #223347;">14</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-right:1px solid #223347;border-bottom:1px solid #223347;">4</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #223347;box-shadow:inset 0 0 0 2px #86F0A3;">2<span style="color:#86F0A3;">_</span></div>
+            <div style="padding:8px;background:#111B27;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;text-align:left;border-right:1px solid #223347;display:flex;align-items:center;">TOTAL</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-right:1px solid #223347;color:#8BA0B8;background:#0A1018;">—</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-right:1px solid #223347;color:#8BA0B8;background:#0A1018;">—</div><div style="height:44px;display:flex;align-items:center;justify-content:center;border-right:1px solid #223347;color:#8BA0B8;background:#0A1018;">—</div><div style="height:44px;display:flex;align-items:center;justify-content:center;color:#8BA0B8;background:#0A1018;">—</div></div>
+          <div style="display:flex;flex-direction:column;gap:10px;align-items:center;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;align-self:flex-start;">F-15 HYD FRACTION</div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div style="width:72px;height:44px;border:1px solid #223347;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#8BA0B8;">—</div><div style="width:72px;height:2px;background:#E6EDF5;"></div><div style="width:72px;height:44px;border:1px solid #223347;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#8BA0B8;">—</div></div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;"><span>TAB · NEXT CELL · ENTER · COMMIT</span><span><span style="color:#86F0A3;">M · MANUAL</span> · <span style="color:#F5B841;">H · HINT</span></span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">CS-5 · TRANSVERSAL ANGLES → PARALLEL RUNWAYS CROSSED BY A TAXIWAY</div>
+      <div data-screen-label="CS5 Runway transversal" style="width:640px;box-sizing:border-box;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 48px rgba(0,0,0,0.5);">
+        <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#F5B841;"><span>AIRFIELD DIAGRAM · RWY 09L / 09R · CH 7</span><span>×1.5 FAST · 0:11</span></div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">Taxiway Alpha crosses both parallel runways. Angle 1 is 118°. Find angle 6.</div>
+        <div style="display:grid;grid-template-columns:320px 1fr;gap:16px;align-items:start;">
+          <svg viewBox="0 0 320 200" width="320" style="display:block;background:#0A1018;border:1px solid #223347;border-radius:8px;"><rect x="10" y="50" width="300" height="22" fill="#223347"></rect><rect x="10" y="130" width="300" height="22" fill="#223347"></rect><g stroke="#E6EDF5" stroke-width="1" stroke-dasharray="10 8"><line x1="10" y1="61" x2="310" y2="61"></line><line x1="10" y1="141" x2="310" y2="141"></line></g><polygon points="96,196 116,196 226,4 206,4" fill="#F5B841" opacity="0.7"></polygon><g font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8"><text x="14" y="46">09L</text><text x="14" y="126">09R</text><text x="228" y="14" fill="#F5B841">TWY A</text></g><path d="M198 61 A22 22 0 0 0 190 43" fill="none" stroke="#7DD3FC" stroke-width="3"></path><text x="205" y="44" font-family="IBM Plex Mono" font-size="14" fill="#7DD3FC">1 · 118°</text><path d="M126 141 A22 22 0 0 1 116 159" fill="none" stroke="#F5B841" stroke-width="3" stroke-dasharray="4 3"></path><text x="90" y="176" font-family="IBM Plex Mono" font-size="14" fill="#F5B841">6 · ?</text><g font-family="IBM Plex Mono" font-size="11" fill="#8BA0B8"><text x="168" y="44">2</text><text x="168" y="84">3</text><text x="200" y="84">4</text><text x="150" y="124">5</text><text x="126" y="124">7</text><text x="150" y="176">8</text></g></svg>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">ANGLE 6</div>
+            <div style="display:flex;align-items:center;gap:10px;border:2px solid #86F0A3;border-radius:8px;padding:8px 12px;font-size:20px;"><span style="flex:1;"><span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">°</span></div>
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">RELATIONSHIP</div>
+            <div style="height:44px;display:flex;align-items:center;gap:10px;padding:0 12px;border:1px solid #223347;border-radius:8px;font-size:14px;"><span style="width:20px;height:20px;border:1px solid #223347;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#8BA0B8;">1</span>ALT. INTERIOR</div>
+            <div style="height:44px;display:flex;align-items:center;gap:10px;padding:0 12px;border:1px solid #223347;border-radius:8px;font-size:14px;"><span style="width:20px;height:20px;border:1px solid #223347;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#8BA0B8;">2</span>CORRESPONDING</div>
+            <div style="height:44px;display:flex;align-items:center;gap:10px;padding:0 12px;border:1px solid #223347;border-radius:8px;font-size:14px;"><span style="width:20px;height:20px;border:1px solid #223347;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#8BA0B8;">3</span>SUPPLEMENTARY</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;"><span>ENTER · COMMIT</span><span><span style="color:#86F0A3;">M · MANUAL</span> · <span style="color:#F5B841;">H · HINT</span></span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">CS-6 · CONES / CYLINDERS / SPHERES → NOSE CONE · DROP TANK · RADOME</div>
+      <div data-screen-label="CS6 Drop tank volume" style="width:640px;box-sizing:border-box;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 48px rgba(0,0,0,0.5);">
+        <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#F5B841;"><span>EXTERNAL STORES · 370-GAL TANK · CH 7</span><span>×1.5 FAST · 0:20</span></div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">Model the drop tank as a cylinder with a cone on the nose. Radius 1 ft, cylinder 9 ft, cone 3 ft. Total volume?</div>
+        <div style="display:grid;grid-template-columns:320px 1fr;gap:16px;align-items:start;">
+          <svg viewBox="0 0 320 160" width="320" style="display:block;background:#0A1018;border:1px solid #223347;border-radius:8px;"><path d="M40 80 L100 50 L100 110 Z" fill="none" stroke="#E6EDF5" stroke-width="2"></path><rect x="100" y="50" width="180" height="60" fill="none" stroke="#E6EDF5" stroke-width="2"></rect><ellipse cx="100" cy="80" rx="10" ry="30" fill="none" stroke="#223347" stroke-width="1.5" stroke-dasharray="3 3"></ellipse><ellipse cx="280" cy="80" rx="10" ry="30" fill="none" stroke="#E6EDF5" stroke-width="2"></ellipse><line x1="280" y1="80" x2="280" y2="50" stroke="#7DD3FC" stroke-width="3"></line><line x1="100" y1="130" x2="280" y2="130" stroke="#7DD3FC" stroke-width="2"></line><line x1="40" y1="130" x2="100" y2="130" stroke="#F5B841" stroke-width="2" stroke-dasharray="4 3"></line><g font-family="IBM Plex Mono" font-size="14" text-anchor="middle"><text x="292" y="68" fill="#7DD3FC">r 1</text><text x="190" y="148" fill="#7DD3FC">9 FT</text><text x="70" y="148" fill="#F5B841">3 FT</text></g><g font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8"><text x="120" y="40">CYLINDER · πr²h</text><text x="30" y="40" fill="#F5B841">CONE · ⅓πr²h</text></g></svg>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">TOTAL VOLUME</div>
+            <div style="display:flex;align-items:center;gap:10px;border:2px solid #86F0A3;border-radius:8px;padding:8px 12px;font-size:20px;"><span style="flex:1;">3<span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">FT³</span></div>
+            <div style="font-size:14px;color:#8BA0B8;line-height:1.6;">use π ≈ 3.14<br>round to nearest whole</div>
+            <div style="display:flex;gap:8px;font-size:12px;color:#8BA0B8;letter-spacing:0.1em;"><span style="padding:4px 8px;border:1px solid #223347;border-radius:4px;">SPHERE · RADOME</span><span style="padding:4px 8px;border:1px solid #223347;border-radius:4px;">CONE · NOSE</span></div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;"><span>ENTER · COMMIT</span><span><span style="color:#86F0A3;">M · MANUAL</span> · <span style="color:#F5B841;">H · HINT</span></span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">CS-7 · DILATIONS → SCALE MODEL VS FULL-SIZE AIRFRAME</div>
+      <div data-screen-label="CS7 Scale model dilation" style="width:640px;box-sizing:border-box;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 48px rgba(0,0,0,0.5);">
+        <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#F5B841;"><span>HANGAR MODEL SHOP · F-16C · CH 7 · <span style="display:inline-flex;align-items:center;gap:4px;height:18px;padding:0 6px;border:1px solid #F5B841;border-radius:4px;font-size:12px;vertical-align:middle;">HONORS</span></span><span>×1.5 FAST · 0:16</span></div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">A 1:48 desk model has a 20.4 cm wingspan. The dilation to full size has scale factor 48. Full wingspan?</div>
+        <div style="display:grid;grid-template-columns:320px 1fr;gap:16px;align-items:start;">
+          <svg viewBox="0 0 320 160" width="320" style="display:block;background:#0A1018;border:1px solid #223347;border-radius:8px;"><circle cx="20" cy="140" r="4" fill="#E6EDF5"></circle><text x="12" y="156" font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8">O</text><g stroke="#223347" stroke-width="1" stroke-dasharray="3 3"><line x1="20" y1="140" x2="300" y2="20"></line><line x1="20" y1="140" x2="300" y2="140"></line></g><polygon points="60,110 72,80 84,110 78,112 72,104 66,112" fill="#7DD3FC" opacity="0.6" stroke="#7DD3FC" stroke-width="1.5"></polygon><polygon points="150,140 220,40 290,140 255,148 220,120 185,148" fill="none" stroke="#F5B841" stroke-width="2" stroke-dasharray="5 4"></polygon><g font-family="IBM Plex Mono" font-size="12"><text x="52" y="72" fill="#7DD3FC">MODEL · 20.4 cm</text><text x="200" y="30" fill="#F5B841">FULL · ? cm</text><text x="120" y="156" fill="#8BA0B8">k = 48</text></g></svg>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">FULL-SIZE SPAN</div>
+            <div style="display:flex;align-items:center;gap:10px;border:2px solid #86F0A3;border-radius:8px;padding:8px 12px;font-size:20px;"><span style="flex:1;"><span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">CM</span></div>
+            <div style="font-size:14px;color:#8BA0B8;line-height:1.6;">then in metres:</div>
+            <div style="display:flex;align-items:center;gap:10px;border:1px solid #223347;border-radius:8px;padding:8px 12px;font-size:20px;"><span style="flex:1;color:#8BA0B8;">—</span><span style="font-size:14px;color:#8BA0B8;">M</span></div>
+            <div style="font-size:14px;color:#8BA0B8;">real F-16C span 9.8 m · check yourself</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;"><span>ENTER · COMMIT</span><span><span style="color:#86F0A3;">M · MANUAL</span> · <span style="color:#F5B841;">H · HINT</span></span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">CS-8 · COMPOUND PROBABILITY → WEATHER AND RADAR-LOCK OUTCOME TREE</div>
+      <div data-screen-label="CS8 Weather lock tree" style="width:640px;box-sizing:border-box;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 48px rgba(0,0,0,0.5);">
+        <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#F5B841;"><span>MISSION ODDS · WX × RADAR · CH 8</span><span>×1.5 FAST · 0:15</span></div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">Clear skies 70% likely. In clear, lock succeeds 90%; in cloud, 60%. Probability of clear AND lock?</div>
+        <div style="display:grid;grid-template-columns:320px 1fr;gap:16px;align-items:start;">
+          <svg viewBox="0 0 320 170" width="320" style="display:block;background:#0A1018;border:1px solid #223347;border-radius:8px;"><g stroke="#8BA0B8" stroke-width="2" fill="none"><path d="M30 85 L120 40 M30 85 L120 130 M120 40 L220 20 M120 40 L220 60 M120 130 L220 110 M120 130 L220 150"></path></g><g font-family="IBM Plex Mono" font-size="14" fill="#E6EDF5"><text x="10" y="90">WX</text><text x="124" y="34" fill="#7DD3FC">CLEAR 0.7</text><text x="124" y="146" fill="#F5B841">CLOUD 0.3</text><text x="226" y="24">LOCK 0.9</text><text x="226" y="64">MISS 0.1</text><text x="226" y="114">LOCK 0.6</text><text x="226" y="154">MISS 0.4</text></g><rect x="140" y="12" width="90" height="16" fill="#86F0A3" opacity="0.15" rx="3"></rect><path d="M30 85 L120 40 L220 20" stroke="#86F0A3" stroke-width="3" fill="none"></path></svg>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">P(CLEAR AND LOCK)</div>
+            <div style="display:flex;align-items:center;gap:10px;border:2px solid #86F0A3;border-radius:8px;padding:8px 12px;font-size:20px;"><span style="flex:1;">0.<span style="color:#86F0A3;">_</span></span></div>
+            <div style="font-size:14px;color:#8BA0B8;line-height:1.6;">decimal, fraction or %<br>all accepted</div>
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;margin-top:auto;">FOLLOW-UP · P(LOCK) OVERALL</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;"><span>ENTER · COMMIT</span><span><span style="color:#86F0A3;">M · MANUAL</span> · <span style="color:#F5B841;">H · HINT</span></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

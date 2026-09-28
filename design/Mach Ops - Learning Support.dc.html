@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="./sprites.js"></script>
+<style>body{margin:0;background:#06090E;} a{color:#86F0A3;} a:hover{color:#F5B841;}</style>
+</helmet>
+<div style="padding:48px;display:flex;flex-direction:column;gap:64px;font-family:'IBM Plex Mono',monospace;color:#E6EDF5;">
+
+  <div style="display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #223347;padding-bottom:20px;">
+    <div style="font-size:14px;color:#86F0A3;letter-spacing:0.18em;">CANVAS · LEARNING SUPPORT</div>
+    <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:44px;line-height:1;letter-spacing:0.02em;">MACH OPS <span style="color:#86F0A3;font-size:24px;letter-spacing:0.08em;">FLIGHT MANUAL · FLIGHT SCHOOL · HOW TO PLAY · FIRST-TIME TIPS</span></div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:32px;">
+    <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">1 · FLIGHT MANUAL</div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">1.1 · MANUAL PAGE TEMPLATE · SUBTRACT INTEGERS · OPENED FROM HANGAR</div>
+      <div data-screen-label="M1 Manual Subtract integers" style="position:relative;width:1280px;height:720px;background:#0A1018;overflow:hidden;border:1px solid #223347;display:flex;flex-direction:column;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 32px;border-bottom:1px solid #223347;">
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;white-space:nowrap;">FLIGHT MANUAL</div>
+            <div style="width:1px;height:36px;background:#223347;"></div>
+            <div style="display:flex;flex-direction:column;gap:2px;"><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:24px;letter-spacing:0.02em;line-height:1;white-space:nowrap;">SUBTRACT INTEGERS</div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;white-space:nowrap;">UNIT 2 · INTEGERS · TN 7.NS.A.1b</div></div>
+            <div style="padding:6px 12px;border:1px solid #F5B841;border-radius:999px;color:#F5B841;font-size:14px;letter-spacing:0.14em;display:flex;align-items:center;gap:8px;"><div style="width:8px;height:8px;background:#F5B841;transform:rotate(45deg);"></div>CALIBRATING</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #223347;border-radius:8px;font-size:14px;color:#8BA0B8;" title="ADD INTEGERS">◀</div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #223347;border-radius:8px;font-size:14px;color:#8BA0B8;" title="MULTIPLY">▶</div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;color:#86F0A3;font-size:18px;">✕</div>
+          </div>
+        </div>
+        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr 1.15fr;grid-template-rows:1fr 1fr;gap:12px;padding:16px 32px 20px;">
+          <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 8 V8.5 M12 11 V16" stroke-linecap="round"></path></svg>1 · WHAT IT IS</div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.5;">Subtracting an integer is the same as adding its opposite. 8 − (−3) is 8 + 3. The result can be negative, and the order matters.</div>
+            <div style="padding:10px 12px;background:#111B27;border:1px solid #86F0A3;border-radius:8px;font-size:14px;line-height:1.5;color:#86F0A3;">KEEP · CHANGE · CHANGE<br><span style="color:#E6EDF5;font-family:'IBM Plex Sans',sans-serif;">keep the first number, change − to +, change the sign of the second.</span></div>
+          </div>
+          <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 9 L10 11 L13 7 M8 16 H16"></path></svg>2 · HOW TO SOLVE IT</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.5;">
+              <div style="display:flex;gap:10px;align-items:flex-start;"><div style="width:16px;height:16px;border:1px solid #86F0A3;border-radius:3px;flex:none;margin-top:3px;"></div><span style="font-family:'IBM Plex Sans',sans-serif;font-size:15px;">1 · Rewrite the subtraction as adding the opposite.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><div style="width:16px;height:16px;border:1px solid #86F0A3;border-radius:3px;flex:none;margin-top:3px;"></div><span style="font-family:'IBM Plex Sans',sans-serif;font-size:15px;">2 · Same signs: add the sizes, keep the sign.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><div style="width:16px;height:16px;border:1px solid #86F0A3;border-radius:3px;flex:none;margin-top:3px;"></div><span style="font-family:'IBM Plex Sans',sans-serif;font-size:15px;">3 · Different signs: subtract the sizes, take the sign of the bigger one.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><div style="width:16px;height:16px;border:1px solid #86F0A3;border-radius:3px;flex:none;margin-top:3px;"></div><span style="font-family:'IBM Plex Sans',sans-serif;font-size:15px;">4 · Check on a number line: moving right means a positive answer.</span></div>
+            </div>
+          </div>
+          <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><div style="display:flex;align-items:center;gap:8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round"><path d="M4 19 L20 19 M6 15 L6 11 M11 15 L11 6 M16 15 L16 9"></path></svg>3 · WORKED EXAMPLE</div><div style="display:flex;align-items:center;gap:6px;color:#8BA0B8;letter-spacing:0.1em;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8BA0B8" stroke-width="2" stroke-linecap="round"><path d="M20 12 A8 8 0 1 1 17 5.7 M17 3 V7 H13"></path></svg>GENERATED · NEW</div></div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.5;">Bogey A is 2,500 ft below you (−2,500). Bogey B is 1,800 ft above you (+1,800). Vertical gap between the bogeys?</div>
+            <div style="display:flex;flex-direction:column;gap:4px;font-size:14px;line-height:1.6;padding:10px 12px;background:#111B27;border-radius:8px;">
+              <div><span style="color:#8BA0B8;">01 </span>1,800 − (−2,500)</div>
+              <div><span style="color:#8BA0B8;">02 </span>1,800 + 2,500 <span style="color:#8BA0B8;">· keep · change · change</span></div>
+              <div><span style="color:#8BA0B8;">03 </span>same signs → add sizes, keep +</div>
+              <div style="color:#86F0A3;"><span style="color:#8BA0B8;">04 </span>= 4,300 FT</div>
+            </div>
+          </div>
+          <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#F5B841;letter-spacing:0.14em;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5B841" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3 L22 20 H2 Z"></path><path d="M12 10 V14 M12 17 V17.5"></path></svg>4 · WATCH OUT FOR</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="padding:8px 10px;background:#111B27;border-left:2px solid #F5B841;border-radius:0 8px 8px 0;font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.4;"><b style="font-weight:500;">Two minuses read as minus.</b> <span style="color:#8BA0B8;">Fix: − (−) always becomes +.</span></div>
+              <div style="padding:8px 10px;background:#111B27;border-left:2px solid #F5B841;border-radius:0 8px 8px 0;font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.4;"><b style="font-weight:500;">Swapping the order.</b> <span style="color:#8BA0B8;">Fix: a − b is not b − a; keep the first number first.</span></div>
+              <div style="padding:8px 10px;background:#111B27;border-left:2px solid #F5B841;border-radius:0 8px 8px 0;font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.4;"><b style="font-weight:500;">Dropping the answer's sign.</b> <span style="color:#8BA0B8;">Fix: the bigger size decides the sign.</span></div>
+            </div>
+          </div>
+          <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linejoin="round"><path d="M12 3 L20 20 L12 16 L4 20 Z"></path></svg>5 · TRY ONE</div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.5;">You are 600 lb below bingo fuel (−600). After a tanker pass you are 1,250 lb above. How much fuel did you take on?</div>
+            <div style="display:flex;align-items:center;gap:10px;border:1px solid #86F0A3;border-radius:8px;padding:8px 12px;font-size:20px;"><span style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">FUEL</span><span style="flex:1;"><span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">LB</span></div>
+            <div style="display:flex;gap:8px;"><div style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #F5B841;color:#F5B841;border-radius:8px;font-size:14px;letter-spacing:0.1em;">HINT</div><div style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;background:#86F0A3;color:#0A1018;border-radius:8px;font-size:14px;font-weight:600;letter-spacing:0.1em;">CHECK</div></div>
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.06em;">Practice doesn't count for or against you.</div>
+          </div>
+          <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6 L9 4 L15 6 L21 4 V18 L15 20 L9 18 L3 20 Z"></path><path d="M9 4 V18 M15 6 V20"></path></svg>6 · WHERE IT SHOWS UP</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;font-size:14px;letter-spacing:0.1em;"><div style="padding:6px 10px;border:1px solid #223347;border-radius:999px;">ALTITUDE SEPARATION</div><div style="padding:6px 10px;border:1px solid #223347;border-radius:999px;">FUEL DELTAS</div><div style="padding:6px 10px;border:1px solid #223347;border-radius:999px;">HEADING CORRECTION</div><div style="padding:6px 10px;border:1px solid #7DD3FC;color:#7DD3FC;border-radius:999px;">AVIONICS</div><div style="padding:6px 10px;border:1px solid #7DD3FC;color:#7DD3FC;border-radius:999px;">FUEL</div></div>
+            <div style="display:flex;gap:12px;align-items:center;padding:10px 12px;background:#111B27;border-radius:8px;">
+              <x-import component-from-global-scope="mo-sprite" type="sr71" length="56" hint-size="45px,56px"></x-import>
+              <div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;color:#E6EDF5;">SR-71 cruised near 85,000 ft. A fighter at 45,000 ft is 40,000 ft below: 45,000 − 85,000 = −40,000.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">1.2a · MANUAL PAGE · UNIT RATES · PAGE 1 OF 2 · OPENED FROM DEBRIEF "REVIEW"</div>
+      <div data-screen-label="M2 Manual Unit rates" style="position:relative;width:1280px;height:720px;background:#0A1018;overflow:hidden;border:1px solid #223347;display:flex;flex-direction:column;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 32px;border-bottom:1px solid #223347;">
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;white-space:nowrap;">FLIGHT MANUAL</div>
+            <div style="width:1px;height:36px;background:#223347;"></div>
+            <div style="display:flex;flex-direction:column;gap:2px;"><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:24px;letter-spacing:0.02em;line-height:1;white-space:nowrap;">UNIT RATES</div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;white-space:nowrap;">UNIT 1 · RATIOS &amp; RATES · TN 7.RP.A.1a</div></div>
+            <div style="padding:6px 12px;border:1px solid #86F0A3;border-radius:999px;color:#86F0A3;font-size:14px;letter-spacing:0.14em;display:flex;align-items:center;gap:8px;"><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div>ONLINE</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #223347;border-radius:8px;font-size:14px;color:#8BA0B8;" title="RATIOS">◀</div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #223347;border-radius:8px;font-size:14px;color:#8BA0B8;" title="COMPLEX RATES">▶</div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;color:#86F0A3;font-size:18px;">✕</div>
+          </div>
+        </div>
+        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12px;padding:16px 32px 12px;">
+          <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 8 V8.5 M12 11 V16" stroke-linecap="round"></path></svg>1 · WHAT IT IS</div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.5;">A unit rate compares two quantities where the second one is 1: pounds per 1 minute, miles per 1 hour. You get it by dividing.</div>
+            <div style="padding:10px 12px;background:#111B27;border:1px solid #86F0A3;border-radius:8px;font-size:14px;line-height:1.5;color:#86F0A3;">RATE = AMOUNT ÷ TIME<br><span style="color:#E6EDF5;font-family:'IBM Plex Sans',sans-serif;">or amount ÷ one of anything. The word "per" marks the 1.</span></div>
+          </div>
+          <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 9 L10 11 L13 7 M8 16 H16"></path></svg>2 · HOW TO SOLVE IT</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;gap:10px;align-items:flex-start;"><div style="width:16px;height:16px;border:1px solid #86F0A3;border-radius:3px;flex:none;margin-top:3px;"></div><span style="font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.5;">1 · Name the two quantities and their units.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><div style="width:16px;height:16px;border:1px solid #86F0A3;border-radius:3px;flex:none;margin-top:3px;"></div><span style="font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.5;">2 · Put the "per one" quantity on the bottom and divide.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><div style="width:16px;height:16px;border:1px solid #86F0A3;border-radius:3px;flex:none;margin-top:3px;"></div><span style="font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.5;">3 · Label the answer with "per".</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><div style="width:16px;height:16px;border:1px solid #86F0A3;border-radius:3px;flex:none;margin-top:3px;"></div><span style="font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.5;">4 · Multiply the unit rate by any new amount to scale up or down.</span></div>
+            </div>
+          </div>
+          <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><div style="display:flex;align-items:center;gap:8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round"><path d="M4 19 L20 19 M6 15 L6 11 M11 15 L11 6 M16 15 L16 9"></path></svg>3 · WORKED EXAMPLE</div><div style="display:flex;align-items:center;gap:6px;color:#8BA0B8;letter-spacing:0.1em;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8BA0B8" stroke-width="2" stroke-linecap="round"><path d="M20 12 A8 8 0 1 1 17 5.7 M17 3 V7 H13"></path></svg>GENERATED · NEW</div></div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.5;">You burned 4,200 lb of fuel in 12 minutes. What is the burn rate, and how many minutes does 1,750 lb give you?</div>
+            <div style="display:flex;flex-direction:column;gap:4px;font-size:14px;line-height:1.6;padding:10px 12px;background:#111B27;border-radius:8px;">
+              <div><span style="color:#8BA0B8;">01 </span>4,200 LB ÷ 12 MIN</div>
+              <div><span style="color:#8BA0B8;">02 </span>= 350 LB PER MIN <span style="color:#8BA0B8;">· unit rate</span></div>
+              <div><span style="color:#8BA0B8;">03 </span>1,750 ÷ 350</div>
+              <div style="color:#86F0A3;"><span style="color:#8BA0B8;">04 </span>= 5 MIN</div>
+            </div>
+          </div>
+          <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#F5B841;letter-spacing:0.14em;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5B841" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3 L22 20 H2 Z"></path><path d="M12 10 V14 M12 17 V17.5"></path></svg>4 · WATCH OUT FOR</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="padding:8px 10px;background:#111B27;border-left:2px solid #F5B841;border-radius:0 8px 8px 0;font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.4;"><b style="font-weight:500;">Dividing the wrong way.</b> <span style="color:#8BA0B8;">Fix: the thing you want "per one of" goes on the bottom.</span></div>
+              <div style="padding:8px 10px;background:#111B27;border-left:2px solid #F5B841;border-radius:0 8px 8px 0;font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.4;"><b style="font-weight:500;">Mixing seconds and minutes.</b> <span style="color:#8BA0B8;">Fix: convert first, then divide.</span></div>
+              <div style="padding:8px 10px;background:#111B27;border-left:2px solid #F5B841;border-radius:0 8px 8px 0;font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.4;"><b style="font-weight:500;">Forgetting the label.</b> <span style="color:#8BA0B8;">Fix: every rate has a "per".</span></div>
+            </div>
+          </div>
+                  </div>
+        <div style="display:flex;align-items:center;gap:16px;padding:12px 32px;border-top:1px solid #223347;background:#0D1520;font-size:14px;letter-spacing:0.1em;">
+          <div style="color:#FF6B4A;letter-spacing:0.14em;">MISSED THIS SORTIE · 2</div>
+          <div style="padding:6px 10px;border:1px solid #223347;border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:14px;letter-spacing:0;">#05 · 2.4 NM closing 0.6 NM / 10 s → timer <span style="color:#8BA0B8;">you: 40 · answer: 30</span></div>
+          <div style="padding:6px 10px;border:1px solid #223347;border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:14px;letter-spacing:0;">#07 · 1,200 lb over 8 min → rate <span style="color:#8BA0B8;">you: 1,500 · answer: 150</span></div>
+          <div style="flex:1;"></div>
+          <div style="display:flex;gap:8px;align-items:center;"><div style="width:24px;height:8px;background:#86F0A3;border-radius:4px;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div></div><div style="height:44px;padding:0 16px;display:flex;align-items:center;border:1px solid #86F0A3;border-radius:8px;color:#86F0A3;">PAGE 2 · TRY ONE ▶</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">1.2b · MANUAL PAGE · UNIT RATES · PAGE 2 OF 2 · TRY ONE + WHERE IT SHOWS UP + MISSED RETRY</div>
+      <div data-screen-label="M2b Manual Unit rates p2" style="position:relative;width:1280px;height:720px;background:#0A1018;overflow:hidden;border:1px solid #223347;display:flex;flex-direction:column;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 32px;border-bottom:1px solid #223347;">
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;white-space:nowrap;">FLIGHT MANUAL</div>
+            <div style="width:1px;height:36px;background:#223347;"></div>
+            <div style="display:flex;flex-direction:column;gap:2px;"><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:24px;letter-spacing:0.02em;line-height:1;white-space:nowrap;">UNIT RATES</div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;white-space:nowrap;">UNIT 1 · RATIOS &amp; RATES · TN 7.RP.A.1a</div></div>
+            <div style="padding:6px 12px;border:1px solid #86F0A3;border-radius:999px;color:#86F0A3;font-size:14px;letter-spacing:0.14em;display:flex;align-items:center;gap:8px;"><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div>ONLINE</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #223347;border-radius:8px;font-size:14px;color:#8BA0B8;" title="RATIOS">◀</div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #223347;border-radius:8px;font-size:14px;color:#8BA0B8;" title="COMPLEX RATES">▶</div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;color:#86F0A3;font-size:18px;">✕</div>
+          </div>
+        </div>
+        
+        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr auto;gap:12px;padding:16px 32px 12px;">
+          <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linejoin="round"><path d="M12 3 L20 20 L12 16 L4 20 Z"></path></svg>5 · TRY ONE</div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:18px;line-height:1.5;">A tanker pumps 900 lb in 4 minutes. What is the rate in pounds per minute?</div>
+            <div style="display:flex;align-items:center;gap:10px;border:1px solid #86F0A3;border-radius:8px;padding:8px 12px;font-size:20px;"><span style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">RATE</span><span style="flex:1;"><span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">LB/MIN</span></div>
+            <div style="display:flex;gap:8px;"><div style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #F5B841;color:#F5B841;border-radius:8px;font-size:14px;letter-spacing:0.1em;">HINT</div><div style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;background:#86F0A3;color:#0A1018;border-radius:8px;font-size:14px;font-weight:600;letter-spacing:0.1em;">CHECK</div></div>
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.06em;">Practice doesn't count for or against you.</div>
+          </div>
+          
+          <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6 L9 4 L15 6 L21 4 V18 L15 20 L9 18 L3 20 Z"></path><path d="M9 4 V18 M15 6 V20"></path></svg>6 · WHERE IT SHOWS UP</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;font-size:14px;letter-spacing:0.1em;"><div style="padding:6px 10px;border:1px solid #223347;border-radius:999px;">FUEL LOAD</div><div style="padding:6px 10px;border:1px solid #223347;border-radius:999px;">INTERCEPT TIMING</div><div style="padding:6px 10px;border:1px solid #223347;border-radius:999px;">CLOSURE</div><div style="padding:6px 10px;border:1px solid #7DD3FC;color:#7DD3FC;border-radius:999px;">FUEL</div><div style="padding:6px 10px;border:1px solid #7DD3FC;color:#7DD3FC;border-radius:999px;">ENGINES</div></div>
+            <div style="display:flex;gap:12px;align-items:center;padding:10px 12px;background:#111B27;border-radius:8px;">
+              <x-import component-from-global-scope="mo-sprite" type="sr71" length="56" hint-size="45px,56px"></x-import>
+              <div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;color:#E6EDF5;">SR-71 at Mach 3.2 vs an F-15 at Mach 2: 3.2 ÷ 2 = 1.6, so it covers 1.6 times the ground in the same minute.</div>
+            </div>
+          </div>
+
+          <div style="grid-column:span 2;padding:16px;background:#0D1520;border:1px solid #FF6B4A;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;"><span style="color:#FF6B4A;">MISSED THIS SORTIE · 2 · RETRY AS PRACTICE</span><span style="color:#8BA0B8;">DOESN'T COUNT FOR OR AGAINST YOU</span></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div style="padding:12px;background:#111B27;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.45;">#05 · Bogey at 2.4 NM closing 0.6 NM every 10 s. Timer to fire at 0.6 NM?</div><div style="display:flex;gap:8px;align-items:center;"><div style="flex:1;display:flex;align-items:center;gap:10px;border:1px solid #86F0A3;border-radius:8px;padding:8px 12px;font-size:18px;"><span style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">TIMER</span><span style="flex:1;"><span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">SEC</span></div><div style="height:44px;padding:0 14px;display:flex;align-items:center;background:#86F0A3;color:#0A1018;border-radius:8px;font-size:14px;font-weight:600;letter-spacing:0.1em;">CHECK</div></div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">YOU: 40 · ANSWER: 30</div></div>
+              <div style="padding:12px;background:#111B27;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.45;">#07 · 1,200 lb burned over 8 minutes. Burn rate in lb per minute?</div><div style="display:flex;gap:8px;align-items:center;"><div style="flex:1;display:flex;align-items:center;gap:10px;border:1px solid #86F0A3;border-radius:8px;padding:8px 12px;font-size:18px;"><span style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">RATE</span><span style="flex:1;"><span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">LB/MIN</span></div><div style="height:44px;padding:0 14px;display:flex;align-items:center;background:#86F0A3;color:#0A1018;border-radius:8px;font-size:14px;font-weight:600;letter-spacing:0.1em;">CHECK</div></div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">YOU: 1,500 · ANSWER: 150 · YOU MULTIPLIED</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 32px;border-top:1px solid #223347;background:#0D1520;font-size:14px;letter-spacing:0.1em;">
+          <div style="height:44px;padding:0 16px;display:flex;align-items:center;border:1px solid #223347;border-radius:8px;color:#8BA0B8;">◀ PAGE 1 · METHOD</div>
+          <div style="display:flex;gap:8px;align-items:center;"><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:24px;height:8px;background:#86F0A3;border-radius:4px;"></div></div>
+          <div style="height:44px;padding:0 16px;display:flex;align-items:center;border:1px solid #86F0A3;border-radius:8px;color:#86F0A3;">BACK TO DEBRIEF · ESC</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">1.3 · MANUAL LIBRARY · 6 UNITS · ~10 SKILLS EACH · STATUS TILES</div>
+      <div data-screen-label="M3 Manual library" style="position:relative;width:1280px;height:720px;background:#0A1018;overflow:hidden;border:1px solid #223347;display:flex;flex-direction:column;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 32px;border-bottom:1px solid #223347;">
+          <div style="display:flex;align-items:center;gap:16px;"><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:24px;letter-spacing:0.02em;">FLIGHT MANUAL</div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">60 SKILLS · 7TH GRADE HONORS · TN STANDARDS</div></div>
+          <div style="display:flex;gap:12px;align-items:center;font-size:14px;letter-spacing:0.1em;">
+            <div style="display:flex;gap:10px;color:#8BA0B8;"><span style="display:flex;align-items:center;gap:6px;"><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div>OFFLINE</span><span style="display:flex;align-items:center;gap:6px;color:#F5B841;"><div style="width:8px;height:8px;background:#F5B841;transform:rotate(45deg);"></div>CALIBRATING</span><span style="display:flex;align-items:center;gap:6px;color:#86F0A3;"><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div>ONLINE</span><span style="display:flex;align-items:center;gap:6px;color:#86F0A3;"><div style="width:8px;height:8px;background:#86F0A3;"></div>OPTIMIZED</span></div>
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;color:#86F0A3;font-size:18px;">✕</div>
+          </div>
+        </div>
+        <div style="flex:1;display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:14px 32px 16px;">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="font-size:14px;color:#86F0A3;letter-spacing:0.14em;padding:0 0 4px;border-bottom:1px solid #223347;">U1 · RATIOS &amp; RATES</div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;"><span>Ratios</span><div style="width:8px;height:8px;background:#86F0A3;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #86F0A3;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;"><span>Unit rates</span><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;"><span>Complex-fraction rates</span><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;"><span>Proportional tables</span><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;"><span>Constant of proportion</span><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;"><span>Proportion equations</span><div style="width:8px;height:8px;background:#F5B841;transform:rotate(45deg);"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;"><span>Graphs of proportions</span><div style="width:8px;height:8px;background:#F5B841;transform:rotate(45deg);"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;"><span>Percent problems</span><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #F5B841;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;"><span>Percent change</span><div style="width:8px;height:8px;background:#F5B841;transform:rotate(45deg);"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;"><span>Scale drawings</span><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="font-size:14px;color:#86F0A3;letter-spacing:0.14em;padding:0 0 4px;border-bottom:1px solid #223347;">U2 · INTEGERS</div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;"><span>Add integers</span><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #F5B841;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;"><span>Subtract integers</span><div style="width:8px;height:8px;background:#F5B841;transform:rotate(45deg);"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;"><span>Multiply integers</span><div style="width:8px;height:8px;background:#F5B841;transform:rotate(45deg);"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Divide integers</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Absolute value</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Add/sub rationals</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Mult/div rationals</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Decimals ↔ fractions</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Number-line distance</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Order of operations</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;padding:0 0 4px;border-bottom:1px solid #223347;">U3 · EXPRESSIONS</div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Combine like terms</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Distributive property</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Factor expressions</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Add/sub linear expr.</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Rewrite expressions</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Evaluate expressions</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Words → expressions</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Simplify with negatives</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Fractions in expr.</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Percent as expressions</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;padding:0 0 4px;border-bottom:1px solid #223347;">U4 · EQUATIONS</div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>One-step equations</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Two-step equations</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Equations w/ negatives</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Words → equations</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>One-step inequalities</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Two-step inequalities</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Graph inequalities</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Check solutions</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Multi-step w/ distribution</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Rate equations</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;padding:0 0 4px;border-bottom:1px solid #223347;">U5 · GEOMETRY</div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Scale drawings II</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Angle relationships</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Triangle inequality</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Circumference</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Area of circles</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Composite area</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Surface area · prisms</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Volume · prisms</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Cross sections</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Supplementary angles</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;padding:0 0 4px;border-bottom:1px solid #223347;">U6 · STATISTICS</div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Sampling</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Inferences from samples</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Compare data sets</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Mean &amp; MAD</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Probability of events</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Theoretical vs experimental</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Compound events</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Tree diagrams</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Simulations</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+            <div style="padding:6px 10px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#8BA0B8;"><span>Predict outcomes</span><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div></div>
+          </div>
+        </div>
+        <div style="padding:10px 32px;border-top:1px solid #223347;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;display:flex;justify-content:space-between;"><span>OPENING ANY PAGE IS FREE · NEVER A PENALTY</span><span>ARROWS · MOVE · ENTER · OPEN · ESC · BACK</span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:24px;flex-wrap:wrap;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">1.4 · ENTRY · SORTIE COCKPIT CARD → PAUSED-LOCK STATE · MANUAL AS SIDE PANEL</div>
+        <div data-screen-label="M4 Manual from sortie" style="position:relative;width:1280px;height:720px;background:#0B1B2B;overflow:hidden;color:#86F0A3;border:1px solid #223347;">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(#0F2438 1px,transparent 1px),linear-gradient(90deg,#0F2438 1px,transparent 1px);background-size:64px 64px;"></div>
+          <div style="position:absolute;left:-40px;top:-40px;width:520px;height:360px;background:#1D3A3A;clip-path:polygon(0 0,100% 0,88% 22%,72% 30%,80% 55%,60% 70%,40% 66%,30% 85%,10% 100%,0 100%);"></div>
+          <div style="position:absolute;left:592px;top:450px;"><x-import component-from-global-scope="mo-sprite" type="f16" length="120" flame="" hint-size="96px,120px"></x-import></div>
+          <div style="position:absolute;left:560px;top:200px;"><x-import component-from-global-scope="mo-sprite" type="bogey2" length="72" flame="" heading="200" hint-size="58px,50px"></x-import></div>
+          <div style="position:absolute;inset:0;background:rgba(10,16,24,0.55);"></div>
+          <div style="position:absolute;left:0;right:0;top:0;padding:20px 32px;display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;">
+            <div style="display:flex;gap:28px;"><span>ALT <b style="font-weight:600;color:#E6EDF5;font-size:20px;">24500</b></span><span>SPD <b style="font-weight:600;color:#E6EDF5;font-size:20px;">480</b></span></div>
+            <div style="color:#F5B841;font-size:20px;font-weight:600;">PAUSED · LOCK HELD</div>
+            <div style="display:flex;gap:28px;align-items:baseline;"><span style="color:#F5B841;">STREAK <b style="font-weight:600;font-size:20px;">6</b></span><span style="color:#8BA0B8;font-size:20px;font-weight:600;">PAUSED</span></div>
+          </div>
+          <div style="position:absolute;left:540px;top:180px;width:100px;height:100px;">
+            <div style="position:absolute;left:0;top:0;width:20px;height:20px;border-left:3px solid #F5B841;border-top:3px solid #F5B841;"></div><div style="position:absolute;right:0;top:0;width:20px;height:20px;border-right:3px solid #F5B841;border-top:3px solid #F5B841;"></div><div style="position:absolute;left:0;bottom:0;width:20px;height:20px;border-left:3px solid #F5B841;border-bottom:3px solid #F5B841;"></div><div style="position:absolute;right:0;bottom:0;width:20px;height:20px;border-right:3px solid #F5B841;border-bottom:3px solid #F5B841;"></div>
+            <div style="position:absolute;left:-14px;top:-14px;width:128px;height:128px;border-radius:50%;border:3px solid #223347;"></div>
+            <div style="position:absolute;left:112px;top:0;font-size:14px;color:#F5B841;letter-spacing:0.1em;white-space:nowrap;line-height:1.7;">LOCKED · HELD<br><span style="color:#E6EDF5;">2.4 NM</span><br><span style="color:#8BA0B8;">BONUS FORFEITED</span></div>
+          </div>
+          <div style="position:absolute;left:32px;top:200px;width:400px;background:#0D1520;border:1px solid #F5B841;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 48px rgba(0,0,0,0.5);">
+            <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#F5B841;"><span>INTERCEPT SOLUTION</span><span style="color:#8BA0B8;">TIMER PAUSED</span></div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:18px;line-height:1.45;color:#E6EDF5;">Bogey at 2.4 NM closing 0.6 NM every 10 seconds. Set the missile timer to fire at 0.6 NM.</div>
+            <div style="display:flex;align-items:center;gap:10px;border:1px solid #86F0A3;border-radius:8px;padding:12px 14px;font-size:24px;color:#E6EDF5;"><span style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">TIMER</span><span style="flex:1;"><span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">SEC</span></div>
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.06em;line-height:1.5;">Fast bonus forfeited · lock held · no shield cost</div>
+            <div style="display:flex;justify-content:space-between;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;"><span>ENTER · FIRE</span><span><span style="color:#86F0A3;">M · MANUAL ▶</span> · <span style="color:#F5B841;">H · HINT</span></span></div>
+          </div>
+          <div style="position:absolute;right:0;top:0;bottom:0;width:520px;background:#0A1018;border-left:1px solid #86F0A3;display:flex;flex-direction:column;box-shadow:-24px 0 48px rgba(0,0,0,0.5);">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid #223347;">
+              <div style="display:flex;flex-direction:column;gap:2px;"><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">FLIGHT MANUAL · UNIT 1</div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:22px;color:#E6EDF5;">UNIT RATES</div></div>
+              <div style="display:flex;gap:8px;align-items:center;"><div style="padding:6px 12px;border:1px solid #86F0A3;border-radius:999px;color:#86F0A3;font-size:14px;letter-spacing:0.14em;display:flex;align-items:center;gap:8px;"><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div>ONLINE</div><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;color:#86F0A3;font-size:18px;">✕</div></div>
+            </div>
+            <div style="flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:10px;overflow:hidden;color:#E6EDF5;">
+              <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:6px;"><div style="font-size:14px;color:#86F0A3;letter-spacing:0.14em;">1 · WHAT IT IS</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;">A unit rate is an amount per one of something. Divide to find it.</div></div>
+              <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:6px;"><div style="font-size:14px;color:#86F0A3;letter-spacing:0.14em;">2 · HOW TO SOLVE IT</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.6;">1 · Name both quantities.<br>2 · "Per one" goes on the bottom, divide.<br>3 · Label with "per".<br>4 · Multiply the rate to scale.</div></div>
+              <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:6px;"><div style="display:flex;justify-content:space-between;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><span>3 · WORKED EXAMPLE</span><span style="color:#8BA0B8;">GENERATED</span></div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;">Closing 1.2 NM every 20 s. Rate per 10 s?</div><div style="font-size:14px;line-height:1.6;color:#8BA0B8;">01 1.2 ÷ 20 = 0.06 NM/S<br>02 0.06 × 10 <span style="color:#86F0A3;">= 0.6 NM PER 10 S</span></div></div>
+              <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:6px;"><div style="font-size:14px;color:#F5B841;letter-spacing:0.14em;">4 · WATCH OUT FOR</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;">Dividing the wrong way · mixing seconds and minutes · no "per" label.</div></div>
+              <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">BLOCKS 5–6 BELOW · SCROLL</div>
+            </div>
+            <div style="padding:12px 20px;border-top:1px solid #223347;display:flex;justify-content:space-between;align-items:center;font-size:14px;letter-spacing:0.1em;"><span style="color:#8BA0B8;">NO COST TO OPEN</span><div style="height:44px;padding:0 16px;display:flex;align-items:center;background:#86F0A3;color:#0A1018;border-radius:8px;font-weight:600;">BACK TO PROBLEM · M</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">1.5 · ENTRY · BRIEFING PREP CARD → MANUAL SIDE PANEL BESIDE THE PROBLEM · NO COST</div>
+      <div data-screen-label="M5 Manual from briefing" style="position:relative;width:1280px;height:720px;background:#0A1018;overflow:hidden;border:1px solid #223347;display:grid;grid-template-columns:1fr 440px;">
+        <div style="display:flex;flex-direction:column;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 40px;">
+            <div style="display:flex;align-items:baseline;gap:16px;"><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:32px;letter-spacing:0.02em;">BRIEFING</div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">SORTIE 04 · PREP 2 OF 2</div></div>
+            <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border:1px solid #86F0A3;border-radius:4px;color:#86F0A3;font-size:14px;letter-spacing:0.14em;font-weight:500;white-space:nowrap;"><svg width="10" height="10" viewBox="0 0 10 10"><rect x="1.5" y="1.5" width="7" height="7" fill="none" stroke="#86F0A3" stroke-width="1.6"></rect></svg>KNEEBOARD OUT</span><span>UNTIMED · NO SHIELD RISK</span></div>
+          </div>
+          <div style="flex:1;margin:0 40px 24px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;display:flex;flex-direction:column;overflow:hidden;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid #223347;">
+              <div style="display:flex;align-items:center;gap:12px;"><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">FLIGHT MANUAL</div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:22px;">UNIT RATES</div><div style="padding:6px 12px;border:1px solid #86F0A3;border-radius:999px;color:#86F0A3;font-size:14px;letter-spacing:0.14em;display:flex;align-items:center;gap:8px;"><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div>ONLINE</div></div>
+              <div style="display:flex;gap:8px;"><div style="height:44px;padding:0 14px;display:flex;align-items:center;border:1px solid #223347;border-radius:8px;font-size:14px;letter-spacing:0.1em;color:#8BA0B8;">FULL PAGE</div><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;color:#86F0A3;font-size:18px;">✕</div></div>
+            </div>
+            <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 20px;">
+              <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:6px;"><div style="font-size:14px;color:#86F0A3;letter-spacing:0.14em;">1 · WHAT IT IS</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;">An amount per one of something: NM per 10 s, lb per minute. Divide to find it.</div><div style="padding:8px 10px;background:#111B27;border:1px solid #86F0A3;border-radius:8px;font-size:14px;color:#86F0A3;">RATE = AMOUNT ÷ TIME</div></div>
+              <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:6px;"><div style="font-size:14px;color:#86F0A3;letter-spacing:0.14em;">2 · HOW TO SOLVE IT</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.7;">1 · Name both quantities.<br>2 · "Per one" on the bottom, divide.<br>3 · Label with "per".<br>4 · Multiply the rate to scale.</div></div>
+              <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:6px;"><div style="display:flex;justify-content:space-between;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><span>3 · WORKED EXAMPLE</span><span style="color:#8BA0B8;">GENERATED</span></div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;">A waypoint 18 NM out, closing 0.6 NM every 10 s. Minutes to reach it?</div><div style="font-size:14px;line-height:1.6;color:#8BA0B8;">01 0.6 NM ÷ 10 S → 3.6 NM PER MIN<br>02 18 ÷ 3.6 <span style="color:#86F0A3;">= 5 MIN</span></div></div>
+              <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:6px;"><div style="font-size:14px;color:#F5B841;letter-spacing:0.14em;">4 · WATCH OUT FOR</div><div style="padding:6px 10px;background:#111B27;border-left:2px solid #F5B841;font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.4;">Mixing seconds and minutes. <span style="color:#8BA0B8;">Convert first.</span></div><div style="padding:6px 10px;background:#111B27;border-left:2px solid #F5B841;font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.4;">Dividing the wrong way. <span style="color:#8BA0B8;">"Per one" goes on the bottom.</span></div></div>
+            </div>
+            <div style="padding:10px 20px;border-top:1px solid #223347;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">OPENED FROM PREP · NO COST · PROBLEM STAYS OPEN →</div>
+          </div>
+        </div>
+        <div style="border-left:1px solid #223347;background:#0D1520;padding:24px;display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;"><span style="color:#86F0A3;">PREP · 2 OF 2</span><span style="color:#8BA0B8;">1 SOLVED</span></div>
+          <div style="display:flex;flex-direction:column;gap:10px;padding:16px;background:#111B27;border:1px solid #86F0A3;border-radius:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.1em;"><span style="color:#8BA0B8;">INTERCEPT HEADING</span><span style="color:#86F0A3;">MANUAL OPEN</span></div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">WPT 2 is 28 NM out. At 0.6 NM every 10 seconds, how many minutes to reach it?</div>
+            <div style="display:flex;align-items:center;gap:10px;border:1px solid #86F0A3;border-radius:8px;padding:10px 12px;font-size:20px;"><span style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">ETA</span><span style="flex:1;"><span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">MIN</span></div>
+            <div style="display:flex;gap:8px;"><div style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;color:#86F0A3;border-radius:8px;font-size:14px;letter-spacing:0.1em;">MANUAL · M</div><div style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #F5B841;color:#F5B841;border-radius:8px;font-size:14px;letter-spacing:0.1em;">HINT · H</div></div>
+            <div style="height:44px;display:flex;align-items:center;justify-content:center;background:#86F0A3;color:#0A1018;border-radius:8px;font-size:14px;font-weight:600;letter-spacing:0.1em;">SET</div>
+          </div>
+          <div style="flex:1;"></div>
+          <div style="display:flex;gap:16px;font-size:14px;letter-spacing:0.1em;justify-content:space-between;"><span style="color:#8BA0B8;">FUEL <b style="color:#86F0A3;font-weight:600;">5600</b></span><span style="color:#8BA0B8;">AIM-9 <b style="color:#F5B841;font-weight:600;">4</b></span><span style="color:#8BA0B8;">SHLD <b style="color:#7DD3FC;font-weight:600;">100</b></span></div>
+          <div style="height:56px;display:flex;align-items:center;justify-content:center;background:#111B27;color:#8BA0B8;border:1px solid #223347;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;">LAUNCH · SET ETA FIRST</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">1.6 · AUTO POP-IN AFTER A FAST-WRONG ANSWER · WORKED EXAMPLE CARD + FIRST-TIME TIP</div>
+      <div data-screen-label="M6 Fast-wrong pop-in" style="position:relative;width:1280px;height:720px;background:#0B1B2B;overflow:hidden;color:#86F0A3;border:1px solid #223347;">
+        <div style="position:absolute;inset:0;background-image:linear-gradient(#0F2438 1px,transparent 1px),linear-gradient(90deg,#0F2438 1px,transparent 1px);background-size:64px 64px;"></div>
+        <div style="position:absolute;left:592px;top:450px;"><x-import component-from-global-scope="mo-sprite" type="f16" length="120" flame="" hint-size="96px,120px"></x-import></div>
+        <div style="position:absolute;left:800px;top:160px;"><x-import component-from-global-scope="mo-sprite" type="bogey2" length="72" flame="" heading="215" hint-size="58px,50px"></x-import></div>
+        <div style="position:absolute;inset:0;background:rgba(10,16,24,0.5);"></div>
+        <div style="position:absolute;inset:0;box-shadow:inset 0 0 160px rgba(255,107,74,0.3);"></div>
+        <div style="position:absolute;left:0;right:0;top:0;padding:20px 32px;display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;">
+          <div style="display:flex;gap:28px;"><span>ALT <b style="font-weight:600;color:#E6EDF5;font-size:20px;">24500</b></span><span>SPD <b style="font-weight:600;color:#E6EDF5;font-size:20px;">480</b></span></div>
+          <div style="color:#FF6B4A;font-size:20px;font-weight:600;">QUICK MISS · 2.1 S</div>
+          <div style="display:flex;gap:28px;align-items:baseline;"><span style="color:#8BA0B8;">STREAK <b style="font-weight:600;font-size:20px;">0</b></span><span style="color:#8BA0B8;font-size:20px;font-weight:600;">PAUSED</span></div>
+        </div>
+        <div style="position:absolute;left:32px;bottom:28px;display:flex;flex-direction:column;gap:10px;font-size:14px;letter-spacing:0.14em;">
+          <div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;">FUEL</span><div style="width:200px;height:10px;background:#111B27;border:1px solid #223347;"><div style="width:62%;height:100%;background:#86F0A3;"></div></div></div>
+          <div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;color:#7DD3FC;">SHLD</span><div style="width:200px;height:10px;background:#111B27;border:1px solid #223347;position:relative;"><div style="width:65%;height:100%;background:#7DD3FC;"></div><div style="position:absolute;left:65%;top:0;width:20%;height:100%;background:#FF6B4A;opacity:0.7;"></div></div><span style="color:#FF6B4A;">−20%</span></div>
+        </div>
+        <div style="position:absolute;left:380px;top:150px;width:520px;background:#0D1520;border:1px solid #86F0A3;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:0 24px 48px rgba(0,0,0,0.5);color:#E6EDF5;">
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;letter-spacing:0.14em;color:#86F0A3;"><span>FLIGHT MANUAL · UNIT RATES · WORKED EXAMPLE</span><span style="color:#8BA0B8;">GENERATED</span></div>
+          <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">Bogey at 2.4 NM closing 0.6 NM every 10 seconds. Set the timer to fire at 0.6 NM.</div>
+          <div style="display:flex;flex-direction:column;gap:4px;font-size:14px;line-height:1.7;padding:10px 12px;background:#111B27;border-radius:8px;">
+            <div><span style="color:#8BA0B8;">01 </span>distance to close: 2.4 − 0.6 = 1.8 NM</div>
+            <div><span style="color:#8BA0B8;">02 </span>steps of 0.6 NM: 1.8 ÷ 0.6 = 3</div>
+            <div><span style="color:#8BA0B8;">03 </span>each step is 10 s → 3 × 10</div>
+            <div style="color:#86F0A3;"><span style="color:#8BA0B8;">04 </span>= 30 SEC</div>
+            <div style="color:#FF6B4A;"><span style="color:#8BA0B8;">you </span>40 · <span style="color:#8BA0B8;">skipped step 01</span></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;letter-spacing:0.1em;"><span style="color:#8BA0B8;">SAME PROBLEM AGAIN · NO FAST BONUS</span><div style="height:44px;padding:0 20px;display:flex;align-items:center;background:#86F0A3;color:#0A1018;border-radius:8px;font-weight:600;">CONTINUE · ENTER</div></div>
+        </div>
+        <div style="position:absolute;left:380px;top:70px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;font-size:14px;letter-spacing:0.04em;color:#E6EDF5;box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+          <div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;flex:none;"></div><span style="font-family:'IBM Plex Sans',sans-serif;">Quick miss — here's the method, then you get it again</span><span style="color:#8BA0B8;margin-left:8px;">✕</span>
+        </div>
+        <div style="position:absolute;left:400px;top:114px;width:1px;height:36px;background:#86F0A3;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:32px;">
+    <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">2 · FLIGHT SCHOOL · FIRST-LAUNCH TUTORIAL · 4 LESSONS</div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">2.0 · INTRO</div>
+      <div data-screen-label="FS0 Intro" style="position:relative;width:1280px;height:720px;background:#0A1018;overflow:hidden;border:1px solid #223347;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;">
+        <div style="position:absolute;inset:0;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:64px 64px;"></div>
+        <div style="position:relative;font-size:14px;color:#86F0A3;letter-spacing:0.3em;">FLIGHT SCHOOL · 4 LESSONS · ABOUT 6 MINUTES</div>
+        <div style="position:relative;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:64px;letter-spacing:0.02em;line-height:1;">LEARN THE STICK</div>
+        <div style="position:relative;display:flex;gap:12px;">
+          <div style="width:220px;padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="font-size:14px;color:#86F0A3;letter-spacing:0.14em;">LESSON 1</div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;">STICK TIME</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#8BA0B8;line-height:1.4;">Fly three rings. No enemies, no math.</div></div>
+          <div style="width:220px;padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="font-size:14px;color:#86F0A3;letter-spacing:0.14em;">LESSON 2</div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;">TARGET LOCK</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#8BA0B8;line-height:1.4;">One slow bogey. Your first cockpit problem.</div></div>
+          <div style="width:220px;padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="font-size:14px;color:#86F0A3;letter-spacing:0.14em;">LESSON 3</div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;">BRIEFING</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#8BA0B8;line-height:1.4;">Prep problems fill your fuel. Meet the manual.</div></div>
+          <div style="width:220px;padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="font-size:14px;color:#86F0A3;letter-spacing:0.14em;">LESSON 4</div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;">SYSTEMS &amp; UNLOCKS</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#8BA0B8;line-height:1.4;">Debrief, hangar, your first intel card.</div></div>
+        </div>
+        <div style="position:relative;display:flex;gap:12px;font-size:14px;letter-spacing:0.1em;">
+          <div style="height:56px;padding:0 32px;display:flex;align-items:center;justify-content:center;background:#86F0A3;color:#0A1018;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;">START · ENTER</div>
+          <div style="height:56px;padding:0 24px;display:flex;align-items:center;justify-content:center;border:1px solid #223347;border-radius:8px;color:#8BA0B8;">SKIP · ESC</div>
+        </div>
+        <div style="position:relative;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">REPLAY ANY TIME FROM THE HANGAR</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">2.1 · LESSON 1 · STICK TIME · TUTORIAL CALLOUTS</div>
+      <div data-screen-label="FS1 Stick time" style="position:relative;width:1280px;height:720px;background:#0B1B2B;overflow:hidden;color:#86F0A3;border:1px solid #223347;">
+        <div style="position:absolute;inset:0;background-image:linear-gradient(#0F2438 1px,transparent 1px),linear-gradient(90deg,#0F2438 1px,transparent 1px);background-size:64px 64px;"></div>
+        <div style="position:absolute;left:820px;top:380px;width:360px;height:200px;background:#2A3644;opacity:0.6;border-radius:120px;"></div>
+        <div style="position:absolute;left:0;right:0;top:0;padding:20px 32px;display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;">
+          <div style="display:flex;gap:28px;"><span>ALT <b style="font-weight:600;color:#E6EDF5;font-size:20px;">18200</b></span><span>SPD <b style="font-weight:600;color:#E6EDF5;font-size:20px;">420</b></span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div style="display:flex;gap:24px;color:#8BA0B8;"><span>340</span><span>350</span><span style="color:#E6EDF5;font-weight:600;font-size:20px;">360</span><span>010</span><span>020</span></div><div style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:8px solid #86F0A3;"></div></div>
+          <div style="display:flex;gap:28px;align-items:baseline;"><span style="color:#8BA0B8;">FLIGHT SCHOOL 1/4</span><span style="color:#E6EDF5;font-size:20px;font-weight:600;">RINGS 1 / 3</span></div>
+        </div>
+        <div style="position:absolute;left:592px;top:450px;"><x-import component-from-global-scope="mo-sprite" type="t38" length="120" flame="" hint-size="96px,120px"></x-import></div>
+        <div style="position:absolute;left:600px;top:240px;width:80px;height:80px;border:3px solid #86F0A3;border-radius:50%;box-shadow:0 0 24px rgba(134,240,163,0.4);"></div>
+        <div style="position:absolute;left:760px;top:110px;width:56px;height:56px;border:2px solid #86F0A3;border-radius:50%;opacity:0.5;"></div>
+        <div style="position:absolute;left:420px;top:40px;width:40px;height:40px;border:2px solid #86F0A3;border-radius:50%;opacity:0.3;"></div>
+        <div style="position:absolute;left:170px;top:70px;display:flex;flex-direction:column;gap:8px;">
+          <div style="width:1px;height:26px;background:#86F0A3;margin-left:20px;margin-top:-26px;"></div>
+          <div style="padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;max-width:300px;display:flex;flex-direction:column;gap:6px;box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;color:#E6EDF5;">Altitude changes as you climb or dive. Watch it tick.</div><div style="font-size:14px;letter-spacing:0.1em;color:#86F0A3;">NEXT · ENTER</div></div>
+        </div>
+        <div style="position:absolute;left:700px;top:300px;display:flex;flex-direction:column;gap:8px;">
+          <div style="width:1px;height:20px;background:#86F0A3;margin-left:-20px;margin-top:-20px;transform:rotate(45deg);"></div>
+          <div style="padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;max-width:300px;display:flex;flex-direction:column;gap:6px;box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;color:#E6EDF5;">Fly through the ring. Arrow keys or WASD steer.</div><div style="font-size:14px;letter-spacing:0.1em;color:#F5B841;">DO IT</div></div>
+        </div>
+        <div style="position:absolute;left:32px;bottom:28px;display:flex;flex-direction:column;gap:10px;font-size:14px;letter-spacing:0.14em;opacity:0.5;">
+          <div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;">FUEL</span><div style="width:200px;height:10px;background:#111B27;border:1px solid #223347;"><div style="width:100%;height:100%;background:#86F0A3;"></div></div></div>
+          <div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;color:#7DD3FC;">SHLD</span><div style="width:200px;height:10px;background:#111B27;border:1px solid #223347;"><div style="width:100%;height:100%;background:#7DD3FC;"></div></div></div>
+        </div>
+        <div style="position:absolute;right:32px;bottom:28px;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">NO ENEMIES · NO MATH · ESC · SKIP LESSON</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:24px;flex-wrap:wrap;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">2.2a · LESSON 2 · TARGET LOCK · FIRST LOCK · ANSWER PRE-HIGHLIGHTED</div>
+        <div data-screen-label="FS2a First lock" style="position:relative;width:1280px;height:720px;background:#0B1B2B;overflow:hidden;color:#86F0A3;border:1px solid #223347;">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(#0F2438 1px,transparent 1px),linear-gradient(90deg,#0F2438 1px,transparent 1px);background-size:64px 64px;"></div>
+          <div style="position:absolute;left:592px;top:450px;"><x-import component-from-global-scope="mo-sprite" type="t38" length="120" flame="" hint-size="96px,120px"></x-import></div>
+          <div style="position:absolute;left:760px;top:200px;"><x-import component-from-global-scope="mo-sprite" type="bogey1" length="72" flame="" heading="190" hint-size="58px,50px"></x-import></div>
+          <div style="position:absolute;inset:0;background:rgba(10,16,24,0.4);"></div>
+          <div style="position:absolute;left:0;right:0;top:0;padding:20px 32px;display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;">
+            <div style="display:flex;gap:28px;"><span>ALT <b style="font-weight:600;color:#E6EDF5;font-size:20px;">18200</b></span><span>SPD <b style="font-weight:600;color:#E6EDF5;font-size:20px;">420</b></span></div>
+            <div style="color:#F5B841;font-size:20px;font-weight:600;">BULLET TIME</div>
+            <div style="display:flex;gap:28px;align-items:baseline;"><span style="color:#8BA0B8;">FLIGHT SCHOOL 2/4</span><span style="color:#E6EDF5;font-size:20px;font-weight:600;">LOCK 1 / 2</span></div>
+          </div>
+          <div style="position:absolute;left:740px;top:180px;width:100px;height:100px;">
+            <div style="position:absolute;left:0;top:0;width:20px;height:20px;border-left:3px solid #F5B841;border-top:3px solid #F5B841;"></div><div style="position:absolute;right:0;top:0;width:20px;height:20px;border-right:3px solid #F5B841;border-top:3px solid #F5B841;"></div><div style="position:absolute;left:0;bottom:0;width:20px;height:20px;border-left:3px solid #F5B841;border-bottom:3px solid #F5B841;"></div><div style="position:absolute;right:0;bottom:0;width:20px;height:20px;border-right:3px solid #F5B841;border-bottom:3px solid #F5B841;"></div>
+            <div style="position:absolute;left:112px;top:0;font-size:14px;color:#F5B841;letter-spacing:0.1em;white-space:nowrap;line-height:1.7;">LOCKED<br><span style="color:#E6EDF5;">3.0 NM</span><br><span style="color:#8BA0B8;">TIMER OFF · LESSON</span></div>
+          </div>
+          <div style="position:absolute;left:100px;top:220px;width:420px;background:#0D1520;border:1px solid #F5B841;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 48px rgba(0,0,0,0.5);">
+            <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#F5B841;"><span>INTERCEPT SOLUTION</span><span>TIER 1</span></div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:18px;line-height:1.45;color:#E6EDF5;">Bogey at 3.0 NM. You close 1.0 NM every 10 seconds. Seconds until you reach it?</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font-size:16px;color:#E6EDF5;">
+              <div style="height:44px;display:flex;align-items:center;gap:12px;padding:0 12px;border:1px solid #223347;border-radius:8px;"><span style="color:#8BA0B8;font-size:14px;">A</span>3 SEC</div>
+              <div style="height:44px;display:flex;align-items:center;gap:12px;padding:0 12px;border:2px solid #86F0A3;border-radius:8px;background:rgba(134,240,163,0.12);"><span style="color:#86F0A3;font-size:14px;">B</span>30 SEC<span style="margin-left:auto;font-size:14px;color:#86F0A3;letter-spacing:0.1em;">← THIS ONE</span></div>
+              <div style="height:44px;display:flex;align-items:center;gap:12px;padding:0 12px;border:1px solid #223347;border-radius:8px;"><span style="color:#8BA0B8;font-size:14px;">C</span>300 SEC</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;"><span>PRESS 2 OR CLICK · THEN ENTER</span></div>
+          </div>
+          <div style="position:absolute;left:540px;top:290px;display:flex;flex-direction:column;gap:8px;">
+            <div style="padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;max-width:180px;display:flex;flex-direction:column;gap:6px;box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;color:#E6EDF5;">Time froze. Every problem is a flight input — this one sets your intercept.</div><div style="font-size:14px;letter-spacing:0.1em;color:#F5B841;">DO IT · PICK B</div></div>
+          </div>
+          <div style="position:absolute;left:520px;top:310px;width:20px;height:1px;background:#86F0A3;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">2.2b · LESSON 2 · "WRONG ON PURPOSE" WALKTHROUGH · SHIELDS DROP · LOCK BREAKS · RETRY HIGHLIGHTED</div>
+      <div data-screen-label="FS2b Wrong on purpose" style="position:relative;width:1280px;height:720px;background:#0B1B2B;overflow:hidden;color:#86F0A3;border:1px solid #223347;">
+        <div style="position:absolute;inset:0;background-image:linear-gradient(#0F2438 1px,transparent 1px),linear-gradient(90deg,#0F2438 1px,transparent 1px);background-size:64px 64px;"></div>
+        <div style="position:absolute;left:592px;top:450px;"><x-import component-from-global-scope="mo-sprite" type="t38" length="120" flame="" hint-size="96px,120px"></x-import></div>
+        <div style="position:absolute;left:800px;top:160px;"><x-import component-from-global-scope="mo-sprite" type="bogey1" length="72" flame="" heading="210" hint-size="58px,50px"></x-import></div>
+        <div style="position:absolute;inset:0;background:rgba(10,16,24,0.4);"></div>
+        <div style="position:absolute;inset:0;box-shadow:inset 0 0 160px rgba(255,107,74,0.4);"></div>
+        <div style="position:absolute;left:0;right:0;top:0;padding:20px 32px;display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;">
+          <div style="display:flex;gap:28px;"><span>ALT <b style="font-weight:600;color:#E6EDF5;font-size:20px;">18200</b></span><span>SPD <b style="font-weight:600;color:#E6EDF5;font-size:20px;">420</b></span></div>
+          <div style="color:#FF6B4A;font-size:20px;font-weight:600;">LOCK BROKEN · LESSON</div>
+          <div style="display:flex;gap:28px;align-items:baseline;"><span style="color:#8BA0B8;">FLIGHT SCHOOL 2/4</span><span style="color:#E6EDF5;font-size:20px;font-weight:600;">LOCK 2 / 2</span></div>
+        </div>
+        <div style="position:absolute;left:32px;bottom:28px;display:flex;flex-direction:column;gap:10px;font-size:14px;letter-spacing:0.14em;">
+          <div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;">FUEL</span><div style="width:200px;height:10px;background:#111B27;border:1px solid #223347;"><div style="width:100%;height:100%;background:#86F0A3;"></div></div></div>
+          <div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;color:#7DD3FC;">SHLD</span><div style="width:200px;height:10px;background:#111B27;border:1px solid #223347;position:relative;"><div style="width:80%;height:100%;background:#7DD3FC;"></div><div style="position:absolute;left:80%;top:0;width:20%;height:100%;background:#FF6B4A;opacity:0.7;"></div></div><span style="color:#FF6B4A;">100 → 80</span></div>
+        </div>
+        <div style="position:absolute;left:300px;bottom:40px;display:flex;flex-direction:column;gap:8px;">
+          <div style="padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;max-width:280px;display:flex;flex-direction:column;gap:6px;box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;color:#E6EDF5;">A miss costs 20% shield. Nothing else. Fuel and streak are untouched.</div><div style="font-size:14px;letter-spacing:0.1em;color:#86F0A3;">NEXT · ENTER</div></div>
+        </div>
+        <div style="position:absolute;left:280px;bottom:60px;width:20px;height:1px;background:#86F0A3;"></div>
+        <div style="position:absolute;left:770px;top:130px;width:120px;height:120px;">
+          <div style="position:absolute;left:-10px;top:-10px;width:20px;height:20px;border-left:3px solid #FF6B4A;border-top:3px solid #FF6B4A;transform:rotate(-12deg);"></div><div style="position:absolute;right:-12px;top:-8px;width:20px;height:20px;border-right:3px solid #FF6B4A;border-top:3px solid #FF6B4A;transform:rotate(10deg);"></div><div style="position:absolute;left:-8px;bottom:-12px;width:20px;height:20px;border-left:3px solid #FF6B4A;border-bottom:3px solid #FF6B4A;transform:rotate(8deg);"></div><div style="position:absolute;right:-10px;bottom:-10px;width:20px;height:20px;border-right:3px solid #FF6B4A;border-bottom:3px solid #FF6B4A;transform:rotate(-14deg);"></div>
+        </div>
+        <div style="position:absolute;left:910px;top:260px;display:flex;flex-direction:column;gap:8px;">
+          <div style="width:1px;height:20px;background:#86F0A3;margin-top:-20px;margin-left:-10px;transform:rotate(30deg);"></div>
+          <div style="padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;max-width:260px;display:flex;flex-direction:column;gap:6px;box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;color:#E6EDF5;">The lock breaks and the bogey drifts. It comes back when you retry.</div><div style="font-size:14px;letter-spacing:0.1em;color:#86F0A3;">NEXT · ENTER</div></div>
+        </div>
+        <div style="position:absolute;left:100px;top:170px;width:420px;background:#0D1520;border:1px solid #FF6B4A;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 48px rgba(0,0,0,0.5);">
+          <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;color:#FF6B4A;"><span>INTERCEPT SOLUTION · RETRY</span><span>TIER 1</span></div>
+          <div style="font-family:'IBM Plex Sans',sans-serif;font-size:18px;line-height:1.45;color:#E6EDF5;">Bogey at 2.0 NM. You close 0.5 NM every 10 seconds. Seconds until you reach it?</div>
+          <div style="display:flex;align-items:center;gap:10px;border:1px solid #FF6B4A;border-radius:8px;padding:12px 14px;font-size:24px;color:#8BA0B8;text-decoration:line-through;"><span style="font-size:14px;letter-spacing:0.1em;text-decoration:none;">TIMER</span><span style="flex:1;">4</span><span style="font-size:14px;">SEC</span></div>
+          <div style="display:flex;align-items:center;gap:10px;border:2px solid #86F0A3;border-radius:8px;padding:12px 14px;font-size:24px;color:#E6EDF5;box-shadow:0 0 24px rgba(134,240,163,0.35);"><span style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">TIMER</span><span style="flex:1;"><span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">SEC</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;"><span style="color:#86F0A3;">RETRY · TYPE 40 · ENTER</span><span>NO FAST BONUS</span></div>
+        </div>
+        <div style="position:absolute;left:540px;top:330px;display:flex;flex-direction:column;gap:8px;">
+          <div style="padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;max-width:200px;display:flex;flex-direction:column;gap:6px;box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;color:#E6EDF5;">Retry is free. 2.0 ÷ 0.5 = 4 steps of 10 s.</div><div style="font-size:14px;letter-spacing:0.1em;color:#F5B841;">DO IT · TYPE 40</div></div>
+        </div>
+        <div style="position:absolute;left:520px;top:350px;width:20px;height:1px;background:#86F0A3;"></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">2.3 · LESSON 3 · BRIEFING · MANUAL CALLED OUT · FUEL BAR FILLING</div>
+      <div data-screen-label="FS3 Briefing lesson" style="position:relative;width:1280px;height:720px;background:#0A1018;overflow:hidden;border:1px solid #223347;display:grid;grid-template-columns:1fr 440px;">
+        <div style="display:flex;flex-direction:column;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 40px;">
+            <div style="display:flex;align-items:baseline;gap:16px;"><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:32px;letter-spacing:0.02em;">BRIEFING</div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">TRAINING SORTIE · FLIGHT SCHOOL 3/4</div></div>
+            <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:#86F0A3;letter-spacing:0.14em;"><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border:1px solid #86F0A3;border-radius:4px;color:#86F0A3;font-size:14px;letter-spacing:0.14em;font-weight:500;white-space:nowrap;"><svg width="10" height="10" viewBox="0 0 10 10"><rect x="1.5" y="1.5" width="7" height="7" fill="none" stroke="#86F0A3" stroke-width="1.6"></rect></svg>KNEEBOARD OUT</span><span>UNTIMED · NO SHIELD RISK</span></div>
+          </div>
+          <div style="flex:1;margin:0 40px 24px;position:relative;background:#0B1B2B;border:1px solid #223347;border-radius:8px;overflow:hidden;background-image:linear-gradient(#0F2438 1px,transparent 1px),linear-gradient(90deg,#0F2438 1px,transparent 1px);background-size:48px 48px;">
+            <div style="position:absolute;left:14px;top:14px;font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">TACTICAL · TRAINING RANGE</div>
+            <div style="position:absolute;left:250px;top:120px;width:360px;height:360px;border:1px solid #86F0A3;border-radius:50%;opacity:0.35;"></div>
+            <div style="position:absolute;left:400px;top:420px;"><x-import component-from-global-scope="mo-sprite" type="t38" length="60" hint-size="48px,60px"></x-import></div>
+            <div style="position:absolute;left:556px;top:206px;width:16px;height:16px;border:2px solid #7DD3FC;transform:rotate(45deg);"></div><div style="position:absolute;left:580px;top:202px;font-size:14px;color:#7DD3FC;letter-spacing:0.1em;">WPT 1 · 12 NM</div>
+            <div style="position:absolute;left:60px;top:200px;display:flex;flex-direction:column;gap:8px;">
+              <div style="padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;max-width:300px;display:flex;flex-direction:column;gap:6px;box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;color:#E6EDF5;">Before every sortie you prep. Each prep answer you get right loads a resource — this one fills fuel.</div><div style="font-size:14px;letter-spacing:0.1em;color:#86F0A3;">NEXT · ENTER</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="border-left:1px solid #223347;background:#0D1520;padding:24px;display:flex;flex-direction:column;gap:16px;position:relative;">
+          <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;"><span style="color:#86F0A3;">PREP · 1 OF 1</span><span style="color:#8BA0B8;">LESSON</span></div>
+          <div style="display:flex;flex-direction:column;gap:10px;padding:16px;background:#111B27;border:1px solid #86F0A3;border-radius:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.1em;"><span style="color:#8BA0B8;">FUEL LOAD</span><span style="color:#86F0A3;">SET ✓</span></div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">Burn is 300 lb per minute for a 10-minute sortie. Total fuel to load?</div>
+            <div style="display:flex;align-items:center;gap:10px;border:1px solid #86F0A3;background:rgba(134,240,163,0.1);border-radius:8px;padding:10px 12px;font-size:20px;"><span style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">FUEL</span><span style="flex:1;color:#86F0A3;">3000</span><span style="font-size:14px;color:#8BA0B8;">LB</span></div>
+            <div style="display:flex;gap:8px;"><div style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;border:2px solid #86F0A3;color:#86F0A3;border-radius:8px;font-size:14px;letter-spacing:0.1em;box-shadow:0 0 24px rgba(134,240,163,0.35);">MANUAL · M</div><div style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #F5B841;color:#F5B841;border-radius:8px;font-size:14px;letter-spacing:0.1em;">HINT · H</div></div>
+          </div>
+          <div style="position:absolute;left:-330px;top:390px;display:flex;flex-direction:column;gap:8px;align-items:flex-end;">
+            <div style="padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;max-width:300px;display:flex;flex-direction:column;gap:6px;box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;color:#E6EDF5;">Stuck? MANUAL opens the method for this skill. It never costs anything.</div><div style="font-size:14px;letter-spacing:0.1em;color:#86F0A3;">NEXT · ENTER</div></div>
+          </div>
+          <div style="position:absolute;left:-30px;top:410px;width:30px;height:1px;background:#86F0A3;"></div>
+          <div style="flex:1;"></div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;letter-spacing:0.14em;">
+            <div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;color:#86F0A3;">FUEL</span><div style="flex:1;height:10px;background:#111B27;border:1px solid #86F0A3;box-shadow:0 0 16px rgba(134,240,163,0.4);"><div style="width:100%;height:100%;background:#86F0A3;"></div></div><span style="color:#86F0A3;">3000 ▲</span></div>
+            <div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;color:#7DD3FC;">SHLD</span><div style="flex:1;height:10px;background:#111B27;border:1px solid #223347;"><div style="width:100%;height:100%;background:#7DD3FC;"></div></div><span style="color:#E6EDF5;">100</span></div>
+            <div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;color:#F5B841;">AIM-9</span><div style="display:flex;gap:6px;"><div style="width:12px;height:16px;background:#F5B841;"></div><div style="width:12px;height:16px;background:#F5B841;"></div><div style="width:12px;height:16px;border:1px solid #F5B841;"></div><div style="width:12px;height:16px;border:1px solid #F5B841;"></div></div></div>
+          </div>
+          <div style="height:56px;display:flex;align-items:center;justify-content:center;background:#86F0A3;color:#0A1018;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;">LAUNCH TRAINING SORTIE</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">2.4 · LESSON 4 · SYSTEMS &amp; UNLOCKS · HANGAR WITH F-16 SILHOUETTE + TEASER CARD HIGHLIGHTED</div>
+      <div data-screen-label="FS4 Systems and unlocks" style="position:relative;width:1280px;height:720px;background:#0A1018;overflow:hidden;border:1px solid #223347;display:grid;grid-template-columns:1fr 360px;">
+        <div style="position:relative;display:flex;flex-direction:column;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 40px;">
+            <div style="display:flex;align-items:baseline;gap:16px;"><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:32px;letter-spacing:0.02em;">HANGAR</div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">FLIGHT SCHOOL 4/4</div></div>
+            <div style="display:flex;gap:16px;font-size:14px;letter-spacing:0.14em;"><span style="color:#8BA0B8;">CR <b style="color:#F5B841;font-weight:600;">0</b></span><span style="color:#8BA0B8;">XP <b style="color:#7DD3FC;font-weight:600;">120</b></span></div>
+          </div>
+          <div style="flex:1;position:relative;background-image:linear-gradient(#152131 1px,transparent 1px),linear-gradient(90deg,#152131 1px,transparent 1px);background-size:64px 64px;border-top:1px solid #223347;border-bottom:1px solid #223347;display:flex;align-items:center;justify-content:center;gap:80px;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:12px;"><x-import component-from-global-scope="mo-sprite" type="t38" length="260" hint-size="208px,260px"></x-import><div style="font-size:14px;color:#86F0A3;letter-spacing:0.14em;">T-38 · ONLINE</div></div>
+            <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;padding:20px;border:2px solid #F5B841;border-radius:8px;box-shadow:0 0 32px rgba(245,184,65,0.3);"><x-import component-from-global-scope="mo-sprite" type="f16" length="260" variant="silhouette" hint-size="208px,260px"></x-import><div style="font-size:14px;color:#F5B841;letter-spacing:0.14em;">F-16C · NEXT · UNIT 1</div></div>
+            <div style="position:absolute;left:60px;top:30px;display:flex;flex-direction:column;gap:8px;">
+              <div style="padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;max-width:280px;display:flex;flex-direction:column;gap:6px;box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;color:#E6EDF5;">Finish Unit 1 to earn the F-16. Its silhouette waits here until then.</div><div style="font-size:14px;letter-spacing:0.1em;color:#86F0A3;">NEXT · ENTER</div></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:20px 40px;position:relative;">
+            <div style="display:flex;flex-direction:column;gap:8px;padding:14px;background:#0D1520;border:1px solid #223347;border-radius:8px;"><div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.1em;"><span>RADAR</span><span style="color:#86F0A3;">ONLINE</span></div><div style="display:flex;gap:4px;"><div style="flex:1;height:6px;background:#86F0A3;"></div><div style="flex:1;height:6px;background:#223347;"></div><div style="flex:1;height:6px;background:#223347;"></div><div style="flex:1;height:6px;background:#223347;"></div></div></div>
+            <div style="display:flex;flex-direction:column;gap:8px;padding:14px;background:#0D1520;border:1px solid #223347;border-radius:8px;"><div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.1em;"><span>ENGINES</span><span style="color:#8BA0B8;">OFFLINE</span></div><div style="display:flex;gap:4px;"><div style="flex:1;height:6px;background:#223347;"></div><div style="flex:1;height:6px;background:#223347;"></div><div style="flex:1;height:6px;background:#223347;"></div><div style="flex:1;height:6px;background:#223347;"></div></div></div>
+            <div style="display:flex;flex-direction:column;gap:8px;padding:14px;background:#0D1520;border:1px solid #223347;border-radius:8px;"><div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.1em;"><span>AVIONICS</span><span style="color:#8BA0B8;">OFFLINE</span></div><div style="display:flex;gap:4px;"><div style="flex:1;height:6px;background:#223347;"></div><div style="flex:1;height:6px;background:#223347;"></div><div style="flex:1;height:6px;background:#223347;"></div><div style="flex:1;height:6px;background:#223347;"></div></div></div>
+            <div style="display:flex;flex-direction:column;gap:8px;padding:14px;background:#0D1520;border:1px solid #223347;border-radius:8px;"><div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.1em;"><span>WEAPONS</span><span style="color:#8BA0B8;">OFFLINE</span></div><div style="display:flex;gap:4px;"><div style="flex:1;height:6px;background:#223347;"></div><div style="flex:1;height:6px;background:#223347;"></div><div style="flex:1;height:6px;background:#223347;"></div><div style="flex:1;height:6px;background:#223347;"></div></div></div>
+            <div style="position:absolute;left:40px;top:-70px;display:flex;flex-direction:column;gap:8px;">
+              <div style="padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;max-width:320px;display:flex;flex-direction:column;gap:6px;box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;color:#E6EDF5;">Four systems, one per skill group. They go OFFLINE → CALIBRATING → ONLINE → OPTIMIZED as you master skills.</div><div style="font-size:14px;letter-spacing:0.1em;color:#86F0A3;">NEXT · ENTER</div></div>
+              <div style="width:1px;height:14px;background:#86F0A3;margin-left:40px;"></div>
+            </div>
+          </div>
+        </div>
+        <div style="border-left:1px solid #223347;background:#0D1520;padding:24px;display:flex;flex-direction:column;gap:16px;position:relative;">
+          <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">INTEL · TEASER</div>
+          <div style="padding:14px;background:#111B27;border:2px solid #F5B841;border-radius:8px;display:flex;flex-direction:column;gap:8px;box-shadow:0 0 32px rgba(245,184,65,0.3);"><div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.1em;"><span style="color:#86F0A3;">F-16C · 01</span><span style="color:#F5B841;">NEW</span></div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;">RADOME</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.4;">Black nose cone hides the radar. Pointed, not blunt.</div></div>
+          <div style="padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;display:flex;flex-direction:column;gap:6px;"><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;color:#E6EDF5;">Intel cards are facts about the real aircraft. Ten per airframe; sorties with 6+ first-try hits earn one.</div><div style="font-size:14px;letter-spacing:0.1em;color:#86F0A3;">NEXT · ENTER</div></div>
+          <div style="width:1px;height:14px;background:#86F0A3;margin:-22px 0 0 40px;"></div>
+          <div style="flex:1;"></div>
+          <div style="height:56px;display:flex;align-items:center;justify-content:center;background:#86F0A3;color:#0A1018;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;">FINISH FLIGHT SCHOOL</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">2.5 · COMPLETION · FIRST INTEL CARD + FIRST CREDITS</div>
+      <div data-screen-label="FS5 Completion" style="position:relative;width:1280px;height:720px;background:#05080D;overflow:hidden;border:1px solid #223347;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;">
+        <div style="position:absolute;inset:0;background-image:linear-gradient(#0D1520 1px,transparent 1px),linear-gradient(90deg,#0D1520 1px,transparent 1px);background-size:64px 64px;"></div>
+        <div style="position:absolute;left:400px;top:120px;width:480px;height:480px;border:1px solid #F5B841;border-radius:50%;opacity:0.35;"></div>
+        <div style="position:relative;font-size:14px;color:#F5B841;letter-spacing:0.3em;">FLIGHT SCHOOL COMPLETE</div>
+        <div style="position:relative;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:56px;letter-spacing:0.02em;line-height:1;">CLEARED FOR SORTIES</div>
+        <div style="position:relative;display:flex;gap:16px;align-items:stretch;">
+          <div style="width:260px;padding:16px;background:#111B27;border:1px solid #F5B841;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.1em;"><span style="color:#86F0A3;">T-38 · 01</span><span style="color:#F5B841;">FIRST CARD</span></div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;">TANDEM CANOPY</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;">Two seats in a row: student in front, instructor behind. The T-38 has trained USAF pilots since 1961.</div></div>
+          <div style="width:200px;padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;justify-content:center;gap:6px;"><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">CREDITS</div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:40px;color:#F5B841;line-height:1;">+100</div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">FIRST PAINT AT 400</div></div>
+          <div style="width:200px;padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;justify-content:center;gap:6px;"><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">XP</div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:40px;color:#7DD3FC;line-height:1;">+120</div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">CADET · 120 / 1,000</div></div>
+        </div>
+        <div style="position:relative;display:flex;gap:12px;font-size:14px;letter-spacing:0.1em;">
+          <div style="height:56px;padding:0 32px;display:flex;align-items:center;justify-content:center;background:#F5B841;color:#0A1018;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;">TO THE BRIEFING · SORTIE 01</div>
+          <div style="height:56px;padding:0 24px;display:flex;align-items:center;justify-content:center;border:1px solid #223347;border-radius:8px;color:#E6EDF5;">HANGAR</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:32px;">
+    <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">3 · HOW TO PLAY · PAUSE MENU + 6 CARDS</div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">3.0 · PAUSE MENU · RESUME · HOW TO PLAY · FLIGHT MANUAL · SETTINGS · HANGAR</div>
+      <div data-screen-label="HP0 Pause menu" style="position:relative;width:1280px;height:720px;background:#0B1B2B;overflow:hidden;border:1px solid #223347;">
+        <div style="position:absolute;inset:0;background-image:linear-gradient(#0F2438 1px,transparent 1px),linear-gradient(90deg,#0F2438 1px,transparent 1px);background-size:64px 64px;"></div>
+        <div style="position:absolute;left:592px;top:450px;"><x-import component-from-global-scope="mo-sprite" type="f16" length="120" hint-size="96px,120px"></x-import></div>
+        <div style="position:absolute;inset:0;background:rgba(10,16,24,0.7);"></div>
+        <div style="position:absolute;left:440px;top:120px;width:400px;background:#0D1520;border:1px solid #223347;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:12px;box-shadow:0 24px 48px rgba(0,0,0,0.5);">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;"><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:28px;letter-spacing:0.02em;">PAUSED</div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">SORTIE 04 · 02:14</div></div>
+          <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#86F0A3;color:#0A1018;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;"><span>RESUME</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;">ESC</span></div>
+          <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border:1px solid #223347;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;"><span>HOW TO PLAY</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;">?</span></div>
+          <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border:1px solid #223347;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;"><span>FLIGHT MANUAL</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;">M</span></div>
+          <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border:1px solid #223347;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;"><span>SETTINGS</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#8BA0B8;">S</span></div>
+          <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border:1px solid #223347;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;color:#8BA0B8;"><span>HANGAR</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;">Q · ENDS SORTIE</span></div>
+          <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;text-align:center;margin-top:4px;">LOCK HELD · TIMER PAUSED · NO SHIELD COST</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">3.1 · CARD 1 · CONTROLS</div>
+      <div data-screen-label="HP1 Controls" style="position:relative;width:1280px;height:720px;background:#0A1018;overflow:hidden;border:1px solid #223347;display:flex;flex-direction:column;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 32px;border-bottom:1px solid #223347;"><div style="display:flex;align-items:center;gap:16px;"><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">HOW TO PLAY</div><div style="width:1px;height:24px;background:#223347;"></div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:24px;letter-spacing:0.02em;">CONTROLS</div></div><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;color:#86F0A3;font-size:18px;">✕</div></div>
+        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:24px 32px;">
+          <div style="padding:24px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:16px;">
+            <div style="font-size:14px;color:#86F0A3;letter-spacing:0.14em;">KEYBOARD</div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+              <div style="display:flex;gap:6px;"><div style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;font-size:20px;">W</div></div>
+              <div style="display:flex;gap:6px;"><div style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;font-size:20px;">A</div><div style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;font-size:20px;">S</div><div style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;font-size:20px;">D</div></div>
+              <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;margin-top:4px;">STEER · OR ARROW KEYS</div>
+            </div>
+            <div style="display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:14px;letter-spacing:0.1em;align-items:center;">
+              <div style="height:44px;min-width:88px;display:flex;align-items:center;justify-content:center;border:1px solid #223347;border-radius:8px;">SPACE</div><span style="color:#8BA0B8;">LOCK NEAREST BOGEY</span>
+              <div style="height:44px;min-width:88px;display:flex;align-items:center;justify-content:center;border:1px solid #223347;border-radius:8px;">0–9 · .</div><span style="color:#8BA0B8;">TYPE ANSWER</span>
+              <div style="height:44px;min-width:88px;display:flex;align-items:center;justify-content:center;border:1px solid #223347;border-radius:8px;">ENTER</div><span style="color:#8BA0B8;">FIRE · CONFIRM</span>
+              <div style="height:44px;min-width:88px;display:flex;align-items:center;justify-content:center;border:1px solid #223347;border-radius:8px;">H · M</div><span style="color:#8BA0B8;">HINT · MANUAL</span>
+              <div style="height:44px;min-width:88px;display:flex;align-items:center;justify-content:center;border:1px solid #223347;border-radius:8px;">ESC</div><span style="color:#8BA0B8;">PAUSE</span>
+            </div>
+          </div>
+          <div style="padding:24px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:16px;">
+            <div style="font-size:14px;color:#86F0A3;letter-spacing:0.14em;">TOUCHPAD · CHROMEBOOK</div>
+            <div style="flex:1;position:relative;background:#0B1B2B;border:1px solid #223347;border-radius:8px;overflow:hidden;background-image:linear-gradient(#0F2438 1px,transparent 1px),linear-gradient(90deg,#0F2438 1px,transparent 1px);background-size:32px 32px;min-height:200px;">
+              <div style="position:absolute;left:50%;top:60%;margin-left:-24px;"><x-import component-from-global-scope="mo-sprite" type="f16" length="60" hint-size="48px,60px"></x-import></div>
+              <div style="position:absolute;left:50%;top:60%;width:120px;height:1px;background:#86F0A3;transform:rotate(-40deg);transform-origin:left;margin-top:30px;"></div>
+              <div style="position:absolute;left:66%;top:34%;width:12px;height:12px;border:2px solid #86F0A3;border-radius:50%;"></div>
+              <div style="position:absolute;left:14px;top:14px;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;line-height:1.7;">MOVE CURSOR · AIRCRAFT FOLLOWS<br>CLICK BOGEY · LOCK<br>ON-SCREEN KEYPAD · ANSWER</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:14px;letter-spacing:0.1em;">
+              <span>ANSWER ENTRY</span>
+              <div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid #223347;border-radius:8px;overflow:hidden;"><div style="height:44px;display:flex;align-items:center;justify-content:center;color:#E6EDF5;">TYPED</div><div style="height:44px;display:flex;align-items:center;justify-content:center;background:#86F0A3;color:#0A1018;font-weight:600;">ON-SCREEN KEYPAD</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 32px 20px;font-size:14px;letter-spacing:0.1em;color:#8BA0B8;"><span>◀ PREV</span><div style="display:flex;gap:8px;align-items:center;"><div style="width:24px;height:8px;background:#86F0A3;border-radius:4px;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div></div><span style="color:#86F0A3;">NEXT · HUD LEGEND ▶</span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">3.2 · CARD 2 · HUD LEGEND</div>
+      <div data-screen-label="HP2 HUD legend" style="position:relative;width:1280px;height:720px;background:#0B1B2B;overflow:hidden;color:#86F0A3;border:1px solid #223347;">
+        <div style="position:absolute;inset:0;background-image:linear-gradient(#0F2438 1px,transparent 1px),linear-gradient(90deg,#0F2438 1px,transparent 1px);background-size:64px 64px;"></div>
+        <div style="position:absolute;inset:0;background:rgba(10,16,24,0.45);"></div>
+        <div style="position:absolute;left:0;right:0;top:0;padding:20px 32px;display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.14em;">
+          <div style="display:flex;gap:28px;"><span>ALT <b style="font-weight:600;color:#E6EDF5;font-size:20px;">24500</b></span><span>SPD <b style="font-weight:600;color:#E6EDF5;font-size:20px;">480</b></span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div style="display:flex;gap:24px;color:#8BA0B8;"><span>070</span><span style="color:#E6EDF5;font-weight:600;font-size:20px;">087</span><span>100</span></div><div style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:8px solid #86F0A3;"></div></div>
+          <div style="display:flex;gap:28px;align-items:baseline;"><span style="color:#F5B841;">STREAK <b style="font-weight:600;font-size:20px;">6</b></span><span style="color:#E6EDF5;font-size:20px;font-weight:600;">02:14</span></div>
+        </div>
+        <div style="position:absolute;left:32px;bottom:28px;display:flex;flex-direction:column;gap:10px;font-size:14px;letter-spacing:0.14em;">
+          <div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;">FUEL</span><div style="width:200px;height:10px;background:#111B27;border:1px solid #223347;"><div style="width:62%;height:100%;background:#86F0A3;"></div></div><span style="color:#E6EDF5;">4200</span></div>
+          <div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;color:#7DD3FC;">SHLD</span><div style="width:200px;height:10px;background:#111B27;border:1px solid #223347;"><div style="width:85%;height:100%;background:#7DD3FC;"></div></div><span style="color:#E6EDF5;">85</span></div>
+        </div>
+        <div style="position:absolute;right:32px;bottom:28px;display:flex;flex-direction:column;align-items:flex-end;gap:10px;font-size:14px;letter-spacing:0.14em;"><div style="display:flex;gap:6px;align-items:center;color:#F5B841;"><span style="margin-right:6px;">AIM-9</span><div style="width:12px;height:16px;background:#F5B841;"></div><div style="width:12px;height:16px;background:#F5B841;"></div><div style="width:12px;height:16px;background:#F5B841;"></div><div style="width:12px;height:16px;border:1px solid #F5B841;"></div></div><div style="color:#8BA0B8;">WPT 2 · <span style="color:#E6EDF5;">14.2 NM</span></div></div>
+        <div style="position:absolute;left:592px;top:450px;"><x-import component-from-global-scope="mo-sprite" type="f16" length="120" flame="" hint-size="96px,120px"></x-import></div>
+        <div style="position:absolute;left:760px;top:200px;"><x-import component-from-global-scope="mo-sprite" type="bogey2" length="72" heading="200" hint-size="58px,50px"></x-import></div>
+        <div style="position:absolute;left:750px;top:180px;width:100px;height:100px;border:1px solid #86F0A3;opacity:0.6;"></div>
+        <div style="position:absolute;left:1040px;top:120px;width:24px;height:24px;border:2px solid #7DD3FC;transform:rotate(45deg);"></div>
+        <div style="position:absolute;left:60px;top:70px;width:1px;height:40px;background:#86F0A3;"></div><div style="position:absolute;left:60px;top:110px;padding:8px 12px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#E6EDF5;max-width:220px;line-height:1.4;">Altitude in feet and speed in knots. Some problems read these live.</div>
+        <div style="position:absolute;left:640px;top:70px;width:1px;height:40px;background:#86F0A3;"></div><div style="position:absolute;left:560px;top:110px;padding:8px 12px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#E6EDF5;max-width:200px;line-height:1.4;">Heading tape. 087 means just north of east.</div>
+        <div style="position:absolute;left:1120px;top:70px;width:1px;height:40px;background:#86F0A3;"></div><div style="position:absolute;left:980px;top:110px;padding:8px 12px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#E6EDF5;max-width:260px;line-height:1.4;">Streak counts first-try hits in a row. Timer is the sortie clock.</div>
+        <div style="position:absolute;left:150px;top:590px;width:1px;height:40px;background:#86F0A3;"></div><div style="position:absolute;left:150px;top:540px;padding:8px 12px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#E6EDF5;max-width:280px;line-height:1.4;">Fuel drains with time. Shields drop 20% on each miss. Both refill in briefing.</div>
+        <div style="position:absolute;left:1100px;top:590px;width:1px;height:40px;background:#86F0A3;"></div><div style="position:absolute;left:900px;top:540px;padding:8px 12px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#E6EDF5;max-width:260px;line-height:1.4;">Missiles: one per lock. Waypoint distance to the next objective.</div>
+        <div style="position:absolute;left:860px;top:230px;width:40px;height:1px;background:#86F0A3;"></div><div style="position:absolute;left:900px;top:216px;padding:8px 12px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#E6EDF5;max-width:220px;line-height:1.4;">Bogey in range. Click or SPACE to lock.</div>
+        <div style="position:absolute;left:1040px;top:150px;width:1px;height:30px;background:#7DD3FC;"></div><div style="position:absolute;left:960px;top:180px;padding:8px 12px;background:#0A1018;border:1px solid #7DD3FC;border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#E6EDF5;max-width:200px;line-height:1.4;">Waypoint. Fly through it.</div>
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:0 32px 6px;display:flex;justify-content:center;"><div style="display:flex;gap:8px;align-items:center;padding:8px 12px;background:#0A1018;border:1px solid #223347;border-radius:999px;"><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:24px;height:8px;background:#86F0A3;border-radius:4px;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div></div></div>
+        <div style="position:absolute;right:32px;top:60px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;color:#86F0A3;font-size:18px;background:#0A1018;">✕</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">3.3 · CARD 3 · TARGET LOCK RULES</div>
+      <div data-screen-label="HP3 Lock rules" style="position:relative;width:1280px;height:720px;background:#0A1018;overflow:hidden;border:1px solid #223347;display:flex;flex-direction:column;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 32px;border-bottom:1px solid #223347;"><div style="display:flex;align-items:center;gap:16px;"><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">HOW TO PLAY</div><div style="width:1px;height:24px;background:#223347;"></div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:24px;letter-spacing:0.02em;">TARGET LOCK RULES</div></div><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;color:#86F0A3;font-size:18px;">✕</div></div>
+        <div style="flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:24px 32px;">
+          <div style="padding:20px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:14px;">
+            <div style="position:relative;width:56px;height:56px;"><div style="position:absolute;left:0;top:0;width:14px;height:14px;border-left:3px solid #F5B841;border-top:3px solid #F5B841;"></div><div style="position:absolute;right:0;top:0;width:14px;height:14px;border-right:3px solid #F5B841;border-top:3px solid #F5B841;"></div><div style="position:absolute;left:0;bottom:0;width:14px;height:14px;border-left:3px solid #F5B841;border-bottom:3px solid #F5B841;"></div><div style="position:absolute;right:0;bottom:0;width:14px;height:14px;border-right:3px solid #F5B841;border-bottom:3px solid #F5B841;"></div></div>
+            <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;color:#F5B841;">A LOCK COSTS</div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.5;">One missile. Time freezes while the problem card is up, so a lock never costs fuel or shield by itself.</div>
+            <div style="margin-top:auto;font-size:14px;letter-spacing:0.1em;color:#8BA0B8;">−1 AIM-9</div>
+          </div>
+          <div style="padding:20px;background:#0D1520;border:1px solid #86F0A3;border-radius:8px;display:flex;flex-direction:column;gap:14px;">
+            <div style="position:relative;width:56px;height:56px;border-radius:50%;border:3px solid #223347;border-top-color:#86F0A3;border-right-color:#86F0A3;"></div>
+            <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;color:#86F0A3;">A FAST ANSWER EARNS</div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.5;">Answer inside the ring (5 seconds) for ×1.5 credits and XP. Boss sorties: ×2 under 8 seconds.</div>
+            <div style="margin-top:auto;font-size:14px;letter-spacing:0.1em;color:#86F0A3;">×1.5 · STREAK +1</div>
+          </div>
+          <div style="padding:20px;background:#0D1520;border:1px solid #FF6B4A;border-radius:8px;display:flex;flex-direction:column;gap:14px;">
+            <div style="position:relative;width:56px;height:56px;"><div style="position:absolute;left:-6px;top:-6px;width:14px;height:14px;border-left:3px solid #FF6B4A;border-top:3px solid #FF6B4A;transform:rotate(-12deg);"></div><div style="position:absolute;right:-8px;top:-4px;width:14px;height:14px;border-right:3px solid #FF6B4A;border-top:3px solid #FF6B4A;transform:rotate(10deg);"></div><div style="position:absolute;left:-4px;bottom:-8px;width:14px;height:14px;border-left:3px solid #FF6B4A;border-bottom:3px solid #FF6B4A;transform:rotate(8deg);"></div><div style="position:absolute;right:-6px;bottom:-6px;width:14px;height:14px;border-right:3px solid #FF6B4A;border-bottom:3px solid #FF6B4A;transform:rotate(-14deg);"></div></div>
+            <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;color:#FF6B4A;">A WRONG ANSWER COSTS</div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.5;">Shields −20%. The lock breaks and your streak resets. Fuel, missiles and credits are untouched.</div>
+            <div style="margin-top:auto;font-size:14px;letter-spacing:0.1em;color:#FF6B4A;">SHLD −20% · STREAK 0</div>
+          </div>
+          <div style="padding:20px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:14px;">
+            <div style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;border:2px solid #86F0A3;border-radius:8px;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#86F0A3" stroke-width="2" stroke-linecap="round"><path d="M20 12 A8 8 0 1 1 17 5.7 M17 3 V7 H13"></path></svg></div>
+            <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;">HOW RETRY WORKS</div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.5;">The same problem comes straight back with a hint line. Retry is free and unlimited; it just can't earn the fast bonus.</div>
+            <div style="margin-top:auto;font-size:14px;letter-spacing:0.1em;color:#8BA0B8;">FREE · NO FAST BONUS</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 32px 20px;font-size:14px;letter-spacing:0.1em;color:#8BA0B8;"><span>◀ HUD LEGEND</span><div style="display:flex;gap:8px;align-items:center;"><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:24px;height:8px;background:#86F0A3;border-radius:4px;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div></div><span style="color:#86F0A3;">NEXT · BRIEFING ▶</span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">3.4 · CARD 4 · BRIEFING &amp; RESOURCES</div>
+      <div data-screen-label="HP4 Briefing and resources" style="position:relative;width:1280px;height:720px;background:#0A1018;overflow:hidden;border:1px solid #223347;display:flex;flex-direction:column;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 32px;border-bottom:1px solid #223347;"><div style="display:flex;align-items:center;gap:16px;"><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">HOW TO PLAY</div><div style="width:1px;height:24px;background:#223347;"></div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:24px;letter-spacing:0.02em;">BRIEFING &amp; RESOURCES</div></div><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;color:#86F0A3;font-size:18px;">✕</div></div>
+        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:24px 32px;align-items:center;">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:18px;line-height:1.5;">Every sortie starts with a briefing: two or three prep problems, untimed, no shield risk. Each correct answer loads a resource you fly with.</div>
+            <div style="display:flex;flex-direction:column;gap:10px;padding:16px;background:#111B27;border:1px solid #86F0A3;border-radius:8px;">
+              <div style="display:flex;justify-content:space-between;font-size:14px;letter-spacing:0.1em;"><span style="color:#8BA0B8;">FUEL LOAD · PREP 1</span><span style="color:#86F0A3;">SET ✓</span></div>
+              <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">350 lb per minute × 12 minutes + 1,400 reserve</div>
+              <div style="display:flex;align-items:center;gap:10px;border:1px solid #86F0A3;background:rgba(134,240,163,0.1);border-radius:8px;padding:10px 12px;font-size:20px;"><span style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">FUEL</span><span style="flex:1;color:#86F0A3;">5600</span><span style="font-size:14px;color:#8BA0B8;">LB</span></div>
+            </div>
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;line-height:1.7;">SKIP A PREP · FLY WITH LESS<br>MANUAL AND HINT ARE FREE HERE</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div style="display:flex;align-items:center;gap:16px;padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;"><div style="width:44px;font-size:14px;letter-spacing:0.14em;color:#86F0A3;">FUEL</div><div style="flex:1;display:flex;flex-direction:column;gap:6px;"><div style="height:10px;background:#111B27;border:1px solid #223347;"><div style="width:100%;height:100%;background:#86F0A3;"></div></div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#8BA0B8;">Fuel problem → tank. Drains with sortie time. Empty tank ends the sortie.</div></div></div>
+            <div style="display:flex;align-items:center;gap:16px;padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;"><div style="width:44px;font-size:14px;letter-spacing:0.14em;color:#7DD3FC;">SHLD</div><div style="flex:1;display:flex;flex-direction:column;gap:6px;"><div style="height:10px;background:#111B27;border:1px solid #223347;"><div style="width:100%;height:100%;background:#7DD3FC;"></div></div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#8BA0B8;">Systems-check problem → shields. Each miss in flight takes 20%.</div></div></div>
+            <div style="display:flex;align-items:center;gap:16px;padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;"><div style="width:44px;font-size:14px;letter-spacing:0.14em;color:#F5B841;">AIM-9</div><div style="flex:1;display:flex;flex-direction:column;gap:6px;"><div style="display:flex;gap:6px;"><div style="width:12px;height:16px;background:#F5B841;"></div><div style="width:12px;height:16px;background:#F5B841;"></div><div style="width:12px;height:16px;background:#F5B841;"></div><div style="width:12px;height:16px;background:#F5B841;"></div></div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#8BA0B8;">Loadout problem → missiles. One per lock. Run out and you must fly to the tanker.</div></div></div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 32px 20px;font-size:14px;letter-spacing:0.1em;color:#8BA0B8;"><span>◀ LOCK RULES</span><div style="display:flex;gap:8px;align-items:center;"><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:24px;height:8px;background:#86F0A3;border-radius:4px;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div></div><span style="color:#86F0A3;">NEXT · SYSTEMS ▶</span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">3.5 · CARD 5 · SYSTEMS, RANKS &amp; UNLOCKS</div>
+      <div data-screen-label="HP5 Systems ranks unlocks" style="position:relative;width:1280px;height:720px;background:#0A1018;overflow:hidden;border:1px solid #223347;display:flex;flex-direction:column;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 32px;border-bottom:1px solid #223347;"><div style="display:flex;align-items:center;gap:16px;"><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">HOW TO PLAY</div><div style="width:1px;height:24px;background:#223347;"></div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:24px;letter-spacing:0.02em;">SYSTEMS, RANKS &amp; UNLOCKS</div></div><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;color:#86F0A3;font-size:18px;">✕</div></div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:16px;padding:20px 32px;">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+            <div style="padding:14px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="padding:6px 12px;border:1px solid #223347;border-radius:999px;color:#8BA0B8;font-size:14px;letter-spacing:0.14em;display:flex;align-items:center;gap:8px;align-self:flex-start;"><div style="width:8px;height:8px;border:1px solid #8BA0B8;border-radius:50%;"></div>OFFLINE</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;color:#8BA0B8;">Skill not yet seen in a sortie.</div></div>
+            <div style="padding:14px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="padding:6px 12px;border:1px solid #F5B841;border-radius:999px;color:#F5B841;font-size:14px;letter-spacing:0.14em;display:flex;align-items:center;gap:8px;align-self:flex-start;"><div style="width:8px;height:8px;background:#F5B841;transform:rotate(45deg);"></div>CALIBRATING</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;">Seen, under 70% first-try. Boss escorts lean on these.</div></div>
+            <div style="padding:14px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="padding:6px 12px;border:1px solid #86F0A3;border-radius:999px;color:#86F0A3;font-size:14px;letter-spacing:0.14em;display:flex;align-items:center;gap:8px;align-self:flex-start;"><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div>ONLINE</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;">70% or better first-try over the last 10.</div></div>
+            <div style="padding:14px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="padding:6px 12px;background:#86F0A3;border-radius:999px;color:#0A1018;font-weight:600;font-size:14px;letter-spacing:0.14em;display:flex;align-items:center;gap:8px;align-self:flex-start;"><div style="width:8px;height:8px;background:#0A1018;border-radius:50%;"></div>OPTIMIZED</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;">90%+ including a transfer problem. Unlocks the system's top tier.</div></div>
+          </div>
+          <div style="flex:1;padding:16px 20px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">AIRFRAME CHAIN · ONE PER UNIT BOSS</div>
+            <div style="flex:1;display:flex;justify-content:space-between;align-items:flex-end;">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><x-import component-from-global-scope="mo-sprite" type="t38" length="96" hint-size="77px,96px"></x-import><span style="font-size:14px;color:#86F0A3;letter-spacing:0.1em;">START</span></div>
+              <span style="color:#223347;font-size:20px;margin-bottom:40px;">▶</span>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><x-import component-from-global-scope="mo-sprite" type="f16" length="96" hint-size="77px,96px"></x-import><span style="font-size:14px;color:#86F0A3;letter-spacing:0.1em;">U1</span></div>
+              <span style="color:#223347;font-size:20px;margin-bottom:40px;">▶</span>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><x-import component-from-global-scope="mo-sprite" type="f15" length="96" variant="silhouette" hint-size="77px,96px"></x-import><span style="font-size:14px;color:#F5B841;letter-spacing:0.1em;">U2</span></div>
+              <span style="color:#223347;font-size:20px;margin-bottom:40px;">▶</span>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><x-import component-from-global-scope="mo-sprite" type="f18" length="96" variant="silhouette" hint-size="77px,96px"></x-import><span style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">U3</span></div>
+              <span style="color:#223347;font-size:20px;margin-bottom:40px;">▶</span>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><x-import component-from-global-scope="mo-sprite" type="f22" length="96" variant="silhouette" hint-size="77px,96px"></x-import><span style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">U4</span></div>
+              <span style="color:#223347;font-size:20px;margin-bottom:40px;">▶</span>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><x-import component-from-global-scope="mo-sprite" type="f35" length="96" variant="silhouette" hint-size="77px,96px"></x-import><span style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">U5</span></div>
+              <span style="color:#223347;font-size:20px;margin-bottom:40px;">▶</span>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><x-import component-from-global-scope="mo-sprite" type="sr71" length="120" variant="silhouette" hint-size="96px,120px"></x-import><span style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">U6</span></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div style="padding:14px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;gap:12px;align-items:center;"><div style="display:flex;gap:6px;"><div style="width:32px;height:32px;border:2px solid #7DD3FC;border-radius:6px;display:flex;align-items:center;justify-content:center;"><div style="width:14px;height:3px;background:#7DD3FC;"></div></div><div style="width:32px;height:32px;border:2px solid #7DD3FC;border-radius:6px;display:flex;align-items:center;justify-content:center;"><div style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:10px solid #7DD3FC;"></div></div><div style="width:32px;height:32px;border:2px solid #223347;border-radius:6px;display:flex;align-items:center;justify-content:center;gap:2px;"><div style="width:4px;height:14px;background:#223347;"></div><div style="width:4px;height:14px;background:#223347;"></div></div><div style="width:32px;height:32px;border:2px solid #223347;border-radius:6px;display:flex;align-items:center;justify-content:center;"><div style="width:14px;height:14px;background:#223347;transform:rotate(45deg);"></div></div><div style="width:32px;height:32px;border:2px solid #223347;border-radius:6px;display:flex;align-items:center;justify-content:center;"><div style="width:14px;height:14px;border:3px solid #223347;border-radius:50%;"></div></div></div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;">Ranks come from XP: Cadet, 2nd Lt, Captain, Major, Colonel. Rank unlocks paint schemes.</div></div>
+            <div style="padding:14px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;gap:12px;align-items:center;"><div style="width:56px;height:40px;background:#111B27;border:1px solid #F5B841;border-radius:6px;flex:none;display:flex;align-items:center;justify-content:center;font-size:14px;color:#F5B841;">10</div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.45;">Intel cards are real facts about each aircraft, ten per airframe. A sortie with 6+ first-try hits earns one.</div></div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 32px 20px;font-size:14px;letter-spacing:0.1em;color:#8BA0B8;"><span>◀ BRIEFING</span><div style="display:flex;gap:8px;align-items:center;"><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:24px;height:8px;background:#86F0A3;border-radius:4px;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div></div><span style="color:#86F0A3;">NEXT · FLIGHT MANUAL ▶</span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">3.6 · CARD 6 · FLIGHT MANUAL</div>
+      <div data-screen-label="HP6 Flight manual card" style="position:relative;width:1280px;height:720px;background:#0A1018;overflow:hidden;border:1px solid #223347;display:flex;flex-direction:column;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 32px;border-bottom:1px solid #223347;"><div style="display:flex;align-items:center;gap:16px;"><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">HOW TO PLAY</div><div style="width:1px;height:24px;background:#223347;"></div><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:24px;letter-spacing:0.02em;">FLIGHT MANUAL</div></div><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #86F0A3;border-radius:8px;color:#86F0A3;font-size:18px;">✕</div></div>
+        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:24px 32px;align-items:center;">
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:32px;line-height:1.1;">OPENING IT IS<br><span style="color:#86F0A3;">NEVER A PENALTY.</span></div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:18px;line-height:1.5;">One page per skill: what it is, how to solve it, a worked example in flight terms, common mistakes, a free practice problem, and where it shows up. Sixty pages, always one key away.</div>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:14px;letter-spacing:0.1em;">
+              <div style="display:flex;justify-content:space-between;padding:10px 14px;background:#0D1520;border:1px solid #223347;border-radius:8px;"><span>IN A LOCK</span><span style="color:#8BA0B8;">TIMER PAUSES · LOCK HELD · FAST BONUS FORFEITED</span></div>
+              <div style="display:flex;justify-content:space-between;padding:10px 14px;background:#0D1520;border:1px solid #223347;border-radius:8px;"><span>IN BRIEFING</span><span style="color:#8BA0B8;">SIDE PANEL · NO COST</span></div>
+              <div style="display:flex;justify-content:space-between;padding:10px 14px;background:#0D1520;border:1px solid #223347;border-radius:8px;"><span>IN DEBRIEF</span><span style="color:#8BA0B8;">REVIEW → PAGE + MISSED THIS SORTIE</span></div>
+              <div style="display:flex;justify-content:space-between;padding:10px 14px;background:#0D1520;border:1px solid #223347;border-radius:8px;"><span>AFTER A QUICK MISS</span><span style="color:#8BA0B8;">WORKED EXAMPLE POPS IN · THEN RETRY</span></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">WHERE TO FIND IT</div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#0D1520;border:1px solid #223347;border-radius:8px;"><div style="height:44px;padding:0 16px;display:flex;align-items:center;border:1px solid #86F0A3;color:#86F0A3;border-radius:8px;font-size:14px;letter-spacing:0.1em;">MANUAL · M</div><span style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#8BA0B8;">on every problem card, cockpit and briefing</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#0D1520;border:1px solid #223347;border-radius:8px;"><div style="height:44px;padding:0 16px;display:flex;align-items:center;border:1px solid #223347;border-radius:8px;font-size:14px;letter-spacing:0.1em;">FLIGHT MANUAL</div><span style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#8BA0B8;">hangar top bar and pause menu</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#0D1520;border:1px solid #223347;border-radius:8px;"><div style="height:44px;padding:0 16px;display:flex;align-items:center;color:#86F0A3;font-size:14px;letter-spacing:0.1em;text-decoration:underline;">REVIEW</div><span style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#8BA0B8;">beside each skill in the debrief</span></div>
+            <div style="padding:14px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;"><div style="font-size:14px;color:#86F0A3;letter-spacing:0.14em;">STATUS TILE</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:14px;"><div style="padding:6px 10px;background:#111B27;border:1px solid #223347;border-radius:8px;display:flex;justify-content:space-between;align-items:center;"><span>Unit rates</span><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;"></div></div><div style="padding:6px 10px;background:#111B27;border:1px solid #F5B841;border-radius:8px;display:flex;justify-content:space-between;align-items:center;"><span>Percent change</span><div style="width:8px;height:8px;background:#F5B841;transform:rotate(45deg);"></div></div></div><div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#8BA0B8;">Each page carries its system status. Amber pages are worth a read before a boss.</div></div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 32px 20px;font-size:14px;letter-spacing:0.1em;color:#8BA0B8;"><span>◀ SYSTEMS</span><div style="display:flex;gap:8px;align-items:center;"><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:8px;height:8px;background:#223347;border-radius:50%;"></div><div style="width:24px;height:8px;background:#86F0A3;border-radius:4px;"></div></div><span style="color:#86F0A3;">DONE · ESC</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:32px;">
+    <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">4 · FIRST-TIME CALLOUTS · ONE COMPONENT · THREE PLACEMENTS</div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">4.1 · FIRST TRANSFER PROBLEM</div>
+        <div data-screen-label="FT1 Transfer tip" style="position:relative;width:620px;height:400px;background:#0B1B2B;overflow:hidden;border:1px solid #223347;">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(#0F2438 1px,transparent 1px),linear-gradient(90deg,#0F2438 1px,transparent 1px);background-size:64px 64px;"></div>
+          <div style="position:absolute;inset:0;background:rgba(10,16,24,0.4);"></div>
+          <div style="position:absolute;left:40px;top:100px;width:360px;background:#0D1520;border:1px solid #F5B841;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px;">
+            <div style="position:absolute;right:16px;top:-1px;padding:2px 8px;background:#F5B841;color:#0A1018;font-size:14px;font-weight:600;letter-spacing:0.1em;border-radius:0 0 6px 6px;">★ SPECIAL</div>
+            <div style="font-size:14px;letter-spacing:0.14em;color:#F5B841;">FUEL TRANSFER</div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">A tanker pumps 900 lb in 4 min. At that rate, how long to take on 3,150 lb?</div>
+            <div style="display:flex;align-items:center;gap:10px;border:1px solid #86F0A3;border-radius:8px;padding:10px 12px;font-size:20px;"><span style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">TIME</span><span style="flex:1;"><span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">MIN</span></div>
+          </div>
+          <div style="position:absolute;left:340px;top:60px;width:1px;height:40px;background:#86F0A3;"></div>
+          <div style="position:absolute;left:220px;top:20px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;font-size:14px;color:#E6EDF5;box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;flex:none;"></div><span style="font-family:'IBM Plex Sans',sans-serif;">This one mixes two skills — it counts extra toward mastery</span><span style="color:#8BA0B8;margin-left:8px;">✕</span></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">4.2 · FIRST BOSS SORTIE BRIEFING</div>
+        <div data-screen-label="FT2 Boss tip" style="position:relative;width:620px;height:400px;background:#0A1018;overflow:hidden;border:2px solid #F5B841;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 24px;">
+            <div style="display:flex;align-items:baseline;gap:12px;"><div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:28px;letter-spacing:0.02em;color:#F5B841;">BOSS SORTIE</div><div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">UNIT 1 · MIXED REVIEW</div></div>
+            <div style="padding:8px 14px;border:1px solid #F5B841;border-radius:999px;font-size:14px;color:#F5B841;letter-spacing:0.14em;">HIGH STAKES</div>
+          </div>
+          <div style="margin:0 24px;padding:14px 16px;background:#111B27;border:1px solid #223347;border-radius:8px;font-size:14px;letter-spacing:0.1em;display:flex;flex-direction:column;gap:8px;"><div style="display:flex;justify-content:space-between;"><span style="color:#8BA0B8;">PHASE 1</span><span>6 PROBLEMS · UNTIMED</span></div><div style="display:flex;justify-content:space-between;"><span style="color:#8BA0B8;">PHASE 2</span><span style="color:#F5B841;">6 PROBLEMS · TIMED · ×2 UNDER 8 S</span></div></div>
+          <div style="position:absolute;left:120px;top:140px;width:1px;height:40px;background:#86F0A3;"></div>
+          <div style="position:absolute;left:60px;top:180px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;font-size:14px;color:#E6EDF5;box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;flex:none;"></div><span style="font-family:'IBM Plex Sans',sans-serif;">Boss sortie: mixed review, untimed first, then timed</span><span style="color:#8BA0B8;margin-left:8px;">✕</span></div>
+          <div style="position:absolute;left:24px;right:24px;bottom:24px;height:56px;display:flex;align-items:center;justify-content:center;background:#F5B841;color:#0A1018;border-radius:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.06em;">LAUNCH BOSS SORTIE</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">4.3 · DISMISSED STATE · TIP FADES 200 MS · "SEEN" DOT STAYS 1 SORTIE</div>
+        <div data-screen-label="FT3 Dismissed" style="position:relative;width:620px;height:400px;background:#0B1B2B;overflow:hidden;border:1px solid #223347;">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(#0F2438 1px,transparent 1px),linear-gradient(90deg,#0F2438 1px,transparent 1px);background-size:64px 64px;"></div>
+          <div style="position:absolute;inset:0;background:rgba(10,16,24,0.4);"></div>
+          <div style="position:absolute;left:40px;top:100px;width:360px;background:#0D1520;border:1px solid #F5B841;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px;">
+            <div style="position:absolute;right:16px;top:-1px;padding:2px 8px;background:#F5B841;color:#0A1018;font-size:14px;font-weight:600;letter-spacing:0.1em;border-radius:0 0 6px 6px;display:flex;align-items:center;gap:6px;">★ SPECIAL<div style="width:6px;height:6px;background:#0A1018;border-radius:50%;"></div></div>
+            <div style="font-size:14px;letter-spacing:0.14em;color:#F5B841;">FUEL TRANSFER</div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.45;">A tanker pumps 900 lb in 4 min. At that rate, how long to take on 3,150 lb?</div>
+            <div style="display:flex;align-items:center;gap:10px;border:1px solid #86F0A3;border-radius:8px;padding:10px 12px;font-size:20px;"><span style="color:#8BA0B8;font-size:14px;letter-spacing:0.1em;">TIME</span><span style="flex:1;">14<span style="color:#86F0A3;">_</span></span><span style="font-size:14px;color:#8BA0B8;">MIN</span></div>
+          </div>
+          <div style="position:absolute;left:220px;top:20px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:#0A1018;border:1px solid #86F0A3;border-radius:8px;font-size:14px;color:#E6EDF5;opacity:0.25;"><div style="width:8px;height:8px;background:#86F0A3;border-radius:50%;flex:none;"></div><span style="font-family:'IBM Plex Sans',sans-serif;">This one mixes two skills — it counts extra toward mastery</span></div>
+          <div style="position:absolute;left:440px;top:340px;font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">SEEN · SHOWN ONCE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

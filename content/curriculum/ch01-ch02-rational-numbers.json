@@ -1,0 +1,230 @@
+{
+  "$schema": "./skill.schema.json",
+  "chapters": [
+    { "id": "ch1", "n": 1, "quarter": 1, "name": "Adding and Subtracting Rational Numbers", "tnCluster": "7.NS.A" },
+    { "id": "ch2", "n": 2, "quarter": 1, "name": "Multiplying and Dividing Rational Numbers", "tnCluster": "7.NS.A" }
+  ],
+  "skills": [
+    {
+      "id": "ns.1.1", "chapter": "ch1", "section": "1.1", "honors": false,
+      "name": "Rational numbers: compare, order, absolute value",
+      "standards": ["7.NS.A.1", "7.NS.A.3"],
+      "im": ["G7.U5.L1"], "khan": "K-NEG:absolute value",
+      "reps": ["number-line"],
+      "formats": ["numeric", "multiple-choice", "order"],
+      "key": "Farther right on the number line is greater. |x| is the distance from 0 and is never negative.",
+      "tiers": [
+        "compare two integers; find |n| for an integer",
+        "compare a fraction and a decimal with mixed signs; |x| for rationals",
+        "order 4-5 mixed rationals including negative mixed numbers",
+        "distance between two rationals as |a - b| in a context"
+      ],
+      "gen": "T1: a,b in [-30,30], distinct. T2: one fraction (denominator 2..12) vs one decimal (1-2 places), signs mixed. T3: 4-5 values, at least two negative, one repeated magnitude with opposite signs. T4: two altitudes/temps, answer |a-b|.",
+      "errors": [
+        { "tag": "neg-magnitude", "desc": "treats -8 as greater than -3", "distractor": "reverse the comparison" },
+        { "tag": "abs-negates", "desc": "thinks |x| flips the sign of every number", "distractor": "-|x|" },
+        { "tag": "frac-size", "desc": "-1/2 > -1/4 because 2 > 4", "distractor": "compare by denominator" }
+      ],
+      "skin": "altitude above/below sea level, cockpit temperature, fuel offset readouts"
+    },
+    {
+      "id": "ns.1.2", "chapter": "ch1", "section": "1.2", "honors": false,
+      "name": "Adding integers",
+      "standards": ["7.NS.A.1a", "7.NS.A.1c", "7.NS.A.3"],
+      "im": ["G7.U5.L2", "G7.U5.L3"], "khan": "K-NEG:adding negative numbers",
+      "reps": ["number-line", "zero-pairs"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "Same signs: add the sizes and keep the sign. Different signs: subtract the sizes and keep the sign of the bigger one. A number plus its opposite is 0.",
+      "tiers": [
+        "two integers, same sign, |n| <= 20",
+        "two integers, different signs, |n| <= 50",
+        "three integers, mixed signs, includes a zero pair",
+        "context: net change in altitude/fuel over several legs"
+      ],
+      "gen": "T1: a,b same sign in [1,20]. T2: a in [-50,50], b opposite sign, |a| != |b|. T3: three terms, two of which sum to 0. T4: 3-4 signed changes in a story, answer the total.",
+      "errors": [
+        { "tag": "add-magnitudes", "desc": "adds sizes regardless of sign (-7 + 3 = -10)", "distractor": "-(|a|+|b|) or |a|+|b|" },
+        { "tag": "first-sign", "desc": "keeps the sign of the first addend", "distractor": "correct magnitude, wrong sign" },
+        { "tag": "drop-sign", "desc": "answer with the sign dropped", "distractor": "|correct|" }
+      ],
+      "skin": "climb/descend legs, fuel added vs burned, credits earned vs spent"
+    },
+    {
+      "id": "ns.1.3", "chapter": "ch1", "section": "1.3", "honors": false,
+      "name": "Adding rational numbers",
+      "standards": ["7.NS.A.1a", "7.NS.A.1c", "7.NS.A.3"],
+      "im": ["G7.U5.L3", "G7.U5.L4", "G7.U5.L7"], "khan": "K-NEG:adding negative fractions",
+      "reps": ["number-line", "debt-table"],
+      "formats": ["fraction", "numeric", "multiple-choice"],
+      "key": "Apply the integer sign rules, then add like you already know: common denominators for fractions, line up the decimal points for decimals.",
+      "tiers": [
+        "two decimals (1 place), mixed signs",
+        "two fractions, like denominators, mixed signs",
+        "two fractions, unlike denominators (2..12), mixed signs, may include mixed numbers",
+        "three rationals mixing fractions and decimals in a context"
+      ],
+      "gen": "T1: decimals to 0.1, |x| < 20. T2: same denominator d in [3,12]. T3: denominators with lcm <= 60; mixed numbers up to 5. T4: convert to one form first; answer accepts fraction or decimal.",
+      "errors": [
+        { "tag": "add-denominators", "desc": "adds numerators and denominators", "distractor": "(a+c)/(b+d)" },
+        { "tag": "mixed-sign-split", "desc": "reads -2 1/4 as -2 + 1/4", "distractor": "off by 2*fraction part" },
+        { "tag": "sign-rule", "desc": "integer sign-rule error carried into rationals", "distractor": "wrong sign" }
+      ],
+      "skin": "fuel tank fractions, fuel-flow in decimal liters, altitude in tenths of a thousand feet"
+    },
+    {
+      "id": "ns.1.4", "chapter": "ch1", "section": "1.4", "honors": false,
+      "name": "Subtracting integers",
+      "standards": ["7.NS.A.1b", "7.NS.A.3"],
+      "im": ["G7.U5.L5", "G7.U5.L6"], "khan": "K-NEG:subtracting negative numbers",
+      "reps": ["number-line"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "Subtracting a number is adding its opposite: a - b = a + (-b). Subtracting a negative moves you right.",
+      "tiers": [
+        "positive minus positive, may go negative",
+        "subtract a negative (a - (-b))",
+        "negative minus negative, |n| <= 50",
+        "change = final - initial with signed values in a context; distance as |a - b|"
+      ],
+      "gen": "T1: a in [0,30], b in [1,40]. T2: a in [-20,20], b in [-20,-1]. T3: both negative. T4: start/end altitude or temperature, ask the change (signed) or the distance (absolute).",
+      "errors": [
+        { "tag": "double-neg", "desc": "7 - (-3) = 4", "distractor": "a - |b|" },
+        { "tag": "negate-first", "desc": "negates the first number instead of the second", "distractor": "-a - b" },
+        { "tag": "commute", "desc": "computes b - a", "distractor": "b - a" },
+        { "tag": "initial-minus-final", "desc": "change computed backwards", "distractor": "initial - final" }
+      ],
+      "skin": "altitude change in a dive, temperature drop with altitude, before/after fuel"
+    },
+    {
+      "id": "ns.1.5", "chapter": "ch1", "section": "1.5", "honors": false,
+      "name": "Subtracting rational numbers",
+      "standards": ["7.NS.A.1b", "7.NS.A.1c", "7.NS.A.3"],
+      "im": ["G7.U5.L6", "G7.U5.L7"], "khan": "K-NEG:subtracting negative fractions",
+      "reps": ["number-line", "vertical-number-line"],
+      "formats": ["fraction", "numeric", "multiple-choice"],
+      "key": "Rewrite as adding the opposite, then use common denominators or aligned decimals. Distance on a number line is |a - b|.",
+      "tiers": [
+        "decimals (1-2 places), one negative",
+        "fractions, like denominators, subtract a negative",
+        "fractions, unlike denominators, mixed numbers, both signs",
+        "distance between two rationals on a vertical number line (altitude/depth)"
+      ],
+      "gen": "T1: decimals to 0.01, |x| < 25. T2: d in [3,12]. T3: lcm <= 60, mixed numbers to 5. T4: two signed rationals, answer |a - b| as a fraction or decimal.",
+      "errors": [
+        { "tag": "double-neg", "desc": "a - (-b) treated as a - b", "distractor": "a - |b|" },
+        { "tag": "sub-denominators", "desc": "subtracts denominators", "distractor": "(a-c)/(b-d)" },
+        { "tag": "neg-distance", "desc": "reports a negative distance", "distractor": "-(|a-b|)" }
+      ],
+      "skin": "altitude vs depth of a sub target, fuel margin below minimum, thermal readings"
+    },
+    {
+      "id": "ns.2.1", "chapter": "ch2", "section": "2.1", "honors": false,
+      "name": "Multiplying integers",
+      "standards": ["7.NS.A.2a", "7.NS.A.2c", "7.NS.A.3"],
+      "im": ["G7.U5.L8", "G7.U5.L9", "G7.U5.L10"], "khan": "K-NEG:multiplying negative numbers",
+      "reps": ["number-line", "velocity-time"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "Multiply the sizes. Same signs give positive, different signs give negative. An even count of negatives is positive.",
+      "tiers": [
+        "one negative factor, products <= 100",
+        "two negative factors, products <= 200",
+        "three factors with mixed signs",
+        "(-a)^2 vs -a^2 and rate x time contexts (descent rate x minutes)"
+      ],
+      "gen": "T1: a in [-12,-2], b in [2,12]. T2: both in [-15,-2]. T3: three factors in [-9,9] excluding 0 and 1. T4: pair a power problem with a rate problem.",
+      "errors": [
+        { "tag": "add-rule-on-mult", "desc": "applies the addition sign rule (neg x neg = neg)", "distractor": "wrong sign" },
+        { "tag": "square-sign", "desc": "confuses (-a)^2 with -a^2", "distractor": "opposite sign of the square" },
+        { "tag": "count-negatives", "desc": "miscounts negatives in a product of three", "distractor": "wrong sign" }
+      ],
+      "skin": "descent rate x time = altitude lost, thrust settings, repeated fuel-burn legs"
+    },
+    {
+      "id": "ns.2.2", "chapter": "ch2", "section": "2.2", "honors": false,
+      "name": "Dividing integers",
+      "standards": ["7.NS.A.2b", "7.NS.A.3"],
+      "im": ["G7.U5.L11", "G7.U5.L12"], "khan": "K-NEG:dividing negative numbers",
+      "reps": ["fact-family"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "Same sign rule as multiplication. -(p/q) = (-p)/q = p/(-q). You cannot divide by 0.",
+      "tiers": [
+        "one negative, exact quotients <= 12",
+        "both negative, exact quotients",
+        "identify equivalent forms of -(p/q); quotient that is a fraction",
+        "negative rates: total change / time in a context"
+      ],
+      "gen": "T1: q in [2,12], a = q*b with b in [-12,-1]. T2: both negative. T3: pick the expression NOT equal to -(p/q); or 7 / (-2) = -3.5. T4: altitude lost over minutes -> rate per minute.",
+      "errors": [
+        { "tag": "add-rule-on-div", "desc": "neg / neg = neg", "distractor": "wrong sign" },
+        { "tag": "zero-confusion", "desc": "0/n vs n/0 confused", "distractor": "0 or 'undefined' swapped" },
+        { "tag": "equiv-forms", "desc": "thinks -6/2 differs from 6/(-2)", "distractor": "pick the equal form as unequal" }
+      ],
+      "skin": "average descent rate, fuel burn per minute from a total, splitting a negative credit balance"
+    },
+    {
+      "id": "ns.2.3", "chapter": "ch2", "section": "2.3", "honors": false,
+      "name": "Converting between fractions and decimals",
+      "standards": ["7.NS.A.2b", "7.NS.A.2d"],
+      "im": ["G7.U4.L5"], "khan": "K-NEG:fractions to decimals",
+      "reps": ["long-division"],
+      "formats": ["numeric", "fraction", "multiple-choice"],
+      "key": "Divide numerator by denominator. The decimal terminates if the remainder hits 0, repeats if a remainder repeats (bar over the repeating digits).",
+      "tiers": [
+        "terminating decimals (denominators 2, 4, 5, 8, 10, 20, 25)",
+        "repeating decimals (denominators 3, 6, 9, 11, 12)",
+        "decimal to fraction in simplest form; mixed numbers",
+        "choose terminating vs repeating without computing, from the denominator"
+      ],
+      "gen": "T1/T2 pick denominator from the listed sets, numerator coprime. T3: decimal with 1-3 places -> reduce. T4: multiple choice on which fractions terminate.",
+      "errors": [
+        { "tag": "divide-backwards", "desc": "divides denominator by numerator", "distractor": "b/a" },
+        { "tag": "bar-placement", "desc": "bar over the wrong digits", "distractor": "misplaced repeat" },
+        { "tag": "truncate", "desc": "1/3 = 0.33", "distractor": "rounded value marked as exact" }
+      ],
+      "skin": "fuel gauge fractions vs digital readout, Mach fraction to decimal"
+    },
+    {
+      "id": "ns.2.4", "chapter": "ch2", "section": "2.4", "honors": false,
+      "name": "Multiplying rational numbers",
+      "standards": ["7.NS.A.2a", "7.NS.A.2c", "7.NS.A.3"],
+      "im": ["G7.U5.L9", "G7.U5.L10", "G7.U5.L13"], "khan": "K-NEG:multiplying negative fractions",
+      "reps": ["area-model"],
+      "formats": ["fraction", "numeric", "multiple-choice"],
+      "key": "Decide the sign first. Convert mixed numbers to improper fractions. Simplify, then multiply straight across.",
+      "tiers": [
+        "signed decimal x integer",
+        "signed fraction x fraction, simple denominators",
+        "mixed numbers with signs",
+        "three factors mixing fractions and decimals in a context"
+      ],
+      "gen": "T1: decimal to 0.1 x integer. T2: denominators 2..9. T3: mixed numbers to 4, one negative. T4: rate x fraction of time x count.",
+      "errors": [
+        { "tag": "mixed-parts", "desc": "multiplies whole parts and fraction parts separately", "distractor": "(a*c) + (b/d * e/f)" },
+        { "tag": "drop-sign", "desc": "sign lost in the product", "distractor": "|correct|" },
+        { "tag": "cross-cancel-wrong", "desc": "cancels within the same fraction", "distractor": "wrong simplification" }
+      ],
+      "skin": "fraction of a tank burned per leg, thrust as a fraction of max, scaled ordnance loads"
+    },
+    {
+      "id": "ns.2.5", "chapter": "ch2", "section": "2.5", "honors": false,
+      "name": "Dividing rational numbers and complex fractions",
+      "standards": ["7.NS.A.2b", "7.NS.A.3"],
+      "im": ["G7.U5.L11", "G7.U5.L13", "G7.U5.L14"], "khan": "K-NEG:dividing negative fractions",
+      "reps": ["tape-diagram"],
+      "formats": ["fraction", "numeric", "multiple-choice"],
+      "key": "Decide the sign. Keep the first fraction, change division to multiplication, flip the second fraction. A complex fraction is just a division problem.",
+      "tiers": [
+        "signed decimal / integer",
+        "fraction / fraction with signs",
+        "mixed numbers; simplify a complex fraction like (1/2)/(3/4)",
+        "multi-step context combining division and another operation"
+      ],
+      "gen": "T1: decimals to 0.1. T2: denominators 2..9. T3: mixed to 4; complex fraction from two fractions. T4: total / (fraction of time) etc.",
+      "errors": [
+        { "tag": "flip-dividend", "desc": "flips the first fraction instead of the second", "distractor": "(b/a) * (c/d)" },
+        { "tag": "flip-both", "desc": "flips both", "distractor": "(b/a)*(d/c)" },
+        { "tag": "sign-rule", "desc": "wrong sign", "distractor": "opposite sign" }
+      ],
+      "skin": "how many legs a fraction of a tank covers, splitting a fuel load across tanks, complex fraction as rate over rate"
+    }
+  ]
+}

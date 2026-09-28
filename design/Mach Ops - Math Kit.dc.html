@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#06090E;} a{color:#86F0A3;} a:hover{color:#F5B841;} .mk{font-family:'IBM Plex Mono',monospace;}</style>
+</helmet>
+<div style="padding:48px;display:flex;flex-direction:column;gap:56px;font-family:'IBM Plex Mono',monospace;color:#E6EDF5;max-width:1600px;">
+
+  <div style="display:flex;flex-direction:column;gap:6px;border-bottom:1px solid #223347;padding-bottom:20px;">
+    <div style="font-size:14px;color:#86F0A3;letter-spacing:0.18em;">LIBRARY SHEET · MATH KIT</div>
+    <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:44px;line-height:1;letter-spacing:0.02em;">MATH KIT <span style="color:#86F0A3;font-size:24px;letter-spacing:0.08em;">DIAGRAMS · TABLES · MATH TEXT STYLE</span></div>
+    <div style="font-family:'IBM Plex Sans',sans-serif;font-size:16px;color:#8BA0B8;max-width:900px;line-height:1.5;margin-top:8px;">All diagrams render on panel #0D1520 with grid #152131. Series A = ice blue #7DD3FC, series B = amber #F5B841; the two never rely on hue alone — A is solid/filled, B is dashed/hollow. Labels 14 px Plex Mono. Green is reserved for the correct-answer highlight and HUD chrome.</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">MK-0 · MATH TEXT STYLE · ONE RULESET FOR CARDS AND MANUAL PAGES</div>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;">
+      <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">FRACTION · STACKED</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:22px;"><span style="display:inline-flex;flex-direction:column;align-items:center;line-height:1;"><span style="padding:0 4px 3px;border-bottom:2px solid #E6EDF5;">3</span><span style="padding:3px 4px 0;">4</span></span><span>+</span><span style="display:inline-flex;flex-direction:column;align-items:center;line-height:1;"><span style="padding:0 4px 3px;border-bottom:2px solid #E6EDF5;">−5</span><span style="padding:3px 4px 0;">8</span></span><span>=</span><span style="display:inline-flex;flex-direction:column;align-items:center;line-height:1;color:#86F0A3;"><span style="padding:0 4px 3px;border-bottom:2px solid #86F0A3;">1</span><span style="padding:3px 4px 0;">8</span></span></div>
+        <div style="font-size:14px;color:#8BA0B8;line-height:1.5;">Mixed: 2<span style="display:inline-flex;flex-direction:column;align-items:center;line-height:1;font-size:11px;vertical-align:middle;margin-left:2px;"><span style="border-bottom:1px solid #8BA0B8;padding:0 2px 1px;">1</span><span style="padding:1px 2px 0;">3</span></span> · inline fallback 3/4 only in tables</div>
+      </div>
+      <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">EXPONENT · SCIENTIFIC · ROOTS</div>
+        <div style="font-size:22px;display:flex;flex-direction:column;gap:6px;"><span>3<sup style="font-size:13px;vertical-align:top;position:relative;top:-2px;">4</sup> · x<sup style="font-size:13px;vertical-align:top;position:relative;top:-2px;">−2</sup> · (2<sup style="font-size:13px;vertical-align:top;position:relative;top:-2px;">3</sup>)<sup style="font-size:13px;vertical-align:top;position:relative;top:-2px;">2</sup></span><span>6.02 × 10<sup style="font-size:13px;vertical-align:top;position:relative;top:-2px;">23</sup> · 4.5 × 10<sup style="font-size:13px;vertical-align:top;position:relative;top:-2px;">−3</sup></span><span>√<span style="border-top:2px solid #E6EDF5;padding:0 3px;">144</span> = 12 · <sup style="font-size:13px;position:relative;top:-6px;">3</sup>√<span style="border-top:2px solid #E6EDF5;padding:0 3px;">27</span> = 3</span></div>
+        <div style="font-size:14px;color:#8BA0B8;line-height:1.5;">Superscript 60% size, raised; radical overbar spans the radicand</div>
+      </div>
+      <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">ABSOLUTE · REPEATING · π</div>
+        <div style="font-size:22px;display:flex;flex-direction:column;gap:6px;"><span>|−7| = 7 · |x − 3|</span><span>0.<span style="border-top:2px solid #E6EDF5;">3</span> · 2.1<span style="border-top:2px solid #E6EDF5;">45</span></span><span>C = 2πr · A = πr<sup style="font-size:13px;vertical-align:top;position:relative;top:-2px;">2</sup></span></div>
+        <div style="font-size:14px;color:#8BA0B8;line-height:1.5;">Bars are 2 px, same as fraction rule; π set in Plex Mono, never italic</div>
+      </div>
+      <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">RELATIONS · SIGNS · SPACING</div>
+        <div style="font-size:22px;display:flex;flex-direction:column;gap:6px;"><span>x ≤ −4 · y ≥ 2.5 · a ≠ b</span><span>−3 − (−8) = 5</span><span>4(x + 2) = 3x − 7</span></div>
+        <div style="font-size:14px;color:#8BA0B8;line-height:1.5;">Proper minus U+2212, never hyphen · thin space around binary operators · none after unary minus</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">MK-1 · NUMBER LINES</div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;">
+      <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">INTEGER ADD / SUBTRACT · ARROWS</div>
+        <svg viewBox="0 0 440 110" width="100%" style="display:block;">
+          <line x1="20" y1="70" x2="420" y2="70" stroke="#8BA0B8" stroke-width="2"></line>
+          <polygon points="420,70 410,65 410,75" fill="#8BA0B8"></polygon><polygon points="20,70 30,65 30,75" fill="#8BA0B8"></polygon>
+          <g stroke="#8BA0B8" stroke-width="2"><line x1="60" y1="64" x2="60" y2="76"></line><line x1="100" y1="64" x2="100" y2="76"></line><line x1="140" y1="64" x2="140" y2="76"></line><line x1="180" y1="64" x2="180" y2="76"></line><line x1="220" y1="60" x2="220" y2="80" stroke="#E6EDF5"></line><line x1="260" y1="64" x2="260" y2="76"></line><line x1="300" y1="64" x2="300" y2="76"></line><line x1="340" y1="64" x2="340" y2="76"></line><line x1="380" y1="64" x2="380" y2="76"></line></g>
+          <g font-family="IBM Plex Mono" font-size="14" fill="#8BA0B8" text-anchor="middle"><text x="60" y="98">−4</text><text x="100" y="98">−3</text><text x="140" y="98">−2</text><text x="180" y="98">−1</text><text x="220" y="98" fill="#E6EDF5">0</text><text x="260" y="98">1</text><text x="300" y="98">2</text><text x="340" y="98">3</text><text x="380" y="98">4</text></g>
+          <path d="M340 48 A60 60 0 0 0 140 48" fill="none" stroke="#7DD3FC" stroke-width="3"></path><polygon points="140,48 150,36 154,50" fill="#7DD3FC"></polygon>
+          <path d="M140 40 A40 40 0 0 1 260 40" fill="none" stroke="#F5B841" stroke-width="3" stroke-dasharray="6 5"></path><polygon points="260,40 250,30 246,44" fill="#F5B841"></polygon>
+          <circle cx="340" cy="70" r="6" fill="#7DD3FC"></circle><circle cx="260" cy="70" r="6" fill="#F5B841"></circle>
+          <text x="240" y="20" font-family="IBM Plex Mono" font-size="14" fill="#7DD3FC" text-anchor="middle">−5</text><text x="200" y="26" font-family="IBM Plex Mono" font-size="14" fill="#F5B841" text-anchor="start">+3</text>
+        </svg>
+        <div style="font-size:14px;color:#8BA0B8;">3 − 5 + 3 = 1 · solid arrow first move, dashed second</div>
+      </div>
+      <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">INEQUALITY · OPEN / CLOSED · SHADING</div>
+        <svg viewBox="0 0 440 110" width="100%" style="display:block;">
+          <line x1="20" y1="40" x2="420" y2="40" stroke="#8BA0B8" stroke-width="2"></line><polygon points="420,40 410,35 410,45" fill="#8BA0B8"></polygon><polygon points="20,40 30,35 30,45" fill="#8BA0B8"></polygon>
+          <line x1="180" y1="40" x2="412" y2="40" stroke="#7DD3FC" stroke-width="6"></line><polygon points="420,40 406,32 406,48" fill="#7DD3FC"></polygon>
+          <circle cx="180" cy="40" r="8" fill="#0D1520" stroke="#7DD3FC" stroke-width="3"></circle>
+          <line x1="20" y1="90" x2="420" y2="90" stroke="#8BA0B8" stroke-width="2"></line><polygon points="420,90 410,85 410,95" fill="#8BA0B8"></polygon><polygon points="20,90 30,85 30,95" fill="#8BA0B8"></polygon>
+          <line x1="28" y1="90" x2="300" y2="90" stroke="#F5B841" stroke-width="6" stroke-dasharray="10 6"></line><polygon points="20,90 34,82 34,98" fill="#F5B841"></polygon>
+          <circle cx="300" cy="90" r="8" fill="#F5B841" stroke="#F5B841" stroke-width="3"></circle>
+          <g font-family="IBM Plex Mono" font-size="14" fill="#8BA0B8" text-anchor="middle"><text x="180" y="20" fill="#E6EDF5">−1</text><text x="300" y="70" fill="#E6EDF5">2</text><text x="60" y="20">−4</text><text x="380" y="20">4</text><text x="60" y="70">−4</text><text x="380" y="70">4</text></g>
+          <text x="300" y="20" font-family="IBM Plex Mono" font-size="14" fill="#7DD3FC">x &gt; −1</text><text x="80" y="70" font-family="IBM Plex Mono" font-size="14" fill="#F5B841">x ≤ 2</text>
+        </svg>
+        <div style="font-size:14px;color:#8BA0B8;">Open circle = strict · closed = inclusive · shade 6 px</div>
+      </div>
+      <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">ORDERING · RATIONAL &amp; IRRATIONAL</div>
+        <svg viewBox="0 0 440 110" width="100%" style="display:block;">
+          <line x1="20" y1="70" x2="420" y2="70" stroke="#8BA0B8" stroke-width="2"></line><polygon points="420,70 410,65 410,75" fill="#8BA0B8"></polygon>
+          <g stroke="#8BA0B8" stroke-width="2"><line x1="40" y1="64" x2="40" y2="76"></line><line x1="130" y1="64" x2="130" y2="76"></line><line x1="220" y1="64" x2="220" y2="76"></line><line x1="310" y1="64" x2="310" y2="76"></line><line x1="400" y1="64" x2="400" y2="76"></line></g>
+          <g font-family="IBM Plex Mono" font-size="14" fill="#8BA0B8" text-anchor="middle"><text x="40" y="98">0</text><text x="130" y="98">1</text><text x="220" y="98">2</text><text x="310" y="98">3</text><text x="400" y="98">4</text></g>
+          <circle cx="167" cy="70" r="6" fill="#7DD3FC"></circle><text x="167" y="40" font-family="IBM Plex Mono" font-size="14" fill="#7DD3FC" text-anchor="middle">√2</text><line x1="167" y1="46" x2="167" y2="62" stroke="#7DD3FC" stroke-width="1.5"></line>
+          <circle cx="242" cy="70" r="6" fill="#0D1520" stroke="#F5B841" stroke-width="3"></circle><text x="242" y="40" font-family="IBM Plex Mono" font-size="14" fill="#F5B841" text-anchor="middle">9/4</text><line x1="242" y1="46" x2="242" y2="62" stroke="#F5B841" stroke-width="1.5"></line>
+          <circle cx="323" cy="70" r="6" fill="#7DD3FC"></circle><text x="323" y="40" font-family="IBM Plex Mono" font-size="14" fill="#7DD3FC" text-anchor="middle">π</text><line x1="323" y1="46" x2="323" y2="62" stroke="#7DD3FC" stroke-width="1.5"></line>
+          <circle cx="94" cy="70" r="6" fill="#0D1520" stroke="#F5B841" stroke-width="3"></circle><text x="94" y="40" font-family="IBM Plex Mono" font-size="14" fill="#F5B841" text-anchor="middle">0.6</text><line x1="94" y1="46" x2="94" y2="62" stroke="#F5B841" stroke-width="1.5"></line>
+        </svg>
+        <div style="font-size:14px;color:#8BA0B8;">Filled = irrational (approx.), hollow = rational (exact)</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">MK-2 · COORDINATE PLANE</div>
+    <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;">
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">POINTS</div>
+        <svg viewBox="0 0 240 240" width="100%" style="display:block;">
+          <g stroke="#152131" stroke-width="1"><path d="M20 20V220M60 20V220M100 20V220M140 20V220M180 20V220M220 20V220M20 20H220M20 60H220M20 100H220M20 140H220M20 180H220M20 220H220"></path></g>
+          <line x1="20" y1="120" x2="228" y2="120" stroke="#8BA0B8" stroke-width="2"></line><line x1="120" y1="12" x2="120" y2="220" stroke="#8BA0B8" stroke-width="2"></line>
+          <polygon points="228,120 220,115 220,125" fill="#8BA0B8"></polygon><polygon points="120,12 115,20 125,20" fill="#8BA0B8"></polygon>
+          <circle cx="180" cy="60" r="6" fill="#7DD3FC"></circle><text x="188" y="56" font-family="IBM Plex Mono" font-size="14" fill="#7DD3FC">(3, 3)</text>
+          <circle cx="60" cy="180" r="6" fill="#0D1520" stroke="#F5B841" stroke-width="3"></circle><text x="30" y="204" font-family="IBM Plex Mono" font-size="14" fill="#F5B841">(−3, −3)</text>
+          <text x="226" y="136" font-family="IBM Plex Mono" font-size="14" fill="#8BA0B8">x</text><text x="106" y="22" font-family="IBM Plex Mono" font-size="14" fill="#8BA0B8">y</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">PROPORTIONAL · THROUGH ORIGIN</div>
+        <svg viewBox="0 0 240 240" width="100%" style="display:block;">
+          <g stroke="#152131" stroke-width="1"><path d="M20 20V220M60 20V220M100 20V220M140 20V220M180 20V220M220 20V220M20 20H220M20 60H220M20 100H220M20 140H220M20 180H220M20 220H220"></path></g>
+          <line x1="20" y1="220" x2="228" y2="220" stroke="#8BA0B8" stroke-width="2"></line><line x1="20" y1="12" x2="20" y2="220" stroke="#8BA0B8" stroke-width="2"></line>
+          <line x1="20" y1="220" x2="220" y2="70" stroke="#7DD3FC" stroke-width="3"></line>
+          <circle cx="100" cy="160" r="5" fill="#7DD3FC"></circle><circle cx="180" cy="100" r="5" fill="#7DD3FC"></circle>
+          <text x="108" y="150" font-family="IBM Plex Mono" font-size="14" fill="#E6EDF5">(2, 1.5)</text><text x="150" y="60" font-family="IBM Plex Mono" font-size="14" fill="#7DD3FC">k = 0.75</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">SYSTEM · TWO LINES</div>
+        <svg viewBox="0 0 240 240" width="100%" style="display:block;">
+          <g stroke="#152131" stroke-width="1"><path d="M20 20V220M60 20V220M100 20V220M140 20V220M180 20V220M220 20V220M20 20H220M20 60H220M20 100H220M20 140H220M20 180H220M20 220H220"></path></g>
+          <line x1="20" y1="220" x2="228" y2="220" stroke="#8BA0B8" stroke-width="2"></line><line x1="20" y1="12" x2="20" y2="220" stroke="#8BA0B8" stroke-width="2"></line>
+          <line x1="20" y1="200" x2="220" y2="60" stroke="#7DD3FC" stroke-width="3"></line>
+          <line x1="20" y1="60" x2="220" y2="180" stroke="#F5B841" stroke-width="3" stroke-dasharray="8 6"></line>
+          <circle cx="118" cy="131" r="7" fill="#86F0A3" stroke="#0A1018" stroke-width="2"></circle><text x="128" y="128" font-family="IBM Plex Mono" font-size="14" fill="#86F0A3">(2.5, 2.2)</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">HALF-PLANE · y &lt; 2x + 1</div>
+        <svg viewBox="0 0 240 240" width="100%" style="display:block;">
+          <defs><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#7DD3FC" stroke-width="2" opacity="0.55"></line></pattern></defs>
+          <g stroke="#152131" stroke-width="1"><path d="M20 20V220M60 20V220M100 20V220M140 20V220M180 20V220M220 20V220M20 20H220M20 60H220M20 100H220M20 140H220M20 180H220M20 220H220"></path></g>
+          <polygon points="60,220 220,220 220,20 160,20" fill="url(#hatch)"></polygon>
+          <line x1="20" y1="120" x2="228" y2="120" stroke="#8BA0B8" stroke-width="2"></line><line x1="120" y1="12" x2="120" y2="220" stroke="#8BA0B8" stroke-width="2"></line>
+          <line x1="60" y1="220" x2="160" y2="20" stroke="#7DD3FC" stroke-width="3" stroke-dasharray="8 6"></line>
+          <text x="150" y="200" font-family="IBM Plex Mono" font-size="14" fill="#7DD3FC">shaded</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">SCATTER · DRAGGABLE LINE OF FIT</div>
+        <svg viewBox="0 0 240 240" width="100%" style="display:block;">
+          <g stroke="#152131" stroke-width="1"><path d="M20 20V220M60 20V220M100 20V220M140 20V220M180 20V220M220 20V220M20 20H220M20 60H220M20 100H220M20 140H220M20 180H220M20 220H220"></path></g>
+          <line x1="20" y1="220" x2="228" y2="220" stroke="#8BA0B8" stroke-width="2"></line><line x1="20" y1="12" x2="20" y2="220" stroke="#8BA0B8" stroke-width="2"></line>
+          <g fill="#7DD3FC"><circle cx="40" cy="190" r="4"></circle><circle cx="60" cy="170" r="4"></circle><circle cx="80" cy="176" r="4"></circle><circle cx="100" cy="150" r="4"></circle><circle cx="120" cy="140" r="4"></circle><circle cx="140" cy="118" r="4"></circle><circle cx="160" cy="124" r="4"></circle><circle cx="180" cy="96" r="4"></circle><circle cx="200" cy="90" r="4"></circle><circle cx="210" cy="70" r="4"></circle></g>
+          <line x1="30" y1="200" x2="220" y2="72" stroke="#F5B841" stroke-width="3"></line>
+          <circle cx="30" cy="200" r="11" fill="#0D1520" stroke="#F5B841" stroke-width="3"></circle><circle cx="220" cy="72" r="11" fill="#0D1520" stroke="#F5B841" stroke-width="3"></circle>
+          <circle cx="30" cy="200" r="4" fill="#F5B841"></circle><circle cx="220" cy="72" r="4" fill="#F5B841"></circle>
+        </svg>
+        <div style="font-size:14px;color:#8BA0B8;">Handles 44 px hit area · slope readout live</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">MK-3 · TABLES</div>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;">
+      <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">RATIO TABLE</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid #223347;border-radius:8px;overflow:hidden;font-size:16px;text-align:center;">
+          <div style="padding:8px;background:#111B27;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;border-bottom:1px solid #223347;border-right:1px solid #223347;">FUEL LB</div><div style="padding:8px;background:#111B27;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;border-bottom:1px solid #223347;">MIN</div>
+          <div style="padding:8px;border-right:1px solid #223347;border-bottom:1px solid #223347;">350</div><div style="padding:8px;border-bottom:1px solid #223347;">1</div>
+          <div style="padding:8px;border-right:1px solid #223347;border-bottom:1px solid #223347;">1,050</div><div style="padding:8px;border-bottom:1px solid #223347;">3</div>
+          <div style="padding:8px;border-right:1px solid #223347;border-bottom:1px solid #223347;color:#86F0A3;border-color:#223347;background:#0F1F1A;">?</div><div style="padding:8px;border-bottom:1px solid #223347;">5</div>
+          <div style="padding:8px;border-right:1px solid #223347;">4,200</div><div style="padding:8px;">12</div>
+        </div>
+      </div>
+      <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">TWO-WAY FREQUENCY</div>
+        <div style="display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;border:1px solid #223347;border-radius:8px;overflow:hidden;font-size:14px;text-align:center;">
+          <div style="padding:8px;background:#111B27;border-right:1px solid #223347;border-bottom:1px solid #223347;"></div><div style="padding:8px;background:#111B27;color:#8BA0B8;letter-spacing:0.1em;border-right:1px solid #223347;border-bottom:1px solid #223347;">HYD</div><div style="padding:8px;background:#111B27;color:#8BA0B8;letter-spacing:0.1em;border-right:1px solid #223347;border-bottom:1px solid #223347;">AVIO</div><div style="padding:8px;background:#111B27;color:#8BA0B8;letter-spacing:0.1em;border-bottom:1px solid #223347;">TOTAL</div>
+          <div style="padding:8px;background:#111B27;color:#8BA0B8;letter-spacing:0.1em;text-align:left;border-right:1px solid #223347;border-bottom:1px solid #223347;">F-16</div><div style="padding:8px;border-right:1px solid #223347;border-bottom:1px solid #223347;">12</div><div style="padding:8px;border-right:1px solid #223347;border-bottom:1px solid #223347;">8</div><div style="padding:8px;border-bottom:1px solid #223347;color:#8BA0B8;">20</div>
+          <div style="padding:8px;background:#111B27;color:#8BA0B8;letter-spacing:0.1em;text-align:left;border-right:1px solid #223347;border-bottom:1px solid #223347;">F-15</div><div style="padding:8px;border-right:1px solid #223347;border-bottom:1px solid #223347;">6</div><div style="padding:8px;border-right:1px solid #223347;border-bottom:1px solid #223347;">14</div><div style="padding:8px;border-bottom:1px solid #223347;color:#8BA0B8;">20</div>
+          <div style="padding:8px;background:#111B27;color:#8BA0B8;letter-spacing:0.1em;text-align:left;border-right:1px solid #223347;">TOTAL</div><div style="padding:8px;border-right:1px solid #223347;color:#8BA0B8;">18</div><div style="padding:8px;border-right:1px solid #223347;color:#8BA0B8;">22</div><div style="padding:8px;color:#8BA0B8;">40</div>
+        </div>
+      </div>
+      <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">FUNCTION TABLE · INPUT → OUTPUT</div>
+        <div style="display:grid;grid-template-columns:1fr 24px 1fr;border:1px solid #223347;border-radius:8px;overflow:hidden;font-size:16px;text-align:center;">
+          <div style="padding:8px;background:#111B27;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;border-bottom:1px solid #223347;">THROTTLE %</div><div style="background:#111B27;border-bottom:1px solid #223347;"></div><div style="padding:8px;background:#111B27;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;border-bottom:1px solid #223347;">THRUST LB</div>
+          <div style="padding:8px;border-bottom:1px solid #223347;">50</div><div style="padding:8px 0;border-bottom:1px solid #223347;color:#8BA0B8;">→</div><div style="padding:8px;border-bottom:1px solid #223347;">9,000</div>
+          <div style="padding:8px;border-bottom:1px solid #223347;">75</div><div style="padding:8px 0;border-bottom:1px solid #223347;color:#8BA0B8;">→</div><div style="padding:8px;border-bottom:1px solid #223347;">13,500</div>
+          <div style="padding:8px;">100</div><div style="padding:8px 0;color:#8BA0B8;">→</div><div style="padding:8px;color:#86F0A3;background:#0F1F1A;">?</div>
+        </div>
+        <div style="font-size:14px;color:#8BA0B8;">f(x) = 180x</div>
+      </div>
+      <div style="padding:16px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">DATA TABLE · CENTER / SPREAD</div>
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);border:1px solid #223347;border-radius:8px;overflow:hidden;font-size:16px;text-align:center;">
+          <div style="grid-column:1 / -1;padding:8px;background:#111B27;color:#8BA0B8;font-size:14px;letter-spacing:0.1em;border-bottom:1px solid #223347;text-align:left;">LANDING ROLL · FT</div>
+          <div style="padding:8px;border-right:1px solid #223347;">2,400</div><div style="padding:8px;border-right:1px solid #223347;">2,650</div><div style="padding:8px;border-right:1px solid #223347;">2,500</div><div style="padding:8px;border-right:1px solid #223347;">3,100</div><div style="padding:8px;border-right:1px solid #223347;">2,450</div><div style="padding:8px;">2,700</div>
+        </div>
+        <div style="display:flex;gap:16px;font-size:14px;color:#8BA0B8;"><span>MEAN <span style="color:#E6EDF5;">2,633</span></span><span>MEDIAN <span style="color:#E6EDF5;">2,575</span></span><span>MAD <span style="color:#E6EDF5;">200</span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">MK-4 · MODELS · TAPE · DOUBLE NUMBER LINE · HANGER · AREA MODEL · MAPPING</div>
+    <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;">
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">TAPE DIAGRAM · 3:2</div>
+        <svg viewBox="0 0 240 120" width="100%" style="display:block;">
+          <g stroke="#0A1018" stroke-width="2"><rect x="10" y="20" width="60" height="30" fill="#7DD3FC"></rect><rect x="70" y="20" width="60" height="30" fill="#7DD3FC"></rect><rect x="130" y="20" width="60" height="30" fill="#7DD3FC"></rect><rect x="10" y="70" width="60" height="30" fill="none" stroke="#F5B841" stroke-dasharray="5 4"></rect><rect x="70" y="70" width="60" height="30" fill="none" stroke="#F5B841" stroke-dasharray="5 4"></rect></g>
+          <text x="200" y="40" font-family="IBM Plex Mono" font-size="14" fill="#E6EDF5">FUEL</text><text x="140" y="90" font-family="IBM Plex Mono" font-size="14" fill="#E6EDF5">OXID.</text>
+          <text x="10" y="115" font-family="IBM Plex Mono" font-size="14" fill="#8BA0B8">each box = 400 lb</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">DOUBLE NUMBER LINE</div>
+        <svg viewBox="0 0 240 120" width="100%" style="display:block;">
+          <line x1="10" y1="40" x2="230" y2="40" stroke="#7DD3FC" stroke-width="2"></line><line x1="10" y1="90" x2="230" y2="90" stroke="#F5B841" stroke-width="2" stroke-dasharray="6 4"></line>
+          <g stroke="#E6EDF5" stroke-width="2"><line x1="30" y1="34" x2="30" y2="46"></line><line x1="80" y1="34" x2="80" y2="46"></line><line x1="130" y1="34" x2="130" y2="46"></line><line x1="180" y1="34" x2="180" y2="46"></line><line x1="30" y1="84" x2="30" y2="96"></line><line x1="80" y1="84" x2="80" y2="96"></line><line x1="130" y1="84" x2="130" y2="96"></line><line x1="180" y1="84" x2="180" y2="96"></line></g>
+          <g font-family="IBM Plex Mono" font-size="14" text-anchor="middle"><text x="30" y="26" fill="#7DD3FC">0</text><text x="80" y="26" fill="#7DD3FC">10</text><text x="130" y="26" fill="#7DD3FC">20</text><text x="180" y="26" fill="#7DD3FC">30</text><text x="30" y="112" fill="#F5B841">0</text><text x="80" y="112" fill="#F5B841">0.6</text><text x="130" y="112" fill="#F5B841">1.2</text><text x="180" y="112" fill="#86F0A3">?</text></g>
+          <text x="196" y="44" font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8">SEC</text><text x="196" y="94" font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8">NM</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">HANGER · 2x + 3 = 11</div>
+        <svg viewBox="0 0 240 120" width="100%" style="display:block;">
+          <line x1="120" y1="8" x2="120" y2="30" stroke="#8BA0B8" stroke-width="2"></line><line x1="30" y1="30" x2="210" y2="30" stroke="#E6EDF5" stroke-width="3"></line><circle cx="120" cy="30" r="4" fill="#E6EDF5"></circle>
+          <line x1="50" y1="30" x2="50" y2="60" stroke="#8BA0B8" stroke-width="2"></line><line x1="190" y1="30" x2="190" y2="60" stroke="#8BA0B8" stroke-width="2"></line>
+          <g stroke="#0A1018" stroke-width="2"><rect x="20" y="60" width="26" height="26" fill="#7DD3FC"></rect><rect x="50" y="60" width="26" height="26" fill="#7DD3FC"></rect><circle cx="43" cy="102" r="12" fill="none" stroke="#F5B841" stroke-dasharray="4 3"></circle><circle cx="63" cy="102" r="12" fill="none" stroke="#F5B841" stroke-dasharray="4 3"></circle><circle cx="83" cy="102" r="12" fill="none" stroke="#F5B841" stroke-dasharray="4 3"></circle></g>
+          <g font-family="IBM Plex Mono" font-size="14" fill="#0A1018" text-anchor="middle" font-weight="600"><text x="33" y="78">x</text><text x="63" y="78">x</text></g>
+          <g font-family="IBM Plex Mono" font-size="12" fill="#F5B841" text-anchor="middle"><text x="43" y="106">1</text><text x="63" y="106">1</text><text x="83" y="106">1</text></g>
+          <rect x="158" y="60" width="64" height="46" fill="none" stroke="#F5B841" stroke-width="2" stroke-dasharray="4 3"></rect><text x="190" y="90" font-family="IBM Plex Mono" font-size="20" fill="#F5B841" text-anchor="middle">11</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">AREA MODEL · 3(x + 4)</div>
+        <svg viewBox="0 0 240 120" width="100%" style="display:block;">
+          <rect x="50" y="30" width="80" height="70" fill="#7DD3FC" opacity="0.25" stroke="#7DD3FC" stroke-width="2"></rect><rect x="130" y="30" width="80" height="70" fill="none" stroke="#F5B841" stroke-width="2" stroke-dasharray="5 4"></rect>
+          <g font-family="IBM Plex Mono" font-size="14" fill="#E6EDF5" text-anchor="middle"><text x="90" y="22">x</text><text x="170" y="22">4</text><text x="34" y="70">3</text><text x="90" y="70" fill="#7DD3FC">3x</text><text x="170" y="70" fill="#F5B841">12</text></g>
+          <text x="130" y="116" font-family="IBM Plex Mono" font-size="14" fill="#8BA0B8" text-anchor="middle">3x + 12</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">MAPPING · FUNCTION</div>
+        <svg viewBox="0 0 240 120" width="100%" style="display:block;">
+          <rect x="20" y="10" width="70" height="100" rx="8" fill="none" stroke="#223347" stroke-width="2"></rect><rect x="150" y="10" width="70" height="100" rx="8" fill="none" stroke="#223347" stroke-width="2"></rect>
+          <g font-family="IBM Plex Mono" font-size="14" fill="#E6EDF5" text-anchor="middle"><text x="55" y="36">50</text><text x="55" y="64">75</text><text x="55" y="92">100</text><text x="185" y="36">9,000</text><text x="185" y="64">13,500</text><text x="185" y="92">18,000</text></g>
+          <g stroke="#7DD3FC" stroke-width="2"><line x1="90" y1="32" x2="146" y2="32"></line><line x1="90" y1="60" x2="146" y2="60"></line><line x1="90" y1="88" x2="146" y2="88"></line></g>
+          <g fill="#7DD3FC"><polygon points="150,32 142,27 142,37"></polygon><polygon points="150,60 142,55 142,65"></polygon><polygon points="150,88 142,83 142,93"></polygon></g>
+          <text x="55" y="118" font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8" text-anchor="middle">IN</text><text x="185" y="118" font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8" text-anchor="middle">OUT</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">MK-5 · PROBABILITY · MK-6 · STATISTICS</div>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;">
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">LIKELIHOOD LINE 0–1</div>
+        <svg viewBox="0 0 300 80" width="100%" style="display:block;">
+          <line x1="20" y1="40" x2="280" y2="40" stroke="#8BA0B8" stroke-width="2"></line>
+          <g stroke="#E6EDF5" stroke-width="2"><line x1="20" y1="32" x2="20" y2="48"></line><line x1="150" y1="32" x2="150" y2="48"></line><line x1="280" y1="32" x2="280" y2="48"></line></g>
+          <g font-family="IBM Plex Mono" font-size="14" fill="#8BA0B8" text-anchor="middle"><text x="20" y="70">0</text><text x="150" y="70">1/2</text><text x="280" y="70">1</text><text x="20" y="20">impossible</text><text x="280" y="20">certain</text></g>
+          <circle cx="215" cy="40" r="7" fill="#7DD3FC"></circle><text x="215" y="20" font-family="IBM Plex Mono" font-size="14" fill="#7DD3FC" text-anchor="middle">0.75</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">TREE DIAGRAM · COMPOUND</div>
+        <svg viewBox="0 0 300 130" width="100%" style="display:block;">
+          <g stroke="#8BA0B8" stroke-width="2" fill="none"><path d="M30 65 L110 30 M30 65 L110 100 M110 30 L200 15 M110 30 L200 45 M110 100 L200 85 M110 100 L200 115"></path></g>
+          <g font-family="IBM Plex Mono" font-size="14" fill="#E6EDF5"><text x="10" y="70">WX</text><text x="116" y="34" fill="#7DD3FC">CLEAR 0.7</text><text x="116" y="104" fill="#F5B841">CLOUD 0.3</text><text x="206" y="19">LOCK 0.9</text><text x="206" y="49">MISS 0.1</text><text x="206" y="89">LOCK 0.6</text><text x="206" y="119">MISS 0.4</text></g>
+          <rect x="270" y="6" width="26" height="18" rx="3" fill="#86F0A3"></rect><text x="283" y="19" font-family="IBM Plex Mono" font-size="12" fill="#0A1018" text-anchor="middle" font-weight="600">.63</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">ORGANIZED LIST · SAMPLE SPACE</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;font-size:14px;text-align:center;">
+          <div style="padding:6px;border:1px solid #223347;border-radius:4px;">HH</div><div style="padding:6px;border:1px solid #7DD3FC;border-radius:4px;color:#7DD3FC;">HT</div><div style="padding:6px;border:1px solid #7DD3FC;border-radius:4px;color:#7DD3FC;">TH</div><div style="padding:6px;border:1px solid #223347;border-radius:4px;">TT</div>
+        </div>
+        <div style="font-size:14px;color:#8BA0B8;">P(exactly one H) = 2/4</div>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">SPINNER · DICE</div>
+        <svg viewBox="0 0 300 100" width="100%" style="display:block;">
+          <circle cx="60" cy="50" r="40" fill="none" stroke="#8BA0B8" stroke-width="2"></circle>
+          <path d="M60 50 L60 10 A40 40 0 0 1 100 50 Z" fill="#7DD3FC" opacity="0.6"></path><path d="M60 50 L100 50 A40 40 0 0 1 60 90 Z" fill="none" stroke="#F5B841" stroke-width="2" stroke-dasharray="4 3"></path>
+          <line x1="60" y1="50" x2="60" y2="10" stroke="#E6EDF5" stroke-width="2"></line><line x1="60" y1="50" x2="20" y2="50" stroke="#8BA0B8" stroke-width="1"></line><line x1="60" y1="50" x2="60" y2="90" stroke="#8BA0B8" stroke-width="1"></line><line x1="60" y1="50" x2="100" y2="50" stroke="#8BA0B8" stroke-width="1"></line>
+          <g font-family="IBM Plex Mono" font-size="12" fill="#E6EDF5" text-anchor="middle"><text x="78" y="36">A</text><text x="78" y="72">B</text><text x="42" y="72">C</text><text x="42" y="36">D</text></g>
+          <rect x="150" y="20" width="60" height="60" rx="8" fill="none" stroke="#8BA0B8" stroke-width="2"></rect><g fill="#E6EDF5"><circle cx="165" cy="35" r="5"></circle><circle cx="195" cy="35" r="5"></circle><circle cx="165" cy="65" r="5"></circle><circle cx="195" cy="65" r="5"></circle></g>
+          <text x="260" y="55" font-family="IBM Plex Mono" font-size="14" fill="#8BA0B8" text-anchor="middle">P(4) = 1/6</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">DOT PLOT</div>
+        <svg viewBox="0 0 300 110" width="100%" style="display:block;">
+          <line x1="20" y1="80" x2="280" y2="80" stroke="#8BA0B8" stroke-width="2"></line>
+          <g font-family="IBM Plex Mono" font-size="14" fill="#8BA0B8" text-anchor="middle"><text x="50" y="102">1</text><text x="100" y="102">2</text><text x="150" y="102">3</text><text x="200" y="102">4</text><text x="250" y="102">5</text></g>
+          <g fill="#7DD3FC"><circle cx="50" cy="68" r="6"></circle><circle cx="100" cy="68" r="6"></circle><circle cx="100" cy="52" r="6"></circle><circle cx="150" cy="68" r="6"></circle><circle cx="150" cy="52" r="6"></circle><circle cx="150" cy="36" r="6"></circle><circle cx="150" cy="20" r="6"></circle><circle cx="200" cy="68" r="6"></circle><circle cx="200" cy="52" r="6"></circle><circle cx="250" cy="68" r="6"></circle></g>
+          <text x="290" y="84" font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8" text-anchor="end">LOCKS / SORTIE</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">BOX PLOT · FIVE-NUMBER SUMMARY</div>
+        <svg viewBox="0 0 300 110" width="100%" style="display:block;">
+          <line x1="20" y1="85" x2="280" y2="85" stroke="#8BA0B8" stroke-width="2"></line>
+          <line x1="40" y1="50" x2="100" y2="50" stroke="#7DD3FC" stroke-width="2"></line><line x1="200" y1="50" x2="260" y2="50" stroke="#7DD3FC" stroke-width="2"></line>
+          <rect x="100" y="32" width="100" height="36" fill="#7DD3FC" opacity="0.25" stroke="#7DD3FC" stroke-width="2"></rect><line x1="150" y1="32" x2="150" y2="68" stroke="#E6EDF5" stroke-width="3"></line>
+          <g stroke="#7DD3FC" stroke-width="2"><line x1="40" y1="40" x2="40" y2="60"></line><line x1="260" y1="40" x2="260" y2="60"></line></g>
+          <g font-family="IBM Plex Mono" font-size="12" fill="#F5B841" text-anchor="middle"><text x="40" y="22">MIN 2</text><text x="100" y="22">Q1 5</text><text x="150" y="22" fill="#E6EDF5">MED 7</text><text x="200" y="22">Q3 9</text><text x="260" y="22">MAX 12</text></g>
+          <text x="150" y="104" font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8" text-anchor="middle">IQR 4</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;grid-column:span 2;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">TWO DOT PLOTS · COMPARE POPULATIONS</div>
+        <svg viewBox="0 0 600 120" width="100%" style="display:block;">
+          <g font-family="IBM Plex Mono" font-size="14"><text x="10" y="30" fill="#7DD3FC">F-16 SQN</text><text x="10" y="90" fill="#F5B841">F-15 SQN</text></g>
+          <line x1="100" y1="44" x2="580" y2="44" stroke="#8BA0B8" stroke-width="2"></line><line x1="100" y1="104" x2="580" y2="104" stroke="#8BA0B8" stroke-width="2"></line>
+          <g fill="#7DD3FC"><circle cx="160" cy="34" r="5"></circle><circle cx="220" cy="34" r="5"></circle><circle cx="220" cy="22" r="5"></circle><circle cx="280" cy="34" r="5"></circle><circle cx="280" cy="22" r="5"></circle><circle cx="280" cy="10" r="5"></circle><circle cx="340" cy="34" r="5"></circle><circle cx="400" cy="34" r="5"></circle></g>
+          <g fill="none" stroke="#F5B841" stroke-width="2"><circle cx="280" cy="94" r="5"></circle><circle cx="340" cy="94" r="5"></circle><circle cx="400" cy="94" r="5"></circle><circle cx="400" cy="82" r="5"></circle><circle cx="460" cy="94" r="5"></circle><circle cx="460" cy="82" r="5"></circle><circle cx="520" cy="94" r="5"></circle></g>
+          <g font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8" text-anchor="middle"><text x="160" y="118">2</text><text x="280" y="118">4</text><text x="400" y="118">6</text><text x="520" y="118">8</text></g>
+          <line x1="272" y1="4" x2="272" y2="48" stroke="#7DD3FC" stroke-width="1.5" stroke-dasharray="3 3"></line><line x1="406" y1="64" x2="406" y2="108" stroke="#F5B841" stroke-width="1.5" stroke-dasharray="3 3"></line>
+          <text x="590" y="70" font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8" text-anchor="end">mean diff ≈ 2.2 · about 1.5 MAD</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">MK-7 · GEOMETRY</div>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;">
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">ANGLE PAIRS</div>
+        <svg viewBox="0 0 300 130" width="100%" style="display:block;">
+          <line x1="10" y1="100" x2="140" y2="100" stroke="#E6EDF5" stroke-width="2"></line><line x1="75" y1="100" x2="130" y2="30" stroke="#E6EDF5" stroke-width="2"></line>
+          <path d="M100 100 A25 25 0 0 0 91 80" fill="none" stroke="#7DD3FC" stroke-width="3"></path><path d="M91 80 A25 25 0 0 0 50 100" fill="none" stroke="#F5B841" stroke-width="3" stroke-dasharray="4 3"></path>
+          <text x="104" y="86" font-family="IBM Plex Mono" font-size="12" fill="#7DD3FC">52°</text><text x="46" y="84" font-family="IBM Plex Mono" font-size="12" fill="#F5B841">128°</text><text x="75" y="122" font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8" text-anchor="middle">supplementary</text>
+          <line x1="170" y1="30" x2="290" y2="100" stroke="#E6EDF5" stroke-width="2"></line><line x1="170" y1="100" x2="290" y2="30" stroke="#E6EDF5" stroke-width="2"></line>
+          <path d="M248 78 A22 22 0 0 1 248 52" fill="none" stroke="#7DD3FC" stroke-width="3"></path><path d="M212 52 A22 22 0 0 1 212 78" fill="none" stroke="#7DD3FC" stroke-width="3"></path>
+          <text x="230" y="122" font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8" text-anchor="middle">vertical · equal</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">PARALLEL LINES · TRANSVERSAL</div>
+        <svg viewBox="0 0 300 130" width="100%" style="display:block;">
+          <line x1="20" y1="40" x2="280" y2="40" stroke="#E6EDF5" stroke-width="2"></line><line x1="20" y1="95" x2="280" y2="95" stroke="#E6EDF5" stroke-width="2"></line>
+          <line x1="90" y1="120" x2="210" y2="15" stroke="#F5B841" stroke-width="2"></line>
+          <g stroke="#8BA0B8" stroke-width="2"><path d="M40 36 L48 40 L40 44 M40 91 L48 95 L40 99"></path></g>
+          <path d="M182 40 A18 18 0 0 1 172 26" fill="none" stroke="#7DD3FC" stroke-width="3"></path><path d="M119 95 A18 18 0 0 1 109 81" fill="none" stroke="#7DD3FC" stroke-width="3"></path>
+          <g font-family="IBM Plex Mono" font-size="12" fill="#7DD3FC"><text x="190" y="26">1</text><text x="127" y="81">5</text></g>
+          <text x="150" y="124" font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8" text-anchor="middle">corresponding · ∠1 = ∠5</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">CIRCLE · r · d</div>
+        <svg viewBox="0 0 300 130" width="100%" style="display:block;">
+          <circle cx="110" cy="65" r="52" fill="none" stroke="#E6EDF5" stroke-width="2"></circle><circle cx="110" cy="65" r="3" fill="#E6EDF5"></circle>
+          <line x1="110" y1="65" x2="162" y2="65" stroke="#7DD3FC" stroke-width="3"></line><line x1="58" y1="65" x2="110" y2="65" stroke="#F5B841" stroke-width="3" stroke-dasharray="4 3"></line>
+          <text x="136" y="58" font-family="IBM Plex Mono" font-size="14" fill="#7DD3FC" text-anchor="middle">r = 4</text><text x="110" y="90" font-family="IBM Plex Mono" font-size="14" fill="#F5B841" text-anchor="middle">d = 8</text>
+          <g font-family="IBM Plex Mono" font-size="14" fill="#8BA0B8"><text x="190" y="52">C = πd ≈ 25.1</text><text x="190" y="80">A = πr² ≈ 50.3</text></g>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">COMPOSITE FIGURE · GRID</div>
+        <svg viewBox="0 0 300 130" width="100%" style="display:block;">
+          <g stroke="#152131" stroke-width="1"><path d="M20 10V120M45 10V120M70 10V120M95 10V120M120 10V120M145 10V120M170 10V120M195 10V120M220 10V120M20 20H220M20 45H220M20 70H220M20 95H220M20 120H220"></path></g>
+          <path d="M45 120 L45 45 L120 45 L120 20 L195 20 L195 120 Z" fill="#7DD3FC" opacity="0.2" stroke="#7DD3FC" stroke-width="2"></path>
+          <line x1="120" y1="45" x2="120" y2="120" stroke="#F5B841" stroke-width="2" stroke-dasharray="4 3"></line>
+          <g font-family="IBM Plex Mono" font-size="12" fill="#E6EDF5" text-anchor="middle"><text x="82" y="80">3×3</text><text x="158" y="80">3×4</text></g>
+          <text x="260" y="70" font-family="IBM Plex Mono" font-size="14" fill="#8BA0B8" text-anchor="middle">A = 21</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">SCALE DRAWING · SCALE BAR</div>
+        <svg viewBox="0 0 300 130" width="100%" style="display:block;">
+          <polygon points="150,14 158,40 200,52 158,58 154,90 176,100 124,100 146,90 142,58 100,52 142,40" fill="#5F656D" stroke="#2A2F36" stroke-width="2"></polygon>
+          <line x1="100" y1="116" x2="200" y2="116" stroke="#E6EDF5" stroke-width="3"></line><g stroke="#E6EDF5" stroke-width="2"><line x1="100" y1="110" x2="100" y2="122"></line><line x1="200" y1="110" x2="200" y2="122"></line></g>
+          <text x="150" y="108" font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8" text-anchor="middle">5 m</text>
+          <g font-family="IBM Plex Mono" font-size="14" fill="#8BA0B8"><text x="216" y="40">1 : 100</text><text x="216" y="64" fill="#7DD3FC">span 9.8 m</text><text x="216" y="88">→ 9.8 cm</text></g>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">DILATION PAIR · k = 2</div>
+        <svg viewBox="0 0 300 130" width="100%" style="display:block;">
+          <circle cx="20" cy="110" r="4" fill="#E6EDF5"></circle><text x="14" y="126" font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8">O</text>
+          <g stroke="#223347" stroke-width="1" stroke-dasharray="3 3"><line x1="20" y1="110" x2="280" y2="30"></line><line x1="20" y1="110" x2="280" y2="110"></line><line x1="20" y1="110" x2="220" y2="70"></line></g>
+          <polygon points="80,90 150,90 130,70" fill="#7DD3FC" opacity="0.5" stroke="#7DD3FC" stroke-width="2"></polygon>
+          <polygon points="140,110 280,110 240,70" fill="none" stroke="#F5B841" stroke-width="2" stroke-dasharray="5 4"></polygon>
+          <text x="110" y="62" font-family="IBM Plex Mono" font-size="12" fill="#7DD3FC">A</text><text x="255" y="62" font-family="IBM Plex Mono" font-size="12" fill="#F5B841">A′</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">RIGHT TRIANGLE · PYTHAGOREAN</div>
+        <svg viewBox="0 0 300 130" width="100%" style="display:block;">
+          <polygon points="60,110 220,110 220,30" fill="none" stroke="#E6EDF5" stroke-width="2"></polygon><rect x="206" y="96" width="14" height="14" fill="none" stroke="#E6EDF5" stroke-width="2"></rect>
+          <g font-family="IBM Plex Mono" font-size="14" text-anchor="middle"><text x="140" y="126" fill="#7DD3FC">a = 6</text><text x="248" y="74" fill="#7DD3FC">b = 8</text><text x="120" y="60" fill="#F5B841">c = ?</text></g>
+          <text x="60" y="30" font-family="IBM Plex Mono" font-size="14" fill="#8BA0B8">a² + b² = c²</text>
+        </svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">CROSS SECTION · SLICE</div>
+        <svg viewBox="0 0 300 130" width="100%" style="display:block;">
+          <g stroke="#E6EDF5" stroke-width="2" fill="none"><path d="M60 40 L140 40 L170 20 L170 90 L140 110 L60 110 Z M60 40 L90 20 L170 20 M90 20 L90 90 L60 110 M90 90 L170 90"></path></g>
+          <polygon points="60,75 140,75 170,55 90,55" fill="#F5B841" opacity="0.35" stroke="#F5B841" stroke-width="2" stroke-dasharray="4 3"></polygon>
+          <polygon points="210,55 290,55 290,75 210,75" fill="#F5B841" opacity="0.35" stroke="#F5B841" stroke-width="2"></polygon>
+          <text x="250" y="96" font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8" text-anchor="middle">rectangle</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.14em;">MK-8 · 3D SOLIDS WITH DIMENSIONS · NETS</div>
+    <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;">
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">PRISM</div>
+        <svg viewBox="0 0 200 150" width="100%" style="display:block;"><g stroke="#E6EDF5" stroke-width="2" fill="none"><path d="M40 50 L120 50 L120 120 L40 120 Z M40 50 L70 30 L150 30 L120 50 M150 30 L150 100 L120 120"></path></g><g stroke="#223347" stroke-width="1.5" stroke-dasharray="3 3"><path d="M40 120 L70 100 L150 100 M70 100 L70 30"></path></g><g font-family="IBM Plex Mono" font-size="12" fill="#7DD3FC" text-anchor="middle"><text x="80" y="138">l 8</text><text x="30" y="90">h 6</text><text x="145" y="118">w 4</text></g></svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">CYLINDER</div>
+        <svg viewBox="0 0 200 150" width="100%" style="display:block;"><ellipse cx="100" cy="40" rx="45" ry="14" fill="none" stroke="#E6EDF5" stroke-width="2"></ellipse><path d="M55 40 V110 A45 14 0 0 0 145 110 V40" fill="none" stroke="#E6EDF5" stroke-width="2"></path><path d="M55 110 A45 14 0 0 1 145 110" fill="none" stroke="#223347" stroke-width="1.5" stroke-dasharray="3 3"></path><line x1="100" y1="40" x2="145" y2="40" stroke="#7DD3FC" stroke-width="3"></line><g font-family="IBM Plex Mono" font-size="12" fill="#7DD3FC"><text x="112" y="34">r 3</text><text x="152" y="80">h 7</text></g></svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">PYRAMID</div>
+        <svg viewBox="0 0 200 150" width="100%" style="display:block;"><g stroke="#E6EDF5" stroke-width="2" fill="none"><path d="M100 20 L40 110 L130 120 L100 20 M130 120 L160 90 L100 20"></path></g><path d="M40 110 L70 80 L160 90" fill="none" stroke="#223347" stroke-width="1.5" stroke-dasharray="3 3"></path><line x1="100" y1="20" x2="100" y2="100" stroke="#F5B841" stroke-width="2" stroke-dasharray="4 3"></line><g font-family="IBM Plex Mono" font-size="12"><text x="106" y="70" fill="#F5B841">h 9</text><text x="70" y="136" fill="#7DD3FC">base 6 × 6</text></g></svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">CONE</div>
+        <svg viewBox="0 0 200 150" width="100%" style="display:block;"><path d="M100 20 L55 110 A45 14 0 0 0 145 110 Z" fill="none" stroke="#E6EDF5" stroke-width="2"></path><path d="M55 110 A45 14 0 0 1 145 110" fill="none" stroke="#223347" stroke-width="1.5" stroke-dasharray="3 3"></path><line x1="100" y1="20" x2="100" y2="110" stroke="#F5B841" stroke-width="2" stroke-dasharray="4 3"></line><line x1="100" y1="110" x2="145" y2="110" stroke="#7DD3FC" stroke-width="3"></line><g font-family="IBM Plex Mono" font-size="12"><text x="106" y="70" fill="#F5B841">h 12</text><text x="112" y="128" fill="#7DD3FC">r 5</text></g></svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">SPHERE</div>
+        <svg viewBox="0 0 200 150" width="100%" style="display:block;"><circle cx="100" cy="75" r="50" fill="none" stroke="#E6EDF5" stroke-width="2"></circle><ellipse cx="100" cy="75" rx="50" ry="14" fill="none" stroke="#223347" stroke-width="1.5" stroke-dasharray="3 3"></ellipse><line x1="100" y1="75" x2="150" y2="75" stroke="#7DD3FC" stroke-width="3"></line><circle cx="100" cy="75" r="3" fill="#E6EDF5"></circle><text x="118" y="68" font-family="IBM Plex Mono" font-size="12" fill="#7DD3FC">r 6</text></svg>
+      </div>
+      <div style="padding:12px;background:#0D1520;border:1px solid #223347;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:14px;color:#8BA0B8;letter-spacing:0.1em;">NET · RECT. PRISM</div>
+        <svg viewBox="0 0 200 150" width="100%" style="display:block;"><g stroke="#E6EDF5" stroke-width="2"><rect x="70" y="10" width="50" height="30" fill="#7DD3FC" opacity="0.3"></rect><rect x="20" y="40" width="50" height="40" fill="#F5B841" opacity="0.3"></rect><rect x="70" y="40" width="50" height="40" fill="#7DD3FC" opacity="0.15"></rect><rect x="120" y="40" width="50" height="40" fill="#F5B841" opacity="0.3"></rect><rect x="70" y="80" width="50" height="30" fill="#7DD3FC" opacity="0.3"></rect><rect x="70" y="110" width="50" height="40" fill="#7DD3FC" opacity="0.15"></rect></g><text x="150" y="130" font-family="IBM Plex Mono" font-size="12" fill="#8BA0B8" text-anchor="middle">6 faces</text></svg>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

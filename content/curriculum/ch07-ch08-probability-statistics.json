@@ -1,0 +1,223 @@
+{
+  "$schema": "./skill.schema.json",
+  "chapters": [
+    { "id": "ch7", "n": 7, "quarter": 3, "name": "Probability and Statistical Measures", "tnCluster": "7.SP.C / 7.SP.D" },
+    { "id": "ch8", "n": 8, "quarter": 3, "name": "Statistics", "tnCluster": "7.SP.A / 7.SP.B" }
+  ],
+  "skills": [
+    {
+      "id": "sp.7.1", "chapter": "ch7", "section": "7.1", "honors": false,
+      "name": "Probability and sample spaces",
+      "standards": ["7.SP.C.5", "7.SP.C.6a", "7.SP.C.7b"],
+      "im": ["G7.U8.L2", "G7.U8.L3"], "khan": "K-STAT:basic probability",
+      "reps": ["likelihood-line", "sample-space-list"],
+      "formats": ["fraction", "numeric", "multiple-choice", "likelihood-select"],
+      "key": "P(event) = favorable outcomes / total outcomes, always between 0 and 1. 0 = impossible, 1 = certain, 1/2 = equally likely either way.",
+      "tiers": [
+        "list a sample space; classify likelihood (impossible..certain)",
+        "P of a simple event as a fraction, decimal, percent",
+        "P of 'not' an event; place on a 0-1 line",
+        "relative frequency from collected data -> predicted count"
+      ],
+      "gen": "Spinners with 3-8 sectors, bags of 5-20 items in 2-4 colors, dice, cards labeled A-F. Never a probability above 1.",
+      "errors": [
+        { "tag": "over-one", "desc": "P > 1 or favorable/unfavorable", "distractor": "a/(n-a)" },
+        { "tag": "assume-equal", "desc": "assumes outcomes are equally likely when they are not", "distractor": "1/k" },
+        { "tag": "complement", "desc": "P(not A) reported as P(A)", "distractor": "P(A)" }
+      ],
+      "skin": "dud missile odds, weather, radar contact chance, ordnance bag draws"
+    },
+    {
+      "id": "sp.7.2", "chapter": "ch7", "section": "7.2", "honors": false,
+      "name": "Experimental and theoretical probability",
+      "standards": ["7.SP.C.6a", "7.SP.C.6b", "7.SP.C.6c", "7.SP.C.7a", "7.SP.C.7b"],
+      "im": ["G7.U8.L1", "G7.U8.L4", "G7.U8.L5", "G7.U8.L6"], "khan": "K-STAT:experimental probability",
+      "reps": ["frequency-table", "simulation"],
+      "formats": ["fraction", "numeric", "multiple-choice"],
+      "key": "Theoretical: what should happen (favorable/total). Experimental: what did happen (occurrences/trials). Prediction = P x number of trials. More trials brings them closer.",
+      "tiers": [
+        "experimental P from a frequency table",
+        "predicted count from theoretical P and n trials",
+        "compare experimental to theoretical; explain a discrepancy",
+        "build a non-uniform model from data (paper cup lands open-end down)"
+      ],
+      "gen": "Trials 20..600; frequencies summing to trials; theoretical from spinners/dice.",
+      "errors": [
+        { "tag": "exact-match", "desc": "expects experiment to equal theory exactly", "distractor": "'the die is unfair'" },
+        { "tag": "trials-as-favorable", "desc": "flips the ratio", "distractor": "trials/occurrences" },
+        { "tag": "prediction-unscaled", "desc": "reports P instead of P x n", "distractor": "P" }
+      ],
+      "skin": "600 missile launches vs expected duds, radar hit logs, ejection seat test data"
+    },
+    {
+      "id": "sp.7.3", "chapter": "ch7", "section": "7.3", "honors": false,
+      "name": "Measures of center",
+      "standards": ["7.SP.D.8a"],
+      "im": ["G6.U8.mean-median", "G7.U8.L11"], "khan": "K-STAT:mean median mode",
+      "reps": ["dot-plot"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "Mean = sum / count. Median = middle value AFTER sorting (average the two middles if the count is even). Mode = most frequent. An outlier pulls the mean, not the median.",
+      "tiers": [
+        "mean, median, mode of 5-7 whole numbers",
+        "even count (median averages two); a mode of 'none'",
+        "effect of an outlier on mean vs median",
+        "find a missing value given the mean"
+      ],
+      "gen": "Sets of 5-10 values in [0,60]; T3 add one value 3x the max.",
+      "errors": [
+        { "tag": "median-unsorted", "desc": "middle of the unsorted list", "distractor": "unsorted middle" },
+        { "tag": "mean-count-error", "desc": "divides by the wrong count", "distractor": "sum/(n-1)" },
+        { "tag": "mode-as-max", "desc": "mode reported as largest value", "distractor": "max" }
+      ],
+      "skin": "sortie times, lock times across missions, kills per pilot"
+    },
+    {
+      "id": "sp.7.4", "chapter": "ch7", "section": "7.4", "honors": false,
+      "name": "Measures of variation",
+      "standards": ["7.SP.D.8a"],
+      "im": ["G6.U8.MAD-IQR"], "khan": "K-STAT:interquartile range",
+      "reps": ["dot-plot", "quartile-marks"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "Range = max - min. Sort, split at the median, Q1 and Q3 are the medians of each half. IQR = Q3 - Q1 (the middle 50%).",
+      "tiers": [
+        "range of a data set",
+        "Q1, Q3, IQR for 7-9 values",
+        "IQR with even counts; mean absolute deviation (MAD) for 5-6 values",
+        "compare spreads of two squadrons"
+      ],
+      "gen": "Values in [0,100]; T2 odd counts; T3 even counts.",
+      "errors": [
+        { "tag": "iqr-sum", "desc": "computes Q3 + Q1", "distractor": "Q3+Q1" },
+        { "tag": "quartile-includes-median", "desc": "includes the median in both halves on odd counts", "distractor": "shifted Q1/Q3" },
+        { "tag": "range-as-iqr", "desc": "reports the range", "distractor": "max-min" }
+      ],
+      "skin": "consistency of landing times, spread of fuel burn across a squadron"
+    },
+    {
+      "id": "sp.7.5", "chapter": "ch7", "section": "7.5", "honors": false,
+      "name": "Choosing appropriate measures",
+      "standards": ["7.SP.D.8b"],
+      "im": ["G6.U8.shape-and-measures"], "khan": "K-STAT:choosing measures",
+      "reps": ["dot-plot", "skew-vs-symmetric"],
+      "formats": ["multiple-choice", "yes-no"],
+      "key": "Symmetric data with no outliers: use mean and MAD. Skewed data or outliers: use median and IQR.",
+      "tiers": [
+        "symmetric vs skewed from a dot plot",
+        "pick the best measure of center and say why",
+        "how an outlier changes which measure to use",
+        "compare two distributions and justify the choice"
+      ],
+      "gen": "Generate dot plots: symmetric (mirror), left/right skew, one outlier.",
+      "errors": [
+        { "tag": "always-mean", "desc": "always picks the mean", "distractor": "mean for skewed data" },
+        { "tag": "skew-direction", "desc": "left/right skew confused", "distractor": "opposite skew" }
+      ],
+      "skin": "sortie durations with one aborted mission, kill counts across pilots"
+    },
+    {
+      "id": "sp.7.6", "chapter": "ch7", "section": "7.6", "honors": false,
+      "name": "Box-and-whisker plots",
+      "standards": ["7.SP.D.8a"],
+      "im": ["G6.U8.box-plots"], "khan": "K-STAT:box plots",
+      "reps": ["box-plot", "dot-plot"],
+      "formats": ["numeric", "multiple-choice", "box-plot-read"],
+      "key": "Five numbers: min, Q1, median, Q3, max. The box is the middle 50%. Each of the four sections holds about a quarter of the data no matter how long it looks.",
+      "tiers": [
+        "read min/Q1/median/Q3/max off a plot",
+        "build the five-number summary from data",
+        "what percent of data is above Q1 / inside the box",
+        "compare two box plots (center and spread)"
+      ],
+      "gen": "Data 9-15 values in [0,100]; plots on a 0-100 axis.",
+      "errors": [
+        { "tag": "longer-means-more", "desc": "longer whisker = more data", "distractor": "'more data in the long section'" },
+        { "tag": "box-is-half-values", "desc": "box holds half the VALUES not half the DATA", "distractor": "mid-range instead of median" }
+      ],
+      "skin": "two squadrons' sortie times side by side, lock-time distributions"
+    },
+    {
+      "id": "sp.8.1", "chapter": "ch8", "section": "8.1", "honors": false,
+      "name": "Samples and populations",
+      "standards": ["7.SP.A.1", "7.SP.A.2"],
+      "im": ["G7.U8.L12", "G7.U8.L13", "G7.U8.L14"], "khan": "K-STAT:sampling",
+      "reps": ["population-sample-diagram"],
+      "formats": ["multiple-choice", "yes-no"],
+      "key": "A sample must be random and representative to support a valid inference. A convenience sample (just the pilots in the ready room) is biased.",
+      "tiers": [
+        "population vs sample identification",
+        "random vs biased sampling method",
+        "which sample best represents the population; why",
+        "design a fair sampling method for a base-wide survey"
+      ],
+      "gen": "Scenario templates with 3-4 sampling methods, exactly one random.",
+      "errors": [
+        { "tag": "big-is-unbiased", "desc": "a large sample must be fair", "distractor": "the largest biased sample" },
+        { "tag": "convenience", "desc": "picks the easiest sample", "distractor": "ready-room sample" }
+      ],
+      "skin": "surveying pilots about a new helmet, maintenance inspections across bases"
+    },
+    {
+      "id": "sp.8.2", "chapter": "ch8", "section": "8.2", "honors": false,
+      "name": "Using random samples to describe populations",
+      "standards": ["7.SP.A.2"],
+      "im": ["G7.U8.L15", "G7.U8.L16", "G7.U8.L17"], "khan": "K-STAT:making inferences",
+      "reps": ["dot-plot-of-sample-means", "proportion-table"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "Estimate for the population = sample proportion x population size. Different samples give different estimates; that variation is expected.",
+      "tiers": [
+        "proportion in sample -> estimate for population",
+        "estimate a population mean from a sample",
+        "compare estimates from several samples; give a reasonable range",
+        "judge whether a sample size is large enough"
+      ],
+      "gen": "Sample 20-100, population 500-5000; proportions with clean fractions.",
+      "errors": [
+        { "tag": "identical-samples", "desc": "expects every sample to match", "distractor": "'the second sample is wrong'" },
+        { "tag": "unscaled", "desc": "reports the sample count as the estimate", "distractor": "sample count" }
+      ],
+      "skin": "estimate how many of 2,400 missiles are duds from a sample of 60"
+    },
+    {
+      "id": "sp.8.3", "chapter": "ch8", "section": "8.3", "honors": false,
+      "name": "Comparing populations",
+      "standards": ["7.SP.B.3"],
+      "im": ["G7.U8.L11"], "khan": "K-STAT:comparing distributions",
+      "reps": ["parallel-dot-plots"],
+      "formats": ["numeric", "multiple-choice"],
+      "key": "Compare centers (mean or median) AND spreads. Divide the difference in centers by the MAD to see how big the difference really is.",
+      "tiers": [
+        "which group has the higher center",
+        "difference in means expressed in MADs",
+        "overlap: similar spreads, different centers",
+        "write a comparison statement using both center and spread"
+      ],
+      "gen": "Two sets of 8-12 values; MAD chosen so difference/MAD lands in {0.5,1,2,3}.",
+      "errors": [
+        { "tag": "ignore-spread", "desc": "compares centers only", "distractor": "'clearly different' when spreads overlap" },
+        { "tag": "mad-as-difference", "desc": "reports the MAD as the difference", "distractor": "MAD" }
+      ],
+      "skin": "Eagle squadron vs Falcon squadron sortie times"
+    },
+    {
+      "id": "sp.8.4", "chapter": "ch8", "section": "8.4", "honors": false,
+      "name": "Using random samples to compare populations",
+      "standards": ["7.SP.A.2", "7.SP.B.4"],
+      "im": ["G7.U8.L18", "G7.U8.L19", "G7.U8.L20"], "khan": "K-STAT:comparing populations",
+      "reps": ["side-by-side-box-plots"],
+      "formats": ["multiple-choice", "numeric"],
+      "key": "Use samples from each population, compare centers and spreads, and say how confident you are: overlapping boxes mean a weak conclusion.",
+      "tiers": [
+        "read two sample box plots and compare medians",
+        "compare using mean and range",
+        "decide whether the difference is meaningful given the spread",
+        "recommend more sampling or a conclusion"
+      ],
+      "gen": "Two samples 10-15 values each; vary overlap.",
+      "errors": [
+        { "tag": "one-sample-proof", "desc": "treats one sample as proof", "distractor": "'definitely faster'" },
+        { "tag": "ignore-overlap", "desc": "ignores overlapping boxes", "distractor": "strong claim" }
+      ],
+      "skin": "do F-16 pilots or F-15 pilots lock faster? sampled from two bases"
+    }
+  ]
+}
