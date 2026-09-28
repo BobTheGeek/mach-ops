@@ -551,7 +551,7 @@
       "gen": "Triples: 3-4-5, 5-12-13, 6-8-10, 8-15-17, 7-24-25 plus non-right foils.",
       "errors": [
         { "tag": "leg-as-c", "desc": "puts a leg as c", "distractor": "wrong assignment" },
-        { "tag": "a+b=c", "desc": "adds sides without squaring", "distractor": "a + b" }
+        { "tag": "add-sides-unsquared", "desc": "adds sides without squaring", "distractor": "a + b" }
       ],
       "skin": "climb triangle: ground distance, altitude, flight path"
     },

@@ -1,0 +1,4155 @@
+{
+  "generated": "scripts/build-curriculum.ts — do not edit by hand",
+  "counts": {
+    "total": 83,
+    "core": 54,
+    "honors": 29
+  },
+  "chapters": [
+    {
+      "id": "ch1",
+      "n": 1,
+      "quarter": 1,
+      "name": "Adding and Subtracting Rational Numbers",
+      "tnCluster": "7.NS.A"
+    },
+    {
+      "id": "ch2",
+      "n": 2,
+      "quarter": 1,
+      "name": "Multiplying and Dividing Rational Numbers",
+      "tnCluster": "7.NS.A"
+    },
+    {
+      "id": "ch3",
+      "n": 3,
+      "quarter": 1,
+      "name": "Expressions",
+      "tnCluster": "7.EE.A"
+    },
+    {
+      "id": "ch4",
+      "n": 4,
+      "quarter": 2,
+      "name": "Equations and Inequalities",
+      "tnCluster": "7.EE.B"
+    },
+    {
+      "id": "ch5",
+      "n": 5,
+      "quarter": 2,
+      "name": "Ratios and Proportions",
+      "tnCluster": "7.RP.A / 7.G.A"
+    },
+    {
+      "id": "ch6",
+      "n": 6,
+      "quarter": 3,
+      "name": "Percents",
+      "tnCluster": "7.RP.A / 7.EE.B"
+    },
+    {
+      "id": "ch7",
+      "n": 7,
+      "quarter": 3,
+      "name": "Probability and Statistical Measures",
+      "tnCluster": "7.SP.C / 7.SP.D"
+    },
+    {
+      "id": "ch8",
+      "n": 8,
+      "quarter": 3,
+      "name": "Statistics",
+      "tnCluster": "7.SP.A / 7.SP.B"
+    },
+    {
+      "id": "ch9",
+      "n": 9,
+      "quarter": 4,
+      "name": "Geometric Shapes and Angles",
+      "tnCluster": "7.G.A / 7.G.B"
+    },
+    {
+      "id": "ch10",
+      "n": 10,
+      "quarter": 4,
+      "name": "Surface Area and Volume",
+      "tnCluster": "7.G.B"
+    }
+  ],
+  "skills": [
+    {
+      "id": "ns.1.1",
+      "chapter": "ch1",
+      "section": "1.1",
+      "honors": false,
+      "name": "Rational numbers: compare, order, absolute value",
+      "standards": [
+        "7.NS.A.1",
+        "7.NS.A.3"
+      ],
+      "im": [
+        "G7.U5.L1"
+      ],
+      "khan": "K-NEG:absolute value",
+      "reps": [
+        "number-line"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice",
+        "order"
+      ],
+      "key": "Farther right on the number line is greater. |x| is the distance from 0 and is never negative.",
+      "tiers": [
+        "compare two integers; find |n| for an integer",
+        "compare a fraction and a decimal with mixed signs; |x| for rationals",
+        "order 4-5 mixed rationals including negative mixed numbers",
+        "distance between two rationals as |a - b| in a context"
+      ],
+      "gen": "T1: a,b in [-30,30], distinct. T2: one fraction (denominator 2..12) vs one decimal (1-2 places), signs mixed. T3: 4-5 values, at least two negative, one repeated magnitude with opposite signs. T4: two altitudes/temps, answer |a-b|.",
+      "errors": [
+        {
+          "tag": "neg-magnitude",
+          "desc": "treats -8 as greater than -3",
+          "distractor": "reverse the comparison"
+        },
+        {
+          "tag": "abs-negates",
+          "desc": "thinks |x| flips the sign of every number",
+          "distractor": "-|x|"
+        },
+        {
+          "tag": "frac-size",
+          "desc": "-1/2 > -1/4 because 2 > 4",
+          "distractor": "compare by denominator"
+        }
+      ],
+      "skin": "altitude above/below sea level, cockpit temperature, fuel offset readouts"
+    },
+    {
+      "id": "ns.1.2",
+      "chapter": "ch1",
+      "section": "1.2",
+      "honors": false,
+      "name": "Adding integers",
+      "standards": [
+        "7.NS.A.1a",
+        "7.NS.A.1c",
+        "7.NS.A.3"
+      ],
+      "im": [
+        "G7.U5.L2",
+        "G7.U5.L3"
+      ],
+      "khan": "K-NEG:adding negative numbers",
+      "reps": [
+        "number-line",
+        "zero-pairs"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Same signs: add the sizes and keep the sign. Different signs: subtract the sizes and keep the sign of the bigger one. A number plus its opposite is 0.",
+      "tiers": [
+        "two integers, same sign, |n| <= 20",
+        "two integers, different signs, |n| <= 50",
+        "three integers, mixed signs, includes a zero pair",
+        "context: net change in altitude/fuel over several legs"
+      ],
+      "gen": "T1: a,b same sign in [1,20]. T2: a in [-50,50], b opposite sign, |a| != |b|. T3: three terms, two of which sum to 0. T4: 3-4 signed changes in a story, answer the total.",
+      "errors": [
+        {
+          "tag": "add-magnitudes",
+          "desc": "adds sizes regardless of sign (-7 + 3 = -10)",
+          "distractor": "-(|a|+|b|) or |a|+|b|"
+        },
+        {
+          "tag": "first-sign",
+          "desc": "keeps the sign of the first addend",
+          "distractor": "correct magnitude, wrong sign"
+        },
+        {
+          "tag": "drop-sign",
+          "desc": "answer with the sign dropped",
+          "distractor": "|correct|"
+        }
+      ],
+      "skin": "climb/descend legs, fuel added vs burned, credits earned vs spent"
+    },
+    {
+      "id": "ns.1.3",
+      "chapter": "ch1",
+      "section": "1.3",
+      "honors": false,
+      "name": "Adding rational numbers",
+      "standards": [
+        "7.NS.A.1a",
+        "7.NS.A.1c",
+        "7.NS.A.3"
+      ],
+      "im": [
+        "G7.U5.L3",
+        "G7.U5.L4",
+        "G7.U5.L7"
+      ],
+      "khan": "K-NEG:adding negative fractions",
+      "reps": [
+        "number-line",
+        "debt-table"
+      ],
+      "formats": [
+        "fraction",
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Apply the integer sign rules, then add like you already know: common denominators for fractions, line up the decimal points for decimals.",
+      "tiers": [
+        "two decimals (1 place), mixed signs",
+        "two fractions, like denominators, mixed signs",
+        "two fractions, unlike denominators (2..12), mixed signs, may include mixed numbers",
+        "three rationals mixing fractions and decimals in a context"
+      ],
+      "gen": "T1: decimals to 0.1, |x| < 20. T2: same denominator d in [3,12]. T3: denominators with lcm <= 60; mixed numbers up to 5. T4: convert to one form first; answer accepts fraction or decimal.",
+      "errors": [
+        {
+          "tag": "add-denominators",
+          "desc": "adds numerators and denominators",
+          "distractor": "(a+c)/(b+d)"
+        },
+        {
+          "tag": "mixed-sign-split",
+          "desc": "reads -2 1/4 as -2 + 1/4",
+          "distractor": "off by 2*fraction part"
+        },
+        {
+          "tag": "sign-rule",
+          "desc": "integer sign-rule error carried into rationals",
+          "distractor": "wrong sign"
+        }
+      ],
+      "skin": "fuel tank fractions, fuel-flow in decimal liters, altitude in tenths of a thousand feet"
+    },
+    {
+      "id": "ns.1.4",
+      "chapter": "ch1",
+      "section": "1.4",
+      "honors": false,
+      "name": "Subtracting integers",
+      "standards": [
+        "7.NS.A.1b",
+        "7.NS.A.3"
+      ],
+      "im": [
+        "G7.U5.L5",
+        "G7.U5.L6"
+      ],
+      "khan": "K-NEG:subtracting negative numbers",
+      "reps": [
+        "number-line"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Subtracting a number is adding its opposite: a - b = a + (-b). Subtracting a negative moves you right.",
+      "tiers": [
+        "positive minus positive, may go negative",
+        "subtract a negative (a - (-b))",
+        "negative minus negative, |n| <= 50",
+        "change = final - initial with signed values in a context; distance as |a - b|"
+      ],
+      "gen": "T1: a in [0,30], b in [1,40]. T2: a in [-20,20], b in [-20,-1]. T3: both negative. T4: start/end altitude or temperature, ask the change (signed) or the distance (absolute).",
+      "errors": [
+        {
+          "tag": "double-neg",
+          "desc": "7 - (-3) = 4",
+          "distractor": "a - |b|"
+        },
+        {
+          "tag": "negate-first",
+          "desc": "negates the first number instead of the second",
+          "distractor": "-a - b"
+        },
+        {
+          "tag": "commute",
+          "desc": "computes b - a",
+          "distractor": "b - a"
+        },
+        {
+          "tag": "initial-minus-final",
+          "desc": "change computed backwards",
+          "distractor": "initial - final"
+        }
+      ],
+      "skin": "altitude change in a dive, temperature drop with altitude, before/after fuel"
+    },
+    {
+      "id": "ns.1.5",
+      "chapter": "ch1",
+      "section": "1.5",
+      "honors": false,
+      "name": "Subtracting rational numbers",
+      "standards": [
+        "7.NS.A.1b",
+        "7.NS.A.1c",
+        "7.NS.A.3"
+      ],
+      "im": [
+        "G7.U5.L6",
+        "G7.U5.L7"
+      ],
+      "khan": "K-NEG:subtracting negative fractions",
+      "reps": [
+        "number-line",
+        "vertical-number-line"
+      ],
+      "formats": [
+        "fraction",
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Rewrite as adding the opposite, then use common denominators or aligned decimals. Distance on a number line is |a - b|.",
+      "tiers": [
+        "decimals (1-2 places), one negative",
+        "fractions, like denominators, subtract a negative",
+        "fractions, unlike denominators, mixed numbers, both signs",
+        "distance between two rationals on a vertical number line (altitude/depth)"
+      ],
+      "gen": "T1: decimals to 0.01, |x| < 25. T2: d in [3,12]. T3: lcm <= 60, mixed numbers to 5. T4: two signed rationals, answer |a - b| as a fraction or decimal.",
+      "errors": [
+        {
+          "tag": "double-neg",
+          "desc": "a - (-b) treated as a - b",
+          "distractor": "a - |b|"
+        },
+        {
+          "tag": "sub-denominators",
+          "desc": "subtracts denominators",
+          "distractor": "(a-c)/(b-d)"
+        },
+        {
+          "tag": "neg-distance",
+          "desc": "reports a negative distance",
+          "distractor": "-(|a-b|)"
+        }
+      ],
+      "skin": "altitude vs depth of a sub target, fuel margin below minimum, thermal readings"
+    },
+    {
+      "id": "ns.2.1",
+      "chapter": "ch2",
+      "section": "2.1",
+      "honors": false,
+      "name": "Multiplying integers",
+      "standards": [
+        "7.NS.A.2a",
+        "7.NS.A.2c",
+        "7.NS.A.3"
+      ],
+      "im": [
+        "G7.U5.L8",
+        "G7.U5.L9",
+        "G7.U5.L10"
+      ],
+      "khan": "K-NEG:multiplying negative numbers",
+      "reps": [
+        "number-line",
+        "velocity-time"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Multiply the sizes. Same signs give positive, different signs give negative. An even count of negatives is positive.",
+      "tiers": [
+        "one negative factor, products <= 100",
+        "two negative factors, products <= 200",
+        "three factors with mixed signs",
+        "(-a)^2 vs -a^2 and rate x time contexts (descent rate x minutes)"
+      ],
+      "gen": "T1: a in [-12,-2], b in [2,12]. T2: both in [-15,-2]. T3: three factors in [-9,9] excluding 0 and 1. T4: pair a power problem with a rate problem.",
+      "errors": [
+        {
+          "tag": "add-rule-on-mult",
+          "desc": "applies the addition sign rule (neg x neg = neg)",
+          "distractor": "wrong sign"
+        },
+        {
+          "tag": "square-sign",
+          "desc": "confuses (-a)^2 with -a^2",
+          "distractor": "opposite sign of the square"
+        },
+        {
+          "tag": "count-negatives",
+          "desc": "miscounts negatives in a product of three",
+          "distractor": "wrong sign"
+        }
+      ],
+      "skin": "descent rate x time = altitude lost, thrust settings, repeated fuel-burn legs"
+    },
+    {
+      "id": "ns.2.2",
+      "chapter": "ch2",
+      "section": "2.2",
+      "honors": false,
+      "name": "Dividing integers",
+      "standards": [
+        "7.NS.A.2b",
+        "7.NS.A.3"
+      ],
+      "im": [
+        "G7.U5.L11",
+        "G7.U5.L12"
+      ],
+      "khan": "K-NEG:dividing negative numbers",
+      "reps": [
+        "fact-family"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Same sign rule as multiplication. -(p/q) = (-p)/q = p/(-q). You cannot divide by 0.",
+      "tiers": [
+        "one negative, exact quotients <= 12",
+        "both negative, exact quotients",
+        "identify equivalent forms of -(p/q); quotient that is a fraction",
+        "negative rates: total change / time in a context"
+      ],
+      "gen": "T1: q in [2,12], a = q*b with b in [-12,-1]. T2: both negative. T3: pick the expression NOT equal to -(p/q); or 7 / (-2) = -3.5. T4: altitude lost over minutes -> rate per minute.",
+      "errors": [
+        {
+          "tag": "add-rule-on-div",
+          "desc": "neg / neg = neg",
+          "distractor": "wrong sign"
+        },
+        {
+          "tag": "zero-confusion",
+          "desc": "0/n vs n/0 confused",
+          "distractor": "0 or 'undefined' swapped"
+        },
+        {
+          "tag": "equiv-forms",
+          "desc": "thinks -6/2 differs from 6/(-2)",
+          "distractor": "pick the equal form as unequal"
+        }
+      ],
+      "skin": "average descent rate, fuel burn per minute from a total, splitting a negative credit balance"
+    },
+    {
+      "id": "ns.2.3",
+      "chapter": "ch2",
+      "section": "2.3",
+      "honors": false,
+      "name": "Converting between fractions and decimals",
+      "standards": [
+        "7.NS.A.2b",
+        "7.NS.A.2d"
+      ],
+      "im": [
+        "G7.U4.L5"
+      ],
+      "khan": "K-NEG:fractions to decimals",
+      "reps": [
+        "long-division"
+      ],
+      "formats": [
+        "numeric",
+        "fraction",
+        "multiple-choice"
+      ],
+      "key": "Divide numerator by denominator. The decimal terminates if the remainder hits 0, repeats if a remainder repeats (bar over the repeating digits).",
+      "tiers": [
+        "terminating decimals (denominators 2, 4, 5, 8, 10, 20, 25)",
+        "repeating decimals (denominators 3, 6, 9, 11, 12)",
+        "decimal to fraction in simplest form; mixed numbers",
+        "choose terminating vs repeating without computing, from the denominator"
+      ],
+      "gen": "T1/T2 pick denominator from the listed sets, numerator coprime. T3: decimal with 1-3 places -> reduce. T4: multiple choice on which fractions terminate.",
+      "errors": [
+        {
+          "tag": "divide-backwards",
+          "desc": "divides denominator by numerator",
+          "distractor": "b/a"
+        },
+        {
+          "tag": "bar-placement",
+          "desc": "bar over the wrong digits",
+          "distractor": "misplaced repeat"
+        },
+        {
+          "tag": "truncate",
+          "desc": "1/3 = 0.33",
+          "distractor": "rounded value marked as exact"
+        }
+      ],
+      "skin": "fuel gauge fractions vs digital readout, Mach fraction to decimal"
+    },
+    {
+      "id": "ns.2.4",
+      "chapter": "ch2",
+      "section": "2.4",
+      "honors": false,
+      "name": "Multiplying rational numbers",
+      "standards": [
+        "7.NS.A.2a",
+        "7.NS.A.2c",
+        "7.NS.A.3"
+      ],
+      "im": [
+        "G7.U5.L9",
+        "G7.U5.L10",
+        "G7.U5.L13"
+      ],
+      "khan": "K-NEG:multiplying negative fractions",
+      "reps": [
+        "area-model"
+      ],
+      "formats": [
+        "fraction",
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Decide the sign first. Convert mixed numbers to improper fractions. Simplify, then multiply straight across.",
+      "tiers": [
+        "signed decimal x integer",
+        "signed fraction x fraction, simple denominators",
+        "mixed numbers with signs",
+        "three factors mixing fractions and decimals in a context"
+      ],
+      "gen": "T1: decimal to 0.1 x integer. T2: denominators 2..9. T3: mixed numbers to 4, one negative. T4: rate x fraction of time x count.",
+      "errors": [
+        {
+          "tag": "mixed-parts",
+          "desc": "multiplies whole parts and fraction parts separately",
+          "distractor": "(a*c) + (b/d * e/f)"
+        },
+        {
+          "tag": "drop-sign",
+          "desc": "sign lost in the product",
+          "distractor": "|correct|"
+        },
+        {
+          "tag": "cross-cancel-wrong",
+          "desc": "cancels within the same fraction",
+          "distractor": "wrong simplification"
+        }
+      ],
+      "skin": "fraction of a tank burned per leg, thrust as a fraction of max, scaled ordnance loads"
+    },
+    {
+      "id": "ns.2.5",
+      "chapter": "ch2",
+      "section": "2.5",
+      "honors": false,
+      "name": "Dividing rational numbers and complex fractions",
+      "standards": [
+        "7.NS.A.2b",
+        "7.NS.A.3"
+      ],
+      "im": [
+        "G7.U5.L11",
+        "G7.U5.L13",
+        "G7.U5.L14"
+      ],
+      "khan": "K-NEG:dividing negative fractions",
+      "reps": [
+        "tape-diagram"
+      ],
+      "formats": [
+        "fraction",
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Decide the sign. Keep the first fraction, change division to multiplication, flip the second fraction. A complex fraction is just a division problem.",
+      "tiers": [
+        "signed decimal / integer",
+        "fraction / fraction with signs",
+        "mixed numbers; simplify a complex fraction like (1/2)/(3/4)",
+        "multi-step context combining division and another operation"
+      ],
+      "gen": "T1: decimals to 0.1. T2: denominators 2..9. T3: mixed to 4; complex fraction from two fractions. T4: total / (fraction of time) etc.",
+      "errors": [
+        {
+          "tag": "flip-dividend",
+          "desc": "flips the first fraction instead of the second",
+          "distractor": "(b/a) * (c/d)"
+        },
+        {
+          "tag": "flip-both",
+          "desc": "flips both",
+          "distractor": "(b/a)*(d/c)"
+        },
+        {
+          "tag": "sign-rule",
+          "desc": "wrong sign",
+          "distractor": "opposite sign"
+        }
+      ],
+      "skin": "how many legs a fraction of a tank covers, splitting a fuel load across tanks, complex fraction as rate over rate"
+    },
+    {
+      "id": "ee.3.1",
+      "chapter": "ch3",
+      "section": "3.1",
+      "honors": false,
+      "name": "Algebraic expressions: evaluate and combine like terms",
+      "standards": [
+        "7.EE.A.1",
+        "7.EE.A.2"
+      ],
+      "im": [
+        "G7.U6.L20",
+        "G7.U6.L21"
+      ],
+      "khan": "K-EXP:combining like terms",
+      "reps": [
+        "tape-diagram",
+        "tiles"
+      ],
+      "formats": [
+        "expression",
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Like terms have the same variable part. Add their coefficients; the variable stays the same. 3x + 2 is not 5x.",
+      "tiers": [
+        "evaluate ax + b for a given x (integers)",
+        "combine two or three like terms with integer coefficients",
+        "combine with rational coefficients and constants, both signs",
+        "identify terms and coefficients; write an expression from a loadout description"
+      ],
+      "gen": "T1: a in [-9,9], b in [-20,20], x in [-5,5]. T2: e.g. 4x - 7 + 2x. T3: 1/2 x + 3 - 3/4 x - 5. T4: 'each missile weighs m, plus 300 lb of fuel' -> 4m + 300.",
+      "errors": [
+        {
+          "tag": "constant-into-x",
+          "desc": "3x + 2 = 5x",
+          "distractor": "(a+b)x"
+        },
+        {
+          "tag": "lost-negative",
+          "desc": "drops a negative on a term",
+          "distractor": "sign flipped on one coefficient"
+        },
+        {
+          "tag": "x-as-zero",
+          "desc": "treats a bare x as 0x",
+          "distractor": "coefficient off by 1"
+        }
+      ],
+      "skin": "loadout weight expressions, fuel + ordnance totals, thrust expressions"
+    },
+    {
+      "id": "ee.3.2",
+      "chapter": "ch3",
+      "section": "3.2",
+      "honors": false,
+      "name": "Adding and subtracting linear expressions",
+      "standards": [
+        "7.EE.A.1",
+        "7.EE.A.2"
+      ],
+      "im": [
+        "G7.U6.L18",
+        "G7.U6.L21",
+        "G7.U6.L22"
+      ],
+      "khan": "K-EXP:adding and subtracting linear expressions",
+      "reps": [
+        "vertical-format",
+        "add-the-opposite"
+      ],
+      "formats": [
+        "expression",
+        "multiple-choice"
+      ],
+      "key": "To subtract an expression, add the opposite of every term inside it. -(2x - 4) is -2x + 4.",
+      "tiers": [
+        "add two expressions, integer coefficients",
+        "subtract two expressions, positive terms only inside",
+        "subtract with negatives inside the second expression",
+        "rational coefficients; context (two aircraft weights compared)"
+      ],
+      "gen": "Coefficients in [-9,9] excluding 0; constants in [-20,20]. T3 must include a negative constant in the subtrahend.",
+      "errors": [
+        {
+          "tag": "distribute-minus-once",
+          "desc": "(5x+3) - (2x-4) = 3x - 1",
+          "distractor": "only first term negated"
+        },
+        {
+          "tag": "no-distribute",
+          "desc": "subtracts only the first term of the second expression",
+          "distractor": "3x + 3 - 4"
+        }
+      ],
+      "skin": "difference in weight between two loadouts, fuel remaining minus reserve expression"
+    },
+    {
+      "id": "ee.3.3",
+      "chapter": "ch3",
+      "section": "3.3",
+      "honors": false,
+      "name": "The distributive property",
+      "standards": [
+        "7.EE.A.1",
+        "7.EE.A.2"
+      ],
+      "im": [
+        "G7.U6.L19"
+      ],
+      "khan": "K-EXP:distributive property with variables",
+      "reps": [
+        "area-model"
+      ],
+      "formats": [
+        "expression",
+        "multiple-choice"
+      ],
+      "key": "Multiply the outside number by EVERY term inside, including the sign. -3(x - 4) = -3x + 12.",
+      "tiers": [
+        "positive factor, positive terms",
+        "negative factor",
+        "negative factor with subtraction inside; then combine with an outside term",
+        "rational factor (1/2, 0.5, -2/3) and equivalent-expression identification"
+      ],
+      "gen": "T1: a in [2,9]. T2: a in [-9,-2]. T3: a(x - b) + c. T4: fractional a with terms chosen so results are clean.",
+      "errors": [
+        {
+          "tag": "forgot-second-term",
+          "desc": "-3(x - 4) = -3x - 4",
+          "distractor": "second term not multiplied"
+        },
+        {
+          "tag": "sign-inside",
+          "desc": "-(x + 5) = -x + 5",
+          "distractor": "sign not distributed"
+        },
+        {
+          "tag": "multiply-constant-only",
+          "desc": "3(2x + 4) = 2x + 12",
+          "distractor": "first term not multiplied"
+        }
+      ],
+      "skin": "n squadrons each with (x fighters + 4 tankers), area of a hangar bay grid"
+    },
+    {
+      "id": "ee.3.4",
+      "chapter": "ch3",
+      "section": "3.4",
+      "honors": false,
+      "name": "Factoring linear expressions",
+      "standards": [
+        "7.EE.A.1",
+        "7.EE.A.2"
+      ],
+      "im": [
+        "G7.U6.L19",
+        "G7.U6.L22"
+      ],
+      "khan": "K-EXP:factoring expressions",
+      "reps": [
+        "area-model-reverse"
+      ],
+      "formats": [
+        "expression",
+        "multiple-choice"
+      ],
+      "key": "Find the greatest common factor of the terms, divide each term by it, write GCF(...). Check by distributing back.",
+      "tiers": [
+        "factor out a GCF from two terms, positive",
+        "GCF with a negative constant inside",
+        "factor out a negative GCF",
+        "factor out a fraction (1/2 x + 3/2 = 1/2(x + 3))"
+      ],
+      "gen": "Build from a factored form: g(ax + b) with g in [2,12], a in [1,9], b in [-15,15]; expand to present. T4: g = 1/2, 1/3, 1/4.",
+      "errors": [
+        {
+          "tag": "not-greatest",
+          "desc": "factors out a common factor that is not the greatest",
+          "distractor": "2(3x + 6) for 6x + 12"
+        },
+        {
+          "tag": "zero-term",
+          "desc": "6(x + 0) style loss of a term",
+          "distractor": "missing constant"
+        },
+        {
+          "tag": "sign-error",
+          "desc": "sign wrong inside parentheses",
+          "distractor": "g(ax - b)"
+        }
+      ],
+      "skin": "group identical aircraft loads, rewrite a fuel expression per tank"
+    },
+    {
+      "id": "ee.4.1",
+      "chapter": "ch4",
+      "section": "4.1",
+      "honors": false,
+      "name": "Solving equations using addition or subtraction",
+      "standards": [
+        "7.EE.B.4a"
+      ],
+      "im": [
+        "G7.U5.L15",
+        "G6.U6.hangers"
+      ],
+      "khan": "K-EXP:one-step addition and subtraction equations",
+      "reps": [
+        "hanger-diagram"
+      ],
+      "formats": [
+        "numeric",
+        "fraction",
+        "multiple-choice"
+      ],
+      "key": "Do the inverse operation to BOTH sides. Check by substituting back.",
+      "tiers": [
+        "x + a = b with integers",
+        "x - a = b with negatives",
+        "rational constants (decimals and fractions)",
+        "one-step context: x + reserve = total fuel"
+      ],
+      "gen": "a,b in [-40,40]; T3 use tenths or denominators 2..8 with clean results.",
+      "errors": [
+        {
+          "tag": "one-side-only",
+          "desc": "operates on one side only",
+          "distractor": "b or b + a"
+        },
+        {
+          "tag": "same-op",
+          "desc": "uses the same operation instead of the inverse",
+          "distractor": "b + a for x + a = b"
+        }
+      ],
+      "skin": "fuel plus reserve equals total, altitude plus climb equals target"
+    },
+    {
+      "id": "ee.4.2",
+      "chapter": "ch4",
+      "section": "4.2",
+      "honors": false,
+      "name": "Solving equations using multiplication or division",
+      "standards": [
+        "7.EE.B.4a"
+      ],
+      "im": [
+        "G7.U5.L15",
+        "G7.U5.L16"
+      ],
+      "khan": "K-EXP:one-step multiplication and division equations",
+      "reps": [
+        "hanger-diagram",
+        "tape-diagram"
+      ],
+      "formats": [
+        "numeric",
+        "fraction",
+        "multiple-choice"
+      ],
+      "key": "Undo multiplication by dividing both sides by the coefficient; undo division by multiplying. A fraction coefficient: multiply by its reciprocal.",
+      "tiers": [
+        "ax = b, integers, exact",
+        "negative coefficient or negative b",
+        "x/a = b and fraction coefficients",
+        "context: rate x time = distance, solve for time"
+      ],
+      "gen": "a in [-12,12] excluding 0,1; choose x in [-15,15] and compute b. T3: a = p/q with q in [2,6].",
+      "errors": [
+        {
+          "tag": "subtract-coefficient",
+          "desc": "3x = 12 -> x = 9",
+          "distractor": "b - a"
+        },
+        {
+          "tag": "sign-lost",
+          "desc": "-4x = 20 -> x = 5",
+          "distractor": "|correct|"
+        },
+        {
+          "tag": "reciprocal-missed",
+          "desc": "(2/3)x = 8 -> x = 16/3",
+          "distractor": "b * (a) instead of b / a"
+        }
+      ],
+      "skin": "burn rate x minutes = fuel, speed x time = distance to bogey"
+    },
+    {
+      "id": "ee.4.3",
+      "chapter": "ch4",
+      "section": "4.3",
+      "honors": false,
+      "name": "Solving two-step equations",
+      "standards": [
+        "7.EE.B.4a"
+      ],
+      "im": [
+        "G7.U6.L1",
+        "G7.U6.L2",
+        "G7.U6.L3",
+        "G7.U6.L4",
+        "G7.U6.L5",
+        "G7.U6.L6",
+        "G7.U6.L7",
+        "G7.U6.L8",
+        "G7.U6.L9",
+        "G7.U6.L10",
+        "G7.U6.L11"
+      ],
+      "khan": "K-EXP:two-step equations",
+      "reps": [
+        "tape-diagram",
+        "hanger-diagram"
+      ],
+      "formats": [
+        "numeric",
+        "fraction",
+        "multiple-choice"
+      ],
+      "key": "Undo addition or subtraction first, then undo multiplication or division. For p(x + q) = r, divide both sides by p first (or distribute).",
+      "tiers": [
+        "px + q = r, positive integers, x positive",
+        "negative coefficients or constants; unknown on either side of the equals sign",
+        "p(x + q) = r; fraction/decimal coefficients; like terms to combine first",
+        "word problem: write the equation, solve, compare to the arithmetic path"
+      ],
+      "gen": "Choose x in [-20,20] first, p in [2,12] (T3 also 1/2..1/4 and decimals), q in [-40,40], compute r. Rotate forms: px+q=r, r=px+q, q+px=r, px-q=r, p(x+q)=r.",
+      "errors": [
+        {
+          "tag": "divide-one-term",
+          "desc": "divides only the x-term by p",
+          "distractor": "(r - q) with p applied to x only"
+        },
+        {
+          "tag": "wrong-order",
+          "desc": "divides before subtracting",
+          "distractor": "(r/p) - q"
+        },
+        {
+          "tag": "paren-confusion",
+          "desc": "p(x+q) treated as px + q",
+          "distractor": "(r-q)/p vs r/p - q swapped"
+        },
+        {
+          "tag": "sign-error",
+          "desc": "sign slip on q",
+          "distractor": "(r + q)/p"
+        }
+      ],
+      "skin": "time to waypoint: 4t + 12 = 60, fuel: 3 tanks + reserve = total, cost: p missiles plus a fee"
+    },
+    {
+      "id": "ee.4.4",
+      "chapter": "ch4",
+      "section": "4.4",
+      "honors": false,
+      "name": "Writing and graphing inequalities",
+      "standards": [
+        "7.EE.B.4b"
+      ],
+      "im": [
+        "G7.U6.L13"
+      ],
+      "khan": "K-EXP:inequalities on a number line",
+      "reps": [
+        "number-line"
+      ],
+      "formats": [
+        "multiple-choice",
+        "number-line-select",
+        "expression"
+      ],
+      "key": "'At least' means >=, 'no more than' means <=. Open circle for < and >, closed circle for <= and >=. Shade toward the solutions.",
+      "tiers": [
+        "match a phrase to a symbol",
+        "graph x < a or x >= a on a number line",
+        "write the inequality from a graph, including negatives",
+        "write from a context (max payload, minimum altitude)"
+      ],
+      "gen": "a in [-15,15]; rotate the four symbols and the four phrase families (at least, at most, more than, fewer than).",
+      "errors": [
+        {
+          "tag": "phrase-flip",
+          "desc": "'at least' mapped to <=",
+          "distractor": "reversed symbol"
+        },
+        {
+          "tag": "circle-type",
+          "desc": "open vs closed circle swapped",
+          "distractor": "same direction, wrong circle"
+        },
+        {
+          "tag": "one-solution",
+          "desc": "thinks the inequality has a single answer",
+          "distractor": "x = a"
+        }
+      ],
+      "skin": "minimum safe altitude, maximum takeoff weight, ceiling limits"
+    },
+    {
+      "id": "ee.4.5",
+      "chapter": "ch4",
+      "section": "4.5",
+      "honors": false,
+      "name": "Solving inequalities using addition or subtraction",
+      "standards": [
+        "7.EE.B.4b"
+      ],
+      "im": [
+        "G7.U6.L14",
+        "G7.U6.L15"
+      ],
+      "khan": "K-EXP:one-step inequalities",
+      "reps": [
+        "number-line"
+      ],
+      "formats": [
+        "expression",
+        "number-line-select",
+        "multiple-choice"
+      ],
+      "key": "Add or subtract on both sides just like an equation. The symbol does not flip for adding or subtracting.",
+      "tiers": [
+        "x + a < b, positive integers",
+        "negatives on either side",
+        "rational constants",
+        "context, then graph the solution"
+      ],
+      "gen": "a,b in [-30,30]; T3 tenths or simple fractions.",
+      "errors": [
+        {
+          "tag": "needless-flip",
+          "desc": "flips the symbol after subtracting",
+          "distractor": "reversed symbol"
+        },
+        {
+          "tag": "shade-wrong",
+          "desc": "shades the wrong direction for 5 < x",
+          "distractor": "reversed shading"
+        }
+      ],
+      "skin": "fuel above reserve, altitude margin above terrain"
+    },
+    {
+      "id": "ee.4.6",
+      "chapter": "ch4",
+      "section": "4.6",
+      "honors": false,
+      "name": "Solving inequalities using multiplication or division",
+      "standards": [
+        "7.EE.B.4b"
+      ],
+      "im": [
+        "G7.U6.L15"
+      ],
+      "khan": "K-EXP:one-step inequalities",
+      "reps": [
+        "number-line",
+        "test-point"
+      ],
+      "formats": [
+        "expression",
+        "multiple-choice"
+      ],
+      "key": "Divide or multiply both sides. If you divide or multiply by a NEGATIVE, reverse the inequality symbol.",
+      "tiers": [
+        "ax > b with a positive",
+        "a negative: flip required",
+        "x/a with a negative; fraction coefficients",
+        "context with a negative rate (descent) and a limit"
+      ],
+      "gen": "a in [-12,12] excluding 0; choose boundary x in [-20,20]. Half of T2-T4 items must require a flip.",
+      "errors": [
+        {
+          "tag": "no-flip",
+          "desc": "does not reverse when dividing by a negative",
+          "distractor": "correct value, wrong symbol"
+        },
+        {
+          "tag": "flip-on-negative-constant",
+          "desc": "flips because b is negative",
+          "distractor": "wrong symbol, positive divisor"
+        }
+      ],
+      "skin": "descent rate limits: -500t > -6000 (how long before minimum altitude)"
+    },
+    {
+      "id": "ee.4.7",
+      "chapter": "ch4",
+      "section": "4.7",
+      "honors": false,
+      "name": "Solving two-step inequalities",
+      "standards": [
+        "7.EE.B.4b"
+      ],
+      "im": [
+        "G7.U6.L15",
+        "G7.U6.L16",
+        "G7.U6.L17"
+      ],
+      "khan": "K-EXP:two-step inequalities",
+      "reps": [
+        "number-line"
+      ],
+      "formats": [
+        "expression",
+        "number-line-select",
+        "multiple-choice"
+      ],
+      "key": "Undo addition/subtraction, then multiplication/division, reversing the symbol only when multiplying or dividing by a negative. Graph and interpret.",
+      "tiers": [
+        "px + q < r, all positive",
+        "negative p (flip) or negative constants",
+        "p(x + q) >= r; rational coefficients",
+        "context: max ordnance weight 2w + 300 <= 1100; interpret whole-number answers"
+      ],
+      "gen": "As ee.4.3 with symbols rotated; T2+ include flips in half the items. T4 answers must be interpreted (round down for counts).",
+      "errors": [
+        {
+          "tag": "divide-one-term",
+          "desc": "same as two-step equations",
+          "distractor": "wrong value"
+        },
+        {
+          "tag": "no-flip",
+          "desc": "missed flip",
+          "distractor": "wrong symbol"
+        },
+        {
+          "tag": "fractional-count",
+          "desc": "reports 3.5 missiles",
+          "distractor": "unrounded count"
+        }
+      ],
+      "skin": "max payload, minimum fuel for a leg count, credits budget for n upgrades"
+    },
+    {
+      "id": "rp.5.1",
+      "chapter": "ch5",
+      "section": "5.1",
+      "honors": false,
+      "name": "Ratios and ratio tables",
+      "standards": [
+        "7.RP.A.1",
+        "7.RP.A.3"
+      ],
+      "im": [
+        "G7.U4.L2",
+        "G7.U2.L2"
+      ],
+      "khan": "K-RP:ratio tables",
+      "reps": [
+        "ratio-table",
+        "double-number-line"
+      ],
+      "formats": [
+        "numeric",
+        "table-fill",
+        "multiple-choice"
+      ],
+      "key": "Equivalent ratios come from multiplying or dividing BOTH quantities by the same number. Never add the same number to both.",
+      "tiers": [
+        "complete a ratio table with a whole-number multiplier",
+        "find the missing value across a non-adjacent row (scale factor not obvious)",
+        "ratios with fractions (3/4 cup : 2 servings)",
+        "compare two ratios from tables in a context"
+      ],
+      "gen": "Base ratio a:b with a,b in [1,12]; multipliers in [2,9]; T3 use halves/quarters.",
+      "errors": [
+        {
+          "tag": "additive-scaling",
+          "desc": "adds the same amount to both parts",
+          "distractor": "a+k : b+k"
+        },
+        {
+          "tag": "inverted-ratio",
+          "desc": "swaps the two quantities",
+          "distractor": "b:a scaled"
+        }
+      ],
+      "skin": "fuel to distance tables, missiles per sortie, pilots per aircraft"
+    },
+    {
+      "id": "rp.5.2",
+      "chapter": "ch5",
+      "section": "5.2",
+      "honors": false,
+      "name": "Rates and unit rates, including complex fractions",
+      "standards": [
+        "7.RP.A.1",
+        "7.RP.A.2b",
+        "7.RP.A.3"
+      ],
+      "im": [
+        "G7.U4.L2",
+        "G7.U4.L3",
+        "G7.U2.L3"
+      ],
+      "khan": "K-RP:unit rates with fractions",
+      "reps": [
+        "double-number-line"
+      ],
+      "formats": [
+        "numeric",
+        "fraction",
+        "multiple-choice"
+      ],
+      "key": "A unit rate is 'per 1'. Divide the first quantity by the second. With fractions, divide by multiplying by the reciprocal. Label the units.",
+      "tiers": [
+        "whole-number rate: 240 L in 8 min -> per minute",
+        "decimal result, and 'which is the better rate' comparisons",
+        "fraction in numerator or denominator: 1/2 mile in 1/4 hour",
+        "fractions in both; convert units in the same problem"
+      ],
+      "gen": "T1: divisible pairs. T2: 2-decimal results. T3/T4: fractions with denominators 2..8, results simple.",
+      "errors": [
+        {
+          "tag": "divide-backwards",
+          "desc": "divides the wrong way (min per liter)",
+          "distractor": "b/a"
+        },
+        {
+          "tag": "fraction-divide",
+          "desc": "(1/2)/(1/4) = 1/8",
+          "distractor": "multiplied instead of divided"
+        },
+        {
+          "tag": "unit-mismatch",
+          "desc": "answer in the wrong unit",
+          "distractor": "unconverted value"
+        }
+      ],
+      "skin": "fuel burn per minute, km per liter, Mach per throttle percent"
+    },
+    {
+      "id": "rp.5.3",
+      "chapter": "ch5",
+      "section": "5.3",
+      "honors": false,
+      "name": "Identifying proportional relationships",
+      "standards": [
+        "7.RP.A.2a",
+        "7.RP.A.2b"
+      ],
+      "im": [
+        "G7.U2.L2",
+        "G7.U2.L3",
+        "G7.U2.L7",
+        "G7.U2.L8"
+      ],
+      "khan": "K-RP:proportional relationships from tables",
+      "reps": [
+        "ratio-table",
+        "arrow-table"
+      ],
+      "formats": [
+        "multiple-choice",
+        "yes-no",
+        "numeric"
+      ],
+      "key": "Proportional means every y/x is the same number k, and (0, 0) fits. Check EVERY row, not just two.",
+      "tiers": [
+        "is this table proportional? (yes/no)",
+        "find k from a proportional table",
+        "is y = 3x + 2 proportional? equations and words",
+        "which of three tables/equations is proportional and what is k"
+      ],
+      "gen": "Build proportional tables from k in {2..12, 1/2, 1/4, 1.5, 2.5}; build non-proportional ones by adding a constant or breaking one row.",
+      "errors": [
+        {
+          "tag": "linear-not-proportional",
+          "desc": "calls y = x + 2 proportional",
+          "distractor": "yes for additive tables"
+        },
+        {
+          "tag": "two-rows-only",
+          "desc": "checks two rows and stops",
+          "distractor": "yes for a table broken in row 3"
+        },
+        {
+          "tag": "k-inverted",
+          "desc": "k = x/y",
+          "distractor": "1/k"
+        }
+      ],
+      "skin": "fuel vs distance tables, missiles vs credits, thrust vs throttle"
+    },
+    {
+      "id": "rp.5.4",
+      "chapter": "ch5",
+      "section": "5.4",
+      "honors": false,
+      "name": "Writing and solving proportions",
+      "standards": [
+        "7.RP.A.3"
+      ],
+      "im": [
+        "G7.U2.L4",
+        "G7.U2.L5",
+        "G7.U2.L6",
+        "G7.U2.L9"
+      ],
+      "khan": "K-RP:solving proportions",
+      "reps": [
+        "ratio-table",
+        "y=kx"
+      ],
+      "formats": [
+        "numeric",
+        "fraction",
+        "multiple-choice"
+      ],
+      "key": "Match units to matching positions (top with top). Solve with y = kx, a scale factor, or cross products.",
+      "tiers": [
+        "a/b = x/d with a clean scale factor",
+        "no clean scale factor; cross products needed",
+        "unknown in the denominator; decimals",
+        "context with a unit conversion or a two-step setup"
+      ],
+      "gen": "Pick k and x first, compute the other values; T2 ensure the scale factor is non-integer.",
+      "errors": [
+        {
+          "tag": "mismatched-setup",
+          "desc": "units in different positions",
+          "distractor": "a/b = d/x"
+        },
+        {
+          "tag": "additive-reasoning",
+          "desc": "adds the difference instead of scaling",
+          "distractor": "x = d + (b - a)"
+        }
+      ],
+      "skin": "fuel for a longer leg from a known rate, missiles needed for n bogeys"
+    },
+    {
+      "id": "rp.5.5",
+      "chapter": "ch5",
+      "section": "5.5",
+      "honors": false,
+      "name": "Graphs of proportional relationships",
+      "standards": [
+        "7.RP.A.2a",
+        "7.RP.A.2b",
+        "7.RP.A.2c",
+        "7.RP.A.2d"
+      ],
+      "im": [
+        "G7.U2.L10",
+        "G7.U2.L11",
+        "G7.U2.L12",
+        "G7.U2.L13",
+        "G7.U2.L14"
+      ],
+      "khan": "K-RP:graphs of proportional relationships",
+      "reps": [
+        "coordinate-plane",
+        "table-graph-equation"
+      ],
+      "formats": [
+        "multiple-choice",
+        "numeric",
+        "plot-point",
+        "graph-select"
+      ],
+      "key": "A proportional graph is a straight line through (0, 0). k is the y-value at x = 1, the point (1, k). The point (x, y) means 'x of this gives y of that'.",
+      "tiers": [
+        "which graph is proportional (line through origin)",
+        "read k from a graph; find (1, k)",
+        "write y = kx from a graph; plot points from k",
+        "explain what a point means; compare two graphs' rates"
+      ],
+      "gen": "k in {0.5, 1, 1.5, 2, 2.5, 3, 4, 5}; grid 0..10; non-proportional foils have nonzero intercepts or curves.",
+      "errors": [
+        {
+          "tag": "any-line",
+          "desc": "any straight line is proportional",
+          "distractor": "line with intercept"
+        },
+        {
+          "tag": "k-as-x-over-y",
+          "desc": "reads k backwards",
+          "distractor": "1/k"
+        },
+        {
+          "tag": "point-meaning",
+          "desc": "swaps what x and y mean",
+          "distractor": "reversed interpretation"
+        }
+      ],
+      "skin": "fuel vs distance graph, altitude gained vs minutes, credits vs missions"
+    },
+    {
+      "id": "rp.5.6",
+      "chapter": "ch5",
+      "section": "5.6",
+      "honors": false,
+      "name": "Scale drawings",
+      "standards": [
+        "7.G.A.1"
+      ],
+      "im": [
+        "G7.U1.L1",
+        "G7.U1.L2",
+        "G7.U1.L3",
+        "G7.U1.L4",
+        "G7.U1.L5",
+        "G7.U1.L6",
+        "G7.U1.L7",
+        "G7.U1.L8",
+        "G7.U1.L9",
+        "G7.U1.L10",
+        "G7.U1.L11",
+        "G7.U1.L12",
+        "G7.U1.L13"
+      ],
+      "khan": "K-SCALE:scale drawings",
+      "reps": [
+        "scale-drawing",
+        "grid",
+        "scale-bar"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "A scale is a ratio (drawing : actual). Multiply a drawing length by the scale factor to get the real length. Areas scale by the factor SQUARED.",
+      "tiers": [
+        "drawing length -> actual length with a scale like 1 cm : 25 km",
+        "actual -> drawing; find the scale from one pair",
+        "area from a scale drawing (factor squared); scales without units (1:72)",
+        "reproduce at a different scale; compare two scales"
+      ],
+      "gen": "Scales: 1cm:5km..1cm:50km, 1in:20ft, 1:48, 1:72, 1:144. Lengths to 1 decimal. T3 area problems use rectangles on a grid.",
+      "errors": [
+        {
+          "tag": "area-linear",
+          "desc": "scales area by k instead of k^2",
+          "distractor": "k * area"
+        },
+        {
+          "tag": "inverted-scale",
+          "desc": "divides when it should multiply",
+          "distractor": "length / k"
+        },
+        {
+          "tag": "additive",
+          "desc": "adds the scale instead of multiplying",
+          "distractor": "length + k"
+        }
+      ],
+      "skin": "tactical map distances, 1:72 model builds, hangar blueprints"
+    },
+    {
+      "id": "rp.6.1",
+      "chapter": "ch6",
+      "section": "6.1",
+      "honors": false,
+      "name": "Fractions, decimals, and percents",
+      "standards": [
+        "7.EE.B.3a"
+      ],
+      "im": [
+        "G7.U4.L5"
+      ],
+      "khan": "K-RP:converting percents",
+      "reps": [
+        "hundred-grid"
+      ],
+      "formats": [
+        "numeric",
+        "fraction",
+        "multiple-choice",
+        "order"
+      ],
+      "key": "Percent means 'per 100'. Percent to decimal: divide by 100 (move the point two places left). Decimal to percent: multiply by 100.",
+      "tiers": [
+        "whole-number percents to decimals and fractions",
+        "fractions with denominators 4, 5, 8, 20, 25 to percents",
+        "percents under 1% and over 100%; repeating (1/3 = 33.3%)",
+        "order a mixed set of fractions, decimals, and percents"
+      ],
+      "gen": "T1 in [1,99]. T3 includes 0.5%, 250%, 1/3, 2/3. T4 five values close together.",
+      "errors": [
+        {
+          "tag": "point-direction",
+          "desc": "moves the decimal the wrong way",
+          "distractor": "x100 instead of /100"
+        },
+        {
+          "tag": "half-percent",
+          "desc": "0.5% read as 50%",
+          "distractor": "0.5"
+        },
+        {
+          "tag": "over-100",
+          "desc": "250% = 0.25",
+          "distractor": "misplaced point"
+        }
+      ],
+      "skin": "shield and fuel gauges as fractions, decimals, percents"
+    },
+    {
+      "id": "rp.6.2",
+      "chapter": "ch6",
+      "section": "6.2",
+      "honors": false,
+      "name": "The percent proportion",
+      "standards": [
+        "7.RP.A.3",
+        "7.EE.B.3"
+      ],
+      "im": [
+        "G7.U4.L7",
+        "G7.U4.L11"
+      ],
+      "khan": "K-RP:percent problems",
+      "reps": [
+        "double-number-line",
+        "part-whole-bar"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "part / whole = percent / 100. Identify the whole first: it is what the percent is OF.",
+      "tiers": [
+        "find the part: 25% of 80",
+        "find the percent: 18 is what % of 60",
+        "find the whole: 15 is 30% of what",
+        "context where the whole is not the largest number stated"
+      ],
+      "gen": "Choose whole in [20,400], percent from {5,10,12.5,15,20,25,30,40,50,60,75,80,90}; compute part; rotate which is unknown.",
+      "errors": [
+        {
+          "tag": "part-whole-swap",
+          "desc": "puts the part as the whole",
+          "distractor": "whole/part * 100"
+        },
+        {
+          "tag": "percent-as-number",
+          "desc": "uses 25 not 25/100",
+          "distractor": "25 * whole"
+        }
+      ],
+      "skin": "percent of missiles fired, percent of the squadron ready, damage taken"
+    },
+    {
+      "id": "rp.6.3",
+      "chapter": "ch6",
+      "section": "6.3",
+      "honors": false,
+      "name": "The percent equation (tax, tip, commission, fees)",
+      "standards": [
+        "7.RP.A.3",
+        "7.EE.B.3"
+      ],
+      "im": [
+        "G7.U4.L8",
+        "G7.U4.L10",
+        "G7.U4.L12"
+      ],
+      "khan": "K-RP:percent word problems",
+      "reps": [
+        "equation",
+        "tape-diagram"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "part = percent (as a decimal) x whole. Tax and tip are ADDED to the price; a fee can be a percent of a total.",
+      "tiers": [
+        "a = p% x w with clean numbers",
+        "total with tax or tip added (price x 1.08)",
+        "find the percent or the whole from a total",
+        "multi-step: tax plus tip plus fee on a purchase"
+      ],
+      "gen": "Prices to cents in [10,2000]; rates from {5,6,7,7.5,8,8.25,10,15,18,20}.",
+      "errors": [
+        {
+          "tag": "percent-not-decimal",
+          "desc": "multiplies by 8 instead of 0.08",
+          "distractor": "100x too large"
+        },
+        {
+          "tag": "tax-not-added",
+          "desc": "reports the tax as the total",
+          "distractor": "just the tax"
+        },
+        {
+          "tag": "add-percents-to-price",
+          "desc": "adds 8 to the price",
+          "distractor": "price + rate"
+        }
+      ],
+      "skin": "base shop: missile price plus tax, hangar fee as a percent, pilot commission per kill"
+    },
+    {
+      "id": "rp.6.4",
+      "chapter": "ch6",
+      "section": "6.4",
+      "honors": false,
+      "name": "Percents of increase and decrease; percent error",
+      "standards": [
+        "7.RP.A.3",
+        "7.EE.B.3"
+      ],
+      "im": [
+        "G7.U4.L6",
+        "G7.U4.L7",
+        "G7.U4.L8",
+        "G7.U4.L9",
+        "G7.U4.L13",
+        "G7.U4.L14",
+        "G7.U4.L15"
+      ],
+      "khan": "K-RP:percent change",
+      "reps": [
+        "tape-diagram-100"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Percent change = (new - original) / ORIGINAL x 100. Percent error = |estimate - actual| / actual x 100.",
+      "tiers": [
+        "percent increase with clean numbers",
+        "percent decrease; decimals",
+        "find the new value from a percent change; percent error",
+        "two successive changes (up 50% then down 50% is not back to start)"
+      ],
+      "gen": "Original in [20,2000]; percent from {5..90 step 5}; T3 estimates within 30% of actual.",
+      "errors": [
+        {
+          "tag": "divide-by-new",
+          "desc": "divides by the new value",
+          "distractor": "(new-orig)/new"
+        },
+        {
+          "tag": "difference-only",
+          "desc": "reports the raw difference as a percent",
+          "distractor": "new - orig"
+        },
+        {
+          "tag": "successive-cancel",
+          "desc": "+50% then -50% returns to start",
+          "distractor": "original value"
+        }
+      ],
+      "skin": "top speed increase after an upgrade, fuel estimate vs actual (percent error), squadron size change"
+    },
+    {
+      "id": "rp.6.5",
+      "chapter": "ch6",
+      "section": "6.5",
+      "honors": false,
+      "name": "Discounts and markups",
+      "standards": [
+        "7.RP.A.3",
+        "7.EE.B.3",
+        "7.EE.A.2"
+      ],
+      "im": [
+        "G7.U4.L10",
+        "G7.U4.L11",
+        "G7.U4.L12"
+      ],
+      "khan": "K-RP:discount and markup",
+      "reps": [
+        "tape-diagram"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice",
+        "expression"
+      ],
+      "key": "Sale price = price x (1 - discount). Selling price = cost x (1 + markup). A 25% discount means you pay 75%.",
+      "tiers": [
+        "sale price from a percent off",
+        "markup: cost to selling price",
+        "find the original price from a sale price; which coupon is better",
+        "stacked discounts and the equivalent single percent; write C - 0.25C = 0.75C"
+      ],
+      "gen": "Prices in [10,5000]; rates from {10,15,20,25,30,40,50,60}. T4 pairs like 20% then 10%.",
+      "errors": [
+        {
+          "tag": "discount-as-price",
+          "desc": "reports the discount amount as the sale price",
+          "distractor": "price x d"
+        },
+        {
+          "tag": "stack-add",
+          "desc": "20% then 10% = 30%",
+          "distractor": "price x 0.70"
+        },
+        {
+          "tag": "markup-subtract",
+          "desc": "subtracts the markup",
+          "distractor": "cost x (1 - m)"
+        }
+      ],
+      "skin": "base shop discounts, black-market markups on parts, stacked coupons for paint schemes"
+    },
+    {
+      "id": "rp.6.6",
+      "chapter": "ch6",
+      "section": "6.6",
+      "honors": false,
+      "name": "Simple interest",
+      "standards": [
+        "7.RP.A.3",
+        "7.EE.B.3a"
+      ],
+      "im": [
+        "G7.U4.L11"
+      ],
+      "khan": "K-RP:simple interest",
+      "reps": [
+        "balance-table"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "I = P x r x t, with r as a decimal and t in YEARS. Balance = P + I.",
+      "tiers": [
+        "I from P, r, t in whole years",
+        "balance after t years; months converted to years",
+        "find r or t from I",
+        "compare two loans/accounts over different times"
+      ],
+      "gen": "P in [100,10000]; r from {2,2.5,3,4,4.5,5,6,7.5,8}; t in [1,10] years or [6,36] months.",
+      "errors": [
+        {
+          "tag": "rate-not-decimal",
+          "desc": "uses 5 not 0.05",
+          "distractor": "100x"
+        },
+        {
+          "tag": "months-as-years",
+          "desc": "t = 18 for 18 months",
+          "distractor": "12x"
+        },
+        {
+          "tag": "interest-as-balance",
+          "desc": "reports I when the balance was asked",
+          "distractor": "I only"
+        }
+      ],
+      "skin": "squadron credit account, hangar loan for a new airframe"
+    },
+    {
+      "id": "sp.7.1",
+      "chapter": "ch7",
+      "section": "7.1",
+      "honors": false,
+      "name": "Probability and sample spaces",
+      "standards": [
+        "7.SP.C.5",
+        "7.SP.C.6a",
+        "7.SP.C.7b"
+      ],
+      "im": [
+        "G7.U8.L2",
+        "G7.U8.L3"
+      ],
+      "khan": "K-STAT:basic probability",
+      "reps": [
+        "likelihood-line",
+        "sample-space-list"
+      ],
+      "formats": [
+        "fraction",
+        "numeric",
+        "multiple-choice",
+        "likelihood-select"
+      ],
+      "key": "P(event) = favorable outcomes / total outcomes, always between 0 and 1. 0 = impossible, 1 = certain, 1/2 = equally likely either way.",
+      "tiers": [
+        "list a sample space; classify likelihood (impossible..certain)",
+        "P of a simple event as a fraction, decimal, percent",
+        "P of 'not' an event; place on a 0-1 line",
+        "relative frequency from collected data -> predicted count"
+      ],
+      "gen": "Spinners with 3-8 sectors, bags of 5-20 items in 2-4 colors, dice, cards labeled A-F. Never a probability above 1.",
+      "errors": [
+        {
+          "tag": "over-one",
+          "desc": "P > 1 or favorable/unfavorable",
+          "distractor": "a/(n-a)"
+        },
+        {
+          "tag": "assume-equal",
+          "desc": "assumes outcomes are equally likely when they are not",
+          "distractor": "1/k"
+        },
+        {
+          "tag": "complement",
+          "desc": "P(not A) reported as P(A)",
+          "distractor": "P(A)"
+        }
+      ],
+      "skin": "dud missile odds, weather, radar contact chance, ordnance bag draws"
+    },
+    {
+      "id": "sp.7.2",
+      "chapter": "ch7",
+      "section": "7.2",
+      "honors": false,
+      "name": "Experimental and theoretical probability",
+      "standards": [
+        "7.SP.C.6a",
+        "7.SP.C.6b",
+        "7.SP.C.6c",
+        "7.SP.C.7a",
+        "7.SP.C.7b"
+      ],
+      "im": [
+        "G7.U8.L1",
+        "G7.U8.L4",
+        "G7.U8.L5",
+        "G7.U8.L6"
+      ],
+      "khan": "K-STAT:experimental probability",
+      "reps": [
+        "frequency-table",
+        "simulation"
+      ],
+      "formats": [
+        "fraction",
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Theoretical: what should happen (favorable/total). Experimental: what did happen (occurrences/trials). Prediction = P x number of trials. More trials brings them closer.",
+      "tiers": [
+        "experimental P from a frequency table",
+        "predicted count from theoretical P and n trials",
+        "compare experimental to theoretical; explain a discrepancy",
+        "build a non-uniform model from data (paper cup lands open-end down)"
+      ],
+      "gen": "Trials 20..600; frequencies summing to trials; theoretical from spinners/dice.",
+      "errors": [
+        {
+          "tag": "exact-match",
+          "desc": "expects experiment to equal theory exactly",
+          "distractor": "'the die is unfair'"
+        },
+        {
+          "tag": "trials-as-favorable",
+          "desc": "flips the ratio",
+          "distractor": "trials/occurrences"
+        },
+        {
+          "tag": "prediction-unscaled",
+          "desc": "reports P instead of P x n",
+          "distractor": "P"
+        }
+      ],
+      "skin": "600 missile launches vs expected duds, radar hit logs, ejection seat test data"
+    },
+    {
+      "id": "sp.7.3",
+      "chapter": "ch7",
+      "section": "7.3",
+      "honors": false,
+      "name": "Measures of center",
+      "standards": [
+        "7.SP.D.8a"
+      ],
+      "im": [
+        "G6.U8.mean-median",
+        "G7.U8.L11"
+      ],
+      "khan": "K-STAT:mean median mode",
+      "reps": [
+        "dot-plot"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Mean = sum / count. Median = middle value AFTER sorting (average the two middles if the count is even). Mode = most frequent. An outlier pulls the mean, not the median.",
+      "tiers": [
+        "mean, median, mode of 5-7 whole numbers",
+        "even count (median averages two); a mode of 'none'",
+        "effect of an outlier on mean vs median",
+        "find a missing value given the mean"
+      ],
+      "gen": "Sets of 5-10 values in [0,60]; T3 add one value 3x the max.",
+      "errors": [
+        {
+          "tag": "median-unsorted",
+          "desc": "middle of the unsorted list",
+          "distractor": "unsorted middle"
+        },
+        {
+          "tag": "mean-count-error",
+          "desc": "divides by the wrong count",
+          "distractor": "sum/(n-1)"
+        },
+        {
+          "tag": "mode-as-max",
+          "desc": "mode reported as largest value",
+          "distractor": "max"
+        }
+      ],
+      "skin": "sortie times, lock times across missions, kills per pilot"
+    },
+    {
+      "id": "sp.7.4",
+      "chapter": "ch7",
+      "section": "7.4",
+      "honors": false,
+      "name": "Measures of variation",
+      "standards": [
+        "7.SP.D.8a"
+      ],
+      "im": [
+        "G6.U8.MAD-IQR"
+      ],
+      "khan": "K-STAT:interquartile range",
+      "reps": [
+        "dot-plot",
+        "quartile-marks"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Range = max - min. Sort, split at the median, Q1 and Q3 are the medians of each half. IQR = Q3 - Q1 (the middle 50%).",
+      "tiers": [
+        "range of a data set",
+        "Q1, Q3, IQR for 7-9 values",
+        "IQR with even counts; mean absolute deviation (MAD) for 5-6 values",
+        "compare spreads of two squadrons"
+      ],
+      "gen": "Values in [0,100]; T2 odd counts; T3 even counts.",
+      "errors": [
+        {
+          "tag": "iqr-sum",
+          "desc": "computes Q3 + Q1",
+          "distractor": "Q3+Q1"
+        },
+        {
+          "tag": "quartile-includes-median",
+          "desc": "includes the median in both halves on odd counts",
+          "distractor": "shifted Q1/Q3"
+        },
+        {
+          "tag": "range-as-iqr",
+          "desc": "reports the range",
+          "distractor": "max-min"
+        }
+      ],
+      "skin": "consistency of landing times, spread of fuel burn across a squadron"
+    },
+    {
+      "id": "sp.7.5",
+      "chapter": "ch7",
+      "section": "7.5",
+      "honors": false,
+      "name": "Choosing appropriate measures",
+      "standards": [
+        "7.SP.D.8b"
+      ],
+      "im": [
+        "G6.U8.shape-and-measures"
+      ],
+      "khan": "K-STAT:choosing measures",
+      "reps": [
+        "dot-plot",
+        "skew-vs-symmetric"
+      ],
+      "formats": [
+        "multiple-choice",
+        "yes-no"
+      ],
+      "key": "Symmetric data with no outliers: use mean and MAD. Skewed data or outliers: use median and IQR.",
+      "tiers": [
+        "symmetric vs skewed from a dot plot",
+        "pick the best measure of center and say why",
+        "how an outlier changes which measure to use",
+        "compare two distributions and justify the choice"
+      ],
+      "gen": "Generate dot plots: symmetric (mirror), left/right skew, one outlier.",
+      "errors": [
+        {
+          "tag": "always-mean",
+          "desc": "always picks the mean",
+          "distractor": "mean for skewed data"
+        },
+        {
+          "tag": "skew-direction",
+          "desc": "left/right skew confused",
+          "distractor": "opposite skew"
+        }
+      ],
+      "skin": "sortie durations with one aborted mission, kill counts across pilots"
+    },
+    {
+      "id": "sp.7.6",
+      "chapter": "ch7",
+      "section": "7.6",
+      "honors": false,
+      "name": "Box-and-whisker plots",
+      "standards": [
+        "7.SP.D.8a"
+      ],
+      "im": [
+        "G6.U8.box-plots"
+      ],
+      "khan": "K-STAT:box plots",
+      "reps": [
+        "box-plot",
+        "dot-plot"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice",
+        "box-plot-read"
+      ],
+      "key": "Five numbers: min, Q1, median, Q3, max. The box is the middle 50%. Each of the four sections holds about a quarter of the data no matter how long it looks.",
+      "tiers": [
+        "read min/Q1/median/Q3/max off a plot",
+        "build the five-number summary from data",
+        "what percent of data is above Q1 / inside the box",
+        "compare two box plots (center and spread)"
+      ],
+      "gen": "Data 9-15 values in [0,100]; plots on a 0-100 axis.",
+      "errors": [
+        {
+          "tag": "longer-means-more",
+          "desc": "longer whisker = more data",
+          "distractor": "'more data in the long section'"
+        },
+        {
+          "tag": "box-is-half-values",
+          "desc": "box holds half the VALUES not half the DATA",
+          "distractor": "mid-range instead of median"
+        }
+      ],
+      "skin": "two squadrons' sortie times side by side, lock-time distributions"
+    },
+    {
+      "id": "sp.8.1",
+      "chapter": "ch8",
+      "section": "8.1",
+      "honors": false,
+      "name": "Samples and populations",
+      "standards": [
+        "7.SP.A.1",
+        "7.SP.A.2"
+      ],
+      "im": [
+        "G7.U8.L12",
+        "G7.U8.L13",
+        "G7.U8.L14"
+      ],
+      "khan": "K-STAT:sampling",
+      "reps": [
+        "population-sample-diagram"
+      ],
+      "formats": [
+        "multiple-choice",
+        "yes-no"
+      ],
+      "key": "A sample must be random and representative to support a valid inference. A convenience sample (just the pilots in the ready room) is biased.",
+      "tiers": [
+        "population vs sample identification",
+        "random vs biased sampling method",
+        "which sample best represents the population; why",
+        "design a fair sampling method for a base-wide survey"
+      ],
+      "gen": "Scenario templates with 3-4 sampling methods, exactly one random.",
+      "errors": [
+        {
+          "tag": "big-is-unbiased",
+          "desc": "a large sample must be fair",
+          "distractor": "the largest biased sample"
+        },
+        {
+          "tag": "convenience",
+          "desc": "picks the easiest sample",
+          "distractor": "ready-room sample"
+        }
+      ],
+      "skin": "surveying pilots about a new helmet, maintenance inspections across bases"
+    },
+    {
+      "id": "sp.8.2",
+      "chapter": "ch8",
+      "section": "8.2",
+      "honors": false,
+      "name": "Using random samples to describe populations",
+      "standards": [
+        "7.SP.A.2"
+      ],
+      "im": [
+        "G7.U8.L15",
+        "G7.U8.L16",
+        "G7.U8.L17"
+      ],
+      "khan": "K-STAT:making inferences",
+      "reps": [
+        "dot-plot-of-sample-means",
+        "proportion-table"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Estimate for the population = sample proportion x population size. Different samples give different estimates; that variation is expected.",
+      "tiers": [
+        "proportion in sample -> estimate for population",
+        "estimate a population mean from a sample",
+        "compare estimates from several samples; give a reasonable range",
+        "judge whether a sample size is large enough"
+      ],
+      "gen": "Sample 20-100, population 500-5000; proportions with clean fractions.",
+      "errors": [
+        {
+          "tag": "identical-samples",
+          "desc": "expects every sample to match",
+          "distractor": "'the second sample is wrong'"
+        },
+        {
+          "tag": "unscaled",
+          "desc": "reports the sample count as the estimate",
+          "distractor": "sample count"
+        }
+      ],
+      "skin": "estimate how many of 2,400 missiles are duds from a sample of 60"
+    },
+    {
+      "id": "sp.8.3",
+      "chapter": "ch8",
+      "section": "8.3",
+      "honors": false,
+      "name": "Comparing populations",
+      "standards": [
+        "7.SP.B.3"
+      ],
+      "im": [
+        "G7.U8.L11"
+      ],
+      "khan": "K-STAT:comparing distributions",
+      "reps": [
+        "parallel-dot-plots"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Compare centers (mean or median) AND spreads. Divide the difference in centers by the MAD to see how big the difference really is.",
+      "tiers": [
+        "which group has the higher center",
+        "difference in means expressed in MADs",
+        "overlap: similar spreads, different centers",
+        "write a comparison statement using both center and spread"
+      ],
+      "gen": "Two sets of 8-12 values; MAD chosen so difference/MAD lands in {0.5,1,2,3}.",
+      "errors": [
+        {
+          "tag": "ignore-spread",
+          "desc": "compares centers only",
+          "distractor": "'clearly different' when spreads overlap"
+        },
+        {
+          "tag": "mad-as-difference",
+          "desc": "reports the MAD as the difference",
+          "distractor": "MAD"
+        }
+      ],
+      "skin": "Eagle squadron vs Falcon squadron sortie times"
+    },
+    {
+      "id": "sp.8.4",
+      "chapter": "ch8",
+      "section": "8.4",
+      "honors": false,
+      "name": "Using random samples to compare populations",
+      "standards": [
+        "7.SP.A.2",
+        "7.SP.B.4"
+      ],
+      "im": [
+        "G7.U8.L18",
+        "G7.U8.L19",
+        "G7.U8.L20"
+      ],
+      "khan": "K-STAT:comparing populations",
+      "reps": [
+        "side-by-side-box-plots"
+      ],
+      "formats": [
+        "multiple-choice",
+        "numeric"
+      ],
+      "key": "Use samples from each population, compare centers and spreads, and say how confident you are: overlapping boxes mean a weak conclusion.",
+      "tiers": [
+        "read two sample box plots and compare medians",
+        "compare using mean and range",
+        "decide whether the difference is meaningful given the spread",
+        "recommend more sampling or a conclusion"
+      ],
+      "gen": "Two samples 10-15 values each; vary overlap.",
+      "errors": [
+        {
+          "tag": "one-sample-proof",
+          "desc": "treats one sample as proof",
+          "distractor": "'definitely faster'"
+        },
+        {
+          "tag": "ignore-overlap",
+          "desc": "ignores overlapping boxes",
+          "distractor": "strong claim"
+        }
+      ],
+      "skin": "do F-16 pilots or F-15 pilots lock faster? sampled from two bases"
+    },
+    {
+      "id": "g.9.1",
+      "chapter": "ch9",
+      "section": "9.1",
+      "honors": false,
+      "name": "Circles and circumference",
+      "standards": [
+        "7.G.B.3"
+      ],
+      "im": [
+        "G7.U3.L1",
+        "G7.U3.L2",
+        "G7.U3.L3",
+        "G7.U3.L4",
+        "G7.U3.L5"
+      ],
+      "khan": "K-GEO:circumference",
+      "reps": [
+        "circle-labelled",
+        "C-vs-d-graph"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Diameter = 2 x radius. C = pi x d = 2 x pi x r. Circumference / diameter is always pi.",
+      "tiers": [
+        "radius <-> diameter",
+        "C from d or r using 3.14 or leaving in terms of pi",
+        "d or r from C",
+        "context: turn radius to distance flown in a full circle; wheel rotations"
+      ],
+      "gen": "r in [1,50]; accept answers within 0.5% for 3.14 and exact for 'pi' form.",
+      "errors": [
+        {
+          "tag": "c-equals-pi-r",
+          "desc": "C = pi r",
+          "distractor": "half the answer"
+        },
+        {
+          "tag": "c-vs-a",
+          "desc": "uses the area formula",
+          "distractor": "pi r^2"
+        },
+        {
+          "tag": "r-d-swap",
+          "desc": "uses r where d is given",
+          "distractor": "2x or 1/2x"
+        }
+      ],
+      "skin": "holding-pattern circle, turn radius, radar dish rim"
+    },
+    {
+      "id": "g.9.2",
+      "chapter": "ch9",
+      "section": "9.2",
+      "honors": false,
+      "name": "Areas of circles",
+      "standards": [
+        "7.G.B.3"
+      ],
+      "im": [
+        "G7.U3.L6",
+        "G7.U3.L7",
+        "G7.U3.L8",
+        "G7.U3.L9",
+        "G7.U3.L10"
+      ],
+      "khan": "K-GEO:area of circles",
+      "reps": [
+        "wedges-to-parallelogram"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "A = pi x r^2. Square the radius FIRST, then multiply by pi. If given the diameter, halve it first.",
+      "tiers": [
+        "A from r",
+        "A from d; semicircle area",
+        "r from A",
+        "circumference vs area: which is asked, in context"
+      ],
+      "gen": "r in [1,40]; T2 semicircles; T3 A chosen so r is a whole number.",
+      "errors": [
+        {
+          "tag": "a-equals-pi-d-squared",
+          "desc": "uses d instead of r",
+          "distractor": "4x too large"
+        },
+        {
+          "tag": "pi-r-squared-whole",
+          "desc": "(pi r)^2",
+          "distractor": "pi^2 r^2"
+        },
+        {
+          "tag": "forgot-square",
+          "desc": "pi x r",
+          "distractor": "pi r"
+        }
+      ],
+      "skin": "radar sweep area, area covered by a flare, circular landing pad"
+    },
+    {
+      "id": "g.9.3",
+      "chapter": "ch9",
+      "section": "9.3",
+      "honors": false,
+      "name": "Perimeters and areas of composite figures",
+      "standards": [
+        "7.G.B.3",
+        "7.G.B.5"
+      ],
+      "im": [
+        "G7.U3.L9",
+        "G7.U3.L10",
+        "G7.U3.L11",
+        "G7.U7.L13"
+      ],
+      "khan": "K-GEO:area of composite figures",
+      "reps": [
+        "grid-decomposition"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Cut the figure into rectangles, triangles, and half-circles; add (or subtract a cutout). Perimeter counts only the OUTSIDE edges.",
+      "tiers": [
+        "L-shape from rectangles",
+        "rectangle plus semicircle (apron/runway end)",
+        "area with a cutout; perimeter with a curved edge",
+        "area between two shapes"
+      ],
+      "gen": "Dimensions in [2,40]; semicircle diameters even; grid drawings supplied.",
+      "errors": [
+        {
+          "tag": "interior-edges",
+          "desc": "counts interior segments in the perimeter",
+          "distractor": "perimeter plus cut line"
+        },
+        {
+          "tag": "full-circle",
+          "desc": "uses full circle for a semicircle",
+          "distractor": "2x the curved part"
+        },
+        {
+          "tag": "add-cutout",
+          "desc": "adds the cutout instead of subtracting",
+          "distractor": "sum"
+        }
+      ],
+      "skin": "runway and apron layouts, hangar floor with a cutout, target zone shapes"
+    },
+    {
+      "id": "g.9.4",
+      "chapter": "ch9",
+      "section": "9.4",
+      "honors": false,
+      "name": "Constructing polygons and the triangle inequality",
+      "standards": [
+        "7.G.A.2"
+      ],
+      "im": [
+        "G7.U7.L6",
+        "G7.U7.L7",
+        "G7.U7.L8",
+        "G7.U7.L9",
+        "G7.U7.L10"
+      ],
+      "khan": "K-GEO:triangle inequality",
+      "reps": [
+        "straws",
+        "compass-construction"
+      ],
+      "formats": [
+        "multiple-choice",
+        "yes-no",
+        "numeric"
+      ],
+      "key": "Three side lengths make a triangle only if the two shorter ones add to MORE than the longest. Three sides fix one unique triangle; three angles (summing to 180) allow infinitely many.",
+      "tiers": [
+        "can these three sides form a triangle?",
+        "unique / many / none from given conditions",
+        "possible range for the third side",
+        "draw a quadrilateral from side and angle descriptions (multiple choice of figures)"
+      ],
+      "gen": "Sides in [1,20]; include exact-equality foils (2,3,5).",
+      "errors": [
+        {
+          "tag": "equality-passes",
+          "desc": "accepts 2, 3, 5",
+          "distractor": "yes"
+        },
+        {
+          "tag": "angles-unique",
+          "desc": "three angles give a unique triangle",
+          "distractor": "unique"
+        }
+      ],
+      "skin": "triangular intercept geometry, three legs of a patrol route"
+    },
+    {
+      "id": "g.9.5",
+      "chapter": "ch9",
+      "section": "9.5",
+      "honors": false,
+      "name": "Finding unknown angle measures",
+      "standards": [
+        "7.G.B.4"
+      ],
+      "im": [
+        "G7.U7.L1",
+        "G7.U7.L2",
+        "G7.U7.L3",
+        "G7.U7.L4",
+        "G7.U7.L5"
+      ],
+      "khan": "K-GEO:unknown angles",
+      "reps": [
+        "angle-diagram"
+      ],
+      "formats": [
+        "numeric",
+        "expression",
+        "multiple-choice"
+      ],
+      "key": "Complementary = 90, supplementary = 180, vertical angles are equal, adjacent angles share a side. Name the relationship, write the equation, solve, then answer the ANGLE (not just x).",
+      "tiers": [
+        "name the relationship; find the other angle",
+        "vertical and adjacent angles at a crossing",
+        "write and solve an equation: (3x) and (2x + 20) supplementary",
+        "multi-step figure combining relationships"
+      ],
+      "gen": "Angles in [10,170]; T3 choose x so all angles are whole.",
+      "errors": [
+        {
+          "tag": "comp-supp-swap",
+          "desc": "uses 90 for 180 or vice versa",
+          "distractor": "off by 90"
+        },
+        {
+          "tag": "stop-at-x",
+          "desc": "reports x instead of the angle",
+          "distractor": "x"
+        },
+        {
+          "tag": "vertical-supp",
+          "desc": "treats vertical angles as supplementary",
+          "distractor": "180 - a"
+        }
+      ],
+      "skin": "crossing flight paths, intercept headings, bank angle relationships"
+    },
+    {
+      "id": "g.10.1",
+      "chapter": "ch10",
+      "section": "10.1",
+      "honors": false,
+      "name": "Surface areas of prisms",
+      "standards": [
+        "7.G.B.5"
+      ],
+      "im": [
+        "G7.U7.L14",
+        "G7.U7.L15",
+        "G7.U7.L16"
+      ],
+      "khan": "K-GEO:surface area",
+      "reps": [
+        "net"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Surface area is the total area of ALL the faces. Use a net or S = 2B + Ph (two bases plus the lateral faces).",
+      "tiers": [
+        "rectangular prism from a net",
+        "cube; triangular prism",
+        "lateral area only; missing dimension from S",
+        "context: paint needed for a container, compare volume and surface area"
+      ],
+      "gen": "Dimensions in [1,20]; triangular prisms with 3-4-5 style bases.",
+      "errors": [
+        {
+          "tag": "missing-face",
+          "desc": "forgets a face",
+          "distractor": "S minus one face"
+        },
+        {
+          "tag": "sa-vs-volume",
+          "desc": "computes volume",
+          "distractor": "lwh"
+        },
+        {
+          "tag": "one-base",
+          "desc": "counts one base",
+          "distractor": "B + Ph"
+        }
+      ],
+      "skin": "paint for a fuel crate, hangar wall panels, ordnance container"
+    },
+    {
+      "id": "g.10.2",
+      "chapter": "ch10",
+      "section": "10.2",
+      "honors": false,
+      "name": "Surface areas of cylinders",
+      "standards": [
+        "7.G.B.3"
+      ],
+      "im": [],
+      "khan": "HS-GEO:surface area of cylinders",
+      "reps": [
+        "can-label-net"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Unroll it: two circles plus a rectangle whose width is the circumference. S = 2 pi r^2 + 2 pi r h.",
+      "tiers": [
+        "S from r and h with pi = 3.14",
+        "S from d and h; leave in terms of pi",
+        "lateral area only",
+        "context: label on a fuel drum"
+      ],
+      "gen": "r in [1,15], h in [1,30].",
+      "errors": [
+        {
+          "tag": "diameter-as-width",
+          "desc": "uses d for the rectangle width",
+          "distractor": "2 pi r^2 + d h"
+        },
+        {
+          "tag": "one-circle",
+          "desc": "counts one circular face",
+          "distractor": "pi r^2 + 2 pi r h"
+        }
+      ],
+      "skin": "external fuel tank, engine nacelle, drum labels",
+      "note": "No IM 6-8 match; Big Ideas maps this to 7.G.B.3. Treat as core because it is on the syllabus topics list."
+    },
+    {
+      "id": "g.10.3",
+      "chapter": "ch10",
+      "section": "10.3",
+      "honors": false,
+      "name": "Surface areas of pyramids",
+      "standards": [
+        "7.G.B.5"
+      ],
+      "im": [
+        "G6.U1.nets"
+      ],
+      "khan": "K-GEO:surface area",
+      "reps": [
+        "net"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "S = base area + the triangular faces. Each triangle uses the SLANT height, not the pyramid's height.",
+      "tiers": [
+        "square pyramid from a net",
+        "triangular pyramid",
+        "lateral area with slant height given",
+        "distinguish slant height from height"
+      ],
+      "gen": "Base edge in [2,20], slant height in [3,25].",
+      "errors": [
+        {
+          "tag": "height-not-slant",
+          "desc": "uses height instead of slant height",
+          "distractor": "with h"
+        },
+        {
+          "tag": "missing-base",
+          "desc": "forgets the base",
+          "distractor": "lateral only"
+        }
+      ],
+      "skin": "radar cone housing, tent hangar, pyramidal target marker",
+      "note": "TN 7.G.B.5 names cubes and right prisms only; keep as enrichment tier within the campaign."
+    },
+    {
+      "id": "g.10.4",
+      "chapter": "ch10",
+      "section": "10.4",
+      "honors": false,
+      "name": "Volumes of prisms",
+      "standards": [
+        "7.G.B.5"
+      ],
+      "im": [
+        "G7.U7.L12",
+        "G7.U7.L13",
+        "G7.U7.L15",
+        "G7.U7.L16",
+        "G7.U7.L17"
+      ],
+      "khan": "K-GEO:volume",
+      "reps": [
+        "layers-of-cubes",
+        "base-times-height"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "V = B x h: area of the base times the height. Works for any prism; the base is the face that repeats.",
+      "tiers": [
+        "rectangular prism V = Bh",
+        "triangular and trapezoidal prisms",
+        "missing dimension from V; fractional dimensions",
+        "context: fuel tank capacity, compare two tanks"
+      ],
+      "gen": "Dimensions in [1,30]; T3 use halves.",
+      "errors": [
+        {
+          "tag": "wrong-base",
+          "desc": "uses a non-base face for B",
+          "distractor": "wrong face x h"
+        },
+        {
+          "tag": "add-not-multiply",
+          "desc": "adds dimensions",
+          "distractor": "l+w+h"
+        },
+        {
+          "tag": "v-vs-sa",
+          "desc": "computes surface area",
+          "distractor": "S"
+        }
+      ],
+      "skin": "fuel tank in liters, cargo bay, hangar volume"
+    },
+    {
+      "id": "g.10.5",
+      "chapter": "ch10",
+      "section": "10.5",
+      "honors": false,
+      "name": "Volumes of pyramids",
+      "standards": [
+        "7.G.B.5"
+      ],
+      "im": [],
+      "khan": "HS-GEO:volume of pyramids",
+      "reps": [
+        "pour-demo"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "A pyramid holds one third of the prism with the same base and height: V = (1/3) B h.",
+      "tiers": [
+        "square pyramid V",
+        "triangular pyramid V",
+        "compare pyramid to prism with the same base",
+        "missing height from V"
+      ],
+      "gen": "Base edges in [2,20], heights chosen so V is whole.",
+      "errors": [
+        {
+          "tag": "drop-third",
+          "desc": "forgets the 1/3",
+          "distractor": "Bh"
+        },
+        {
+          "tag": "slant-not-height",
+          "desc": "uses slant height",
+          "distractor": "with slant"
+        }
+      ],
+      "skin": "nose cone volume approximated by a pyramid, ordnance crate",
+      "note": "Enrichment per TN standard text; on the syllabus topics list."
+    },
+    {
+      "id": "g.10.6",
+      "chapter": "ch10",
+      "section": "10.6",
+      "honors": false,
+      "name": "Cross sections of three-dimensional figures",
+      "standards": [
+        "7.G.B.5"
+      ],
+      "im": [
+        "G7.U7.L11"
+      ],
+      "khan": "K-GEO:cross sections",
+      "reps": [
+        "slice-visual"
+      ],
+      "formats": [
+        "multiple-choice",
+        "shape-select"
+      ],
+      "key": "A slice parallel to the base is a copy of the base. A slice perpendicular to the base of a prism is a rectangle. A pyramid sliced parallel to its base gives a smaller version of the base.",
+      "tiers": [
+        "cross section of a prism parallel to the base",
+        "perpendicular slices of prisms and cylinders",
+        "pyramids and cones sliced parallel and perpendicular",
+        "diagonal slices; identify the solid from a set of cross sections"
+      ],
+      "gen": "Solids: rectangular prism, triangular prism, cylinder, square pyramid, cone; slice directions rotated.",
+      "errors": [
+        {
+          "tag": "pyramid-always-triangle",
+          "desc": "every slice of a pyramid is a triangle",
+          "distractor": "triangle for a parallel slice"
+        },
+        {
+          "tag": "cylinder-circle-only",
+          "desc": "cylinder slices are always circles",
+          "distractor": "circle for a perpendicular slice"
+        }
+      ],
+      "skin": "fuselage and wing cross sections, fuel tank baffles"
+    },
+    {
+      "id": "h8.ns.a1",
+      "quarter": 1,
+      "attachTo": [
+        "ch2"
+      ],
+      "honors": true,
+      "name": "Rational vs irrational; repeating decimals to fractions",
+      "standards": [
+        "8.NS.A.1"
+      ],
+      "im": [
+        "G8.U8.L14",
+        "G8.U8.L15"
+      ],
+      "khan": "K8-NUM:irrational numbers",
+      "reps": [
+        "number-line",
+        "algebra-trick-10x"
+      ],
+      "formats": [
+        "multiple-choice",
+        "yes-no",
+        "fraction"
+      ],
+      "key": "Rational numbers can be written as a fraction of integers; their decimals end or repeat. Irrational decimals never end and never repeat (pi, sqrt 2). To turn 0.333... into a fraction, set x = 0.333..., multiply by 10, subtract.",
+      "tiers": [
+        "classify a number as rational or irrational",
+        "repeating decimal with one repeating digit to a fraction",
+        "two repeating digits (0.4545...)",
+        "classify sqrt of perfect vs non-perfect squares; mixed lists"
+      ],
+      "gen": "Repeating digits 1-2; foils: sqrt(49), 0.25, 22/7, pi, sqrt(50).",
+      "errors": [
+        {
+          "tag": "sqrt-always-irrational",
+          "desc": "sqrt(49) marked irrational",
+          "distractor": "irrational"
+        },
+        {
+          "tag": "long-decimal-irrational",
+          "desc": "0.121212... marked irrational",
+          "distractor": "irrational"
+        },
+        {
+          "tag": "multiply-wrong-power",
+          "desc": "uses 10x for a two-digit repeat",
+          "distractor": "wrong fraction"
+        }
+      ],
+      "skin": "sensor readouts that repeat vs. drift, Mach values as fractions"
+    },
+    {
+      "id": "h8.ns.a2",
+      "quarter": 1,
+      "attachTo": [
+        "ch2"
+      ],
+      "honors": true,
+      "name": "Estimate square roots; order irrationals",
+      "standards": [
+        "8.NS.A.2"
+      ],
+      "im": [
+        "G8.U8.L4",
+        "G8.U8.L5"
+      ],
+      "khan": "K8-NUM:approximating square roots",
+      "reps": [
+        "number-line",
+        "bracketing"
+      ],
+      "formats": [
+        "numeric",
+        "order",
+        "multiple-choice"
+      ],
+      "key": "Bracket the root between two perfect squares (sqrt 40 is between 6 and 7, closer to 6). Estimate to the tenth or hundredth, then place it on the number line.",
+      "tiers": [
+        "which two whole numbers is sqrt n between",
+        "estimate to the nearest tenth",
+        "estimate to the nearest hundredth; order a set including pi and fractions",
+        "estimate an expression like 2 sqrt 10 + 1"
+      ],
+      "gen": "n in [2,150] non-square; sets of 4-5 values for ordering.",
+      "errors": [
+        {
+          "tag": "halve-not-root",
+          "desc": "sqrt(16) = 8",
+          "distractor": "n/2"
+        },
+        {
+          "tag": "wrong-bracket",
+          "desc": "brackets between wrong squares",
+          "distractor": "off by one"
+        }
+      ],
+      "skin": "distance estimates from radar area, runway diagonal estimates"
+    },
+    {
+      "id": "h8.ee.a1",
+      "quarter": 1,
+      "attachTo": [
+        "ch2",
+        "ch3"
+      ],
+      "honors": true,
+      "name": "Properties of integer exponents",
+      "standards": [
+        "8.EE.A.1"
+      ],
+      "im": [
+        "G8.U7.L1",
+        "G8.U7.L2",
+        "G8.U7.L3",
+        "G8.U7.L4",
+        "G8.U7.L5",
+        "G8.U7.L6",
+        "G8.U7.L7",
+        "G8.U7.L8"
+      ],
+      "khan": "K8-NUM:exponent properties",
+      "reps": [
+        "expanded-form"
+      ],
+      "formats": [
+        "expression",
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Same base, multiplying: add exponents. Dividing: subtract. Power of a power: multiply. Anything to the 0 is 1. A negative exponent means 1 over the positive power.",
+      "tiers": [
+        "product rule, positive exponents",
+        "quotient rule; zero exponent",
+        "negative exponents; power of a power",
+        "mixed expressions with two bases; evaluate numerically"
+      ],
+      "gen": "Bases 2-10 and x; exponents in [-5,8]. Evaluations kept under 10^6.",
+      "errors": [
+        {
+          "tag": "multiply-exponents-on-product",
+          "desc": "3^2 x 3^4 = 3^8",
+          "distractor": "exponents multiplied"
+        },
+        {
+          "tag": "multiply-bases",
+          "desc": "3^2 x 3^4 = 9^6",
+          "distractor": "bases multiplied"
+        },
+        {
+          "tag": "negative-exp-negative",
+          "desc": "2^-3 = -8",
+          "distractor": "-(base^n)"
+        },
+        {
+          "tag": "zero-exp-zero",
+          "desc": "5^0 = 0",
+          "distractor": "0"
+        }
+      ],
+      "skin": "signal strength halving with distance (2^-n), squadron doubling"
+    },
+    {
+      "id": "h8.ee.a3",
+      "quarter": 1,
+      "attachTo": [
+        "ch2"
+      ],
+      "honors": true,
+      "name": "Estimate with single digit times a power of 10",
+      "standards": [
+        "8.EE.A.3"
+      ],
+      "im": [
+        "G8.U7.L9",
+        "G8.U7.L10",
+        "G8.U7.L11",
+        "G8.U7.L12"
+      ],
+      "khan": "K8-NUM:scientific notation intro",
+      "reps": [
+        "powers-of-ten-line"
+      ],
+      "formats": [
+        "multiple-choice",
+        "numeric"
+      ],
+      "key": "Round a big or tiny number to one digit times a power of 10. Compare sizes by comparing the exponents: 4 x 10^8 is about 200 times 2 x 10^6.",
+      "tiers": [
+        "write 4,200,000 as 4 x 10^6",
+        "tiny numbers with negative exponents",
+        "how many times larger is A than B",
+        "order several quantities given in mixed forms"
+      ],
+      "gen": "Exponents in [-9,12].",
+      "errors": [
+        {
+          "tag": "exponent-off-by-one",
+          "desc": "counts zeros wrong",
+          "distractor": "10^(n±1)"
+        },
+        {
+          "tag": "ratio-subtract",
+          "desc": "subtracts instead of dividing when comparing",
+          "distractor": "difference"
+        }
+      ],
+      "skin": "aircraft range in meters, radar wavelength, fleet cost"
+    },
+    {
+      "id": "h8.ee.a4",
+      "quarter": 1,
+      "attachTo": [
+        "ch2"
+      ],
+      "honors": true,
+      "name": "Scientific notation: operations and units",
+      "standards": [
+        "8.EE.A.4"
+      ],
+      "im": [
+        "G8.U7.L13",
+        "G8.U7.L14",
+        "G8.U7.L15"
+      ],
+      "khan": "K8-NUM:scientific notation operations",
+      "reps": [
+        "place-value-shift"
+      ],
+      "formats": [
+        "sci-notation",
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Coefficient must be at least 1 and less than 10. Multiply: multiply coefficients, add exponents, then fix the coefficient. Add: match the exponents first. Pick units so the number is easy to read.",
+      "tiers": [
+        "convert standard <-> scientific notation",
+        "multiply and divide in scientific notation",
+        "add and subtract (match exponents); fix coefficients >= 10",
+        "choose appropriate units (km vs m) in a context"
+      ],
+      "gen": "Coefficients to 2 decimals; exponents in [-6,9].",
+      "errors": [
+        {
+          "tag": "coefficient-out-of-range",
+          "desc": "writes 12 x 10^5",
+          "distractor": "unnormalized"
+        },
+        {
+          "tag": "exponent-sign",
+          "desc": "reverses the exponent sign for small numbers",
+          "distractor": "10^+n"
+        },
+        {
+          "tag": "add-exponents-on-add",
+          "desc": "adds exponents when adding",
+          "distractor": "wrong"
+        }
+      ],
+      "skin": "SR-71 range in meters, fuel mass in grams, fleet totals"
+    },
+    {
+      "id": "h8.ee.c7b",
+      "quarter": 1,
+      "attachTo": [
+        "ch4"
+      ],
+      "honors": true,
+      "name": "Multi-step equations with variables on both sides",
+      "standards": [
+        "8.EE.C.7b"
+      ],
+      "im": [
+        "G8.U4.L1",
+        "G8.U4.L2",
+        "G8.U4.L3",
+        "G8.U4.L4",
+        "G8.U4.L5",
+        "G8.U4.L6"
+      ],
+      "khan": "K8-ALG:equations with variables on both sides",
+      "reps": [
+        "hanger-diagram"
+      ],
+      "formats": [
+        "numeric",
+        "fraction",
+        "multiple-choice"
+      ],
+      "key": "Simplify each side (distribute, combine). Move the variable terms to one side, constants to the other. Divide. Check.",
+      "tiers": [
+        "ax + b = cx + d, integers",
+        "distribute on one side first",
+        "rational coefficients; distribute on both sides",
+        "context: two fuel plans, when are they equal"
+      ],
+      "gen": "Choose x first; a != c; T3 decimals and fractions.",
+      "errors": [
+        {
+          "tag": "move-without-sign-change",
+          "desc": "moves a term without changing its sign",
+          "distractor": "sign error"
+        },
+        {
+          "tag": "distribute-partial",
+          "desc": "distributes to the first term only",
+          "distractor": "wrong"
+        }
+      ],
+      "skin": "when two aircraft at different speeds/starts meet, cost comparison of two loadouts"
+    },
+    {
+      "id": "h8.ee.c7a",
+      "quarter": 1,
+      "attachTo": [
+        "ch4"
+      ],
+      "honors": true,
+      "name": "One, none, or infinitely many solutions",
+      "standards": [
+        "8.EE.C.7a"
+      ],
+      "im": [
+        "G8.U4.L7",
+        "G8.U4.L8"
+      ],
+      "khan": "K8-ALG:number of solutions",
+      "reps": [
+        "hanger-diagram"
+      ],
+      "formats": [
+        "pick-one:one|none|infinite",
+        "multiple-choice"
+      ],
+      "key": "If solving leaves x = a number: one solution. A false statement like 3 = 5: no solution. A true statement like 4 = 4: infinitely many.",
+      "tiers": [
+        "classify after simplifying, integers",
+        "requires distributing first",
+        "write an equation that has no / infinite solutions",
+        "context interpretation"
+      ],
+      "gen": "Build from the three cases with equal probability; disguise with distribution.",
+      "errors": [
+        {
+          "tag": "zero-means-none",
+          "desc": "x = 0 read as no solution",
+          "distractor": "none"
+        },
+        {
+          "tag": "true-means-none",
+          "desc": "4 = 4 read as no solution",
+          "distractor": "none"
+        }
+      ],
+      "skin": "can two flight plans ever coincide? always, never, once"
+    },
+    {
+      "id": "h8.g.a1d",
+      "quarter": 2,
+      "attachTo": [
+        "ch5"
+      ],
+      "honors": true,
+      "name": "Dilations and scale factors",
+      "standards": [
+        "8.G.A.1d"
+      ],
+      "im": [
+        "G8.U2.L1",
+        "G8.U2.L2",
+        "G8.U2.L3",
+        "G8.U2.L4"
+      ],
+      "khan": "K8-GEO:dilations",
+      "reps": [
+        "dilation-pair",
+        "coordinate-plane"
+      ],
+      "formats": [
+        "numeric",
+        "plot-point",
+        "multiple-choice"
+      ],
+      "key": "A dilation multiplies every distance from the center by the scale factor k. k > 1 enlarges, 0 < k < 1 shrinks. On coordinates centered at the origin: (x, y) -> (kx, ky).",
+      "tiers": [
+        "find k from two corresponding lengths",
+        "dilate a point from the origin",
+        "dilate a figure; perimeter scales by k, area by k^2",
+        "identify the center and k from a picture"
+      ],
+      "gen": "k in {1/2, 1/3, 2, 3, 1.5}; grid -10..10.",
+      "errors": [
+        {
+          "tag": "add-not-multiply",
+          "desc": "adds k to coordinates",
+          "distractor": "(x+k, y+k)"
+        },
+        {
+          "tag": "area-linear",
+          "desc": "area scales by k",
+          "distractor": "k x area"
+        }
+      ],
+      "skin": "scale model vs full airframe, zooming the tactical map"
+    },
+    {
+      "id": "h8.ee.b5",
+      "quarter": 2,
+      "attachTo": [
+        "ch5"
+      ],
+      "honors": true,
+      "name": "Slope as unit rate; compare proportional relationships",
+      "standards": [
+        "8.EE.B.5"
+      ],
+      "im": [
+        "G8.U3.L1",
+        "G8.U3.L2",
+        "G8.U3.L3",
+        "G8.U3.L4"
+      ],
+      "khan": "K8-ALG:graphing proportional relationships",
+      "reps": [
+        "coordinate-plane",
+        "table-graph-equation"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice",
+        "graph-select"
+      ],
+      "key": "On a proportional graph the slope IS the unit rate, and the line passes through (0, 0). Compare two relationships by comparing slopes, even if one is a table and one is a graph.",
+      "tiers": [
+        "slope of a line through the origin from two points",
+        "compare a graph to an equation: which is faster",
+        "compare graph vs table vs description",
+        "interpret the point (1, r) and (0, 0) in context"
+      ],
+      "gen": "Rates in {0.5..6}; representations rotated.",
+      "errors": [
+        {
+          "tag": "run-over-rise",
+          "desc": "slope inverted",
+          "distractor": "1/m"
+        },
+        {
+          "tag": "steeper-by-look",
+          "desc": "judges steepness without checking scales",
+          "distractor": "wrong choice"
+        }
+      ],
+      "skin": "two aircraft fuel-burn graphs, speed comparison from table vs graph"
+    },
+    {
+      "id": "h8.ee.b6",
+      "quarter": 2,
+      "attachTo": [
+        "ch5"
+      ],
+      "honors": true,
+      "name": "Derive y = mx + b",
+      "standards": [
+        "8.EE.B.6"
+      ],
+      "im": [
+        "G8.U3.L5",
+        "G8.U3.L6",
+        "G8.U3.L7",
+        "G8.U3.L8",
+        "G8.U3.L9",
+        "G8.U3.L10",
+        "G8.U3.L11"
+      ],
+      "khan": "K8-ALG:slope-intercept form",
+      "reps": [
+        "coordinate-plane",
+        "slope-triangle"
+      ],
+      "formats": [
+        "expression",
+        "numeric",
+        "drag-line",
+        "multiple-choice"
+      ],
+      "key": "Slope m = rise / run = (y2 - y1) / (x2 - x1), the same between any two points (similar triangles). b is where the line crosses the y-axis. y = mx + b.",
+      "tiers": [
+        "slope from two points",
+        "read m and b from a graph; write the equation",
+        "write the equation from two points",
+        "context: fuel = -12t + 900, interpret m and b"
+      ],
+      "gen": "m in {-4..4} and simple fractions; b in [-10,10]; points on grid -10..10.",
+      "errors": [
+        {
+          "tag": "run-over-rise",
+          "desc": "slope inverted",
+          "distractor": "1/m"
+        },
+        {
+          "tag": "b-as-x-intercept",
+          "desc": "reads b from the x-axis",
+          "distractor": "x-intercept"
+        },
+        {
+          "tag": "sign-of-slope",
+          "desc": "negative slope read as positive",
+          "distractor": "-m"
+        }
+      ],
+      "skin": "fuel remaining over time, altitude during a descent, credits over missions"
+    },
+    {
+      "id": "h8.ee.c8a",
+      "quarter": 2,
+      "attachTo": [
+        "ch5"
+      ],
+      "honors": true,
+      "name": "Systems of two linear equations: how many solutions",
+      "standards": [
+        "8.EE.C.8a"
+      ],
+      "im": [
+        "G8.U4.L10",
+        "G8.U4.L11",
+        "G8.U4.L12"
+      ],
+      "khan": "K8-ALG:systems by graphing",
+      "reps": [
+        "coordinate-plane-two-lines"
+      ],
+      "formats": [
+        "pick-one:one|none|infinite",
+        "multiple-choice"
+      ],
+      "key": "Two lines: cross once (one solution), parallel (no solution: same slope, different intercept), or the same line (infinitely many).",
+      "tiers": [
+        "from a graph",
+        "from two equations in y = mx + b form",
+        "equations not in slope-intercept form",
+        "context: will two flight paths ever meet"
+      ],
+      "gen": "Cases equally likely; slopes in [-3,3], intercepts in [-8,8].",
+      "errors": [
+        {
+          "tag": "parallel-one-solution",
+          "desc": "parallel lines have one solution",
+          "distractor": "one"
+        },
+        {
+          "tag": "same-slope-same-line",
+          "desc": "same slope = same line",
+          "distractor": "infinite"
+        }
+      ],
+      "skin": "intercept geometry: do two headings ever cross"
+    },
+    {
+      "id": "h8.ee.c8b",
+      "quarter": 2,
+      "attachTo": [
+        "ch5"
+      ],
+      "honors": true,
+      "name": "Estimate a system's solution by graphing",
+      "standards": [
+        "8.EE.C.8b"
+      ],
+      "im": [
+        "G8.U4.L12",
+        "G8.U4.L13"
+      ],
+      "khan": "K8-ALG:systems by graphing",
+      "reps": [
+        "coordinate-plane-two-lines"
+      ],
+      "formats": [
+        "plot-point",
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "The solution is the point where the two lines cross. Graph both, read the crossing, check it in both equations.",
+      "tiers": [
+        "read the crossing point off a graph",
+        "graph two equations and find the integer crossing",
+        "estimate a non-integer crossing",
+        "context: where and when two aircraft meet"
+      ],
+      "gen": "Choose the crossing point first (integers on grid), build two lines through it.",
+      "errors": [
+        {
+          "tag": "x-only",
+          "desc": "reports only x",
+          "distractor": "x value"
+        },
+        {
+          "tag": "intercept-as-solution",
+          "desc": "reports a y-intercept",
+          "distractor": "(0, b)"
+        }
+      ],
+      "skin": "two aircraft position vs time, intercept point on a grid"
+    },
+    {
+      "id": "h8.ee.c9",
+      "quarter": 2,
+      "attachTo": [
+        "ch4",
+        "ch5"
+      ],
+      "honors": true,
+      "name": "Graph a linear inequality",
+      "standards": [
+        "8.EE.C.9"
+      ],
+      "im": [
+        "G8.U4.TN-linear-inequalities"
+      ],
+      "khan": "K8-ALG:linear inequalities",
+      "reps": [
+        "coordinate-plane-shaded",
+        "number-line"
+      ],
+      "formats": [
+        "shade-region",
+        "multiple-choice",
+        "yes-no"
+      ],
+      "key": "Graph the boundary line (dashed for < or >, solid for <= or >=), test a point like (0, 0), shade the side that makes it true.",
+      "tiers": [
+        "one-variable inequality on a number line (review)",
+        "y > mx + b: pick the correct graph",
+        "shade the region; dashed vs solid",
+        "is a given point a solution"
+      ],
+      "gen": "m in [-3,3], b in [-6,6]; test points off the line.",
+      "errors": [
+        {
+          "tag": "wrong-side",
+          "desc": "shades the wrong side",
+          "distractor": "opposite region"
+        },
+        {
+          "tag": "line-type",
+          "desc": "solid for strict inequality",
+          "distractor": "wrong line style"
+        }
+      ],
+      "skin": "safe-altitude zones vs distance, no-fly regions",
+      "note": "Tennessee-specific standard; OUR's TN edition Grade 8 Unit 4 adds lessons for it."
+    },
+    {
+      "id": "h8.f.a1",
+      "quarter": 2,
+      "attachTo": [
+        "ch5"
+      ],
+      "honors": true,
+      "name": "What a function is",
+      "standards": [
+        "8.F.A.1"
+      ],
+      "im": [
+        "G8.U5.L1",
+        "G8.U5.L2",
+        "G8.U5.L3"
+      ],
+      "khan": "K8-FUNC:recognizing functions",
+      "reps": [
+        "mapping-diagram",
+        "table",
+        "coordinate-plane"
+      ],
+      "formats": [
+        "yes-no",
+        "multiple-choice"
+      ],
+      "key": "A function gives exactly ONE output for each input. Same input, two different outputs: not a function. (Two inputs with the same output is fine.)",
+      "tiers": [
+        "function or not from a mapping diagram",
+        "from a table of values",
+        "from a graph (vertical line test) and a set of ordered pairs",
+        "from a description or equation"
+      ],
+      "gen": "Half functions, half not; foils repeat an output (still a function) to catch the reverse error.",
+      "errors": [
+        {
+          "tag": "repeated-output-not-function",
+          "desc": "same output twice = not a function",
+          "distractor": "not a function"
+        },
+        {
+          "tag": "vertical-line-reversed",
+          "desc": "applies a horizontal line test",
+          "distractor": "wrong verdict"
+        }
+      ],
+      "skin": "throttle setting -> thrust; tail number -> pilot"
+    },
+    {
+      "id": "h8.f.a2",
+      "quarter": 2,
+      "attachTo": [
+        "ch5"
+      ],
+      "honors": true,
+      "name": "Compare linear functions across representations",
+      "standards": [
+        "8.F.A.2"
+      ],
+      "im": [
+        "G8.U5.L4",
+        "G8.U5.L5",
+        "G8.U5.L6"
+      ],
+      "khan": "K8-FUNC:comparing functions",
+      "reps": [
+        "table",
+        "coordinate-plane",
+        "equation",
+        "words"
+      ],
+      "formats": [
+        "multiple-choice",
+        "numeric"
+      ],
+      "key": "Find the rate of change (slope) and initial value (y-intercept) in each representation, then compare those two numbers.",
+      "tiers": [
+        "rate of change from a table vs a graph",
+        "initial value from words vs equation",
+        "which has the greater rate; which starts higher",
+        "translate one representation into another"
+      ],
+      "gen": "Rates in [-5,5], intercepts in [-20,20]; two functions per item in different forms.",
+      "errors": [
+        {
+          "tag": "rate-vs-initial-swap",
+          "desc": "compares intercepts when rate was asked",
+          "distractor": "wrong function"
+        },
+        {
+          "tag": "table-rate-unscaled",
+          "desc": "reads the change in y without dividing by change in x",
+          "distractor": "delta y only"
+        }
+      ],
+      "skin": "two aircraft fuel plans in table vs graph vs words"
+    },
+    {
+      "id": "h8.f.a3",
+      "quarter": 2,
+      "attachTo": [
+        "ch5"
+      ],
+      "honors": true,
+      "name": "Linear vs nonlinear; interpret y = mx + b",
+      "standards": [
+        "8.F.A.3"
+      ],
+      "im": [
+        "G8.U5.L7",
+        "G8.U5.L8"
+      ],
+      "khan": "K8-FUNC:linear and nonlinear functions",
+      "reps": [
+        "table",
+        "coordinate-plane"
+      ],
+      "formats": [
+        "yes-no",
+        "multiple-choice"
+      ],
+      "key": "Linear means a constant rate of change: equal steps in x give equal steps in y, and the graph is a straight line. y = x^2 is not linear.",
+      "tiers": [
+        "linear or not from a graph",
+        "from a table (constant differences)",
+        "from an equation",
+        "interpret m and b for y = mx + b in context"
+      ],
+      "gen": "Tables with constant vs changing differences; equations with x^2, 1/x, |x| as foils.",
+      "errors": [
+        {
+          "tag": "any-pattern-linear",
+          "desc": "any pattern is linear",
+          "distractor": "linear for squares"
+        },
+        {
+          "tag": "straight-segment",
+          "desc": "a curve that looks straight over a small range",
+          "distractor": "linear"
+        }
+      ],
+      "skin": "altitude vs time in a climb (linear) vs a stall (curve)"
+    },
+    {
+      "id": "h8.f.b4",
+      "quarter": 2,
+      "attachTo": [
+        "ch5"
+      ],
+      "honors": true,
+      "name": "Construct a linear function to model a relationship",
+      "standards": [
+        "8.F.B.4"
+      ],
+      "im": [
+        "G8.U5.L9",
+        "G8.U5.L10"
+      ],
+      "khan": "K8-FUNC:constructing linear models",
+      "reps": [
+        "table",
+        "coordinate-plane",
+        "equation"
+      ],
+      "formats": [
+        "expression",
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Rate of change from two points or from the story ('burns 12 L per minute' -> m = -12). Initial value is what you have at time 0. Then y = mx + b.",
+      "tiers": [
+        "from a description with rate and start",
+        "from two (x, y) values",
+        "from a graph or table with no (0, b) row",
+        "interpret m and b in the situation; predict"
+      ],
+      "gen": "Rates in [-15,15], starts in [0,1000].",
+      "errors": [
+        {
+          "tag": "sign-of-rate",
+          "desc": "decreasing situation with positive m",
+          "distractor": "+m"
+        },
+        {
+          "tag": "initial-not-at-zero",
+          "desc": "uses the first table row as b",
+          "distractor": "y1"
+        }
+      ],
+      "skin": "fuel = 900 - 12t, altitude during descent, credits over missions"
+    },
+    {
+      "id": "h8.f.b5",
+      "quarter": 2,
+      "attachTo": [
+        "ch5"
+      ],
+      "honors": true,
+      "name": "Qualitative graphs",
+      "standards": [
+        "8.F.B.5"
+      ],
+      "im": [
+        "G8.U5.L11"
+      ],
+      "khan": "K8-FUNC:interpreting graphs",
+      "reps": [
+        "coordinate-plane-sketch"
+      ],
+      "formats": [
+        "multiple-choice",
+        "graph-select"
+      ],
+      "key": "Read a graph as a story: rising means increasing, flat means constant, steeper means faster. Sketch the story the same way.",
+      "tiers": [
+        "match a graph to a description",
+        "describe intervals (increasing/decreasing/constant)",
+        "sketch a graph from a description (choose among 4)",
+        "compare two stories' graphs"
+      ],
+      "gen": "Stories: takeoff-cruise-descent, refuel, holding pattern; 4 candidate sketches.",
+      "errors": [
+        {
+          "tag": "graph-as-picture",
+          "desc": "reads the graph as the flight path",
+          "distractor": "picture-shaped graph"
+        },
+        {
+          "tag": "flat-means-stopped",
+          "desc": "constant altitude read as stopped",
+          "distractor": "wrong description"
+        }
+      ],
+      "skin": "altitude vs time for a full sortie"
+    },
+    {
+      "id": "h8.sp.a1",
+      "quarter": 3,
+      "attachTo": [
+        "ch8"
+      ],
+      "honors": true,
+      "name": "Scatter plots and two-way tables",
+      "standards": [
+        "8.SP.A.1"
+      ],
+      "im": [
+        "G8.U6.L1",
+        "G8.U6.L2",
+        "G8.U6.L3",
+        "G8.U6.L4",
+        "G8.U6.L9",
+        "G8.U6.L10"
+      ],
+      "khan": "K8-STAT:scatter plots",
+      "reps": [
+        "scatter-plot",
+        "two-way-table"
+      ],
+      "formats": [
+        "multiple-choice",
+        "numeric",
+        "table-fill"
+      ],
+      "key": "Scatter plot: look for clusters, outliers, and whether the points trend up (positive), down (negative), or nowhere (none), and whether the trend is straight (linear). Two-way table: rows and columns count two categories; relative frequency is a row or column share.",
+      "tiers": [
+        "describe association from a scatter plot",
+        "identify outliers and clusters",
+        "build/complete a two-way table",
+        "relative frequencies and whether the two categories are associated"
+      ],
+      "gen": "Point sets of 10-20 with controlled correlation; tables 2x2 to 3x3 with totals.",
+      "errors": [
+        {
+          "tag": "association-direction",
+          "desc": "positive/negative swapped",
+          "distractor": "opposite"
+        },
+        {
+          "tag": "frequency-vs-relative",
+          "desc": "reports counts when shares were asked",
+          "distractor": "count"
+        }
+      ],
+      "skin": "altitude vs speed radar tracks; aircraft type x fault type maintenance table"
+    },
+    {
+      "id": "h8.sp.a2",
+      "quarter": 3,
+      "attachTo": [
+        "ch8"
+      ],
+      "honors": true,
+      "name": "Line of fit",
+      "standards": [
+        "8.SP.A.2"
+      ],
+      "im": [
+        "G8.U6.L5",
+        "G8.U6.L6"
+      ],
+      "khan": "K8-STAT:line of best fit",
+      "reps": [
+        "scatter-plot-with-line"
+      ],
+      "formats": [
+        "drag-line",
+        "multiple-choice"
+      ],
+      "key": "A line of fit runs through the middle of the cloud with about as many points above as below. Judge fit by how close the points stay to the line.",
+      "tiers": [
+        "choose the best of 3 lines",
+        "drag a line to fit",
+        "judge fit: strong / weak",
+        "spot a line pulled by an outlier"
+      ],
+      "gen": "Correlated point sets; candidate lines offset or rotated.",
+      "errors": [
+        {
+          "tag": "through-endpoints",
+          "desc": "connects first and last points",
+          "distractor": "endpoint line"
+        },
+        {
+          "tag": "through-max-points",
+          "desc": "hits the most points regardless of balance",
+          "distractor": "unbalanced line"
+        }
+      ],
+      "skin": "fit a trend to lock time vs pilot experience"
+    },
+    {
+      "id": "h8.sp.a3",
+      "quarter": 3,
+      "attachTo": [
+        "ch8"
+      ],
+      "honors": true,
+      "name": "Use a linear model; interpret slope and intercept",
+      "standards": [
+        "8.SP.A.3"
+      ],
+      "im": [
+        "G8.U6.L7",
+        "G8.U6.L8"
+      ],
+      "khan": "K8-STAT:linear models",
+      "reps": [
+        "scatter-plot-with-line",
+        "equation"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "In y = mx + b for data, m is 'each extra unit of x adds m to y' and b is the predicted y when x = 0. Use the equation to predict.",
+      "tiers": [
+        "predict y from x with the equation",
+        "interpret m in context",
+        "interpret b, including when it is meaningless",
+        "predict x from y"
+      ],
+      "gen": "m in [-5,5] simple decimals; b in [0,100].",
+      "errors": [
+        {
+          "tag": "slope-intercept-swap",
+          "desc": "swaps meanings",
+          "distractor": "swapped"
+        },
+        {
+          "tag": "units-dropped",
+          "desc": "interprets m without units",
+          "distractor": "vague"
+        }
+      ],
+      "skin": "predict fuel burn from payload weight"
+    },
+    {
+      "id": "h8.sp.b4a",
+      "quarter": 3,
+      "attachTo": [
+        "ch7"
+      ],
+      "honors": true,
+      "name": "Probability of compound events",
+      "standards": [
+        "8.SP.B.4a"
+      ],
+      "im": [
+        "G7.U8.L7",
+        "G7.U8.L8",
+        "G7.U8.L9",
+        "G7.U8.L10"
+      ],
+      "khan": "K-STAT:compound events",
+      "reps": [
+        "tree-diagram",
+        "outcome-table"
+      ],
+      "formats": [
+        "fraction",
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "List every outcome of the combined event, then P = favorable / total, exactly like a simple event. For independent events, P(A and B) = P(A) x P(B).",
+      "tiers": [
+        "two coins / two spinners: P of a specific pair",
+        "P(both) using the product",
+        "P(at least one); 'without replacement' by listing",
+        "three-stage events"
+      ],
+      "gen": "Two to three stages, 2-6 outcomes each; keep totals <= 36.",
+      "errors": [
+        {
+          "tag": "add-not-multiply",
+          "desc": "P(A and B) = P(A) + P(B)",
+          "distractor": "sum"
+        },
+        {
+          "tag": "count-stages",
+          "desc": "total = outcomes per stage, not the product",
+          "distractor": "n not n^2"
+        }
+      ],
+      "skin": "weather clear AND radar lock; two missiles both hit"
+    },
+    {
+      "id": "h8.sp.b4b",
+      "quarter": 3,
+      "attachTo": [
+        "ch7"
+      ],
+      "honors": true,
+      "name": "Sample spaces for compound events",
+      "standards": [
+        "8.SP.B.4b"
+      ],
+      "im": [
+        "G7.U8.L8",
+        "G7.U8.L9"
+      ],
+      "khan": "K-STAT:sample spaces",
+      "reps": [
+        "organized-list",
+        "outcome-table",
+        "tree-diagram"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice",
+        "table-fill"
+      ],
+      "key": "Build the sample space with an organized list, a table, or a tree diagram; count the outcomes that match the event in words ('doubles', 'at least one 6').",
+      "tiers": [
+        "count outcomes for two events",
+        "complete a table or tree",
+        "identify the outcomes matching a phrase",
+        "three events"
+      ],
+      "gen": "Dice, coins, spinners, menus; counts <= 36.",
+      "errors": [
+        {
+          "tag": "order-ignored",
+          "desc": "counts (1,2) and (2,1) as one",
+          "distractor": "halved"
+        },
+        {
+          "tag": "phrase-misread",
+          "desc": "'at least one' read as 'exactly one'",
+          "distractor": "wrong subset"
+        }
+      ],
+      "skin": "loadout combinations, mission outcome trees"
+    },
+    {
+      "id": "h8.ee.a2",
+      "quarter": 4,
+      "attachTo": [
+        "ch9"
+      ],
+      "honors": true,
+      "name": "Square and cube roots",
+      "standards": [
+        "8.EE.A.2"
+      ],
+      "im": [
+        "G8.U8.L1",
+        "G8.U8.L2",
+        "G8.U8.L3",
+        "G8.U8.L12",
+        "G8.U8.L13"
+      ],
+      "khan": "K8-NUM:square and cube roots",
+      "reps": [
+        "square-and-cube-models"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "sqrt(p) is the side of a square with area p; cbrt(p) is the edge of a cube with volume p. Solve x^2 = p and x^3 = p with roots.",
+      "tiers": [
+        "square roots of perfect squares to 225",
+        "cube roots of perfect cubes to 1000",
+        "solve x^2 = p, x^3 = p",
+        "roots of fractions and decimals (sqrt 1/4, sqrt 0.09)"
+      ],
+      "gen": "Perfect squares 1..225, cubes 1..1000.",
+      "errors": [
+        {
+          "tag": "halve-not-root",
+          "desc": "sqrt(16) = 8",
+          "distractor": "p/2"
+        },
+        {
+          "tag": "cube-third",
+          "desc": "cbrt(27) = 9",
+          "distractor": "p/3"
+        },
+        {
+          "tag": "root-of-sum",
+          "desc": "sqrt(a+b) = sqrt a + sqrt b",
+          "distractor": "sum of roots"
+        }
+      ],
+      "skin": "side of a square landing pad from area, edge of a cubic fuel cell"
+    },
+    {
+      "id": "h8.g.a2",
+      "quarter": 4,
+      "attachTo": [
+        "ch9"
+      ],
+      "honors": true,
+      "name": "Parallel lines cut by a transversal",
+      "standards": [
+        "8.G.A.2"
+      ],
+      "im": [
+        "G8.U1.L14",
+        "G8.U1.L15"
+      ],
+      "khan": "K8-GEO:angles parallel lines transversal",
+      "reps": [
+        "transversal-diagram"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice",
+        "expression"
+      ],
+      "key": "When parallel lines are crossed, corresponding angles are equal, alternate interior angles are equal, and same-side interior angles add to 180.",
+      "tiers": [
+        "name the angle pair",
+        "find an angle given one",
+        "write and solve an equation for x",
+        "multi-step with a triangle formed by the transversal"
+      ],
+      "gen": "Angles in [30,150]; T3 choose x for whole angles.",
+      "errors": [
+        {
+          "tag": "all-equal",
+          "desc": "treats every pair as equal",
+          "distractor": "a for a supplementary pair"
+        },
+        {
+          "tag": "pair-name",
+          "desc": "alternate vs corresponding confused",
+          "distractor": "wrong name"
+        }
+      ],
+      "skin": "parallel runways crossed by a taxiway, formation flight lines"
+    },
+    {
+      "id": "h8.g.b3",
+      "quarter": 4,
+      "attachTo": [
+        "ch9"
+      ],
+      "honors": true,
+      "name": "Model of the Pythagorean theorem",
+      "standards": [
+        "8.G.B.3"
+      ],
+      "im": [
+        "G8.U8.L6",
+        "G8.U8.L7",
+        "G8.U8.L8"
+      ],
+      "khan": "K8-GEO:pythagorean theorem intro",
+      "reps": [
+        "squares-on-sides"
+      ],
+      "formats": [
+        "multiple-choice",
+        "numeric",
+        "yes-no"
+      ],
+      "key": "In a right triangle the squares on the two legs add up to the square on the hypotenuse: a^2 + b^2 = c^2. The converse: if a^2 + b^2 = c^2, the triangle is right.",
+      "tiers": [
+        "identify legs and hypotenuse",
+        "check a^2 + b^2 = c^2 with squares drawn",
+        "is this a right triangle (converse)",
+        "explain the area model"
+      ],
+      "gen": "Triples: 3-4-5, 5-12-13, 6-8-10, 8-15-17, 7-24-25 plus non-right foils.",
+      "errors": [
+        {
+          "tag": "leg-as-c",
+          "desc": "puts a leg as c",
+          "distractor": "wrong assignment"
+        },
+        {
+          "tag": "add-sides-unsquared",
+          "desc": "adds sides without squaring",
+          "distractor": "a + b"
+        }
+      ],
+      "skin": "climb triangle: ground distance, altitude, flight path"
+    },
+    {
+      "id": "h8.g.b4",
+      "quarter": 4,
+      "attachTo": [
+        "ch9"
+      ],
+      "honors": true,
+      "name": "Apply the Pythagorean theorem to find a length",
+      "standards": [
+        "8.G.B.4"
+      ],
+      "im": [
+        "G8.U8.L9",
+        "G8.U8.L10"
+      ],
+      "khan": "K8-GEO:pythagorean theorem application",
+      "reps": [
+        "right-triangle-labelled"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Missing hypotenuse: c = sqrt(a^2 + b^2). Missing leg: a = sqrt(c^2 - b^2). Always take the square root at the end.",
+      "tiers": [
+        "hypotenuse from two legs (triples)",
+        "leg from hypotenuse and a leg",
+        "non-integer results to the tenth",
+        "context: ladder/ramp/flight path; diagonal of a rectangle"
+      ],
+      "gen": "Triples for T1-T2; T3 legs in [2,20] non-triple.",
+      "errors": [
+        {
+          "tag": "no-root",
+          "desc": "reports c^2",
+          "distractor": "a^2 + b^2"
+        },
+        {
+          "tag": "add-for-leg",
+          "desc": "adds when solving for a leg",
+          "distractor": "sqrt(c^2 + b^2)"
+        }
+      ],
+      "skin": "9 km east, 12 km north: direct distance to target; diagonal of a hangar"
+    },
+    {
+      "id": "h8.g.b5",
+      "quarter": 4,
+      "attachTo": [
+        "ch9"
+      ],
+      "honors": true,
+      "name": "Distance between points on a coordinate plane",
+      "standards": [
+        "8.G.B.5"
+      ],
+      "im": [
+        "G8.U8.L11"
+      ],
+      "khan": "K8-GEO:distance formula",
+      "reps": [
+        "coordinate-plane-right-triangle"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Draw the right triangle between the two points; the legs are the differences in x and y. Then a^2 + b^2 = c^2.",
+      "tiers": [
+        "points with a horizontal/vertical leg drawn",
+        "two points in the first quadrant",
+        "points across quadrants (negative coordinates)",
+        "perimeter of a triangle on the grid"
+      ],
+      "gen": "Grid -10..10; prefer triple-based distances, some non-integer.",
+      "errors": [
+        {
+          "tag": "subtract-coordinates-only",
+          "desc": "reports dx or dy",
+          "distractor": "one leg"
+        },
+        {
+          "tag": "sign-in-difference",
+          "desc": "mis-subtracts negative coordinates",
+          "distractor": "wrong leg length"
+        }
+      ],
+      "skin": "distance between two radar contacts on the tactical grid"
+    },
+    {
+      "id": "h8.g.c6",
+      "quarter": 4,
+      "attachTo": [
+        "ch10"
+      ],
+      "honors": true,
+      "name": "Volume of cones, cylinders, and spheres",
+      "standards": [
+        "8.G.C.6"
+      ],
+      "im": [
+        "G8.U5.L12",
+        "G8.U5.L13",
+        "G8.U5.L14",
+        "G8.U5.L15",
+        "G8.U5.L16",
+        "G8.U5.L17",
+        "G8.U5.L18",
+        "G8.U5.L19",
+        "G8.U5.L20"
+      ],
+      "khan": "K8-GEO:volume cylinders cones spheres",
+      "reps": [
+        "solids-labelled"
+      ],
+      "formats": [
+        "numeric",
+        "multiple-choice"
+      ],
+      "key": "Cylinder V = pi r^2 h. Cone = 1/3 of the cylinder with the same base and height. Sphere V = 4/3 pi r^3.",
+      "tiers": [
+        "cylinder volume",
+        "cone volume; compare to the cylinder",
+        "sphere and hemisphere",
+        "missing dimension; composite (cylinder with cone nose)"
+      ],
+      "gen": "r in [1,15], h in [1,30]; accept 3.14 or 'pi' form.",
+      "errors": [
+        {
+          "tag": "drop-third",
+          "desc": "cone without the 1/3",
+          "distractor": "pi r^2 h"
+        },
+        {
+          "tag": "sphere-exponent",
+          "desc": "uses r^2 for a sphere",
+          "distractor": "4/3 pi r^2"
+        },
+        {
+          "tag": "diameter-as-radius",
+          "desc": "uses d as r",
+          "distractor": "8x too large"
+        }
+      ],
+      "skin": "external fuel tank, nose cone, radome, missile body"
+    }
+  ]
+}
