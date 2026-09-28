@@ -25,9 +25,8 @@ import { isFast, FAST_WINDOW_MS } from "../../engine/mastery";
 import type { Attempt } from "../../engine/types";
 import type { SortieLoadout } from "./BriefingScene";
 import { MAX_MISSILES } from "./BriefingScene";
+import { mission as findMission, type Mission } from "../../data/campaign";
 
-const SORTIE_PROBLEMS = 12;
-const FUEL_SECONDS = 300;
 const BINGO_SECONDS = 90;
 const SHIELD_HIT = 0.2;
 const PLAYER_POS = { x: 592, y: 450 };
@@ -41,13 +40,17 @@ interface Bogey {
 
 export class SortieScene extends Phaser.Scene {
   private loadout!: SortieLoadout;
+  private mission!: Mission;
   private queue: MissionProblem[] = [];
   private index = 0;
+  /** problems answered correctly at the first attempt; drives the intel card */
+  private firstTryHits = 0;
+  private attemptedThisLock = false;
 
   private fuel = 1;
   private shields = 1;
   private missiles = 0;
-  private fuelLeft = FUEL_SECONDS;
+  private fuelLeft = 0;
   private sharpened = new Set<string>();
 
   private bogeys: Bogey[] = [];
@@ -81,11 +84,14 @@ export class SortieScene extends Phaser.Scene {
 
   init(data: SortieLoadout): void {
     this.loadout = data;
+    this.mission = findMission(data.missionId);
     this.fuel = data.fuel;
     this.shields = data.shields;
     this.missiles = data.missiles;
-    this.fuelLeft = FUEL_SECONDS * data.fuel;
+    this.fuelLeft = this.mission.fuelSeconds * data.fuel;
     this.index = 0;
+    this.firstTryHits = 0;
+    this.attemptedThisLock = false;
     this.locked = false;
     this.lockedBogey = -1;
     this.wrongRun = 0;
@@ -101,7 +107,7 @@ export class SortieScene extends Phaser.Scene {
       now: now(),
       activeUnitId: this.loadout.unitId,
       openUnitIds: gameState.openUnits.map((u) => u.id),
-      count: SORTIE_PROBLEMS,
+      count: this.mission.problems,
       seed: gameState.file.log.length + 101,
     });
 
@@ -110,7 +116,8 @@ export class SortieScene extends Phaser.Scene {
     this.spawnBogeys();
 
     this.input.keyboard?.on("keydown-SPACE", () => this.tryLock());
-    this.input.keyboard?.on("keydown-ESC", () => this.endSortie("RTB"));
+    // ESC pauses; quitting from the pause menu is what ends the sortie.
+    this.input.keyboard?.on("keydown-ESC", () => this.openPause());
   }
 
   /* ---------------------------------------------------------------- world */
@@ -128,7 +135,7 @@ export class SortieScene extends Phaser.Scene {
 
   private spawnBogeys(): void {
     const lanes = [[300, 140], [640, 90], [980, 170]] as const;
-    lanes.forEach(([x, y], i) => {
+    lanes.slice(0, this.mission.bogeys).forEach(([x, y], i) => {
       const key = BOGEY_SPRITES[i % BOGEY_SPRITES.length]!;
       const img = this.add.image(x, y, this.textures.exists(key) ? key : BOGEY_SPRITES[0]!);
       img.setDisplaySize(51, 72);
@@ -160,7 +167,7 @@ export class SortieScene extends Phaser.Scene {
     const aimLabel = capsLabel(this, CANVAS.width - SCREEN_PAD - MAX_MISSILES * 16, CANVAS.height - 88, "AIM", C.textMuted, TRACK.readout);
     void aimLabel;
 
-    const hint = capsLabel(this, 0, CANVAS.height - 26, "SPACE · LOCK   M · MANUAL   ESC · RTB", C.textMuted, TRACK.readout);
+    const hint = capsLabel(this, 0, CANVAS.height - 26, "SPACE · LOCK   M · MANUAL   ESC · PAUSE", C.textMuted, TRACK.readout);
     hint.setX((CANVAS.width - hint.width) / 2);
 
     this.refreshHud();
@@ -182,7 +189,7 @@ export class SortieScene extends Phaser.Scene {
     if (this.locked || this.paused) return; // bullet-time holds the world
 
     this.fuelLeft -= deltaMs / 1000;
-    this.fuel = Math.max(0, this.fuelLeft / FUEL_SECONDS);
+    this.fuel = Math.max(0, this.fuelLeft / this.mission.fuelSeconds);
     this.refreshHud();
 
     if (this.fuelLeft <= BINGO_SECONDS && !this.bingo) this.showBingo();
@@ -219,6 +226,7 @@ export class SortieScene extends Phaser.Scene {
     this.locked = true;
     this.hintUsed = false;
     this.bonusForfeit = false;
+    this.attemptedThisLock = false;
     this.statusText.setText("LOCKED");
     this.statusText.setColor(C.lock);
 
@@ -268,7 +276,7 @@ export class SortieScene extends Phaser.Scene {
       scene: this,
       problem: mp.problem,
       mode: "lock",
-      chapterLabel: `CH ${gameState.chapter(this.loadout.unitId).n}`,
+      chapterLabel: `CH ${gameState.chapter(this.loadout.unitId).n} · S${String(this.mission.n).padStart(2, "0")}`,
       multiplier: "×1.5",
       hintCost: HINT_COST,
       onCommit: (r) => this.onCommit(mp, r.correct, r.errorTag),
@@ -336,12 +344,16 @@ export class SortieScene extends Phaser.Scene {
 
     if (correct) {
       this.sharpened.add(mp.problem.skill);
+      // A first-try hit is one answered right with no earlier attempt on this
+      // lock and no hint taken; six of them earn an intel card.
+      if (!this.attemptedThisLock && !this.hintUsed) this.firstTryHits += 1;
       this.wrongRun = 0;
       this.time.delayedCall(600, () => this.destroyBogey());
       return;
     }
 
     // Wrong: shields -20%, lock breaks, streak reset (recordAttempt did that).
+    this.attemptedThisLock = true;
     this.wrongRun += 1;
     this.shields = Math.max(0, this.shields - SHIELD_HIT);
     this.refreshHud();
@@ -459,6 +471,19 @@ export class SortieScene extends Phaser.Scene {
     this.refreshHud();
   }
 
+  /** 13 / HP0: pause as an overlay so the lock and the world are held exactly. */
+  private openPause(): void {
+    if (this.scene.isActive("Pause")) return;
+    const m = Math.floor(Math.max(0, this.fuelLeft) / 60);
+    const sec = Math.floor(Math.max(0, this.fuelLeft) % 60);
+    this.scene.pause();
+    this.scene.launch("Pause", {
+      subtitle: `SORTIE ${String(this.mission.n).padStart(2, "0")} · ${m}:${String(sec).padStart(2, "0")}`,
+      resumeTo: "Sortie",
+      onQuit: () => gameState.save(),
+    });
+  }
+
   /* ------------------------------------------------------- manual, hint */
 
   /** M4: manual during a lock. Timer PAUSED, lock held, bonus forfeit, no shield cost. */
@@ -504,6 +529,9 @@ export class SortieScene extends Phaser.Scene {
     this.clearLock();
     this.scene.start("Debrief", {
       unitId: this.loadout.unitId,
+      missionId: this.mission.id,
+      firstTryHits: this.firstTryHits,
+      problems: this.mission.problems,
       reason,
       sharpened: [...this.sharpened],
       fuel: this.fuel,

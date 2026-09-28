@@ -7,9 +7,15 @@ import { panel, capsLabel, button, statusPill } from "../ui/kit";
 import { ManualPanel } from "../ui/manualPanel";
 import { gameState } from "../state";
 import { hasPage } from "../manual";
+import { completeSortie } from "../save";
+import { mission as findMission } from "../../data/campaign";
+import { dossier, CARDS_PER_AIRFRAME, FIRST_TRY_HITS_FOR_CARD, type IntelCard } from "../../data/intel";
 
 export interface DebriefData {
   unitId: string;
+  missionId: string;
+  firstTryHits: number;
+  problems: number;
   reason: string;
   sharpened: string[];
   fuel: number;
@@ -20,6 +26,7 @@ export interface DebriefData {
 export class DebriefScene extends Phaser.Scene {
   private debrief!: DebriefData;
   private manual?: ManualPanel;
+  private cardEarned: IntelCard | null = null;
 
   constructor() {
     super("Debrief");
@@ -31,6 +38,21 @@ export class DebriefScene extends Phaser.Scene {
 
   create(): void {
     this.cameras.main.setBackgroundColor(N.ground);
+
+    // Close the sortie out once, here: it is the only place that knows both the
+    // mission and the first-try count.
+    const airframe = gameState.file.unlockedAirframes[0] ?? "t38";
+    const result = completeSortie(gameState.file, {
+      missionId: this.debrief.missionId,
+      airframe,
+      firstTryHits: this.debrief.firstTryHits,
+      hitsNeeded: FIRST_TRY_HITS_FOR_CARD,
+      cardsPerAirframe: CARDS_PER_AIRFRAME,
+    });
+    gameState.update(result.file);
+    this.cardEarned = result.cardEarned
+      ? dossier(airframe)?.cards.find((c) => c.n === result.cardEarned) ?? null
+      : null;
 
     const title = this.add.text(SCREEN_PAD, 14, this.debrief.failed ? "SORTIE ENDED" : "DEBRIEF", { ...TEXT.h3 });
     title.setLetterSpacing(TRACK.display * SIZE.h3);
@@ -47,6 +69,7 @@ export class DebriefScene extends Phaser.Scene {
     rule.lineBetween(SCREEN_PAD, 58, CANVAS.width - SCREEN_PAD, 58);
 
     this.summary();
+    this.intelPanel();
     this.systemsSharpened();
     this.actions();
   }
@@ -54,13 +77,15 @@ export class DebriefScene extends Phaser.Scene {
   private summary(): void {
     const x = SCREEN_PAD;
     const y = 80;
-    panel(this, x, y, 340, 180, { fill: C.panel });
+    panel(this, x, y, 340, 212, { fill: C.panel });
     const h = capsLabel(this, x + 16, y + 14, "SORTIE", C.hud);
     void h;
 
     const rows: [string, string, string][] = [
       ["CREDITS", `${gameState.file.credits}`, C.lock],
       ["STREAK", `${gameState.file.streak} (BEST ${gameState.file.bestStreak})`, C.text],
+      ["FIRST-TRY", `${this.debrief.firstTryHits} / ${this.debrief.problems}`,
+        this.debrief.firstTryHits >= FIRST_TRY_HITS_FOR_CARD ? C.hud : C.textMuted],
       ["FUEL", `${Math.round(this.debrief.fuel * 100)}%`, C.hud],
       ["SHIELDS", `${Math.round(this.debrief.shields * 100)}%`, C.shield],
     ];
@@ -71,6 +96,40 @@ export class DebriefScene extends Phaser.Scene {
       void l;
       void v;
     });
+  }
+
+  /** Screens 08: a sortie with 6+ first-try hits earns one intel card. */
+  private intelPanel(): void {
+    const x = SCREEN_PAD;
+    const y = 316;
+    const w = 340;
+    const h = 190;
+    panel(this, x, y, w, h, { fill: C.panel, border: this.cardEarned ? C.lock : C.border });
+
+    const head = capsLabel(this, x + 16, y + 14, this.cardEarned ? "INTEL CARD EARNED" : "INTEL", C.lock);
+    void head;
+
+    if (!this.cardEarned) {
+      const need = FIRST_TRY_HITS_FOR_CARD - this.debrief.firstTryHits;
+      const copy = this.add.text(x + 16, y + 44,
+        need > 0
+          ? `${need} more first-try hit${need === 1 ? "" : "s"} in one sortie earns a card.`
+          : "All ten T-38 cards collected.",
+        { ...TEXT.body, color: C.textMuted, wordWrap: { width: w - 32 } });
+      void copy;
+      return;
+    }
+
+    const airframe = gameState.file.unlockedAirframes[0] ?? "t38";
+    const have = (gameState.file.intelCards[airframe] ?? []).length;
+    const code = capsLabel(this, x + 16, y + 40, `T-38 · ${String(this.cardEarned.n).padStart(2, "0")}   ${have} OF ${CARDS_PER_AIRFRAME}`, C.textMuted, TRACK.readout);
+    void code;
+
+    const title = this.add.text(x + 16, y + 62, this.cardEarned.title, { ...TEXT.h3, fontSize: "18px" });
+    const body = this.add.text(x + 16, title.y + title.height + 6, this.cardEarned.body, {
+      ...TEXT.body, color: C.textMuted, wordWrap: { width: w - 32 }, lineSpacing: 2,
+    });
+    void body;
   }
 
   private systemsSharpened(): void {
@@ -133,6 +192,20 @@ export class DebriefScene extends Phaser.Scene {
     });
   }
 
+  /** After a sortie the obvious next click is the sortie after it. */
+  private nextMissionId(): string {
+    const all = findMission(this.debrief.missionId);
+    const flown = gameState.file.missionsFlown;
+    const next = all.n + 1;
+    const candidate = `${all.unitId}-${String(next).padStart(2, "0")}`;
+    try {
+      findMission(candidate);
+      return flown.includes(this.debrief.missionId) ? candidate : this.debrief.missionId;
+    } catch {
+      return this.debrief.missionId;
+    }
+  }
+
   private actions(): void {
     const y = CANVAS.height - 92;
     button(this, {
@@ -142,16 +215,25 @@ export class DebriefScene extends Phaser.Scene {
       height: HIT.lg,
       label: "FLY AGAIN",
       variant: "primary",
-      onClick: () => this.scene.start("Briefing", { unitId: this.debrief.unitId }),
+      onClick: () => this.scene.start("Briefing", { unitId: this.debrief.unitId, missionId: this.nextMissionId() }),
     });
     button(this, {
       x: SCREEN_PAD + 240,
       y,
       width: 220,
       height: HIT.lg,
-      label: "HANGAR",
+      label: "CAMPAIGN",
       variant: "secondary",
-      onClick: () => this.scene.start("Hangar"),
+      onClick: () => this.scene.start("Campaign", { unitId: this.debrief.unitId }),
+    });
+    button(this, {
+      x: SCREEN_PAD + 480,
+      y,
+      width: 200,
+      height: HIT.lg,
+      label: "DOSSIER",
+      variant: "ghost",
+      onClick: () => this.scene.start("Dossier"),
     });
   }
 }

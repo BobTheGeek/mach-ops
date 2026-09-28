@@ -9,6 +9,11 @@ import { BriefingScene } from "./game/scenes/BriefingScene";
 import { SortieScene } from "./game/scenes/SortieScene";
 import { DebriefScene } from "./game/scenes/DebriefScene";
 import { ManualLibraryScene } from "./game/scenes/ManualLibraryScene";
+import { CampaignScene } from "./game/scenes/CampaignScene";
+import { DossierScene } from "./game/scenes/DossierScene";
+import { HowToPlayScene } from "./game/scenes/HowToPlayScene";
+import { PauseScene } from "./game/scenes/PauseScene";
+import { FlightSchoolScene } from "./game/scenes/FlightSchoolScene";
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,
@@ -20,7 +25,10 @@ const game = new Phaser.Game({
   // than reflow, so every artboard measurement still holds.
   scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
   render: { pixelArt: false, antialias: true },
-  scene: [BootScene, TitleScene, HangarScene, BriefingScene, SortieScene, DebriefScene, ManualLibraryScene],
+  scene: [
+    BootScene, TitleScene, HangarScene, CampaignScene, BriefingScene, SortieScene,
+    DebriefScene, ManualLibraryScene, DossierScene, HowToPlayScene, PauseScene, FlightSchoolScene,
+  ],
 });
 
 // Dev-only handle so a QA script can jump straight to a scene instead of

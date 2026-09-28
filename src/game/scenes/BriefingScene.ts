@@ -8,6 +8,7 @@ import { panel, capsLabel, button, resourceBar, missilePips } from "../ui/kit";
 import { ProblemCard, CARD_W } from "../ui/problemCard";
 import { ManualPanel } from "../ui/manualPanel";
 import { gameState, now } from "../state";
+import { mission as findMission, type Mission } from "../../data/campaign";
 import { buildMission, type MissionProblem } from "../missionBuilder";
 import { recordAttempt } from "../save";
 import { applyAttempt, initialTierState } from "../../engine/tiers";
@@ -32,6 +33,7 @@ const FILL: Record<Resource, string> = {
 
 export interface SortieLoadout {
   unitId: string;
+  missionId: string;
   fuel: number;
   shields: number;
   missiles: number;
@@ -39,6 +41,7 @@ export interface SortieLoadout {
 
 export class BriefingScene extends Phaser.Scene {
   private unitId = "ch1";
+  private mission!: Mission;
   private preps: MissionProblem[] = [];
   private index = 0;
   private card?: ProblemCard;
@@ -58,8 +61,9 @@ export class BriefingScene extends Phaser.Scene {
     super("Briefing");
   }
 
-  init(data: { unitId?: string }): void {
+  init(data: { unitId?: string; missionId?: string }): void {
     this.unitId = data.unitId ?? "ch1";
+    this.mission = findMission(data.missionId ?? "ch1-01");
     this.index = 0;
     this.fuel = START_FUEL;
     this.shields = START_SHIELDS;
@@ -75,7 +79,7 @@ export class BriefingScene extends Phaser.Scene {
       now: now(),
       activeUnitId: this.unitId,
       openUnitIds: gameState.openUnits.map((u) => u.id),
-      count: PREP_COUNT,
+      count: this.mission.prep,
       seed: gameState.file.log.length + 1,
     });
 
@@ -84,11 +88,13 @@ export class BriefingScene extends Phaser.Scene {
   }
 
   private chrome(): void {
-    const chapter = gameState.chapter(this.unitId);
-
     const title = this.add.text(SCREEN_PAD, 14, "BRIEFING", { ...TEXT.h3 });
     title.setLetterSpacing(TRACK.display * SIZE.h3);
-    const sub = capsLabel(this, SCREEN_PAD + 170, 22, `${chapter.name} · INTERCEPT · T-38`, C.textMuted, TRACK.readout);
+    const sub = capsLabel(
+      this, SCREEN_PAD + 170, 22,
+      `SORTIE ${String(this.mission.n).padStart(2, "0")} · ${this.mission.name} · T-38`,
+      this.mission.kind === "boss" ? C.lock : C.textMuted, TRACK.readout,
+    );
     void sub;
 
     const kneeboard = capsLabel(this, 0, 22, "KNEEBOARD OUT · UNTIMED · NO SHIELD RISK", C.hud, TRACK.readout);
@@ -112,6 +118,11 @@ export class BriefingScene extends Phaser.Scene {
     this.pips = missilePips(this, px + 16, py + 172, MAX_MISSILES);
 
     this.fillNote = this.add.text(px + 16, py + 196, "", { ...TEXT.label, color: C.hud });
+
+    const briefLine = this.add.text(this.cardX, 62, this.mission.brief, {
+      ...TEXT.body, color: C.textMuted, wordWrap: { width: 560 }, lineSpacing: 2,
+    });
+    void briefLine;
     this.refreshResources();
 
     // tactical map placeholder: the sortie's sea grid, scaled down
@@ -163,7 +174,7 @@ export class BriefingScene extends Phaser.Scene {
       onManual: () => this.openManual(mp),
       onHint: () => this.hint(mp),
     });
-    this.card.container.setPosition(this.cardX, 90);
+    this.card.container.setPosition(this.cardX, 96);
     this.card.setTimer("UNTIMED");
   }
 
@@ -243,12 +254,23 @@ export class BriefingScene extends Phaser.Scene {
     });
 
     this.input.keyboard?.once("keydown-ENTER", () => this.launch());
+
+    button(this, {
+      x: this.cardX + 280,
+      y: 240,
+      width: 200,
+      height: HIT.lg,
+      label: "CAMPAIGN",
+      variant: "ghost",
+      onClick: () => this.scene.start("Campaign", { unitId: this.unitId }),
+    });
   }
 
   /** 03B: the 1.2 s launch transition. */
   private launch(): void {
     const loadout: SortieLoadout = {
       unitId: this.unitId,
+      missionId: this.mission.id,
       fuel: this.fuel,
       shields: this.shields,
       missiles: this.missiles,

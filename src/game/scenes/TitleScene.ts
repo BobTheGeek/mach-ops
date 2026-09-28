@@ -38,19 +38,34 @@ export class TitleScene extends Phaser.Scene {
       this.add.image(CANVAS.width - 380, 400, "t38-side").setDisplaySize(640, 237).setAlpha(0.9);
     }
 
+    // A first-time pilot goes to Flight School; after that, straight to the hangar.
+    const first = !gameState.file.flightSchoolDone;
+    const go = (): void => { this.scene.start(first ? "FlightSchool" : "Hangar"); };
+
     button(this, {
       x: SCREEN_PAD + 28,
       y: 430,
       width: 260,
       height: 56,
-      label: "ENTER HANGAR",
+      label: first ? "START FLIGHT SCHOOL" : "ENTER HANGAR",
       variant: "primary",
-      onClick: () => this.scene.start("Hangar"),
+      onClick: go,
     });
+
+    if (first) {
+      button(this, {
+        x: SCREEN_PAD + 28,
+        y: 430 + 56 + 12,
+        width: 260,
+        label: "SKIP TO HANGAR",
+        variant: "ghost",
+        onClick: () => this.scene.start("Hangar"),
+      });
+    }
 
     const hint = capsLabel(this, SCREEN_PAD + 28, CANVAS.height - 52, "ENTER · START", C.textMuted);
     void hint;
 
-    this.input.keyboard?.once("keydown-ENTER", () => this.scene.start("Hangar"));
+    this.input.keyboard?.once("keydown-ENTER", go);
   }
 }

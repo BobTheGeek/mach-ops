@@ -39,6 +39,10 @@ export interface SaveFile {
   intelCards: Record<string, number[]>;
   /** unit ids whose boss sortie has been passed */
   bossesPassed: string[];
+  /** mission ids flown to a debrief, in order */
+  missionsFlown: string[];
+  /** sorties completed with enough first-try hits to earn an intel card */
+  sortiesFlown: number;
   /** every answered problem, oldest first */
   log: Attempt[];
   /** per skill, the tier it is currently serving */
@@ -65,6 +69,8 @@ export function newSave(): SaveFile {
     unlockedAirframes: [firstAirframe],
     intelCards: { [firstAirframe]: [] },
     bossesPassed: [],
+    missionsFlown: [],
+    sortiesFlown: 0,
     log: [],
     tiers: {},
     recentHashes: [],
@@ -120,6 +126,30 @@ export function spendCredits(file: SaveFile, amount: number): SaveFile {
 
 export function seeTip(file: SaveFile, tipId: string): SaveFile {
   return file.tipsSeen.includes(tipId) ? file : { ...file, tipsSeen: [...file.tipsSeen, tipId] };
+}
+
+/**
+ * Close out a sortie: count it, remember the mission, and award the next intel
+ * card when the pilot made enough first-try hits (Screens 08 and How to Play
+ * HP5: "a sortie with 6+ first-try hits earns one").
+ */
+export function completeSortie(
+  file: SaveFile,
+  opts: { missionId: string; airframe: string; firstTryHits: number; hitsNeeded: number; cardsPerAirframe: number },
+): { file: SaveFile; cardEarned: number | null } {
+  const flown = file.missionsFlown.includes(opts.missionId)
+    ? file.missionsFlown
+    : [...file.missionsFlown, opts.missionId];
+
+  let next: SaveFile = { ...file, missionsFlown: flown, sortiesFlown: file.sortiesFlown + 1 };
+
+  const have = next.intelCards[opts.airframe] ?? [];
+  const earnsCard = opts.firstTryHits >= opts.hitsNeeded && have.length < opts.cardsPerAirframe;
+  if (!earnsCard) return { file: next, cardEarned: null };
+
+  const card = have.length + 1;
+  next = earnIntelCard(next, opts.airframe, card);
+  return { file: next, cardEarned: card };
 }
 
 export function passBoss(file: SaveFile, unitId: string): SaveFile {

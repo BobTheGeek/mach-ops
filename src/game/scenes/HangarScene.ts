@@ -31,17 +31,27 @@ export class HangarScene extends Phaser.Scene {
     title.setLetterSpacing(TRACK.display * SIZE.h3);
 
     const pilot = capsLabel(this, SCREEN_PAD + 160, y + 8, `PILOT ${gameState.file.callsign}`, C.textMuted, TRACK.readout);
-    const credits = capsLabel(this, SCREEN_PAD + 360, y + 8, `${gameState.file.credits} CR`, C.lock, TRACK.readout);
+    const credits = capsLabel(this, SCREEN_PAD + 330, y + 8, `${gameState.file.credits} CR`, C.lock, TRACK.readout);
     void pilot;
     void credits;
 
-    button(this, {
-      x: CANVAS.width - SCREEN_PAD - 180,
-      y: y - 4,
-      width: 180,
-      label: "FLIGHT MANUAL",
-      variant: "ghost",
-      onClick: () => this.scene.start("Manual"),
+    // Top bar: FLIGHT MANUAL, HOW TO PLAY, dossier, replay Flight School.
+    const bar: [string, () => void][] = [
+      ["FLIGHT MANUAL", () => this.scene.start("Manual")],
+      ["HOW TO PLAY", () => this.scene.start("HowToPlay", { returnTo: "Hangar" })],
+      ["DOSSIER", () => this.scene.start("Dossier")],
+      ["FLIGHT SCHOOL", () => this.scene.start("FlightSchool")],
+    ];
+    const bw = 160;
+    bar.forEach(([label, go], i) => {
+      button(this, {
+        x: CANVAS.width - SCREEN_PAD - (bar.length - i) * (bw + 8) + 8,
+        y: y - 4,
+        width: bw,
+        label,
+        variant: "ghost",
+        onClick: go,
+      });
     });
 
     const rule = this.add.graphics();
@@ -145,11 +155,11 @@ export class HangarScene extends Phaser.Scene {
       x: x + w - 14 - ctaW,
       y: y + h - 14 - HIT.min,
       width: ctaW,
-      label: playable ? "BRIEF" : open ? "SOON" : "LOCKED",
+      label: playable ? "SORTIES" : open ? "SOON" : "LOCKED",
       variant: playable ? "primary" : "disabled",
       onClick: () => {
         if (!playable) return;
-        this.scene.start("Briefing", { unitId });
+        this.scene.start("Campaign", { unitId });
       },
     });
     void cta;
