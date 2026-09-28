@@ -71,6 +71,14 @@ export interface Problem {
   accept: (input: Answer) => boolean;
   /** exactly 3 for multiple-choice and pick-one formats */
   distractors?: Distractor[];
+  /**
+   * Choice formats only: the 4 options in display order, and the index of the
+   * correct one. GENERATOR_SPEC section 4 requires the correct position to be
+   * drawn from the seed and tested for a 20-30% distribution per slot, which
+   * needs the laid-out order, not just the distractor set.
+   */
+  options?: Answer[];
+  correctIndex?: number;
   /** one step per numbered step in the manual's "How to solve it" */
   worked: WorkedStep[];
   /** formatted wrong-answer text -> registry error tag */
