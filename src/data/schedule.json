@@ -1,0 +1,28 @@
+{
+  "_note": "Placeholder dates. Replace from the FSD calendar. The game fetches this from the deployed URL on every launch; it is not bundled. A /dad override in the save file wins over this until cleared.",
+  "quarters": [
+    { "q": 1, "starts": "2026-08-10" },
+    { "q": 2, "starts": "2026-10-12" },
+    { "q": 3, "starts": "2027-01-05" },
+    { "q": 4, "starts": "2027-03-15" }
+  ],
+  "units": [
+    { "id": "ch1",  "name": "Adding & Subtracting Rational Numbers", "quarter": 1, "opens": "2026-08-10" },
+    { "id": "ch2",  "name": "Multiplying & Dividing Rational Numbers", "quarter": 1, "opens": "2026-08-31" },
+    { "id": "ch3",  "name": "Expressions", "quarter": 1, "opens": "2026-09-21" },
+    { "id": "ch4",  "name": "Equations & Inequalities", "quarter": 2, "opens": "2026-10-05" },
+    { "id": "ch5",  "name": "Ratios & Proportions", "quarter": 2, "opens": "2026-11-09" },
+    { "id": "ch6",  "name": "Percents", "quarter": 3, "opens": "2027-01-05" },
+    { "id": "ch7",  "name": "Probability & Statistical Measures", "quarter": 3, "opens": "2027-01-25" },
+    { "id": "ch8",  "name": "Statistics", "quarter": 3, "opens": "2027-02-16" },
+    { "id": "ch9",  "name": "Geometric Shapes & Angles", "quarter": 4, "opens": "2027-03-15" },
+    { "id": "ch10", "name": "Surface Area & Volume", "quarter": 4, "opens": "2027-04-12" }
+  ],
+  "honors": {
+    "1": ["8.NS.A.1", "8.NS.A.2", "8.EE.A.1", "8.EE.A.3", "8.EE.A.4", "8.EE.C.7a", "8.EE.C.7b"],
+    "2": ["8.G.A.1d", "8.EE.B.5", "8.EE.B.6", "8.EE.C.8a", "8.EE.C.8b", "8.EE.C.9", "8.F.A.1", "8.F.A.2", "8.F.A.3", "8.F.B.4", "8.F.B.5"],
+    "3": ["8.SP.A.1", "8.SP.A.2", "8.SP.A.3", "8.SP.B.4a", "8.SP.B.4b"],
+    "4": ["8.EE.A.2", "8.G.A.2", "8.G.B.3", "8.G.B.4", "8.G.B.5", "8.G.C.6"]
+  },
+  "blackbirdQualification": { "opens": "2027-04-26" }
+}
