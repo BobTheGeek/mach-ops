@@ -9,6 +9,8 @@ import { BriefingScene } from "./game/scenes/BriefingScene";
 import { SortieScene } from "./game/scenes/SortieScene";
 import { DebriefScene } from "./game/scenes/DebriefScene";
 import { UnlockScene } from "./game/scenes/UnlockScene";
+import { FleetScene } from "./game/scenes/FleetScene";
+import { ProfileScene } from "./game/scenes/ProfileScene";
 import { ManualLibraryScene } from "./game/scenes/ManualLibraryScene";
 import { CampaignScene } from "./game/scenes/CampaignScene";
 import { DossierScene } from "./game/scenes/DossierScene";
@@ -29,7 +31,7 @@ const game = new Phaser.Game({
   render: { pixelArt: false, antialias: true },
   scene: [
     BootScene, TitleScene, HangarScene, CampaignScene, BriefingScene, SortieScene,
-    DebriefScene, UnlockScene, ManualLibraryScene, DossierScene, HowToPlayScene, PauseScene, FlightSchoolScene, SettingsScene,
+    DebriefScene, UnlockScene, FleetScene, ProfileScene, ManualLibraryScene, DossierScene, HowToPlayScene, PauseScene, FlightSchoolScene, SettingsScene,
   ],
 });
 

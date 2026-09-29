@@ -30,6 +30,7 @@ import { MAX_MISSILES } from "./BriefingScene";
 import { mission as findMission, type Mission } from "../../data/campaign";
 import { createTerrain, type Terrain } from "../ui/terrain";
 import { generatorFor } from "../../generators/index";
+import { loadSprites, phase2Variants } from "../assets";
 
 const BINGO_SECONDS = 90;
 /** 04C: how much fuel a successful refuel buys, in seconds. */
@@ -172,7 +173,28 @@ export class SortieScene extends Phaser.Scene {
     // screen, so the terrain is what says you are going anywhere at all.
     this.terrain = createTerrain(this, this.mission.id);
 
+    // Boot only rasterises the trainer, so the airframe actually being flown is
+    // loaded here and the sprite swapped in when it arrives. The T-38 stands in
+    // for the one frame that takes, rather than the sortie starting empty.
     this.player = this.add.image(PLAYER_POS.x, PLAYER_POS.y, "t38-top-flame");
+    this.player.setDisplaySize(85, 120);
+    void this.wearLivery();
+  }
+
+  /**
+   * Draw the airframe the pilot is flying now, in the paint scheme they picked
+   * on the Profile screen. Falls back through the standard scheme to the
+   * trainer, so a missing sprite is never a missing aircraft.
+   */
+  private async wearLivery(): Promise<void> {
+    const airframe = gameState.currentAirframe();
+    const livery = gameState.file.paint[airframe] ?? "";
+    await loadSprites(this, phase2Variants(airframe));
+    if (!this.scene.isActive() || !this.player) return;
+    const key = [livery ? `${airframe}-top-${livery}-flame` : "", `${airframe}-top-flame`]
+      .find((k) => k && this.textures.exists(k));
+    if (!key) return;
+    this.player.setTexture(key);
     this.player.setDisplaySize(85, 120);
   }
 

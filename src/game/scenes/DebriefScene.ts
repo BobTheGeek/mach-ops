@@ -10,6 +10,7 @@ import { hasPage } from "../manual";
 import { completeSortie, passBoss, unlockAirframe } from "../save";
 import { mission as findMission, BOSS_UNLOCKS, CAPSTONE_AIRFRAME } from "../../data/campaign";
 import { dossier, CARDS_PER_AIRFRAME, FIRST_TRY_HITS_FOR_CARD, type IntelCard } from "../../data/intel";
+import { fleetEntry } from "../../data/fleet";
 import { audio } from "../audio";
 
 export interface DebriefData {
@@ -43,7 +44,7 @@ export class DebriefScene extends Phaser.Scene {
 
     // Close the sortie out once, here: it is the only place that knows both the
     // mission and the first-try count.
-    const airframe = gameState.file.unlockedAirframes[0] ?? "t38";
+    const airframe = gameState.currentAirframe();
     const result = completeSortie(gameState.file, {
       missionId: this.debrief.missionId,
       airframe,
@@ -119,15 +120,15 @@ export class DebriefScene extends Phaser.Scene {
       const copy = this.add.text(x + 16, y + 44,
         need > 0
           ? `${need} more first-try hit${need === 1 ? "" : "s"} in one sortie earns a card.`
-          : "All ten T-38 cards collected.",
+          : `All ten ${fleetEntry(gameState.currentAirframe())?.designation ?? "T-38"} cards collected.`,
         { ...TEXT.body, color: C.textMuted, wordWrap: { width: w - 32 } });
       void copy;
       return;
     }
 
-    const airframe = gameState.file.unlockedAirframes[0] ?? "t38";
+    const airframe = gameState.currentAirframe();
     const have = (gameState.file.intelCards[airframe] ?? []).length;
-    const code = capsLabel(this, x + 16, y + 40, `T-38 · ${String(this.cardEarned.n).padStart(2, "0")}   ${have} OF ${CARDS_PER_AIRFRAME}`, C.textMuted, TRACK.readout);
+    const code = capsLabel(this, x + 16, y + 40, `${fleetEntry(airframe)?.designation ?? "T-38"} · ${String(this.cardEarned.n).padStart(2, "0")}   ${have} OF ${CARDS_PER_AIRFRAME}`, C.textMuted, TRACK.readout);
     void code;
 
     const title = this.add.text(x + 16, y + 62, this.cardEarned.title, { ...TEXT.h3, fontSize: "18px" });

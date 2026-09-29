@@ -17,6 +17,7 @@ import { recordAttempt } from "../save";
 import { applyAttempt, initialTierState } from "../../engine/tiers";
 import { isFast } from "../../engine/mastery";
 import type { Attempt } from "../../engine/types";
+import { fleetEntry } from "../../data/fleet";
 
 /** Card top. Leaves room under the rule for a two-line brief. */
 const BRIEF_CARD_Y = 116;
@@ -117,7 +118,7 @@ export class BriefingScene extends Phaser.Scene {
     title.setLetterSpacing(TRACK.display * SIZE.h3);
     const sub = capsLabel(
       this, SCREEN_PAD + 170, 22,
-      `SORTIE ${String(this.mission.n).padStart(2, "0")} · ${this.mission.name} · T-38`,
+      `SORTIE ${String(this.mission.n).padStart(2, "0")} · ${this.mission.name} · ${fleetEntry(gameState.currentAirframe())?.designation ?? "T-38"}`,
       this.mission.kind === "boss" ? C.lock : C.textMuted, TRACK.readout,
     );
     void sub;

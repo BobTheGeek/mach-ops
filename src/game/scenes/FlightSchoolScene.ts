@@ -417,7 +417,9 @@ export class FlightSchoolScene extends Phaser.Scene {
     title.setX((CANVAS.width - title.width) / 2);
     this.add2(head, title);
 
-    // The first intel card and the first credits are awarded once.
+    // The first intel card and the first credits are awarded once. Flight
+    // school is always flown in the trainer, so this one is the T-38 and not
+    // gameState.currentAirframe().
     const airframe = gameState.file.unlockedAirframes[0] ?? "t38";
     const card = dossier(airframe)?.cards[0];
     const already = (gameState.file.intelCards[airframe] ?? []).includes(1);

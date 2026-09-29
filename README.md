@@ -16,10 +16,16 @@ pnpm mission      # print a 20-problem mission for a sample attempt log
 ```
 
 Playable end to end: Flight School, hangar, ninety-eight sorties across all ten
-chapters with the honors skills mixed in, briefing, sortie with a steerable T-38 and
-synthesised avionics audio over scrolling terrain, a tanker refuel at bingo fuel,
-debrief, the airframe unlock reveal, intel cards, Flight Manual, How to Play and
-settings. All 83 skills have generators, manual pages and property tests.
+chapters with the honors skills mixed in, briefing, sortie in whichever airframe
+the pilot has unlocked, in the paint scheme they picked, with synthesised avionics
+audio over scrolling terrain, a tanker refuel at bingo fuel, debrief, the airframe
+unlock reveal, intel cards, the pilot profile, the fleet spec sheet, Flight Manual,
+How to Play and settings. All 83 skills have generators, manual pages and property
+tests.
+
+Every dimension on the fleet spec sheet comes from `design/accuracy-check.md`, which
+cites a USAF, NAVAIR, NASA or National Museum fact sheet per airframe. Where that
+document gives no figure, the screen shows a dash rather than a guess.
 
 Phase status: see `docs/engine-rules.md` "Build plan" and the phase notes in
-`docs/` (`PHASE1-NOTES.md` through `PHASE9-NOTES.md`) and `DECISIONS.md`.
+`docs/` (`PHASE1-NOTES.md` through `PHASE10-NOTES.md`) and `DECISIONS.md`.

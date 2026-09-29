@@ -102,6 +102,16 @@ export function phase2Variants(airframe = "t38"): Variant[] {
     { key: `${airframe}-side-gear`, file: `${airframe}-side-gear`, size: HANGAR_SPRITE },
     { key: `${airframe}-side-silhouette`, file: `${airframe}-side-silhouette`, size: HANGAR_SPRITE },
   ];
+  // Alternative paint schemes, where the design ships one. The file naming is
+  // not symmetric — `t38-top-nasa` but `t38-side-nasa-gear` — so both spellings
+  // are offered and the ones with no file are filtered out below.
+  for (const livery of ["nasa", "blueangels"]) {
+    list.push(
+      { key: `${airframe}-top-${livery}`, file: `${airframe}-top-${livery}`, size: PLAYER_SPRITE, hide: ["flame"] },
+      { key: `${airframe}-top-${livery}-flame`, file: `${airframe}-top-${livery}`, size: PLAYER_SPRITE },
+      { key: `${airframe}-side-${livery}-gear`, file: `${airframe}-side-${livery}-gear`, size: HANGAR_SPRITE },
+    );
+  }
   for (const b of ["bogey1", "bogey2", "bogey3"]) {
     list.push({ key: `${b}-top`, file: `${b}-top`, size: BOGEY_SPRITE });
   }
@@ -113,9 +123,15 @@ export function phase2Variants(airframe = "t38"): Variant[] {
  * Call from a preload scene and await before starting the game scenes.
  */
 export async function loadSprites(scene: Phaser.Scene, variants: Variant[]): Promise<void> {
-  const rastered = await Promise.all(variants.map(rasterise));
+  // Textures live on the game, not the scene, and a key always rasterises to
+  // the same picture, so anything already loaded is left alone. Removing and
+  // re-adding it would hand every sprite already drawing with that key a dead
+  // frame: the bogeys are in every variant list and are on screen mid-sortie
+  // when the flown airframe loads, and re-adding theirs blanked the sortie.
+  const wanted = variants.filter((v) => !scene.textures.exists(v.key));
+  const rastered = await Promise.all(wanted.map(rasterise));
   for (const { key, canvas } of rastered) {
-    if (scene.textures.exists(key)) scene.textures.remove(key);
+    if (scene.textures.exists(key)) continue;
     scene.textures.addCanvas(key, canvas);
   }
 }

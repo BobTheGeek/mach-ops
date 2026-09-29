@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   newSave, recordAttempt, spendCredits, seeTip, passBoss, earnIntelCard, unlockAirframe,
+  setCallsign, setPaint,
   hasSeenHash, load, save, clear, SAVE_KEY, RECENT_HASHES, BASE_CREDITS, FAST_MULTIPLIER,
   type SaveFile,
 } from "../../src/game/save";
@@ -150,5 +151,42 @@ describe("persistence", () => {
     expect(() => save(file, hostile)).not.toThrow();
     expect(() => clear(hostile)).not.toThrow();
     expect(load(hostile).credits).toBe(0);
+  });
+});
+
+describe("the pilot's own settings", () => {
+  const file = newSave();
+
+  it("stores a callsign in capitals with the spaces trimmed off", () => {
+    expect(setCallsign(file, "  viper ").callsign).toBe("VIPER");
+  });
+
+  it("keeps the old callsign rather than accept an empty one", () => {
+    expect(setCallsign(file, "   ").callsign).toBe(file.callsign);
+    expect(setCallsign(file, "").callsign).toBe(file.callsign);
+  });
+
+  it("cuts a long callsign to twelve characters, which is what the card fits", () => {
+    expect(setCallsign(file, "abcdefghijklmnopq").callsign).toHaveLength(12);
+  });
+
+  it("records a paint scheme per airframe and leaves the others alone", () => {
+    const one = setPaint(file, "t38", "nasa");
+    const two = setPaint(one, "f18", "blueangels");
+    expect(two.paint).toEqual({ t38: "nasa", f18: "blueangels" });
+    expect(file.paint).toEqual({});
+  });
+
+  it("goes back to the standard scheme on an empty livery", () => {
+    const painted = setPaint(file, "t38", "nasa");
+    expect(setPaint(painted, "t38", "").paint.t38).toBe("");
+  });
+
+  it("gives a save written before paint schemes existed an empty one", () => {
+    const storage = memoryStorage();
+    const old = { ...newSave() } as Partial<SaveFile>;
+    delete old.paint;
+    storage.setItem(SAVE_KEY, JSON.stringify(old));
+    expect(load(storage).paint).toEqual({});
   });
 });

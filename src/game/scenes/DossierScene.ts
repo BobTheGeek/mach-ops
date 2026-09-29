@@ -15,7 +15,7 @@ export class DossierScene extends Phaser.Scene {
   }
 
   init(data: { airframe?: string }): void {
-    this.airframe = data.airframe ?? gameState.file.unlockedAirframes[0] ?? "t38";
+    this.airframe = data.airframe ?? gameState.currentAirframe();
   }
 
   create(): void {

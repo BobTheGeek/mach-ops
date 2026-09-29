@@ -176,6 +176,34 @@ export class GameState {
   }
 
   /**
+   * How many skills are MASTERED, which is what a rank is counted in.
+   *
+   * DESIGN_RECONCILIATION.md section 4 says ranks "advance on total mastered
+   * skills" without saying what mastered means; ONLINE is the status at which
+   * the systems panel calls a skill done, so that is the bar. Honors skills
+   * count: they are skills the pilot has mastered.
+   */
+  masteredCount(file: SaveFile = this.file): number {
+    return curriculum.skills.filter((s) => {
+      const st = statusFor(file.log, s.id);
+      return st === "ONLINE" || st === "OPTIMIZED";
+    }).length;
+  }
+
+  /**
+   * The airframe the pilot is flying right now: the newest one unlocked.
+   *
+   * design/README.md makes each chapter boss unlock the next airframe in the
+   * chain, so the newest one is the reward for the last boss passed. Every
+   * scene that draws the player, awards an intel card or opens the dossier
+   * asks here, so the sortie, the debrief and the dossier never disagree.
+   * Flight school is the exception and stays on the T-38 on purpose.
+   */
+  currentAirframe(file: SaveFile = this.file): string {
+    return file.unlockedAirframes[file.unlockedAirframes.length - 1] ?? "t38";
+  }
+
+  /**
    * Is every CORE skill of the year at ONLINE or better?
    *
    * design/README.md makes this the gate on the Blackbird. Honors skills are

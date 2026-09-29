@@ -49,6 +49,8 @@ export interface SaveFile {
   tiers: Record<string, Tier>;
   /** problem hashes already served, newest last, capped at RECENT_HASHES */
   recentHashes: string[];
+  /** airframe id -> chosen livery id; absent or "" means the standard scheme */
+  paint: Record<string, string>;
   /** first-time tip ids already dismissed */
   tipsSeen: string[];
   flightSchoolDone: boolean;
@@ -74,6 +76,7 @@ export function newSave(): SaveFile {
     log: [],
     tiers: {},
     recentHashes: [],
+    paint: {},
     tipsSeen: [],
     flightSchoolDone: false,
     settings: { volume: 0.7, keypadEntry: false, colorblindHud: false, reducedMotion: false },
@@ -160,6 +163,17 @@ export function earnIntelCard(file: SaveFile, airframe: string, card: number): S
   const have = file.intelCards[airframe] ?? [];
   if (have.includes(card)) return file;
   return { ...file, intelCards: { ...file.intelCards, [airframe]: [...have, card].sort((a, b) => a - b) } };
+}
+
+/** Rename the pilot. Blank or whitespace keeps the one they had. */
+export function setCallsign(file: SaveFile, callsign: string): SaveFile {
+  const clean = callsign.trim().toUpperCase().slice(0, 12);
+  return clean.length === 0 ? file : { ...file, callsign: clean };
+}
+
+/** Choose a paint scheme for one airframe. An empty id is the standard one. */
+export function setPaint(file: SaveFile, airframe: string, livery: string): SaveFile {
+  return { ...file, paint: { ...file.paint, [airframe]: livery } };
 }
 
 export function unlockAirframe(file: SaveFile, airframe: string): SaveFile {

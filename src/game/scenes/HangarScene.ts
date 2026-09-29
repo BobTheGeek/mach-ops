@@ -38,14 +38,17 @@ export class HangarScene extends Phaser.Scene {
     void pilot;
     void credits;
 
-    // Top bar: FLIGHT MANUAL, HOW TO PLAY, dossier, replay Flight School.
+    // Top bar. Six destinations now, so the buttons narrow and the labels
+    // shorten: at 160 px each they ran back over the credits readout.
     const bar: [string, () => void][] = [
-      ["FLIGHT MANUAL", () => this.scene.start("Manual")],
+      ["MANUAL", () => this.scene.start("Manual")],
       ["HOW TO PLAY", () => this.scene.start("HowToPlay", { returnTo: "Hangar" })],
+      ["FLEET", () => this.scene.start("Fleet")],
+      ["PILOT", () => this.scene.start("Profile")],
       ["DOSSIER", () => this.scene.start("Dossier")],
       ["SETTINGS", () => this.scene.start("Settings", { returnTo: "Hangar" })],
     ];
-    const bw = 160;
+    const bw = 128;
     bar.forEach(([label, go], i) => {
       button(this, {
         x: CANVAS.width - SCREEN_PAD - (bar.length - i) * (bw + 8) + 8,
