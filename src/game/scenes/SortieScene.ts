@@ -69,6 +69,10 @@ const OUT_OF_RANGE_ALPHA = 0.4;
 const BOGEY_SPRITES = ["bogey1-top", "bogey2-top", "bogey3-top"];
 /** Per-lane drift, px/s. Fixed rather than random so a mission replays the same. */
 const BOGEY_DRIFT: [number, number][] = [[16, 12], [-19, 9], [11, 17]];
+/** Where contacts come in. Fixed, so a mission flies the same way twice. */
+const LANES: [number, number][] = [[300, 140], [640, 90], [980, 170]];
+/** How far above the screen a replacement contact appears. */
+const SPAWN_Y = -90;
 
 interface Bogey {
   image: Phaser.GameObjects.Image;
@@ -221,8 +225,8 @@ export class SortieScene extends Phaser.Scene {
   }
 
   private spawnBogeys(): void {
-    const lanes = [[300, 140], [640, 90], [980, 170]] as const;
-    lanes.slice(0, this.mission.bogeys).forEach(([x, y], i) => {
+    const lanes = LANES.slice(0, this.mission.bogeys);
+    lanes.forEach(([x, y], i) => {
       const key = BOGEY_SPRITES[i % BOGEY_SPRITES.length]!;
       const img = this.add.image(x, y, this.textures.exists(key) ? key : BOGEY_SPRITES[0]!);
       img.setDisplaySize(51, 72);
@@ -768,9 +772,29 @@ export class SortieScene extends Phaser.Scene {
     this.clearLock();
     this.index += 1;
 
-    if (this.index >= this.queue.length || this.bogeys.every((x) => !x.alive)) {
-      this.endSortie("ALL TARGETS ENGAGED");
+    // A fresh contact comes in for every problem still in the queue.
+    //
+    // The sortie used to end as soon as the last of the three bogeys died,
+    // whatever was left to ask. Every mission declares more problems than it
+    // has bogeys, so every sortie stopped at three questions: the twelve-problem
+    // boss asked three, and the campaign screen's problem count was fiction.
+    if (this.index < this.queue.length) {
+      if (b) this.sendNextContact(b);
+      return;
     }
+    this.endSortie("ALL TARGETS ENGAGED");
+  }
+
+  /** Put a downed contact back in the air, in from above on the next lane. */
+  private sendNextContact(b: Bogey): void {
+    const lane = LANES[this.index % LANES.length]!;
+    const drift = BOGEY_DRIFT[this.index % BOGEY_DRIFT.length]!;
+    b.image.setPosition(lane[0], SPAWN_Y);
+    b.image.setVisible(true);
+    b.image.setAlpha(1);
+    b.vx = drift[0];
+    b.vy = drift[1];
+    b.alive = true;
   }
 
   /**

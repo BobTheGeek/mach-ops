@@ -176,3 +176,32 @@ describe("boss unlocks", () => {
     }
   });
 });
+
+describe("problem count against contacts", () => {
+  // The sortie serves one contact per queued problem, replacing each one shot
+  // down. That only reads as a stream if there is more to ask than there are
+  // bogeys on screen at the start; a mission with fewer problems than bogeys
+  // would leave contacts in the air with nothing to ask about them.
+  it("never declares fewer problems than bogeys", () => {
+    for (const m of MISSIONS) {
+      expect(m.problems, `${m.id} problems ${m.problems} vs bogeys ${m.bogeys}`)
+        .toBeGreaterThanOrEqual(m.bogeys);
+    }
+  });
+
+  it("gives every boss more to ask than a single pass of its bogeys", () => {
+    for (const m of MISSIONS.filter((x) => x.kind === "boss")) {
+      expect(m.problems, m.id).toBeGreaterThan(m.bogeys);
+    }
+  });
+
+  // An intel card wants six first-try hits in one sortie, and a sortie can only
+  // offer as many hits as it has problems. While the sortie stopped at its
+  // bogey count, three, no card was reachable on any mission in the game.
+  it("asks enough problems for an intel card to be reachable", () => {
+    for (const m of MISSIONS) {
+      expect(m.problems, `${m.id} cannot reach ${FIRST_TRY_HITS_FOR_CARD} first-try hits`)
+        .toBeGreaterThanOrEqual(FIRST_TRY_HITS_FOR_CARD);
+    }
+  });
+});

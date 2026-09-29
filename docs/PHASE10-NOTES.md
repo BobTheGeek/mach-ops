@@ -194,3 +194,35 @@ slugs in the unit that was scraped carry an internal content id — for example
 `x6b17ba59:adding-negative-numbers-fluently`. Those ids change when Khan
 reorganises content, so lesson-level links would work today and rot silently,
 and there would be 83 of them to keep alive. The unit links are stable.
+
+## Every sortie stopped after three questions
+
+Going to fly a boss end to end turned up the largest bug in the build so far.
+
+A sortie builds a queue of `mission.problems` problems, and spawns
+`mission.bogeys` contacts. A right answer shoots one down, and `destroyBogey`
+ended the sortie as soon as the last contact died — whatever was left to ask.
+
+Every mission in the game declares three bogeys. So every sortie asked three
+questions and stopped, however many it advertised. The Chapter 2 boss says
+twelve problems on the campaign screen and asked three.
+
+The consequence is worse than a short sortie. An intel card wants six first-try
+hits in one sortie, and the shortest mission declares six problems, so the
+numbers were chosen to line up. But only three were ever served, so **no intel
+card was reachable on any mission in the game**. That is why the pilot profile
+read `INTEL CARDS 0` after nineteen sorties while it was being checked earlier
+in this phase — the dossier had been unreachable the whole time.
+
+Contacts are a stream now: shoot one down and, while problems remain, another
+comes in from above on the next lane. The sortie ends when the queue is empty.
+
+Three tests hold the arithmetic together: no mission may declare fewer problems
+than bogeys, every boss must ask more than one pass of its bogeys, and every
+mission must ask at least `FIRST_TRY_HITS_FOR_CARD` problems so a card stays
+reachable.
+
+**Not yet flown.** ego-browser hung on five consecutive calls while this was
+being set up, so the boss run, the unlock reveal and the first sortie in the
+F-4E have not been watched on screen. The fix typechecks, builds, and the
+campaign arithmetic is covered, but the visual chain is still unverified.
