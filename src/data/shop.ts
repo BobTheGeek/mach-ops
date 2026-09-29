@@ -105,3 +105,14 @@ export const itemsOfKind = (kind: ShopKind): ShopItem[] =>
 /** What a livery costs is also what unlocks wearing it on the Profile screen. */
 export const liveryItemId = (airframe: string, livery: string): string =>
   `livery.${airframe}.${livery}`;
+
+/**
+ * The value a worn item applies, or null when nothing is worn.
+ *
+ * The save holds the item id rather than the value, so an item can be repriced
+ * or its colour retuned without rewriting anyone's save file.
+ */
+export function wornValue(itemId: string, kind: ShopKind): string | null {
+  const item = shopItem(itemId);
+  return item && item.kind === kind ? item.value ?? null : null;
+}

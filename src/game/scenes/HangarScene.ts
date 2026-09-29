@@ -9,6 +9,8 @@ import Phaser from "phaser";
 import { C, N, SIZE, TEXT, TRACK, CANVAS, SCREEN_PAD, RADIUS, STROKE, HIT, hex, STRUCTURE } from "../../ui/tokens";
 import { panel, capsLabel, button } from "../ui/kit";
 import { gameState } from "../state";
+import { nextUnlock } from "../../data/campaign";
+import { fleetEntry } from "../../data/fleet";
 import { isoToMs } from "../../engine/scheduler";
 import { SYSTEMS, systemStatus } from "../systems";
 import { statusPill } from "../ui/kit";
@@ -38,17 +40,19 @@ export class HangarScene extends Phaser.Scene {
     void pilot;
     void credits;
 
-    // Top bar. Six destinations now, so the buttons narrow and the labels
-    // shorten: at 160 px each they ran back over the credits readout.
+
+    // Top bar. Seven destinations now, so the buttons narrow again and HOW TO
+    // PLAY shortens to HELP: at 128 px each, seven ran back over the credits.
     const bar: [string, () => void][] = [
       ["MANUAL", () => this.scene.start("Manual")],
-      ["HOW TO PLAY", () => this.scene.start("HowToPlay", { returnTo: "Hangar" })],
+      ["HELP", () => this.scene.start("HowToPlay", { returnTo: "Hangar" })],
       ["FLEET", () => this.scene.start("Fleet")],
       ["PILOT", () => this.scene.start("Profile")],
       ["DOSSIER", () => this.scene.start("Dossier")],
+      ["SHOP", () => this.scene.start("Shop")],
       ["SETTINGS", () => this.scene.start("Settings", { returnTo: "Hangar" })],
     ];
-    const bw = 128;
+    const bw = 104;
     bar.forEach(([label, go], i) => {
       button(this, {
         x: CANVAS.width - SCREEN_PAD - (bar.length - i) * (bw + 8) + 8,
@@ -63,6 +67,32 @@ export class HangarScene extends Phaser.Scene {
     const rule = this.add.graphics();
     rule.lineStyle(STROKE.hairline, hex(C.border), 1);
     rule.lineBetween(SCREEN_PAD, 58, CANVAS.width - SCREEN_PAD, 58);
+
+    this.nextUp();
+  }
+
+  /**
+   * What he is flying toward, on the way in.
+   *
+   * One airframe per chapter boss is about ten sorties apart, which is a long
+   * silence. Naming the next one and counting down to it turns that silence
+   * into anticipation, and anticipation is most of the reward.
+   */
+  private nextUp(): void {
+    const next = nextUnlock(
+      gameState.file.bossesPassed,
+      gameState.file.missionsFlown,
+      gameState.file.unlockedAirframes,
+    );
+    if (!next) return;
+
+    const entry = fleetEntry(next.airframe);
+    const left = next.sortiesLeft;
+    const text = `NEXT AIRFRAME · ${entry?.designation ?? next.airframe} · ${left} SORTIE${left === 1 ? "" : "S"} TO GO`;
+    // Left of the button row and below the title, which is the one strip of the
+    // top bar that nothing else uses.
+    const label = capsLabel(this, SCREEN_PAD, 42, text, C.lock, TRACK.readout);
+    void label;
   }
 
   /** FS4's four systems, one per skill group, read from the live save. */

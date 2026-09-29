@@ -276,10 +276,14 @@ export class SortieScene extends Phaser.Scene {
     const y = TOPBAR_PAD_Y;
     this.altOut = readout(this, SCREEN_PAD, y, "ALT", "12,400 FT");
     readout(this, SCREEN_PAD + 150, y, "SPD", "430 KT");
-    this.hdgOut = readout(this, SCREEN_PAD + 300, y, "HDG", "000°");
+    // Every instrument takes the worn HUD colour, which is the whole of what a
+    // bought HUD does. It is an accent, never a state: the amber of a warning
+    // and the red of a hit are still themselves.
+    const accent = gameState.hudColor;
+    this.hdgOut = readout(this, SCREEN_PAD + 300, y, "HDG", "000°", accent);
     this.tgtOut = readout(this, SCREEN_PAD + 450, y, "TGT", "— NM", C.textMuted);
 
-    this.statusText = this.add.text(0, y + 10, "SCANNING", { ...TEXT.label, color: C.hud });
+    this.statusText = this.add.text(0, y + 10, "SCANNING", { ...TEXT.label, color: accent });
     this.statusText.setLetterSpacing(TRACK.label * SIZE.label);
     this.statusText.setX((CANVAS.width - this.statusText.width) / 2);
 
@@ -292,7 +296,7 @@ export class SortieScene extends Phaser.Scene {
 
     // Bottom-left resource stack; the footer hint bar sits centred below it so
     // the two never share a row.
-    this.fuelBar = resourceBar(this, SCREEN_PAD, CANVAS.height - 110, "FUEL", C.hud);
+    this.fuelBar = resourceBar(this, SCREEN_PAD, CANVAS.height - 110, "FUEL", accent);
     this.shieldBar = resourceBar(this, SCREEN_PAD, CANVAS.height - 66, "SHLD", C.shield);
     this.pips = missilePips(this, CANVAS.width - SCREEN_PAD - MAX_MISSILES * 16, CANVAS.height - 66, MAX_MISSILES);
     const aimLabel = capsLabel(this, CANVAS.width - SCREEN_PAD - MAX_MISSILES * 16, CANVAS.height - 88, "AIM", C.textMuted, TRACK.readout);
@@ -581,10 +585,38 @@ export class SortieScene extends Phaser.Scene {
     const r = 64; // 128 px ring
     const b = 50; // 100 px corner brackets
     g.lineStyle(STROKE.hud, hex(C.lock), 1);
-    g.strokeCircle(0, 0, r);
-    for (const [sx, sy] of [[-1, -1], [1, -1], [-1, 1], [1, 1]] as const) {
-      g.lineBetween(sx * b, sy * b, sx * b, sy * (b - 18));
-      g.lineBetween(sx * b, sy * b, sx * (b - 18), sy * b);
+
+    // The worn lock style. All four are drawn here rather than shipped as art,
+    // so a bought reticle looks native and costs nothing to download.
+    const corners = [[-1, -1], [1, -1], [-1, 1], [1, 1]] as const;
+    switch (gameState.reticleStyle) {
+      case "brackets":
+        for (const [sx, sy] of corners) {
+          g.lineBetween(sx * b, sy * b, sx * b, sy * (b - 24));
+          g.lineBetween(sx * b, sy * b, sx * (b - 24), sy * b);
+        }
+        break;
+      case "pipper":
+        g.strokeCircle(0, 0, r);
+        g.strokeCircle(0, 0, 10);
+        g.lineBetween(-r, 0, -r + 16, 0);
+        g.lineBetween(r - 16, 0, r, 0);
+        g.lineBetween(0, -r, 0, -r + 16);
+        g.lineBetween(0, r - 16, 0, r);
+        break;
+      case "diamond":
+        g.beginPath();
+        g.moveTo(0, -r); g.lineTo(r, 0); g.lineTo(0, r); g.lineTo(-r, 0);
+        g.closePath();
+        g.strokePath();
+        break;
+      default:
+        // The ring and brackets he starts with.
+        g.strokeCircle(0, 0, r);
+        for (const [sx, sy] of corners) {
+          g.lineBetween(sx * b, sy * b, sx * b, sy * (b - 18));
+          g.lineBetween(sx * b, sy * b, sx * (b - 18), sy * b);
+        }
     }
     const label = capsLabel(this, r + 12, -8, "TGT", C.lock, TRACK.readout);
     this.reticle = this.add.container(target.x, target.y, [g, label]);

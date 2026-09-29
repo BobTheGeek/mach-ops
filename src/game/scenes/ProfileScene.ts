@@ -8,7 +8,8 @@ import Phaser from "phaser";
 import { C, N, SIZE, TEXT, TRACK, CANVAS, SCREEN_PAD, STROKE, HIT, hex } from "../../ui/tokens";
 import { panel, capsLabel, button, resourceBar } from "../ui/kit";
 import { gameState } from "../state";
-import { setCallsign, setPaint } from "../save";
+import { shopItem, liveryItemId } from "../../data/shop";
+import { setCallsign, setPaint, owns } from "../save";
 import { rankFor, nextRank, rankProgress, RANKS } from "../../engine/ranks";
 import { FLEET } from "../../data/fleet";
 import { loadSprites, phase2Variants } from "../assets";
@@ -165,6 +166,32 @@ export class ProfileScene extends Phaser.Scene {
       capsLabel(this, x + 20, y, k, C.textMuted, TRACK.readout);
       capsLabel(this, x + 190, y, v, C.text, TRACK.readout);
     });
+
+    this.bests(x + 340);
+  }
+
+  /**
+   * His own bests, beside the running totals.
+   *
+   * Nothing in the game was a thing to beat twice: totals only ever go up, so
+   * they measure how long he has played rather than how well. These three are
+   * per-sortie, so they can be improved on deliberately, which is what makes a
+   * kid fly one more.
+   */
+  private bests(x: number): void {
+    capsLabel(this, x, 92, "BEST", C.lock, TRACK.readout);
+
+    const r = gameState.file.records;
+    const rows: [string, string][] = [
+      ["FASTEST SORTIE", r.fastestSortieMs === null ? "\u2014" : clock(r.fastestSortieMs)],
+      ["FIRST-TRY HITS", r.mostFirstTryHits === 0 ? "\u2014" : String(r.mostFirstTryHits)],
+      ["BEST HAUL", r.bestSortieCredits === 0 ? "\u2014" : `${r.bestSortieCredits} CR`],
+    ];
+    rows.forEach(([k, v], i) => {
+      const y = 124 + i * 26;
+      capsLabel(this, x, y, k, C.textMuted, TRACK.readout);
+      capsLabel(this, x + 180, y, v, C.lock, TRACK.readout);
+    });
   }
 
   /* ----------------------------------------------------------- paint */
@@ -197,11 +224,17 @@ export class ProfileScene extends Phaser.Scene {
       options.forEach((o, i) => {
         const y = 374 + i * 52;
         const chosen = current === o.id;
+        // The standard scheme is his already; an alternative has to be bought in
+        // the shop first. A locked one still shows, with its price, because
+        // knowing what is there to want is the point of a shop.
+        const item = o.id === "" ? null : shopItem(liveryItemId(f.airframe, o.id));
+        const locked = item !== null && !owns(gameState.file, item.id);
         button(this, {
           x, y, width: 220, height: HIT.min,
-          label: o.label,
-          variant: chosen ? "primary" : "secondary",
+          label: locked ? `${o.label} · ${item!.cost} CR` : o.label,
+          variant: locked ? "disabled" : chosen ? "primary" : "secondary",
           onClick: () => {
+            if (locked) { audio.play("miss"); return; }
             gameState.update(setPaint(gameState.file, f.airframe, o.id));
             audio.play("uiMove");
             this.scene.restart();
@@ -225,4 +258,10 @@ export class ProfileScene extends Phaser.Scene {
     img.setOrigin(0, 0.5);
     img.setDisplaySize(280, 280 * (img.height / img.width));
   }
+}
+
+/** Milliseconds as m:ss, which is how a sortie time reads on the HUD. */
+function clock(ms: number): string {
+  const total = Math.round(ms / 1000);
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
 }

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { CH1_MISSIONS, CH2_MISSIONS, CH3_MISSIONS, CH4_MISSIONS, CH5_MISSIONS, CH6_MISSIONS, CH7_MISSIONS, CH8_MISSIONS, CH9_MISSIONS, CH10_MISSIONS, MISSIONS, missionsFor, mission, BOSS_UNLOCKS, CAPSTONE_AIRFRAME } from "../../src/data/campaign";
+import { CH1_MISSIONS, CH2_MISSIONS, CH3_MISSIONS, CH4_MISSIONS, CH5_MISSIONS, CH6_MISSIONS, CH7_MISSIONS, CH8_MISSIONS, CH9_MISSIONS, CH10_MISSIONS, MISSIONS, missionsFor, mission, BOSS_UNLOCKS, CAPSTONE_AIRFRAME, nextUnlock } from "../../src/data/campaign";
 import { DOSSIERS, dossier, CARDS_PER_AIRFRAME, FIRST_TRY_HITS_FOR_CARD } from "../../src/data/intel";
 import { IMPLEMENTED_SKILLS } from "../../src/generators/index";
 import curriculum from "../../src/data/curriculum.json";
@@ -203,5 +203,49 @@ describe("problem count against contacts", () => {
       expect(m.problems, `${m.id} cannot reach ${FIRST_TRY_HITS_FOR_CARD} first-try hits`)
         .toBeGreaterThanOrEqual(FIRST_TRY_HITS_FOR_CARD);
     }
+  });
+});
+
+describe("what he is flying toward", () => {
+  it("points a new pilot at the first boss drop", () => {
+    const n = nextUnlock([], [], ["t38"])!;
+    expect(n.unitId).toBe("ch2");
+    expect(n.airframe).toBe("f4");
+  });
+
+  it("counts every sortie in the chapter when none has been flown", () => {
+    const n = nextUnlock([], [], ["t38"])!;
+    expect(n.sortiesLeft).toBe(missionsFor("ch2").length);
+  });
+
+  it("counts down as the chapter is flown", () => {
+    const flown = missionsFor("ch2").slice(0, 4).map((m) => m.id);
+    expect(nextUnlock([], flown, ["t38"])!.sortiesLeft).toBe(missionsFor("ch2").length - 4);
+  });
+
+  // The boss is the last sortie, so a chapter entirely flown but not passed
+  // still has the boss to beat; it must never read as zero left.
+  it("never counts down past one", () => {
+    const all = missionsFor("ch2").map((m) => m.id);
+    expect(nextUnlock([], all, ["t38"])!.sortiesLeft).toBe(1);
+  });
+
+  it("moves on once the airframe is his", () => {
+    const n = nextUnlock(["ch2"], [], ["t38", "f4"])!;
+    expect(n.airframe).toBe("a10");
+  });
+
+  it("skips a chapter whose boss is passed even if the airframe is missing", () => {
+    expect(nextUnlock(["ch2"], [], ["t38"])!.airframe).toBe("a10");
+  });
+
+  it("has nothing left to promise once every drop is collected", () => {
+    const all = Object.values(BOSS_UNLOCKS);
+    expect(nextUnlock(Object.keys(BOSS_UNLOCKS), [], ["t38", ...all])).toBeNull();
+  });
+
+  it("names an airframe the fleet actually knows", () => {
+    const n = nextUnlock([], [], ["t38"])!;
+    expect(Object.values(BOSS_UNLOCKS)).toContain(n.airframe);
   });
 });

@@ -12,6 +12,8 @@ import { tierFor } from "../engine/tiers";
 import type { QueueSkill } from "../engine/queue";
 import type { SystemsStatus, Tier } from "../engine/types";
 import { IMPLEMENTED_SKILLS } from "../generators/index";
+import { wornValue } from "../data/shop";
+import { C } from "../ui/tokens";
 
 export interface RegistrySkill {
   id: string;
@@ -91,6 +93,20 @@ export class GameState {
    * hangar, the campaign gate and the /dad view can never disagree about when a
    * chapter opens.
    */
+  /**
+   * The cockpit accent colour: whatever HUD was bought and is being worn, or
+   * the green it ships with.
+   */
+  get hudColor(): string {
+    const key = wornValue(this.file.hud, "hud");
+    return key ? (C as unknown as Record<string, string>)[key] ?? C.hud : C.hud;
+  }
+
+  /** The lock style being worn, or the ring and brackets it ships with. */
+  get reticleStyle(): string {
+    return wornValue(this.file.reticle, "reticle") ?? "ring";
+  }
+
   get schedule(): Schedule {
     return withDateOverrides(schedule, this.file.scheduleDates);
   }

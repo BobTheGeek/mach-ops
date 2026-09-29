@@ -144,6 +144,7 @@ export const SCENE_TRACK: Readonly<Record<string, string>> = {
   Unlock: MENU,
   Fleet: MENU,
   Profile: MENU,
+  Shop: MENU,
   Dossier: MENU,
   ManualLibrary: MENU,
   HowToPlay: MENU,

@@ -18,6 +18,7 @@ import { HowToPlayScene } from "./game/scenes/HowToPlayScene";
 import { PauseScene } from "./game/scenes/PauseScene";
 import { FlightSchoolScene } from "./game/scenes/FlightSchoolScene";
 import { SettingsScene } from "./game/scenes/SettingsScene";
+import { ShopScene } from "./game/scenes/ShopScene";
 import { music, SCENE_TRACK } from "./game/music";
 import { gameState } from "./game/state";
 
@@ -33,7 +34,7 @@ const game = new Phaser.Game({
   render: { pixelArt: false, antialias: true },
   scene: [
     BootScene, TitleScene, HangarScene, CampaignScene, BriefingScene, SortieScene,
-    DebriefScene, UnlockScene, FleetScene, ProfileScene, ManualLibraryScene, DossierScene, HowToPlayScene, PauseScene, FlightSchoolScene, SettingsScene,
+    DebriefScene, UnlockScene, FleetScene, ProfileScene, ManualLibraryScene, DossierScene, HowToPlayScene, PauseScene, FlightSchoolScene, SettingsScene, ShopScene,
   ],
 });
 

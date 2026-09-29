@@ -629,6 +629,44 @@ export const BOSS_UNLOCKS: Record<string, string> = {
   ch10: "f35",
 };
 
+/** What he is flying toward, and how far off it is. */
+export interface NextUnlock {
+  /** the chapter whose boss earns it */
+  unitId: string;
+  /** the airframe id */
+  airframe: string;
+  /** sorties in that chapter still unflown, the boss included */
+  sortiesLeft: number;
+}
+
+/**
+ * The next aircraft he can earn, and how many sorties stand between him and it.
+ *
+ * One airframe per chapter boss is roughly ten sorties apart, which is a long
+ * silence for a twelve-year-old. Naming the next one and counting down to it
+ * costs nothing and turns that silence into anticipation: wanting the thing is
+ * most of the reward.
+ *
+ * Returns null once every boss drop has been collected; the Blackbird is not a
+ * boss drop and arrives on its own terms.
+ */
+export function nextUnlock(
+  bossesPassed: readonly string[],
+  missionsFlown: readonly string[],
+  unlockedAirframes: readonly string[],
+): NextUnlock | null {
+  for (const unitId of Object.keys(BOSS_UNLOCKS)) {
+    const airframe = BOSS_UNLOCKS[unitId]!;
+    if (unlockedAirframes.includes(airframe)) continue;
+    if (bossesPassed.includes(unitId)) continue;
+
+    const missions = missionsFor(unitId);
+    const flown = missions.filter((m) => missionsFlown.includes(m.id)).length;
+    return { unitId, airframe, sortiesLeft: Math.max(1, missions.length - flown) };
+  }
+  return null;
+}
+
 /** The airframe the design keeps back until the whole year is ONLINE. */
 export const CAPSTONE_AIRFRAME = "sr71";
 

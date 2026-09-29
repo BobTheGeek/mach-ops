@@ -9,7 +9,7 @@ import { SCENE_TRACK, THEME, MENU, SORTIE, MUSIC_GAIN, DUCK } from "../../src/ga
 const SCENES = [
   "Boot", "Title", "Hangar", "Campaign", "Briefing", "Sortie", "Debrief",
   "Unlock", "Fleet", "Profile", "ManualLibrary", "Dossier", "HowToPlay",
-  "Pause", "FlightSchool", "Settings",
+  "Pause", "FlightSchool", "Settings", "Shop",
 ];
 
 describe("which scene plays what", () => {
