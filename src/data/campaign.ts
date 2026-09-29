@@ -482,9 +482,126 @@ export const CH8_MISSIONS: Mission[] = [
   },
 ];
 
+/**
+ * Chapter 9, Geometric Shapes and Angles. Five skills and five introducing
+ * sorties. Five of the seven Grade 8 honors geometry skills hang off this
+ * chapter, so the mixed sorties carry Pythagoras and the transversal rules on
+ * top of the Grade 7 work. The boss unlocks the F-22A.
+ */
+export const CH9_MISSIONS: Mission[] = [
+  {
+    id: "ch9-01", n: 1, unitId: "ch9", name: "HOLDING PATTERN", kind: "intercept",
+    brief: "Round the circle is π times across it. Sort out the radius from the diameter first.",
+    focus: ["g.9.1"], prep: 2, problems: 6, bogeys: 3, fuelSeconds: 240,
+  },
+  {
+    id: "ch9-02", n: 2, unitId: "ch9", name: "SWEEP AREA", kind: "intercept",
+    brief: "Square the radius, then multiply by π. Double the range and you cover four times the ground.",
+    focus: ["g.9.2"], prep: 2, problems: 6, bogeys: 3, fuelSeconds: 240,
+  },
+  {
+    id: "ch9-03", n: 3, unitId: "ch9", name: "APRON SURVEY", kind: "intercept",
+    brief: "Cut the shape into pieces you know. Perimeter counts only the outside edges.",
+    focus: ["g.9.3"], prep: 2, problems: 7, bogeys: 3, fuelSeconds: 260,
+  },
+  {
+    id: "ch9-04", n: 4, unitId: "ch9", name: "CLOSE THE CIRCUIT", kind: "intercept",
+    brief: "Three legs only close if the two short ones beat the long one. Equal is a straight line.",
+    focus: ["g.9.4"], prep: 3, problems: 8, bogeys: 3, fuelSeconds: 280,
+  },
+  {
+    id: "ch9-05", n: 5, unitId: "ch9", name: "CROSSING TRACKS", kind: "intercept",
+    brief: "Name the relationship, write the equation, solve it — then answer the angle, not x.",
+    focus: ["g.9.5"], prep: 3, problems: 9, bogeys: 3, fuelSeconds: 300,
+  },
+  {
+    id: "ch9-06", n: 6, unitId: "ch9", name: "RIGHT ANGLES", kind: "patrol",
+    brief: "Honors work: squares on the sides, missing lengths, and distance across the tactical grid.",
+    focus: [], prep: 3, problems: 10, bogeys: 3, fuelSeconds: 300,
+  },
+  {
+    id: "ch9-07", n: 7, unitId: "ch9", name: "PARALLEL TRACKS", kind: "patrol",
+    brief: "Two parallel runways and one taxiway make eight angles and only two sizes.",
+    focus: [], prep: 3, problems: 11, bogeys: 3, fuelSeconds: 320,
+  },
+  {
+    id: "ch9-08", n: 8, unitId: "ch9", name: "MIXED GEOMETRY", kind: "patrol",
+    brief: "Everything Chapter 9 has taught you, in any order, with honors work in the deck.",
+    focus: [], prep: 3, problems: 12, bogeys: 3, fuelSeconds: 340,
+  },
+  {
+    id: "ch9-09", n: 9, unitId: "ch9", name: "PRE-QUAL", kind: "intercept",
+    brief: "Last check before the qualification. Transfer problems are in the deck.",
+    focus: [], prep: 3, problems: 13, bogeys: 3, fuelSeconds: 340,
+  },
+  {
+    id: "ch9-10", n: 10, unitId: "ch9", name: "RAPTOR QUALIFICATION", kind: "boss",
+    brief: "Unit 9 boss sortie. Mixed review of Chapters 1 to 9. Passing earns the F-22A.",
+    focus: [], prep: 3, problems: 16, bogeys: 3, fuelSeconds: 420,
+  },
+];
+
+/**
+ * Chapter 10, Surface Area and Volume. Six skills, six introducing sorties, and
+ * the last unit of the year: its boss is a review of all ten chapters and it
+ * earns the F-35A. The Blackbird stays locked until every chapter is ONLINE.
+ */
+export const CH10_MISSIONS: Mission[] = [
+  {
+    id: "ch10-01", n: 1, unitId: "ch10", name: "PAINT THE CRATE", kind: "intercept",
+    brief: "Surface area is every face added up. Unfold it in your head and count them.",
+    focus: ["g.10.1"], prep: 2, problems: 6, bogeys: 3, fuelSeconds: 240,
+  },
+  {
+    id: "ch10-02", n: 2, unitId: "ch10", name: "DRUM LABEL", kind: "intercept",
+    brief: "A cylinder unrolls into two circles and a rectangle. The rectangle is as wide as the circle is round.",
+    focus: ["g.10.2"], prep: 2, problems: 7, bogeys: 3, fuelSeconds: 260,
+  },
+  {
+    id: "ch10-03", n: 3, unitId: "ch10", name: "TENT HANGAR", kind: "intercept",
+    brief: "A pyramid is a base and a ring of triangles. The triangles use the slant, not the height.",
+    focus: ["g.10.3"], prep: 2, problems: 7, bogeys: 3, fuelSeconds: 260,
+  },
+  {
+    id: "ch10-04", n: 4, unitId: "ch10", name: "TANK CAPACITY", kind: "intercept",
+    brief: "Base area times length. The base is the face that repeats all the way along.",
+    focus: ["g.10.4"], prep: 3, problems: 8, bogeys: 3, fuelSeconds: 280,
+  },
+  {
+    id: "ch10-05", n: 5, unitId: "ch10", name: "NOSE CONE", kind: "intercept",
+    brief: "A pyramid holds exactly a third of the box around it. Do not lose the third.",
+    focus: ["g.10.5"], prep: 3, problems: 9, bogeys: 3, fuelSeconds: 300,
+  },
+  {
+    id: "ch10-06", n: 6, unitId: "ch10", name: "SECTION CUT", kind: "intercept",
+    brief: "Slice it and look at the cut face. Across gives you the base back; straight down usually does not.",
+    focus: ["g.10.6"], prep: 3, problems: 10, bogeys: 3, fuelSeconds: 300,
+  },
+  {
+    id: "ch10-07", n: 7, unitId: "ch10", name: "ROUND SOLIDS", kind: "patrol",
+    brief: "Honors work: cylinders, cones and spheres, and the one third that separates two of them.",
+    focus: [], prep: 3, problems: 11, bogeys: 3, fuelSeconds: 320,
+  },
+  {
+    id: "ch10-08", n: 8, unitId: "ch10", name: "MIXED SOLIDS", kind: "patrol",
+    brief: "Everything Chapter 10 has taught you, in any order, with honors work in the deck.",
+    focus: [], prep: 3, problems: 12, bogeys: 3, fuelSeconds: 340,
+  },
+  {
+    id: "ch10-09", n: 9, unitId: "ch10", name: "PRE-QUAL", kind: "intercept",
+    brief: "Last check before the qualification. Transfer problems are in the deck.",
+    focus: [], prep: 3, problems: 14, bogeys: 3, fuelSeconds: 360,
+  },
+  {
+    id: "ch10-10", n: 10, unitId: "ch10", name: "BLACKBIRD QUALIFICATION", kind: "boss",
+    brief: "Unit 10 boss sortie. Mixed review of the whole year, all ten chapters. Passing earns the F-35A.",
+    focus: [], prep: 3, problems: 18, bogeys: 3, fuelSeconds: 460,
+  },
+];
+
 export const MISSIONS: Mission[] = [
   ...CH1_MISSIONS, ...CH2_MISSIONS, ...CH3_MISSIONS, ...CH4_MISSIONS, ...CH5_MISSIONS, ...CH6_MISSIONS,
-  ...CH7_MISSIONS, ...CH8_MISSIONS,
+  ...CH7_MISSIONS, ...CH8_MISSIONS, ...CH9_MISSIONS, ...CH10_MISSIONS,
 ];
 
 export function missionsFor(unitId: string): Mission[] {

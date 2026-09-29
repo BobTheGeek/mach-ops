@@ -58,6 +58,14 @@ export type FigureKind =
   | "population-sample-diagram" | "dot-plot-of-sample-means" | "proportion-table"
   // Q3 honors
   | "scatter-plot" | "scatter-plot-with-line" | "tree-diagram" | "outcome-table" | "organized-list"
+  // Chapters 9-10
+  | "circle-labelled" | "C-vs-d-graph" | "wedges-to-parallelogram" | "grid-decomposition"
+  | "straws" | "compass-construction" | "angle-diagram"
+  | "layers-of-cubes" | "base-times-height" | "pour-demo" | "slice-visual" | "solids-labelled"
+  | "can-label-net"
+  // Q4 honors
+  | "transversal-diagram" | "squares-on-sides" | "right-triangle-labelled"
+  | "coordinate-plane-right-triangle"
   // later chapters
   | "coordinate-plane" | "table" | "tape" | "hanger"
   | "tree" | "box-plot" | "dot-plot" | "angle" | "net" | "solid"

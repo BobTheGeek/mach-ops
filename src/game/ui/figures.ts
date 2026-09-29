@@ -521,6 +521,339 @@ function treeDiagram(scene: Phaser.Scene, spec: FigureSpec, w: number, h: number
   return scene.add.container(0, 0, objects);
 }
 
+/* ------------------------------------------------------------ MK-7 geometry */
+
+/** A dimension label placed at a point, centred on it. */
+function mark(
+  scene: Phaser.Scene, objects: Phaser.GameObjects.GameObject[],
+  x: number, y: number, text: string, colour = C.text,
+): void {
+  const t = scene.add.text(0, 0, text, {
+    fontFamily: FONT.mono, fontSize: `${SIZE.label}px`, color: colour,
+  });
+  t.setPosition(x - t.width / 2, y - t.height / 2);
+  objects.push(t);
+}
+
+/**
+ * MK-7 circle with its radius or diameter drawn in. The line is drawn as well as
+ * labelled: the whole point of the figure is that the player can see which of
+ * the two measurements they have been given.
+ */
+function circleLabelled(scene: Phaser.Scene, spec: FigureSpec, w: number, h: number): Phaser.GameObjects.Container {
+  const objects: Phaser.GameObjects.GameObject[] = [];
+  const g = scene.add.graphics();
+  objects.push(g);
+
+  const cx = w / 2;
+  const cy = h / 2;
+  const r = Math.min(w, h) / 2 - 28;
+  const which = String(spec.which ?? "radius");
+  const label = String(spec.label ?? "");
+
+  g.lineStyle(STROKE.hud, hex(SERIES_A), 1);
+  g.strokeCircle(cx, cy, r);
+  g.fillStyle(hex(C.textMuted), 1);
+  g.fillCircle(cx, cy, 3);
+
+  g.lineStyle(STROKE.hud, hex(C.hud), 1);
+  if (which === "diameter") {
+    g.lineBetween(cx - r, cy, cx + r, cy);
+    mark(scene, objects, cx, cy - 14, label, C.hud);
+  } else {
+    g.lineBetween(cx, cy, cx + r, cy);
+    mark(scene, objects, cx + r / 2, cy - 14, label, C.hud);
+  }
+  return scene.add.container(0, 0, objects);
+}
+
+/**
+ * MK-7 angle diagram: two lines crossing at a point, with the named angles
+ * marked. `rays` are bearings in degrees; `arcs` label the angle between a pair.
+ */
+function angleDiagram(scene: Phaser.Scene, spec: FigureSpec, w: number, h: number): Phaser.GameObjects.Container {
+  const objects: Phaser.GameObjects.GameObject[] = [];
+  const g = scene.add.graphics();
+  objects.push(g);
+
+  const cx = w / 2;
+  const cy = h / 2;
+  const len = Math.min(w, h) / 2 - 18;
+  const rays = (spec.rays as number[] | undefined) ?? [0, 180, 60, 240];
+  const arcs = (spec.arcs as { from: number; to: number; label: string }[] | undefined) ?? [];
+
+  const at = (deg: number, d: number): [number, number] => {
+    const a = (deg * Math.PI) / 180;
+    return [cx + Math.cos(a) * d, cy - Math.sin(a) * d];
+  };
+
+  g.lineStyle(STROKE.hud, hex(C.textMuted), 1);
+  for (const deg of rays) {
+    const [x, y] = at(deg, len);
+    g.lineBetween(cx, cy, x, y);
+  }
+
+  arcs.forEach((arc, i) => {
+    const radius = 28 + i * 14;
+    const colour = hex(i === 0 ? SERIES_A : SERIES_B);
+    g.lineStyle(STROKE.hud, colour, 1);
+    g.beginPath();
+    g.arc(cx, cy, radius, (-arc.to * Math.PI) / 180, (-arc.from * Math.PI) / 180, false);
+    g.strokePath();
+    const mid = (arc.from + arc.to) / 2;
+    const [lx, ly] = at(mid, radius + 18);
+    mark(scene, objects, lx, ly, arc.label, i === 0 ? SERIES_A : SERIES_B);
+  });
+
+  return scene.add.container(0, 0, objects);
+}
+
+/**
+ * MK-7 transversal: two parallel lines crossed by a third, with the eight angles
+ * available to label. Positions are numbered 1-8 left to right, top to bottom,
+ * the way the manual page numbers them.
+ */
+function transversal(scene: Phaser.Scene, spec: FigureSpec, w: number, h: number): Phaser.GameObjects.Container {
+  const objects: Phaser.GameObjects.GameObject[] = [];
+  const g = scene.add.graphics();
+  objects.push(g);
+
+  const topY = h * 0.32;
+  const botY = h * 0.72;
+  const pad = 14;
+  // The transversal leans, so the two crossings are offset horizontally.
+  const lean = 34;
+  const topX = w / 2 - lean;
+  const botX = w / 2 + lean;
+
+  g.lineStyle(STROKE.hud, hex(C.textMuted), 1);
+  g.lineBetween(pad, topY, w - pad, topY);
+  g.lineBetween(pad, botY, w - pad, botY);
+  g.lineStyle(STROKE.hud, hex(SERIES_B), 1);
+  g.lineBetween(topX - lean * 1.6, topY - (botY - topY) * 0.8, botX + lean * 1.6, botY + (botY - topY) * 0.8);
+
+  // Arrow marks showing the two lines are parallel.
+  g.lineStyle(STROKE.hairline, hex(C.hud), 1);
+  for (const y of [topY, botY]) {
+    g.lineBetween(pad + 16, y - 5, pad + 24, y);
+    g.lineBetween(pad + 16, y + 5, pad + 24, y);
+  }
+
+  const labels = (spec.labels as string[] | undefined) ?? [];
+  // 1 2 above/below the upper crossing, 3 4 below it; 5 6 7 8 at the lower one.
+  const spots: [number, number][] = [
+    [topX - 26, topY - 16], [topX + 26, topY - 16],
+    [topX - 26, topY + 16], [topX + 26, topY + 16],
+    [botX - 26, botY - 16], [botX + 26, botY - 16],
+    [botX - 26, botY + 16], [botX + 26, botY + 16],
+  ];
+  labels.forEach((label, i) => {
+    const spot = spots[i];
+    if (label && spot) mark(scene, objects, spot[0], spot[1], label, i === 0 ? SERIES_A : C.text);
+  });
+
+  return scene.add.container(0, 0, objects);
+}
+
+/**
+ * MK-7 right triangle with its sides labelled, and the right angle drawn as a
+ * square. `squares` adds the areas on each side, which is h8.g.b3's whole model.
+ */
+function rightTriangle(scene: Phaser.Scene, spec: FigureSpec, w: number, h: number): Phaser.GameObjects.Container {
+  const objects: Phaser.GameObjects.GameObject[] = [];
+  const g = scene.add.graphics();
+  objects.push(g);
+
+  const withSquares = spec.kind === "squares-on-sides";
+  const a = Number(spec.a ?? 3);
+  const b = Number(spec.b ?? 4);
+  const scale = Math.min((w - (withSquares ? 120 : 60)) / Math.max(a, b), (h - (withSquares ? 90 : 50)) / Math.max(a, b));
+  const legX = a * scale;
+  const legY = b * scale;
+
+  const ox = (w - legX) / 2 + (withSquares ? 14 : 0);
+  const oy = (h + legY) / 2 - (withSquares ? 10 : 0);
+
+  g.lineStyle(STROKE.hud, hex(SERIES_A), 1);
+  g.lineBetween(ox, oy, ox + legX, oy);           // horizontal leg
+  g.lineBetween(ox, oy, ox, oy - legY);           // vertical leg
+  g.lineBetween(ox + legX, oy, ox, oy - legY);    // hypotenuse
+
+  // the right-angle square
+  g.lineStyle(STROKE.hairline, hex(C.textMuted), 1);
+  g.strokeRect(ox, oy - 10, 10, 10);
+
+  if (withSquares) {
+    g.lineStyle(STROKE.hairline, hex(SERIES_B), 1);
+    g.strokeRect(ox, oy, legX, Math.min(legX, h - oy - 4));
+    g.strokeRect(ox - Math.min(legY, ox - 4), oy - legY, Math.min(legY, ox - 4), legY);
+  }
+
+  const la = String(spec.labelA ?? "");
+  const lb = String(spec.labelB ?? "");
+  const lc = String(spec.labelC ?? "");
+  if (la) mark(scene, objects, ox + legX / 2, oy + 12, la, C.hud);
+  if (lb) mark(scene, objects, ox - 16, oy - legY / 2, lb, C.hud);
+  if (lc) mark(scene, objects, ox + legX / 2 + 14, oy - legY / 2 - 6, lc, C.lock);
+
+  return scene.add.container(0, 0, objects);
+}
+
+/**
+ * MK-7 composite figure on a grid. `parts` are rectangles in grid units, drawn
+ * to scale and outlined together, so the player can see which edges are on the
+ * outside.
+ */
+function gridDecomposition(scene: Phaser.Scene, spec: FigureSpec, w: number, h: number): Phaser.GameObjects.Container {
+  const objects: Phaser.GameObjects.GameObject[] = [];
+  const g = scene.add.graphics();
+  objects.push(g);
+
+  const parts = (spec.parts as { x: number; y: number; w: number; h: number; label?: string }[] | undefined) ?? [];
+  if (parts.length === 0) return scene.add.container(0, 0, objects);
+
+  const spanX = Math.max(...parts.map((p) => p.x + p.w));
+  const spanY = Math.max(...parts.map((p) => p.y + p.h));
+  const pad = 18;
+  const unit = Math.min((w - pad * 2) / spanX, (h - pad * 2) / spanY);
+  const ox = (w - unit * spanX) / 2;
+  const oy = (h - unit * spanY) / 2;
+
+  // grid
+  g.lineStyle(STROKE.hairline, hex(C.gridLine), 1);
+  for (let x = 0; x <= spanX; x++) g.lineBetween(ox + x * unit, oy, ox + x * unit, oy + spanY * unit);
+  for (let y = 0; y <= spanY; y++) g.lineBetween(ox, oy + y * unit, ox + spanX * unit, oy + y * unit);
+
+  parts.forEach((p, i) => {
+    const colour = hex(i === 0 ? SERIES_A : SERIES_B);
+    g.fillStyle(colour, 0.12);
+    g.fillRect(ox + p.x * unit, oy + p.y * unit, p.w * unit, p.h * unit);
+    g.lineStyle(STROKE.hud, colour, 1);
+    g.strokeRect(ox + p.x * unit, oy + p.y * unit, p.w * unit, p.h * unit);
+    if (p.label) {
+      mark(scene, objects, ox + (p.x + p.w / 2) * unit, oy + (p.y + p.h / 2) * unit, p.label, C.text);
+    }
+  });
+
+  return scene.add.container(0, 0, objects);
+}
+
+/* -------------------------------------------------------------- MK-8 solids */
+
+/**
+ * MK-8 solid, drawn as a labelled box, cylinder, pyramid or cone in the same
+ * flat isometric style. `slice` draws the cut plane for a cross-section card.
+ */
+function solid(scene: Phaser.Scene, spec: FigureSpec, w: number, h: number): Phaser.GameObjects.Container {
+  const objects: Phaser.GameObjects.GameObject[] = [];
+  const g = scene.add.graphics();
+  objects.push(g);
+
+  const shape = String(spec.solid ?? "RECTANGULAR PRISM");
+  const cx = w / 2;
+  const cy = h / 2;
+  const bw = Math.min(w - 70, 120);
+  const bh = Math.min(h - 60, 90);
+  const depth = 22;
+  const line = hex(SERIES_A);
+  const faint = hex(C.textMuted);
+
+  const left = cx - bw / 2;
+  const top = cy - bh / 2;
+
+  g.lineStyle(STROKE.hud, line, 1);
+  if (shape === "CYLINDER") {
+    g.strokeEllipse(cx, top, bw, depth);
+    g.strokeEllipse(cx, top + bh, bw, depth);
+    g.lineBetween(left, top, left, top + bh);
+    g.lineBetween(cx + bw / 2, top, cx + bw / 2, top + bh);
+  } else if (shape === "CONE") {
+    g.strokeEllipse(cx, top + bh, bw, depth);
+    g.lineBetween(left, top + bh, cx, top);
+    g.lineBetween(cx + bw / 2, top + bh, cx, top);
+  } else if (shape === "SQUARE PYRAMID" || shape === "TRIANGULAR PYRAMID") {
+    g.strokeRect(left, top + bh - depth, bw, depth);
+    g.lineBetween(left, top + bh, cx, top);
+    g.lineBetween(left + bw, top + bh, cx, top);
+    g.lineBetween(left, top + bh, left + bw, top + bh);
+    g.lineStyle(STROKE.hairline, faint, 1);
+    g.lineBetween(cx, top, cx, top + bh - depth / 2);
+  } else if (shape === "TRIANGULAR PRISM") {
+    g.lineBetween(left, top + bh, left + bw, top + bh);
+    g.lineBetween(left, top + bh, left + bw / 2, top);
+    g.lineBetween(left + bw, top + bh, left + bw / 2, top);
+    g.lineStyle(STROKE.hairline, faint, 1);
+    g.lineBetween(left + depth, top + bh - depth, left + bw + depth, top + bh - depth);
+    g.lineBetween(left, top + bh, left + depth, top + bh - depth);
+    g.lineBetween(left + bw, top + bh, left + bw + depth, top + bh - depth);
+    g.lineBetween(left + bw / 2, top, left + bw / 2 + depth, top - depth);
+  } else {
+    // rectangular prism
+    g.strokeRect(left, top, bw, bh);
+    g.lineBetween(left, top, left + depth, top - depth);
+    g.lineBetween(left + bw, top, left + bw + depth, top - depth);
+    g.lineBetween(left + bw, top + bh, left + bw + depth, top + bh - depth);
+    g.lineStyle(STROKE.hairline, faint, 1);
+    g.lineBetween(left + depth, top - depth, left + bw + depth, top - depth);
+    g.lineBetween(left + bw + depth, top - depth, left + bw + depth, top + bh - depth);
+  }
+
+  const slice = spec.slice as string | undefined;
+  if (slice) {
+    g.lineStyle(STROKE.hud, hex(C.lock), 1);
+    if (slice === "PARALLEL TO THE BASE") g.lineBetween(left - 10, cy, left + bw + 30, cy);
+    else g.lineBetween(cx, top - 26, cx, top + bh + 14);
+  }
+
+  for (const l of (spec.marks as { at: string; label: string }[] | undefined) ?? []) {
+    const spots: Record<string, [number, number]> = {
+      width: [cx, top + bh + 16],
+      height: [left - 20, cy],
+      depth: [left + bw + 26, top - 16],
+      radius: [cx + bw / 4, top + bh + 4],
+      slant: [cx + bw / 4 + 8, cy],
+    };
+    const spot = spots[l.at] ?? [cx, cy];
+    mark(scene, objects, spot[0], spot[1], l.label, C.hud);
+  }
+
+  return scene.add.container(0, 0, objects);
+}
+
+/**
+ * MK-8 net: the solid unfolded flat, so every face the player must count is
+ * visible at once. `faces` are rectangles in a small grid, like the composite
+ * figure, with each one labelled by what it is.
+ */
+function net(scene: Phaser.Scene, spec: FigureSpec, w: number, h: number): Phaser.GameObjects.Container {
+  const objects: Phaser.GameObjects.GameObject[] = [];
+  const g = scene.add.graphics();
+  objects.push(g);
+
+  const faces = (spec.faces as { x: number; y: number; w: number; h: number; label?: string }[] | undefined) ?? [];
+  if (faces.length === 0) return scene.add.container(0, 0, objects);
+
+  const spanX = Math.max(...faces.map((f) => f.x + f.w));
+  const spanY = Math.max(...faces.map((f) => f.y + f.h));
+  const pad = 14;
+  const unit = Math.min((w - pad * 2) / spanX, (h - pad * 2) / spanY);
+  const ox = (w - unit * spanX) / 2;
+  const oy = (h - unit * spanY) / 2;
+
+  faces.forEach((f) => {
+    g.lineStyle(STROKE.hud, hex(SERIES_A), 1);
+    g.strokeRect(ox + f.x * unit, oy + f.y * unit, f.w * unit, f.h * unit);
+    // A label only goes in a face with room for it. A net drawn to the solid's
+    // real proportions has thin faces, and a 13 px word laid across a 20 px
+    // face sits on both of its edges at once.
+    if (f.label && f.h * unit >= 28 && f.w * unit >= 44) {
+      mark(scene, objects, ox + (f.x + f.w / 2) * unit, oy + (f.y + f.h / 2) * unit, f.label, C.textMuted);
+    }
+  });
+
+  return scene.add.container(0, 0, objects);
+}
+
 /**
  * Draw a figure into a w x h slot. Returns null when the figure has no renderer
  * yet, so the card simply leaves the slot out rather than showing a broken box.
@@ -574,6 +907,29 @@ export function renderFigure(
     case "tree-diagram":
     case "tree":
       return treeDiagram(scene, spec, w, h);
+    case "circle-labelled":
+      return circleLabelled(scene, spec, w, h);
+    case "angle-diagram":
+    case "angle":
+      return angleDiagram(scene, spec, w, h);
+    case "transversal-diagram":
+      return transversal(scene, spec, w, h);
+    case "right-triangle-labelled":
+    case "squares-on-sides":
+      return rightTriangle(scene, spec, w, h);
+    case "grid-decomposition":
+      return gridDecomposition(scene, spec, w, h);
+    case "solids-labelled":
+    case "slice-visual":
+    case "layers-of-cubes":
+    case "base-times-height":
+    case "solid":
+      return solid(scene, spec, w, h);
+    case "net":
+    case "can-label-net":
+      return net(scene, spec, w, h);
+    case "coordinate-plane-right-triangle":
+      return coordinatePlane(scene, spec, w, h);
     case "double-number-line":
       return doubleNumberLine(scene, spec, w, h);
     default:
