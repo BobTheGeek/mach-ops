@@ -32,5 +32,18 @@ The `/dad.html` parent view is a second, plain page: a skill heat map across all
 credits, and a CSV export. It is deliberately off the game skin and does not load
 Phaser.
 
+## Deployed
+
+https://mach-ops.vercel.app — the game. The parent view is at `/dad.html`.
+
+Vercel is connected to `main` on this repo, so every push deploys. `pnpm build`
+runs `tsc --noEmit` first, so a type error fails the deploy rather than shipping.
+`vercel.json` pins the framework, build command and output directory rather than
+relying on auto-detection, and marks the hashed bundles and the fonts immutable
+so a Chromebook on school wifi fetches them once.
+
+Nothing is stored server-side: the pilot lives in that browser's localStorage, so
+progress is per-device and clearing site data erases it.
+
 Phase status: see `docs/engine-rules.md` "Build plan" and the phase notes in
 `docs/` (`PHASE1-NOTES.md` through `PHASE11-NOTES.md`) and `DECISIONS.md`.
