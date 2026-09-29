@@ -167,7 +167,12 @@ export class DebriefScene extends Phaser.Scene {
       if (ry > y + h - 60) return;
       const registry = gameState.skill(skill);
 
-      const name = this.add.text(x + 16, ry, registry.name, { ...TEXT.body });
+      // Bounded at the status pill rather than left to run. The longest skill
+      // name in the registry is 55 characters, which lands about 37 px short of
+      // the pill: it fits today by a margin too thin to rely on.
+      const name = this.add.text(x + 16, ry, registry.name, {
+        ...TEXT.body, wordWrap: { width: w - 32 - 300 - 16 },
+      });
       const code = capsLabel(this, x + 16, ry + 22, `${skill} · ${registry.standards.join(" · ")}`, C.textMuted, TRACK.readout);
       void name;
       void code;
