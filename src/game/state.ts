@@ -174,6 +174,21 @@ export class GameState {
     }).length;
     return done / skills.length;
   }
+
+  /**
+   * Is every CORE skill of the year at ONLINE or better?
+   *
+   * design/README.md makes this the gate on the Blackbird. Honors skills are
+   * left out on purpose: the same document says honors work is never required
+   * for a boss or an unlock unless the parent turns that on.
+   */
+  allOnline(file: SaveFile = this.file): boolean {
+    const core = curriculum.skills.filter((s) => !s.honors);
+    return core.every((s) => {
+      const st = statusFor(file.log, s.id);
+      return st === "ONLINE" || st === "OPTIMIZED";
+    });
+  }
 }
 
 /** One instance per page load, handed to every scene through the registry. */

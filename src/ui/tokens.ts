@@ -28,6 +28,12 @@ export const C = {
   alert: raw.color.alert,
   sea: raw.color.sea,
   seaGrid: raw.color.seaGrid,
+  // The terrain swatches the Component Library ships. Nothing used them until
+  // the sortie had ground under it.
+  coast: raw.color.coast,
+  desert: raw.color.desert,
+  cloud: raw.color.cloud,
+  night: raw.color.night,
   bogey: raw.color.bogey,
   bogeyDark: raw.color.bogeyDark,
   correctFill: raw.input.correctFill,

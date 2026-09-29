@@ -604,6 +604,34 @@ export const MISSIONS: Mission[] = [
   ...CH7_MISSIONS, ...CH8_MISSIONS, ...CH9_MISSIONS, ...CH10_MISSIONS,
 ];
 
+/**
+ * Which airframe each unit's boss earns.
+ *
+ * The chain order is fixed by design/README.md; this map says WHICH boss hands
+ * over WHICH airframe, and every boss brief in this file states the same thing
+ * in words. A test holds the two together, because a brief that promises the
+ * F-14 and a build that hands over the F-15 is a promise broken to a twelve
+ * year old.
+ *
+ * Chapter 1's boss earns no airframe: the T-38 is already flying. The SR-71 is
+ * not on this list either — the design makes the Blackbird a progression
+ * reward for finishing the year, not a boss drop.
+ */
+export const BOSS_UNLOCKS: Record<string, string> = {
+  ch2: "f4",
+  ch3: "a10",
+  ch4: "f16",
+  ch5: "f14",
+  ch6: "f15",
+  ch7: "f18",
+  ch8: "f117",
+  ch9: "f22",
+  ch10: "f35",
+};
+
+/** The airframe the design keeps back until the whole year is ONLINE. */
+export const CAPSTONE_AIRFRAME = "sr71";
+
 export function missionsFor(unitId: string): Mission[] {
   return MISSIONS.filter((m) => m.unitId === unitId).sort((a, b) => a.n - b.n);
 }

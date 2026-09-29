@@ -205,6 +205,12 @@ export class BriefingScene extends Phaser.Scene {
     });
     this.card.container.setPosition(this.cardX, BRIEF_CARD_Y);
     this.card.setTimer("UNTIMED");
+
+    // FT4: the first card answered ON the figure. A prep card is the calmest
+    // place to meet a new input, so the tip fires here too.
+    if (["plot-point", "drag-line", "shade-region"].includes(mp.problem.format)) {
+      showTip(this, "FT4", SCREEN_PAD, CANVAS.height - 220);
+    }
   }
 
   private onCommit(mp: MissionProblem, resource: Resource, correct: boolean, errorTag?: string): void {

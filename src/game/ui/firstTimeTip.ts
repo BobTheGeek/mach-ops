@@ -9,7 +9,7 @@ import { panel, capsLabel, button } from "./kit";
 import { gameState } from "../state";
 import { seeTip } from "../save";
 
-export type TipId = "FT1" | "FT2" | "FT3";
+export type TipId = "FT1" | "FT2" | "FT3" | "FT4";
 
 interface TipSpec {
   badge: string;
@@ -32,6 +32,11 @@ export const TIPS: Record<TipId, TipSpec> = {
     badge: "QUICK MISS",
     title: "WORKED EXAMPLE",
     body: "A wrong answer inside the fast ring pops the worked example in. Read it, then the same problem comes back.",
+  },
+  FT4: {
+    badge: "NEW INPUT",
+    title: "THE GRID IS THE ANSWER",
+    body: "Tap the grid to put your answer on it, or move it with the arrow keys. Space swaps which end of a line you are holding. ENTER commits it, same as always.",
   },
 };
 

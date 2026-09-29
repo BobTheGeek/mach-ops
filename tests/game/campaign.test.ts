@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { CH1_MISSIONS, CH2_MISSIONS, CH3_MISSIONS, CH4_MISSIONS, CH5_MISSIONS, CH6_MISSIONS, CH7_MISSIONS, CH8_MISSIONS, CH9_MISSIONS, CH10_MISSIONS, MISSIONS, missionsFor, mission } from "../../src/data/campaign";
+import { CH1_MISSIONS, CH2_MISSIONS, CH3_MISSIONS, CH4_MISSIONS, CH5_MISSIONS, CH6_MISSIONS, CH7_MISSIONS, CH8_MISSIONS, CH9_MISSIONS, CH10_MISSIONS, MISSIONS, missionsFor, mission, BOSS_UNLOCKS, CAPSTONE_AIRFRAME } from "../../src/data/campaign";
 import { DOSSIERS, dossier, CARDS_PER_AIRFRAME, FIRST_TRY_HITS_FOR_CARD } from "../../src/data/intel";
 import { IMPLEMENTED_SKILLS } from "../../src/generators/index";
 import curriculum from "../../src/data/curriculum.json";
@@ -140,5 +140,39 @@ describe("intel cards", () => {
 
   it("needs six first-try hits for a card", () => {
     expect(FIRST_TRY_HITS_FOR_CARD).toBe(6);
+  });
+});
+
+describe("boss unlocks", () => {
+  it("hands over the airframe its own brief promises", () => {
+    // A brief that promises the F-14 and a build that hands over the F-15 is a
+    // promise broken to a twelve-year-old, so the words and the map are held
+    // together here.
+    const NAMES: Record<string, string> = {
+      f4: "F-4E", a10: "A-10C", f16: "F-16C", f14: "F-14",
+      f15: "F-15C", f18: "F/A-18E", f117: "F-117", f22: "F-22A", f35: "F-35A",
+    };
+    for (const [unitId, airframe] of Object.entries(BOSS_UNLOCKS)) {
+      const boss = MISSIONS.find((m) => m.unitId === unitId && m.kind === "boss");
+      expect(boss, `${unitId} has a boss`).toBeTruthy();
+      expect(boss!.brief, `${unitId} brief`).toContain(NAMES[airframe]!);
+    }
+  });
+
+  it("follows the design's chain order and keeps the Blackbird back", () => {
+    const CHAIN = ["t38", "f4", "a10", "f16", "f14", "f15", "f18", "f117", "f22", "f35", "sr71"];
+    const earned = Object.values(BOSS_UNLOCKS);
+    // Every earned airframe is in the chain, in order, starting after the T-38.
+    expect(earned).toEqual(CHAIN.slice(1, 1 + earned.length));
+    expect(earned).not.toContain(CAPSTONE_AIRFRAME);
+    expect(CAPSTONE_AIRFRAME).toBe("sr71");
+  });
+
+  it("gives every unit but the first a boss that earns something", () => {
+    const units = [...new Set(MISSIONS.map((m) => m.unitId))];
+    for (const u of units) {
+      if (u === "ch1") { expect(BOSS_UNLOCKS[u]).toBeUndefined(); continue; }
+      expect(BOSS_UNLOCKS[u], `${u} earns an airframe`).toBeTruthy();
+    }
   });
 });

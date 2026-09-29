@@ -7,8 +7,8 @@ import { panel, capsLabel, button, statusPill } from "../ui/kit";
 import { ManualPanel } from "../ui/manualPanel";
 import { gameState } from "../state";
 import { hasPage } from "../manual";
-import { completeSortie } from "../save";
-import { mission as findMission } from "../../data/campaign";
+import { completeSortie, passBoss, unlockAirframe } from "../save";
+import { mission as findMission, BOSS_UNLOCKS, CAPSTONE_AIRFRAME } from "../../data/campaign";
 import { dossier, CARDS_PER_AIRFRAME, FIRST_TRY_HITS_FOR_CARD, type IntelCard } from "../../data/intel";
 import { audio } from "../audio";
 
@@ -28,6 +28,7 @@ export class DebriefScene extends Phaser.Scene {
   private debrief!: DebriefData;
   private manual?: ManualPanel;
   private cardEarned: IntelCard | null = null;
+  private unlocked: string | null = null;
 
   constructor() {
     super("Debrief");
@@ -51,6 +52,7 @@ export class DebriefScene extends Phaser.Scene {
       cardsPerAirframe: CARDS_PER_AIRFRAME,
     });
     gameState.update(result.file);
+    this.unlocked = this.settleBoss();
     this.cardEarned = result.cardEarned
       ? dossier(airframe)?.cards.find((c) => c.n === result.cardEarned) ?? null
       : null;
@@ -209,6 +211,35 @@ export class DebriefScene extends Phaser.Scene {
     }
   }
 
+  /**
+   * A boss sortie that was flown to the end earns its airframe. "Flown to the
+   * end" is the bar: the design says failure keeps every bit of progress, so
+   * running out of fuel is not a pass, and nothing else in the rulebook sets a
+   * score to beat.
+   */
+  private settleBoss(): string | null {
+    const m = findMission(this.debrief.missionId);
+    if (m.kind !== "boss" || this.debrief.failed) return null;
+
+    let file = passBoss(gameState.file, m.unitId);
+    const earns = BOSS_UNLOCKS[m.unitId];
+    let unlocked: string | null = null;
+    if (earns && !file.unlockedAirframes.includes(earns)) {
+      file = unlockAirframe(file, earns);
+      unlocked = earns;
+    }
+
+    // The Blackbird is not a boss drop. It arrives when the whole year is
+    // ONLINE, which can only ever happen on the last boss of the last chapter.
+    if (!file.unlockedAirframes.includes(CAPSTONE_AIRFRAME) && gameState.allOnline(file)) {
+      file = unlockAirframe(file, CAPSTONE_AIRFRAME);
+      unlocked = CAPSTONE_AIRFRAME;
+    }
+
+    gameState.update(file);
+    return unlocked;
+  }
+
   private actions(): void {
     const y = CANVAS.height - 92;
     button(this, {
@@ -238,5 +269,13 @@ export class DebriefScene extends Phaser.Scene {
       variant: "ghost",
       onClick: () => this.scene.start("Dossier"),
     });
+
+    // The reveal is a screen of its own, and it is the first thing the player
+    // should see after a boss. It goes last so the debrief is already built
+    // underneath when they come back from it.
+    if (this.unlocked) {
+      const airframe = this.unlocked;
+      this.time.delayedCall(700, () => this.scene.start("Unlock", { airframe, unitId: this.debrief.unitId }));
+    }
   }
 }

@@ -17,8 +17,9 @@ pnpm mission      # print a 20-problem mission for a sample attempt log
 
 Playable end to end: Flight School, hangar, ninety-eight sorties across all ten
 chapters with the honors skills mixed in, briefing, sortie with a steerable T-38 and
-synthesised avionics audio, debrief, intel cards, Flight Manual, How to Play and
+synthesised avionics audio over scrolling terrain, a tanker refuel at bingo fuel,
+debrief, the airframe unlock reveal, intel cards, Flight Manual, How to Play and
 settings. All 83 skills have generators, manual pages and property tests.
 
 Phase status: see `docs/engine-rules.md` "Build plan" and the phase notes in
-`docs/` (`PHASE1-NOTES.md` through `PHASE8-NOTES.md`) and `DECISIONS.md`.
+`docs/` (`PHASE1-NOTES.md` through `PHASE9-NOTES.md`) and `DECISIONS.md`.

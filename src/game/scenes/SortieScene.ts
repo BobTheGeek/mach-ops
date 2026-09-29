@@ -28,8 +28,14 @@ import type { Attempt } from "../../engine/types";
 import type { SortieLoadout } from "./BriefingScene";
 import { MAX_MISSILES } from "./BriefingScene";
 import { mission as findMission, type Mission } from "../../data/campaign";
+import { createTerrain, type Terrain } from "../ui/terrain";
+import { generatorFor } from "../../generators/index";
 
 const BINGO_SECONDS = 90;
+/** 04C: how much fuel a successful refuel buys, in seconds. */
+const TANKER_SECONDS = 120;
+/** The refuel problem is a rate problem, which is what a tanker actually is. */
+const TANKER_SKILL = "rp.5.2";
 const SHIELD_HIT = 0.2;
 /** design/README.md: the player sprite sits at (592, 450) at 120 px. */
 const PLAYER_POS = { x: 592, y: 450 };
@@ -100,6 +106,8 @@ export class SortieScene extends Phaser.Scene {
   private streakOut!: ReturnType<typeof readout>;
   private statusText!: Phaser.GameObjects.Text;
   private bingo?: Phaser.GameObjects.Container;
+  private terrain?: Terrain;
+  private tankerUsed = false;
   /** what the shield bar is currently showing, so a drain can tween from it */
   private shieldShown = 1;
 
@@ -159,10 +167,10 @@ export class SortieScene extends Phaser.Scene {
 
   private world(): void {
     this.cameras.main.setBackgroundColor(hex(C.sea));
-    const g = this.add.graphics();
-    g.lineStyle(STROKE.hairline, hex(C.seaGrid), 1);
-    for (let x = 0; x <= CANVAS.width; x += 64) g.lineBetween(x, 0, x, CANVAS.height);
-    for (let y = 0; y <= CANVAS.height; y += 64) g.lineBetween(0, y, CANVAS.width, y);
+    // Ground, generated from the mission id so the same sortie always flies
+    // over the same coastline. It scrolls; the aircraft does not move down the
+    // screen, so the terrain is what says you are going anywhere at all.
+    this.terrain = createTerrain(this, this.mission.id);
 
     this.player = this.add.image(PLAYER_POS.x, PLAYER_POS.y, "t38-top-flame");
     this.player.setDisplaySize(85, 120);
@@ -224,6 +232,7 @@ export class SortieScene extends Phaser.Scene {
   override update(_time: number, deltaMs: number): void {
     if (this.locked || this.paused) return; // bullet-time holds the world
 
+    this.terrain?.update(deltaMs);
     this.fuelLeft -= deltaMs / 1000;
     this.fuel = Math.max(0, this.fuelLeft / this.mission.fuelSeconds);
     this.refreshHud();
@@ -315,6 +324,70 @@ export class SortieScene extends Phaser.Scene {
     const t = capsLabel(this, x + 20, 114, "BINGO FUEL · 90 S", C.alert);
     this.bingo = this.add.container(0, 0, [g, t]);
     this.tweens.add({ targets: this.bingo, alpha: 0.35, duration: 600, yoyo: true, repeat: 3 });
+
+    // 04C: a tanker comes on station once, at bingo. Getting its rate problem
+    // right buys fuel back; getting it wrong costs nothing but the seconds it
+    // took, which is the point of putting it at bingo rather than earlier.
+    this.time.delayedCall(1400, () => this.callTanker());
+  }
+
+  /* -------------------------------------------------------------- tanker */
+
+  /** 04C Tanker refuel: one untimed rate problem, and a top-up if it lands. */
+  private callTanker(): void {
+    if (this.tankerUsed || this.locked || this.paused || this.fuelLeft <= 0) return;
+    this.tankerUsed = true;
+
+    const problem = generatorFor(TANKER_SKILL)(2, Math.floor(this.time.now) % 10000);
+    this.locked = true;
+    audio.play("lockAcquire");
+    this.bulletTimeIn();
+
+    // The bingo warning steps aside: two banners stacked on the same line is
+    // one banner nobody can read.
+    this.bingo?.setVisible(false);
+
+    // The banner carries the whole rule. A first-time tip would say the same
+    // thing in a box that lands on top of the card it is explaining.
+    const banner = capsLabel(this, 0, 96, "TANKER ON STATION · UNTIMED · A MISS COSTS NOTHING", C.shield, TRACK.readout);
+    banner.setX((CANVAS.width - banner.width) / 2);
+
+    this.card = new ProblemCard({
+      scene: this,
+      problem,
+      mode: "briefing",
+      chapterLabel: "REFUEL · NO PENALTY",
+      hintCost: 0,
+      onCommit: (r) => {
+        banner.destroy();
+        this.finishTanker(r.correct);
+      },
+      onManual: () => { /* the manual is not offered mid-refuel */ },
+      onHint: () => { /* no hint: it is free already */ },
+    });
+    const x = (CANVAS.width - CARD_W) / 2;
+    this.card.container.setPosition(x, 150);
+    this.card.setTimer("UNTIMED");
+  }
+
+  private finishTanker(correct: boolean): void {
+    this.time.delayedCall(MOTION.cardSlideIn.duration + 500, () => {
+      // clearLock() puts the world back: card gone, dim faded, status reset.
+      // The tanker never locked a bogey, so there is no reticle to scatter.
+      this.clearLock();
+
+      if (!correct) { this.bingo?.setVisible(true); return; }
+      // Back up to the bingo line, not to full: a top-up, not a reset.
+      this.fuelLeft = Math.max(this.fuelLeft, BINGO_SECONDS + TANKER_SECONDS);
+      this.fuel = Math.min(1, this.fuelLeft / this.mission.fuelSeconds);
+      this.bingo?.destroy(true);
+      this.bingo = undefined;
+      audio.play("refuelConnect");
+      this.refreshHud();
+      const done = capsLabel(this, 0, 96, `TOOK ON ${TANKER_SECONDS} S OF FUEL`, C.hud, TRACK.readout);
+      done.setX((CANVAS.width - done.width) / 2);
+      this.tweens.add({ targets: done, alpha: 0, delay: 1800, duration: 500, onComplete: () => done.destroy() });
+    });
   }
 
   /* ---------------------------------------------------------------- lock */
@@ -429,6 +502,13 @@ export class SortieScene extends Phaser.Scene {
     // FT1: the first transfer problem the pilot ever sees.
     if (mp.item.transfer) {
       showTip(this, "FT1", SCREEN_PAD, CANVAS.height - 300);
+    }
+
+    // FT4: the first card that is answered ON the figure rather than under it.
+    // Nothing else in the game works that way, so it needs saying once.
+    const GRID_FORMATS = ["plot-point", "drag-line", "shade-region"];
+    if (GRID_FORMATS.includes(mp.problem.format)) {
+      showTip(this, "FT4", SCREEN_PAD, CANVAS.height - 300);
     }
 
     this.tickTimer();
