@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   newSave, recordAttempt, spendCredits, seeTip, passBoss, earnIntelCard, unlockAirframe,
-  setCallsign, setPaint, setChapterDate,
+  setCallsign, setPaint, setChapterDate, buyItem, owns, equip, recordBests,
+  streakMultiplier, STREAK_STEP, STREAK_CAP,
   hasSeenHash, load, save, clear, SAVE_KEY, RECENT_HASHES, BASE_CREDITS, FAST_MULTIPLIER,
   type SaveFile,
 } from "../../src/game/save";
@@ -48,9 +49,13 @@ describe("recordAttempt", () => {
     let f = recordAttempt(file, { attempt: attempt(true), fastBonus: false, hash: "a", nextTier: 1 });
     f = recordAttempt(f, { attempt: attempt(true), fastBonus: false, hash: "b", nextTier: 1 });
     expect(f.streak).toBe(2);
+    const earned = f.credits;
     f = recordAttempt(f, { attempt: attempt(false), fastBonus: false, hash: "c", nextTier: 1 });
     expect(f.streak).toBe(0);
-    expect(f.credits).toBe(BASE_CREDITS * 2);
+    // The miss takes nothing away; it only ends the run.
+    expect(f.credits).toBe(earned);
+    // Two answers, the second of them carrying one step of the streak bonus.
+    expect(earned).toBe(BASE_CREDITS + Math.round(BASE_CREDITS * streakMultiplier(2)));
   });
 
   it("remembers the best streak even after it breaks", () => {
@@ -216,5 +221,130 @@ describe("chapter dates", () => {
     delete old.scheduleDates;
     storage.setItem(SAVE_KEY, JSON.stringify(old));
     expect(load(storage).scheduleDates).toEqual({});
+  });
+});
+
+describe("the streak multiplier", () => {
+  it("pays plain on the first answer of a run", () => {
+    expect(streakMultiplier(0)).toBe(1);
+    expect(streakMultiplier(1)).toBe(1);
+  });
+
+  it("adds a step for each further answer in the run", () => {
+    expect(streakMultiplier(2)).toBeCloseTo(1 + STREAK_STEP);
+    expect(streakMultiplier(5)).toBeCloseTo(1 + 4 * STREAK_STEP);
+  });
+
+  it("caps, so a long run cannot run away with the economy", () => {
+    expect(streakMultiplier(1000)).toBe(STREAK_CAP);
+  });
+
+  it("never drops below plain, so a miss costs the bonus and nothing more", () => {
+    expect(streakMultiplier(-5)).toBe(1);
+  });
+});
+
+describe("credits follow the streak", () => {
+  const answer = (correct: boolean): Attempt => ({
+    skill: "ns.1.1", tier: 1, correct, responseMs: 9000, hintsUsed: 0,
+    context: "sortie", firstTry: true, ts: 1,
+  });
+  const fold = (f: SaveFile, correct: boolean): SaveFile =>
+    recordAttempt(f, { attempt: answer(correct), fastBonus: false, hash: String(Math.random()), nextTier: 1 });
+
+  it("pays the base rate for the first correct answer", () => {
+    expect(fold(newSave(), true).credits).toBe(BASE_CREDITS);
+  });
+
+  it("pays more for the third than the second", () => {
+    let f = newSave();
+    f = fold(f, true);
+    const afterFirst = f.credits;
+    f = fold(f, true);
+    const second = f.credits - afterFirst;
+    const before = f.credits;
+    f = fold(f, true);
+    const third = f.credits - before;
+    expect(third).toBeGreaterThan(second);
+  });
+
+  it("pays nothing for a wrong answer and starts the run again", () => {
+    let f = newSave();
+    f = fold(f, true); f = fold(f, true); f = fold(f, true);
+    const before = f.credits;
+    f = fold(f, false);
+    expect(f.credits).toBe(before);
+    expect(f.streak).toBe(0);
+    // Back to the base rate, not below it.
+    const after = fold(f, true);
+    expect(after.credits - f.credits).toBe(BASE_CREDITS);
+  });
+
+  it("keeps the best streak through a miss", () => {
+    let f = newSave();
+    f = fold(f, true); f = fold(f, true);
+    f = fold(f, false);
+    expect(f.bestStreak).toBe(2);
+  });
+});
+
+describe("the shop", () => {
+  const rich: SaveFile = { ...newSave(), credits: 5000 };
+
+  it("takes the credits and records what was bought", () => {
+    const f = buyItem(rich, "hud.amber", 600);
+    expect(f.credits).toBe(4400);
+    expect(owns(f, "hud.amber")).toBe(true);
+  });
+
+  it("refuses when it cannot be afforded, and takes nothing", () => {
+    const poor: SaveFile = { ...newSave(), credits: 100 };
+    expect(buyItem(poor, "hud.amber", 600)).toBe(poor);
+  });
+
+  it("refuses to sell the same thing twice", () => {
+    const once = buyItem(rich, "hud.amber", 600);
+    expect(buyItem(once, "hud.amber", 600)).toBe(once);
+  });
+
+  it("only wears what has been bought", () => {
+    expect(equip(rich, "hud", "hud.amber").hud).toBe("");
+    const owned = buyItem(rich, "hud.amber", 600);
+    expect(equip(owned, "hud", "hud.amber").hud).toBe("hud.amber");
+  });
+
+  it("always allows going back to the default", () => {
+    const worn = equip(buyItem(rich, "hud.amber", 600), "hud", "hud.amber");
+    expect(equip(worn, "hud", "").hud).toBe("");
+  });
+});
+
+describe("personal bests", () => {
+  const base = newSave();
+
+  it("starts with nothing recorded", () => {
+    expect(base.records.fastestSortieMs).toBeNull();
+    expect(base.records.mostFirstTryHits).toBe(0);
+  });
+
+  it("takes the first sortie as the best of everything", () => {
+    const f = recordBests(base, { durationMs: 90_000, firstTryHits: 5, credits: 700 });
+    expect(f.records).toEqual({ fastestSortieMs: 90_000, mostFirstTryHits: 5, bestSortieCredits: 700 });
+  });
+
+  it("keeps the quickest time and the biggest counts", () => {
+    let f = recordBests(base, { durationMs: 90_000, firstTryHits: 5, credits: 700 });
+    f = recordBests(f, { durationMs: 120_000, firstTryHits: 8, credits: 400 });
+    expect(f.records.fastestSortieMs).toBe(90_000);
+    expect(f.records.mostFirstTryHits).toBe(8);
+    expect(f.records.bestSortieCredits).toBe(700);
+  });
+
+  it("gives a save written before records existed an empty set", () => {
+    const storage = memoryStorage();
+    const old = { ...newSave() } as Partial<SaveFile>;
+    delete old.records;
+    storage.setItem(SAVE_KEY, JSON.stringify(old));
+    expect(load(storage).records.mostFirstTryHits).toBe(0);
   });
 });

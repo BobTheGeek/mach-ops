@@ -51,6 +51,13 @@ export interface SaveFile {
   recentHashes: string[];
   /** airframe id -> chosen livery id; absent or "" means the standard scheme */
   paint: Record<string, string>;
+  /** shop item ids bought. Cosmetics only: nothing here changes the maths. */
+  owned: string[];
+  /** the bought look currently worn: "" is the one he started with */
+  hud: string;
+  reticle: string;
+  /** bests worth chasing, which the log alone cannot answer cheaply */
+  records: Records;
   /** first-time tip ids already dismissed */
   tipsSeen: string[];
   flightSchoolDone: boolean;
@@ -66,6 +73,28 @@ export interface SaveFile {
   scheduleDates: Record<string, string>;
   parentToggles: ParentToggles;
 }
+
+/**
+ * Personal bests.
+ *
+ * Kept on the file rather than derived, because two of the three are per-sortie
+ * facts the attempt log does not record: it knows every answer but not which
+ * sortie each belonged to.
+ */
+export interface Records {
+  /** milliseconds, the quickest sortie flown to a debrief */
+  fastestSortieMs: number | null;
+  /** most first-try hits in a single sortie */
+  mostFirstTryHits: number;
+  /** most credits taken from one sortie */
+  bestSortieCredits: number;
+}
+
+export const NO_RECORDS: Records = {
+  fastestSortieMs: null,
+  mostFirstTryHits: 0,
+  bestSortieCredits: 0,
+};
 
 export function newSave(): SaveFile {
   const firstAirframe = STRUCTURE.airframes[0] ?? "t38";
@@ -84,6 +113,10 @@ export function newSave(): SaveFile {
     tiers: {},
     recentHashes: [],
     paint: {},
+    owned: [],
+    hud: "",
+    reticle: "",
+    records: { ...NO_RECORDS },
     tipsSeen: [],
     flightSchoolDone: false,
     settings: { volume: 0.7, keypadEntry: false, colorblindHud: false, reducedMotion: false },
@@ -102,6 +135,23 @@ export const FAST_MULTIPLIER = 1.5;
 /** HINT costs 50 credits and forfeits the fast bonus. */
 export const HINT_COST = 50;
 
+/**
+ * The streak pays. Each answer in an unbroken run adds 10% to what the next one
+ * earns, capped at double.
+ *
+ * The streak used to be a number on the HUD that did nothing, which made a wrong
+ * answer nearly free and guessing the fastest route to the next bogey. A run
+ * worth protecting is the strongest lever the game has on care, and it costs
+ * nothing when broken: a miss drops the multiplier back to 1, never below.
+ */
+export const STREAK_STEP = 0.1;
+export const STREAK_CAP = 2;
+
+/** The multiplier a run of this length has earned. Always at least 1. */
+export function streakMultiplier(streak: number): number {
+  return Math.min(STREAK_CAP, 1 + Math.max(0, streak - 1) * STREAK_STEP);
+}
+
 export interface RecordResult {
   attempt: Attempt;
   /** true when the answer landed inside the fast window and no hint was taken */
@@ -115,10 +165,12 @@ export interface RecordResult {
  * caller decides when to persist.
  */
 export function recordAttempt(file: SaveFile, r: RecordResult): SaveFile {
-  const credits = r.attempt.correct
-    ? Math.round(BASE_CREDITS * (r.fastBonus ? FAST_MULTIPLIER : 1))
-    : 0;
   const streak = r.attempt.correct ? file.streak + 1 : 0;
+  // The run this answer is part of, so the first correct answer pays x1 and the
+  // multiplier is visibly earned rather than granted.
+  const credits = r.attempt.correct
+    ? Math.round(BASE_CREDITS * (r.fastBonus ? FAST_MULTIPLIER : 1) * streakMultiplier(streak))
+    : 0;
 
   return {
     ...file,
@@ -192,6 +244,38 @@ export function setChapterDate(file: SaveFile, unitId: string, iso: string): Sav
   return { ...file, scheduleDates: next };
 }
 
+/** Buy a cosmetic. Refuses quietly when it is already owned or unaffordable. */
+export function buyItem(file: SaveFile, id: string, cost: number): SaveFile {
+  if (file.owned.includes(id) || file.credits < cost) return file;
+  return { ...file, credits: file.credits - cost, owned: [...file.owned, id] };
+}
+
+export const owns = (file: SaveFile, id: string): boolean => file.owned.includes(id);
+
+/** Fold one finished sortie into the personal bests. */
+export function recordBests(
+  file: SaveFile,
+  sortie: { durationMs: number; firstTryHits: number; credits: number },
+): SaveFile {
+  const r = file.records;
+  return {
+    ...file,
+    records: {
+      fastestSortieMs: r.fastestSortieMs === null
+        ? sortie.durationMs
+        : Math.min(r.fastestSortieMs, sortie.durationMs),
+      mostFirstTryHits: Math.max(r.mostFirstTryHits, sortie.firstTryHits),
+      bestSortieCredits: Math.max(r.bestSortieCredits, sortie.credits),
+    },
+  };
+}
+
+/** Wear a bought look. An empty id goes back to the default. */
+export function equip(file: SaveFile, slot: "hud" | "reticle", id: string): SaveFile {
+  if (id !== "" && !file.owned.includes(id)) return file;
+  return { ...file, [slot]: id };
+}
+
 export function unlockAirframe(file: SaveFile, airframe: string): SaveFile {
   if (file.unlockedAirframes.includes(airframe)) return file;
   return {
@@ -213,7 +297,13 @@ export function load(storage: Storage = globalThis.localStorage): SaveFile {
     const parsed = JSON.parse(raw) as Partial<SaveFile>;
     if (parsed.version !== 1) return newSave();
     // Merge over a fresh file so a save written by an older build gains new keys.
-    return { ...newSave(), ...parsed, settings: { ...newSave().settings, ...(parsed.settings ?? {}) } };
+    const fresh = newSave();
+    return {
+      ...fresh,
+      ...parsed,
+      settings: { ...fresh.settings, ...(parsed.settings ?? {}) },
+      records: { ...fresh.records, ...(parsed.records ?? {}) },
+    };
   } catch {
     return newSave();
   }
