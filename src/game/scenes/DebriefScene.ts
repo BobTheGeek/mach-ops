@@ -18,6 +18,8 @@ export interface DebriefData {
   missionId: string;
   firstTryHits: number;
   problems: number;
+  /** contacts allowed past the tail, which cost their credits and their card */
+  escaped: number;
   reason: string;
   sharpened: string[];
   fuel: number;
@@ -92,6 +94,7 @@ export class DebriefScene extends Phaser.Scene {
       ["STREAK", `${gameState.file.streak} (BEST ${gameState.file.bestStreak})`, C.text],
       ["FIRST-TRY", `${this.debrief.firstTryHits} / ${this.debrief.problems}`,
         this.debrief.firstTryHits >= FIRST_TRY_HITS_FOR_CARD ? C.hud : C.textMuted],
+      ["ESCAPED", `${this.debrief.escaped}`, this.debrief.escaped > 0 ? C.alert : C.textMuted],
       ["FUEL", `${Math.round(this.debrief.fuel * 100)}%`, C.hud],
       ["SHIELDS", `${Math.round(this.debrief.shields * 100)}%`, C.shield],
     ];

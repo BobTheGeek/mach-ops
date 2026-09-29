@@ -21,7 +21,7 @@ import { gameState, now } from "../state";
 import { audio } from "../audio";
 import { showTip } from "../ui/firstTimeTip";
 import { buildMission, type MissionProblem } from "../missionBuilder";
-import { recordAttempt, spendCredits, HINT_COST } from "../save";
+import { recordAttempt, spendCredits, recordBests, streakMultiplier, HINT_COST } from "../save";
 import { applyAttempt, initialTierState } from "../../engine/tiers";
 import { isFast, FAST_WINDOW_MS } from "../../engine/mastery";
 import type { Attempt } from "../../engine/types";
@@ -83,6 +83,13 @@ const LANE_OFFSETS = [-170, 0, 170];
 const LANE_TOPS = [140, 90, 170];
 /** How fast a contact outside lock range works its way back, px/s. */
 const CLOSE_RATE = 60;
+/**
+ * Past this the contact has gone by the tail and is away.
+ *
+ * Well below the screen edge, so a contact that is merely low is still worth
+ * turning back for; it has to be genuinely behind you to count as lost.
+ */
+const ESCAPE_Y = CANVAS.height + 40;
 /** How far above the screen a replacement contact appears. */
 const SPAWN_Y = -90;
 
@@ -143,6 +150,13 @@ export class SortieScene extends Phaser.Scene {
   private pips!: ReturnType<typeof missilePips>;
   private timerOut!: ReturnType<typeof readout>;
   private streakOut!: ReturnType<typeof readout>;
+  private multOut!: ReturnType<typeof readout>;
+  /** contacts allowed past the tail, reported at the debrief */
+  private escaped = 0;
+  /** wall clock at launch, for the fastest-sortie record */
+  private startedAt = 0;
+  /** credits before the sortie, so the debrief can report what it earned */
+  private creditsAtLaunch = 0;
   private statusText!: Phaser.GameObjects.Text;
   private bingo?: Phaser.GameObjects.Container;
   private terrain?: Terrain;
@@ -186,6 +200,8 @@ export class SortieScene extends Phaser.Scene {
     });
 
     audio.setVolume(gameState.file.settings.volume);
+    this.startedAt = this.time.now;
+    this.creditsAtLaunch = gameState.file.credits;
 
     this.world();
     this.hud();
@@ -267,6 +283,10 @@ export class SortieScene extends Phaser.Scene {
     this.statusText.setX((CANVAS.width - this.statusText.width) / 2);
 
     this.streakOut = readout(this, CANVAS.width - SCREEN_PAD - 300, y, "STREAK", String(gameState.file.streak));
+    // The multiplier the run has earned, next to the run itself: a number that
+    // only goes up while he keeps getting them right is the thing worth
+    // protecting, and it has to be on screen to be worth protecting.
+    this.multOut = readout(this, CANVAS.width - SCREEN_PAD - 190, y, "BONUS", "x1.0", C.lock);
     this.timerOut = readout(this, CANVAS.width - SCREEN_PAD - 120, y, "FUEL", "5:00", C.hud);
 
     // Bottom-left resource stack; the footer hint bar sits centred below it so
@@ -288,6 +308,9 @@ export class SortieScene extends Phaser.Scene {
     this.shieldBar.set(this.shields);
     this.pips.set(this.missiles);
     this.streakOut.set(String(gameState.file.streak));
+    const mult = streakMultiplier(gameState.file.streak);
+    this.multOut.set(`x${mult.toFixed(1)}`);
+    this.multOut.value.setColor(mult > 1 ? C.lock : C.textMuted);
     const m = Math.floor(Math.max(0, this.fuelLeft) / 60);
     const s = Math.floor(Math.max(0, this.fuelLeft) % 60);
     this.timerOut.set(`${m}:${String(s).padStart(2, "0")}`);
@@ -318,7 +341,37 @@ export class SortieScene extends Phaser.Scene {
       // with every contact parked off to one side and nothing lockable.
       const off = b.image.x - PLAYER_POS.x;
       if (Math.abs(off) > LOCK_RANGE) b.image.x -= Math.sign(off) * CLOSE_RATE * dt;
+
+      // A contact allowed all the way past the tail gets away. It costs the
+      // credits and the card it would have been worth and nothing else: no
+      // shield, no progress, no problem removed from the queue. Losing a reward
+      // he never banked is enough to make him hurry; losing progress would make
+      // him afraid to try.
+      if (b.image.y > ESCAPE_Y) this.escape(b);
     }
+  }
+
+  /**
+   * A line across the top that fades itself out. The tanker already drew one of
+   * these inline; escapes need the same thing, so it lives in one place now.
+   */
+  private flashBanner(text: string, color: string): void {
+    const banner = capsLabel(this, 0, 96, text, color, TRACK.readout);
+    banner.setX((CANVAS.width - banner.width) / 2);
+    this.tweens.add({
+      targets: banner, alpha: 0, delay: 1200, duration: 500,
+      onComplete: () => banner.destroy(),
+    });
+  }
+
+  /** Send a contact home, count it, and bring the next one in. */
+  private escape(b: Bogey): void {
+    b.alive = false;
+    b.image.setVisible(false);
+    this.escaped += 1;
+    audio.play("lockBreak");
+    this.flashBanner(`CONTACT ESCAPED · ${this.escaped}`, C.alert);
+    this.sendNextContact(b);
   }
 
   /**
@@ -948,7 +1001,18 @@ export class SortieScene extends Phaser.Scene {
   private endSortie(reason: string): void {
     if (!this.scene.isActive()) return;
     this.clearLock();
+
+    // The bests he can chase. Two of the three are per-sortie facts the attempt
+    // log cannot answer on its own, so they are folded in here where the sortie
+    // still knows them.
+    gameState.update(recordBests(gameState.file, {
+      durationMs: this.time.now - this.startedAt,
+      firstTryHits: this.firstTryHits,
+      credits: gameState.file.credits - this.creditsAtLaunch,
+    }));
+
     this.scene.start("Debrief", {
+      escaped: this.escaped,
       unitId: this.loadout.unitId,
       missionId: this.mission.id,
       firstTryHits: this.firstTryHits,
