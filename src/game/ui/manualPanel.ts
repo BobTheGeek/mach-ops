@@ -16,6 +16,8 @@ import type { SystemsStatus, Tier, Problem } from "../../engine/types";
 export const PANEL_W = 520;
 const PAD = 16;
 const BLOCK_GAP = 12;
+/** Room at the foot of the panel for the lesson link and the key hint. */
+const FOOTER_H = HIT.min + 46;
 
 export interface ManualPanelOpts {
   scene: Phaser.Scene;
@@ -113,10 +115,26 @@ export class ManualPanel {
     this.container.add(this.body);
 
     const maskShape = s.make.graphics({});
-    maskShape.fillRect(x, bodyTop, PANEL_W, h - bodyTop - 56);
+    maskShape.fillRect(x, bodyTop, PANEL_W, h - bodyTop - FOOTER_H);
     this.body.setMask(maskShape.createGeometryMask());
 
-    const hint = capsLabel(s, x + PAD, h - 36, "↑ ↓ SCROLL   ESC · CLOSE", C.textMuted, TRACK.readout);
+    // The lesson link lives in the footer, not in the scrolling body. A mask
+    // hides pixels but not hit areas, so a button inside the body stays
+    // clickable after it has scrolled out of sight; and the link is worth more
+    // here, where he does not have to scroll to the bottom to find it.
+    if (this.page.khan) {
+      const watch = button(s, {
+        x: x + PAD,
+        y: h - FOOTER_H + 8,
+        width: PANEL_W - PAD * 2,
+        label: "WATCH ON KHAN ACADEMY  ↗",
+        variant: "secondary",
+        onClick: () => openExternal(this.page.khan),
+      });
+      this.container.add(watch.container);
+    }
+
+    const hint = capsLabel(s, x + PAD, h - 30, "↑ ↓ SCROLL   ESC · CLOSE", C.textMuted, TRACK.readout);
     this.container.add(hint);
   }
 
@@ -249,7 +267,7 @@ export class ManualPanel {
   private bodyOriginY = 0;
 
   private scrollBy(dy: number): void {
-    const visible = CANVAS.height - this.bodyOriginY - 56;
+    const visible = CANVAS.height - this.bodyOriginY - FOOTER_H;
     const max = Math.max(0, this.bodyHeight - visible);
     this.scroll = Phaser.Math.Clamp(this.scroll + dy, 0, max);
     this.body.setY(this.bodyOriginY - this.scroll);
@@ -267,11 +285,33 @@ export class ManualPanel {
   }
 }
 
-/** Strip the markdown the panel does not render: bold markers and links. */
+/**
+ * Strip the markdown the panel does not render: bold markers and links.
+ *
+ * A line that is ONLY a link is dropped rather than flattened. The Khan Academy
+ * line at the foot of every page used to flatten to the dead words "Watch on
+ * Khan Academy" with nothing behind them; it is a real button in the footer now.
+ */
 function stripMd(s: string): string {
   return s
+    .split("\n")
+    .filter((line) => !/^\s*\[[^\]]+\]\([^)]+\)\s*$/.test(line))
+    .join("\n")
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
     .replace(/\*\*/g, "")
     .replace(/^- /gm, "• ")
     .trim();
+}
+
+/**
+ * Open a lesson in a new tab. Called from a pointerup handler, so the browser
+ * counts it as a user gesture and does not treat it as a popup. noopener keeps
+ * the game's window object out of reach of the page that opens.
+ */
+function openExternal(url: string): void {
+  try {
+    globalThis.open(url, "_blank", "noopener,noreferrer");
+  } catch {
+    // A blocked popup must never take the manual down with it.
+  }
 }

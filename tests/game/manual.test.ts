@@ -73,3 +73,31 @@ describe("parseManual", () => {
     expect(page.steps).toEqual([]);
   });
 });
+
+describe("the Khan Academy lesson link", () => {
+  it("is a khanacademy.org URL on every page", () => {
+    for (const f of pages) {
+      expect(parseManual(read(f)).khan, f).toMatch(/^https:\/\/www\.khanacademy\.org\/math\//);
+    }
+  });
+
+  // The footer button reads the front matter; the body carries the same URL as a
+  // markdown link. If those two drift, the button sends him somewhere the page
+  // does not claim to send him.
+  it("matches the link at the foot of the same page", () => {
+    for (const f of pages) {
+      const raw = read(f);
+      const link = /\[Watch on Khan Academy\]\(([^)]+)\)/.exec(raw);
+      expect(link, `${f} has no Watch on Khan Academy link`).not.toBeNull();
+      expect(link![1], f).toBe(parseManual(raw).khan);
+    }
+  });
+
+  it("points at a course unit, not at the site root", () => {
+    for (const f of pages) {
+      const path = new URL(parseManual(read(f)).khan).pathname.split("/").filter(Boolean);
+      // /math/<course>/<unit>
+      expect(path.length, `${f} ${path.join("/")}`).toBeGreaterThanOrEqual(3);
+    }
+  });
+});

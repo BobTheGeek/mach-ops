@@ -160,3 +160,37 @@ A locked row on the fleet spec sheet drew its silhouette at 0.35 alpha. The
 silhouette export is near black and the panel behind it is near black, so the
 panel read as empty. It is tinted to the muted text grey at 0.55 now, and the
 shape he has not earned yet is clearly a shape.
+
+## The Khan Academy link went nowhere
+
+Every manual page ends with `[Watch on Khan Academy](...)` and every page's front
+matter carries the same URL. The panel renders markdown through `stripMd`, which
+flattens a link to its text, so the line arrived on screen as the dead words
+"Watch on Khan Academy" with nothing behind them.
+
+`stripMd` now drops a line that is ONLY a link, because such a line cannot render
+as text, and the URL is a real button instead.
+
+The button sits in the panel footer, not in the scrolling body. A Phaser mask
+hides pixels but not hit areas, so a button inside the body would stay clickable
+after scrolling out of sight and would fire from a click on the header. The
+footer also means he does not have to scroll to the bottom to find the lesson.
+
+`openExternal` opens it in a new tab with `noopener,noreferrer`, from inside the
+pointerup handler so the browser counts it as a user gesture rather than a popup.
+
+Three tests pin the link: it is a khanacademy.org course URL on all 83 pages, the
+front matter matches the markdown link on the same page, and the path is deep
+enough to be a unit rather than the site root.
+
+### These are unit links, not lesson links
+
+All thirteen distinct URLs were checked and all thirteen return 200. They land on
+the right Khan unit for the skill, one click from the lesson itself.
+
+Going deeper was tried and not shipped. Khan renders its unit pages client-side,
+so the lesson list only exists after JavaScript runs, and about half the lesson
+slugs in the unit that was scraped carry an internal content id — for example
+`x6b17ba59:adding-negative-numbers-fluently`. Those ids change when Khan
+reorganises content, so lesson-level links would work today and rot silently,
+and there would be 83 of them to keep alive. The unit links are stable.
