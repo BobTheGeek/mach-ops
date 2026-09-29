@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { CH1_MISSIONS, CH2_MISSIONS, MISSIONS, missionsFor, mission } from "../../src/data/campaign";
+import { CH1_MISSIONS, CH2_MISSIONS, CH3_MISSIONS, CH4_MISSIONS, MISSIONS, missionsFor, mission } from "../../src/data/campaign";
 import { DOSSIERS, dossier, CARDS_PER_AIRFRAME, FIRST_TRY_HITS_FOR_CARD } from "../../src/data/intel";
 import { IMPLEMENTED_SKILLS } from "../../src/generators/index";
 import curriculum from "../../src/data/curriculum.json";
@@ -11,7 +11,9 @@ const skillsIn = (chapter: string): string[] =>
 
 const ch1Skills = skillsIn("ch1");
 
-const UNITS: [string, typeof CH1_MISSIONS][] = [["ch1", CH1_MISSIONS], ["ch2", CH2_MISSIONS]];
+const UNITS: [string, typeof CH1_MISSIONS][] = [
+  ["ch1", CH1_MISSIONS], ["ch2", CH2_MISSIONS], ["ch3", CH3_MISSIONS], ["ch4", CH4_MISSIONS],
+];
 
 describe.each(UNITS)("%s campaign", (unitId, missions) => {
   const unitSkills = skillsIn(unitId);

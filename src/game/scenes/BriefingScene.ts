@@ -82,6 +82,7 @@ export class BriefingScene extends Phaser.Scene {
       activeUnitId: this.unitId,
       openUnitIds: gameState.openUnits.map((u) => u.id),
       count: this.mission.prep,
+      focusSkills: this.mission.focus,
       seed: gameState.file.log.length + 1,
     });
 

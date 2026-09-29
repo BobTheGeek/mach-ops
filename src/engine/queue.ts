@@ -48,6 +48,13 @@ export interface QueueInput {
   openUnitIds: readonly string[];
   count: number;
   seed: number;
+  /**
+   * The skills this sortie is meant to teach. When set, the current-unit slice
+   * draws only from these, so a campaign that says "sortie 7 introduces ee.4.7"
+   * actually serves ee.4.7. The weak and warm slices are untouched, so review
+   * still happens around it. Empty or omitted means the whole active chapter.
+   */
+  focusSkills?: readonly string[];
   /** set to 1 to see the uncapped 50/30/20 split */
   weakCap?: number;
 }
@@ -124,7 +131,7 @@ export function deinterleave<T extends { skill: string }>(items: readonly T[]): 
 }
 
 export function buildQueue(input: QueueInput): QueueItem[] {
-  const { skills, log, now, activeUnitId, openUnitIds, count, seed, weakCap = WEAK_CAP } = input;
+  const { skills, log, now, activeUnitId, openUnitIds, count, seed, focusSkills, weakCap = WEAK_CAP } = input;
   if (count <= 0) return [];
 
   const rng = mulberry32(hash32(`queue|${activeUnitId}|${seed}`));
@@ -141,7 +148,13 @@ export function buildQueue(input: QueueInput): QueueItem[] {
     .sort((a, b) => score.get(a.id)! - score.get(b.id)!)
     .map((s) => s.id);
 
-  const currentPool = shuffle(rng, available.filter((s) => unitsOf(s).includes(activeUnitId)).map((s) => s.id));
+  const inActiveUnit = available.filter((s) => unitsOf(s).includes(activeUnitId)).map((s) => s.id);
+  const focused = focusSkills?.length
+    ? inActiveUnit.filter((id) => focusSkills.includes(id))
+    : [];
+  // A focus that names nothing available falls back to the whole chapter rather
+  // than serving an empty slice.
+  const currentPool = shuffle(rng, focused.length ? focused : inActiveUnit);
 
   const warmPool = shuffle(
     rng,
@@ -151,9 +164,16 @@ export function buildQueue(input: QueueInput): QueueItem[] {
     }).map((s) => s.id),
   );
 
-  // A pool that cannot fill its slice falls back to the current unit, then to
-  // anything available — a mission is never short.
-  const fallback = currentPool.length ? currentPool : available.map((s) => s.id);
+  // A pool that cannot fill its slice falls back to the whole active unit, then
+  // to anything available — a mission is never short.
+  //
+  // The focused skill is left out of the fallback. It already owns the current
+  // slice, and a first sortie has nothing overdue and nothing warm, so without
+  // this it would take those slices too and end up past half the mission — at
+  // which point no arrangement can keep it off consecutive cards.
+  const others = focused.length ? inActiveUnit.filter((id) => !focused.includes(id)) : inActiveUnit;
+  const fallbackPool = others.length ? others : inActiveUnit;
+  const fallback = fallbackPool.length ? shuffle(rng, fallbackPool) : available.map((s) => s.id);
 
   const sizes = sliceSizes(count, weakCap);
   const picks: { skill: string; slice: Slice }[] = [];

@@ -134,6 +134,7 @@ export class SortieScene extends Phaser.Scene {
       activeUnitId: this.loadout.unitId,
       openUnitIds: gameState.openUnits.map((u) => u.id),
       count: this.mission.problems,
+      focusSkills: this.mission.focus,
       seed: gameState.file.log.length + 101,
     });
 

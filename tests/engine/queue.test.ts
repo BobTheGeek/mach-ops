@@ -152,3 +152,51 @@ describe("buildQueue", () => {
     expect(buildQueue({ ...base, log: [], openUnitIds: [], count: 20 })).toEqual([]);
   });
 });
+
+describe("mission focus", () => {
+  it("draws the current slice only from the focused skills", () => {
+    const q = buildQueue({ ...base, log: staleLog, activeUnitId: "ch1", count: 20, focusSkills: ["ns.1.3"] });
+    const current = q.filter((i) => i.slice === "current").map((i) => i.skill);
+    expect(current.length).toBeGreaterThan(0);
+    expect(new Set(current)).toEqual(new Set(["ns.1.3"]));
+  });
+
+  it("still reviews other skills around the focus", () => {
+    const q = buildQueue({ ...base, log: staleLog, activeUnitId: "ch1", count: 20, focusSkills: ["ns.1.3"] });
+    const others = q.filter((i) => i.skill !== "ns.1.3");
+    expect(others.length).toBeGreaterThan(0);
+  });
+
+  it("falls back to the whole chapter when the focus names nothing available", () => {
+    const q = buildQueue({ ...base, log: staleLog, activeUnitId: "ch1", count: 20, focusSkills: ["nope.1.1"] });
+    const current = q.filter((i) => i.slice === "current").map((i) => i.skill);
+    expect(current.length).toBeGreaterThan(0);
+    // ch1 means its core skills plus the honors skills attached to it.
+    const ch1Skills = ALL.filter((s) => s.chapter === "ch1" || (s.attachTo ?? []).includes("ch1")).map((s) => s.id);
+    for (const s of current) expect(ch1Skills).toContain(s);
+  });
+
+  it("is unchanged when no focus is given", () => {
+    const withEmpty = buildQueue({ ...base, log: staleLog, activeUnitId: "ch1", count: 20, focusSkills: [] });
+    const without = buildQueue({ ...base, log: staleLog, activeUnitId: "ch1", count: 20 });
+    expect(withEmpty).toEqual(without);
+  });
+});
+
+describe("a first sortie still varies", () => {
+  it("does not serve one skill over and over when nothing is overdue yet", () => {
+    // A fresh pilot has no overdue skills and nothing warm, so both of those
+    // slices fall back. If the fallback were narrowed to the focus, the whole
+    // sortie would be one skill repeated.
+    const q = buildQueue({ ...base, log: [], activeUnitId: "ch1", count: 12, focusSkills: ["ns.1.3"] });
+    const distinct = new Set(q.map((i) => i.skill));
+    expect(distinct.size).toBeGreaterThan(1);
+    for (let i = 1; i < q.length; i++) expect(q[i]!.skill).not.toBe(q[i - 1]!.skill);
+  });
+
+  it("still leans on the focused skill", () => {
+    const q = buildQueue({ ...base, log: [], activeUnitId: "ch1", count: 12, focusSkills: ["ns.1.3"] });
+    const focusCount = q.filter((i) => i.skill === "ns.1.3").length;
+    expect(focusCount).toBeGreaterThan(q.length / 6);
+  });
+});
