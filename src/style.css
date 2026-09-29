@@ -1,25 +1,55 @@
 /* Fonts are declared here so Phaser's canvas text can name them.
    design/README.md: "Self-host fonts for offline Chromebooks."
-   Drop the OFL 1.1 files into public/fonts/ and the @font-face rules below pick
-   them up; until then the stacks fall back to the nearest system faces. */
+   Drop the OFL 1.1 files into public/fonts/ and these rules pick them up; until
+   then the stacks fall back to the nearest system faces.
+
+   One file per weight, not one file per family. A single Regular declared across
+   a weight range would let the browser fake 500, 600 and 700 by smearing the
+   Regular, which is not what the artboards are drawn in. */
 
 @font-face {
   font-family: "Chakra Petch";
   font-weight: 700;
+  font-style: normal;
   font-display: block;
   src: url("/fonts/ChakraPetch-Bold.woff2") format("woff2");
 }
+
 @font-face {
   font-family: "IBM Plex Mono";
-  font-weight: 400 600;
+  font-weight: 400;
+  font-style: normal;
   font-display: block;
   src: url("/fonts/IBMPlexMono-Regular.woff2") format("woff2");
 }
 @font-face {
+  font-family: "IBM Plex Mono";
+  font-weight: 500;
+  font-style: normal;
+  font-display: block;
+  src: url("/fonts/IBMPlexMono-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-weight: 600;
+  font-style: normal;
+  font-display: block;
+  src: url("/fonts/IBMPlexMono-SemiBold.woff2") format("woff2");
+}
+
+@font-face {
   font-family: "IBM Plex Sans";
-  font-weight: 400 500;
+  font-weight: 400;
+  font-style: normal;
   font-display: block;
   src: url("/fonts/IBMPlexSans-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-weight: 500;
+  font-style: normal;
+  font-display: block;
+  src: url("/fonts/IBMPlexSans-Medium.woff2") format("woff2");
 }
 
 html,
