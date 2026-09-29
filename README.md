@@ -34,7 +34,10 @@ Phaser.
 
 ## Deployed
 
-https://mach-ops.vercel.app — the game. The parent view is at `/dad.html`.
+https://machops.crazymutt.tech — the game. The parent view is at `/dad.html`.
+
+`mach-ops.vercel.app` serves the same deployment and still works, which is worth
+keeping as a spare way in if DNS ever breaks.
 
 Vercel is connected to `main` on this repo, so every push deploys. `pnpm build`
 runs `tsc --noEmit` first, so a type error fails the deploy rather than shipping.
