@@ -8,6 +8,7 @@ import { C, N, SIZE, TEXT, TRACK, CANVAS, SCREEN_PAD, STROKE, HIT, hex } from ".
 import { panel, capsLabel, button } from "../ui/kit";
 import { gameState } from "../state";
 import { audio } from "../audio";
+import { music } from "../music";
 import type { Settings } from "../save";
 
 type Toggle = { key: keyof Settings; label: string; note: string; on: string; off: string };
@@ -112,6 +113,8 @@ export class SettingsScene extends Phaser.Scene {
         const v = (i + 1) / 10;
         gameState.update({ ...gameState.file, settings: { ...gameState.file.settings, volume: v } });
         audio.setVolume(v);
+        // One slider governs everything: the synthesised cues and the theme.
+        music.setVolume(v);
         audio.play("uiConfirm");
         drawSteps();
       });

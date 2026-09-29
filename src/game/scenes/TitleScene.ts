@@ -4,6 +4,7 @@ import Phaser from "phaser";
 import { C, N, TEXT, CANVAS, SCREEN_PAD, hex, STROKE } from "../../ui/tokens";
 import { button, capsLabel } from "../ui/kit";
 import { gameState } from "../state";
+import { music, THEME } from "../music";
 
 export class TitleScene extends Phaser.Scene {
   constructor() {
@@ -12,6 +13,14 @@ export class TitleScene extends Phaser.Scene {
 
   create(): void {
     this.cameras.main.setBackgroundColor(N.ground);
+
+    // The theme, at the volume from Settings. A browser will refuse to start it
+    // before the page has been touched, so the first key or click starts it
+    // instead; on a return to the title the page has been touched already and it
+    // simply plays.
+    music.play(THEME, gameState.file.settings.volume);
+    this.input.once("pointerdown", () => music.resume());
+    this.input.keyboard?.once("keydown", () => music.resume());
 
     // faint sea grid, so the title already reads as avionics
     const g = this.add.graphics();
@@ -40,7 +49,7 @@ export class TitleScene extends Phaser.Scene {
 
     // A first-time pilot goes to Flight School; after that, straight to the hangar.
     const first = !gameState.file.flightSchoolDone;
-    const go = (): void => { this.scene.start(first ? "FlightSchool" : "Hangar"); };
+    const go = (): void => { music.stop(); this.scene.start(first ? "FlightSchool" : "Hangar"); };
 
     button(this, {
       x: SCREEN_PAD + 28,
@@ -59,7 +68,7 @@ export class TitleScene extends Phaser.Scene {
         width: 260,
         label: "SKIP TO HANGAR",
         variant: "ghost",
-        onClick: () => this.scene.start("Hangar"),
+        onClick: () => { music.stop(); this.scene.start("Hangar"); },
       });
     }
 

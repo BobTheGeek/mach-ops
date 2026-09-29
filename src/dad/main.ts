@@ -421,7 +421,8 @@ function creditsView(): HTMLElement {
     el("p", { text: "Chakra Petch and IBM Plex, both under the SIL Open Font License 1.1. They are self-hosted so the game works offline." }),
 
     el("h3", { text: "Sound" }),
-    el("p", { text: "Every cue is synthesised in the browser with the Web Audio API. No audio files ship with the game." }),
+    el("p", { text: "Every avionics cue is synthesised in the browser with the Web Audio API." }),
+    el("p", { text: "The title theme is \u201cStrength & Honor\u201d by Sky Toes." }),
 
     el("h3", { text: "Your data" }),
     el("p", { text: "Everything this page shows is stored in this browser only, under the key machops.save.v1. Nothing is sent anywhere. Export CSV writes a copy to your downloads; clearing the browser's site data erases the pilot." }),
