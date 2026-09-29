@@ -15,10 +15,10 @@ pnpm curriculum   # merge + validate content/curriculum/*.json -> src/data/curri
 pnpm mission      # print a 20-problem mission for a sample attempt log
 ```
 
-Playable end to end: Flight School, hangar, sixty sorties across Chapters 1 to 6
-with the Q1 honors skills mixed in, briefing, sortie with a steerable T-38 and
+Playable end to end: Flight School, hangar, seventy-eight sorties across Chapters
+1 to 8 with the honors skills mixed in, briefing, sortie with a steerable T-38 and
 synthesised avionics audio, debrief, intel cards, Flight Manual, How to Play and
-settings. 40 of the 83 skills have generators, manual pages and property tests.
+settings. 54 of the 83 skills have generators, manual pages and property tests.
 
 Phase status: see `docs/engine-rules.md` "Build plan" and the phase notes in
-`docs/` (`PHASE1-NOTES.md` through `PHASE5-NOTES.md`) and `DECISIONS.md`.
+`docs/` (`PHASE1-NOTES.md` through `PHASE6-NOTES.md`) and `DECISIONS.md`.

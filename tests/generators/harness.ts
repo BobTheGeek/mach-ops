@@ -63,6 +63,13 @@ export interface GeneratorSpec {
 }
 
 export const isInteger = (a: Answer): boolean => isRational(a) && a.d === 1;
+/**
+ * Chapters 7 and 8 answer in probabilities, and the one thing a probability can
+ * never be is outside 0 to 1. The registry names that as an error tag
+ * ("over-one"), so the tier-1 form check is the invariant itself.
+ */
+export const isProbability = (a: Answer): boolean =>
+  isRational(a) && a.n >= 0 && a.n <= a.d;
 export const isDecimalTo = (places: number) => (a: Answer): boolean =>
   isRational(a) && decimalPlaces(a) >= 0 && decimalPlaces(a) <= places;
 
@@ -168,14 +175,20 @@ export function describeGenerator(spec: GeneratorSpec): void {
           if (n < 100) continue; // too few of this width at this tier to judge
           const uniform = 100 / width;
 
-          // The spec's 20-30% band is the four-option case measured over a full
+          // The spec's 20-30% band is the four-option case measured over a FULL
           // sweep. Other widths, and thin slices of a tier that mixes widths,
           // need a band that accounts for how many samples there actually are:
           // four standard deviations of the binomial, which still fails loudly
           // on real bias (a generator favouring one slot) but not on noise.
+          //
+          // The fixed band applies only when the whole sweep is this width. At
+          // half a sweep it is barely two and a half standard deviations, and a
+          // tier that mixes a yes/no variant with a four-option one was failing
+          // on noise alone: measured over 4,000 seeds the same generator sits at
+          // 24-26%.
           const p = 1 / width;
           const sigma = Math.sqrt((p * (1 - p)) / n) * 100;
-          const tolerance = width === 4 && n >= 500 ? 5 : Math.max(5, 4 * sigma);
+          const tolerance = width === 4 && n >= POSITION_SWEEP ? 5 : Math.max(5, 4 * sigma);
 
           for (let i = 0; i < width; i++) {
             const pct = (slots[i]! / n) * 100;

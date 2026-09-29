@@ -52,6 +52,12 @@ export type FigureKind =
   | "powers-of-ten-line" | "bracketing" | "expanded-form" | "place-value-shift"
   | "square-and-cube-models" | "algebra-trick-10x" | "vertical-format" | "equation"
   | "hanger-diagram"
+  // Chapters 7-8
+  | "likelihood-line" | "sample-space-list" | "frequency-table" | "simulation"
+  | "quartile-marks" | "skew-vs-symmetric" | "parallel-dot-plots" | "side-by-side-box-plots"
+  | "population-sample-diagram" | "dot-plot-of-sample-means" | "proportion-table"
+  // Q3 honors
+  | "scatter-plot" | "scatter-plot-with-line" | "tree-diagram" | "outcome-table" | "organized-list"
   // later chapters
   | "coordinate-plane" | "table" | "tape" | "hanger"
   | "tree" | "box-plot" | "dot-plot" | "angle" | "net" | "solid"

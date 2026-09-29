@@ -68,7 +68,7 @@ export class ProblemCard {
   private inputBox?: Phaser.GameObjects.Graphics;
 
   /** AI-6 pick one of N */
-  private optionRows: { g: Phaser.GameObjects.Graphics; label: Phaser.GameObjects.Text; y: number }[] = [];
+  private optionRows: { g: Phaser.GameObjects.Graphics; label: Phaser.GameObjects.Text; y: number; h: number }[] = [];
   private picked = -1;
   private inputX = PAD;
   private inputW = CARD_W - PAD * 2;
@@ -169,6 +169,7 @@ export class ProblemCard {
     if (this.caret) this.container.add(this.caret);
 
     this.timerText.setX(CARD_W - PAD - this.timerText.width);
+    this.fitHeader();
     this.container.setSize(CARD_W, this.height);
   }
 
@@ -209,30 +210,51 @@ export class ProblemCard {
   private buildPickRows(x: number, y: number, w: number): number {
     const s = this.scene;
     const texts = this.problem.optionText ?? (this.problem.options ?? []).map(String);
-    const rowH = INPUT.pickRow;
     const gap = 8;
 
+    // Chapter 8 answers in sentences ("the 210 aircrew in the biggest
+    // squadron"), which ran straight out of a fixed-width row. Long options
+    // wrap and their row grows to fit rather than the text spilling past the
+    // border.
+    let cursor = y;
     texts.forEach((label, i) => {
-      const top = y + i * (rowH + gap);
       const g = s.add.graphics();
-      const t = s.add.text(x + 16, top + (rowH - SIZE.number) / 2, `${i + 1}   ${label}`, {
+      const t = s.add.text(x + 16, 0, `${i + 1}   ${label}`, {
         fontFamily: FONT.mono,
         fontSize: `${SIZE.number}px`,
         color: C.text,
+        wordWrap: { width: w - 32 },
+        lineSpacing: 2,
       });
-      const row = { g, label: t, y: top };
+      const rowH = Math.max(INPUT.pickRow, t.height + 18);
+      t.setY(cursor + (rowH - t.height) / 2);
+      const row = { g, label: t, y: cursor, h: rowH };
       this.optionRows.push(row);
       this.drawPickRow(i, x, w, "default");
 
       const zone = s.add
-        .zone(x, top, w, rowH)
+        .zone(x, cursor, w, rowH)
         .setOrigin(0, 0)
         .setInteractive({ useHandCursor: true });
       zone.on("pointerup", () => this.pick(i));
       this.container.add(zone);
+      cursor += rowH + gap;
     });
 
-    return texts.length * (rowH + gap) - gap;
+    return cursor - y - gap;
+  }
+
+  /**
+   * The header and the timer share one line, the first left-aligned and the
+   * second right-aligned. An honors skill with a multiplier makes the left side
+   * long enough to run under the timer — "HONORSUNTIMED" — so it is squeezed to
+   * whatever room the timer leaves.
+   */
+  private fitHeader(): void {
+    const room = this.timerText.x - PAD - 12;
+    if (room <= 0) return;
+    this.header.setScale(1);
+    if (this.header.width > room) this.header.setScale(room / this.header.width);
   }
 
   private drawPickRow(i: number, x: number, w: number, state: CardState | "picked"): void {
@@ -243,12 +265,12 @@ export class ProblemCard {
     const fill = state === "correct" ? INPUT.correctFill : state === "wrong" ? INPUT.wrongFill : null;
     if (fill) {
       g.fillStyle(hex(fill), 1);
-      g.fillRoundedRect(x, row.y, w, INPUT.pickRow, RADIUS.input);
+      g.fillRoundedRect(x, row.y, w, row.h, RADIUS.input);
     }
     const ring =
       state === "correct" ? INPUT.correct : state === "wrong" ? INPUT.wrong : state === "picked" ? C.hud : C.border;
     g.lineStyle(state === "default" ? STROKE.hairline : INPUT.ring, hex(ring), 1);
-    g.strokeRoundedRect(x, row.y, w, INPUT.pickRow, RADIUS.input);
+    g.strokeRoundedRect(x, row.y, w, row.h, RADIUS.input);
   }
 
   /** AI-7: reorder, shuffled by default, arrow keys move the cursor and the row. */
@@ -436,11 +458,13 @@ export class ProblemCard {
     this.timerText.setText(text.toUpperCase());
     this.timerText.setColor(warn ? C.alert : C.lock);
     this.timerText.setX(CARD_W - PAD - this.timerText.width);
+    this.fitHeader();
   }
 
   setMultiplier(text: string): void {
     const left = `${this.problem.skill} · ${this.opts.chapterLabel}${text ? ` · ${text}` : ""}`;
     this.header.setText(left.toUpperCase());
+    this.fitHeader();
   }
 
   /** Re-open the same card for a RETRY: clears the result, keeps the problem. */

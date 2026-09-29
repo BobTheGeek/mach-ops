@@ -42,6 +42,20 @@ import { generate as rp63 } from "./rp/rp.6.3";
 import { generate as rp64 } from "./rp/rp.6.4";
 import { generate as rp65 } from "./rp/rp.6.5";
 import { generate as rp66 } from "./rp/rp.6.6";
+import { generate as sp71 } from "./sp/sp.7.1";
+import { generate as sp72 } from "./sp/sp.7.2";
+import { generate as sp73 } from "./sp/sp.7.3";
+import { generate as sp74 } from "./sp/sp.7.4";
+import { generate as sp75 } from "./sp/sp.7.5";
+import { generate as sp76 } from "./sp/sp.7.6";
+import { generate as sp81 } from "./sp/sp.8.1";
+import { generate as sp82 } from "./sp/sp.8.2";
+import { generate as sp83 } from "./sp/sp.8.3";
+import { generate as sp84 } from "./sp/sp.8.4";
+import { generate as h8spb4a } from "./h8/h8.sp.b4a";
+import { generate as h8spb4b } from "./h8/h8.sp.b4b";
+import { generate as h8spa1 } from "./h8/h8.sp.a1";
+import { generate as h8spa3 } from "./h8/h8.sp.a3";
 
 export const GENERATORS: Record<string, Generator> = {
   "ns.1.1": ns11,
@@ -84,6 +98,20 @@ export const GENERATORS: Record<string, Generator> = {
   "rp.6.4": rp64,
   "rp.6.5": rp65,
   "rp.6.6": rp66,
+  "sp.7.1": sp71,
+  "sp.7.2": sp72,
+  "sp.7.3": sp73,
+  "sp.7.4": sp74,
+  "sp.7.5": sp75,
+  "sp.7.6": sp76,
+  "sp.8.1": sp81,
+  "sp.8.2": sp82,
+  "sp.8.3": sp83,
+  "sp.8.4": sp84,
+  "h8.sp.b4a": h8spb4a,
+  "h8.sp.b4b": h8spb4b,
+  "h8.sp.a1": h8spa1,
+  "h8.sp.a3": h8spa3,
 };
 
 export const IMPLEMENTED_SKILLS = Object.keys(GENERATORS);

@@ -370,8 +370,121 @@ export const CH6_MISSIONS: Mission[] = [
   },
 ];
 
+/**
+ * Chapter 7, Probability and Statistical Measures. Six skills, so six sorties
+ * introduce one each; the boss unlocks the F/A-18E. The two Grade 8 honors
+ * probability skills hang off this chapter and ride in the mixed decks.
+ */
+export const CH7_MISSIONS: Mission[] = [
+  {
+    id: "ch7-01", n: 1, unitId: "ch7", name: "LONG ODDS", kind: "intercept",
+    brief: "Count the outcomes, count the ones you want, and put one over the other. Never above 1.",
+    focus: ["sp.7.1"], prep: 2, problems: 6, bogeys: 3, fuelSeconds: 240,
+  },
+  {
+    id: "ch7-02", n: 2, unitId: "ch7", name: "LIVE FIRE LOG", kind: "intercept",
+    brief: "What should happen against what did happen. A short run wanders; a long run settles.",
+    focus: ["sp.7.2"], prep: 2, problems: 6, bogeys: 3, fuelSeconds: 240,
+  },
+  {
+    id: "ch7-03", n: 3, unitId: "ch7", name: "CENTRE MASS", kind: "intercept",
+    brief: "Mean, median and mode. Sort the list before you go looking for the middle of it.",
+    focus: ["sp.7.3"], prep: 2, problems: 7, bogeys: 3, fuelSeconds: 260,
+  },
+  {
+    id: "ch7-04", n: 4, unitId: "ch7", name: "SCATTER CHECK", kind: "intercept",
+    brief: "Two squadrons can share a mean and be nothing alike. Range, quartiles, IQR.",
+    focus: ["sp.7.4"], prep: 2, problems: 7, bogeys: 3, fuelSeconds: 260,
+  },
+  {
+    id: "ch7-05", n: 5, unitId: "ch7", name: "ONE BAD SORTIE", kind: "intercept",
+    brief: "One abort drags the mean and leaves the median alone. Let the shape pick the measure.",
+    focus: ["sp.7.5"], prep: 3, problems: 8, bogeys: 3, fuelSeconds: 280,
+  },
+  {
+    id: "ch7-06", n: 6, unitId: "ch7", name: "FIVE NUMBERS", kind: "intercept",
+    brief: "A whole data set in five numbers and one box. Every section holds a quarter of it.",
+    focus: ["sp.7.6"], prep: 3, problems: 9, bogeys: 3, fuelSeconds: 300,
+  },
+  {
+    id: "ch7-07", n: 7, unitId: "ch7", name: "DATA SWEEP", kind: "patrol",
+    brief: "Centre and spread on the same data, read off tables, dot plots and box plots.",
+    focus: [], prep: 3, problems: 10, bogeys: 3, fuelSeconds: 300,
+  },
+  {
+    id: "ch7-08", n: 8, unitId: "ch7", name: "MIXED ODDS", kind: "patrol",
+    brief: "Everything Chapter 7 has taught you, in any order, with compound-event honors work in the deck.",
+    focus: [], prep: 3, problems: 11, bogeys: 3, fuelSeconds: 320,
+  },
+  {
+    id: "ch7-09", n: 9, unitId: "ch7", name: "PRE-QUAL", kind: "intercept",
+    brief: "Last check before the qualification. Transfer problems are in the deck.",
+    focus: [], prep: 3, problems: 12, bogeys: 3, fuelSeconds: 320,
+  },
+  {
+    id: "ch7-10", n: 10, unitId: "ch7", name: "HORNET QUALIFICATION", kind: "boss",
+    brief: "Unit 7 boss sortie. Mixed review of Chapters 1 to 7. Passing earns the F/A-18E.",
+    focus: [], prep: 3, problems: 15, bogeys: 3, fuelSeconds: 400,
+  },
+];
+
+/**
+ * Chapter 8, Statistics. Four skills and four introducing sorties, so the mixed
+ * half of the unit is longer than usual: the whole chapter is one argument,
+ * from how you take a sample to what you are allowed to conclude from it. The
+ * boss unlocks the F-117.
+ */
+export const CH8_MISSIONS: Mission[] = [
+  {
+    id: "ch8-01", n: 1, unitId: "ch8", name: "WHO ASKED", kind: "intercept",
+    brief: "You cannot ask everybody. A sample only counts if everyone had an equal chance of being in it.",
+    focus: ["sp.8.1"], prep: 2, problems: 6, bogeys: 3, fuelSeconds: 240,
+  },
+  {
+    id: "ch8-02", n: 2, unitId: "ch8", name: "SCALE UP", kind: "intercept",
+    brief: "Sixty missiles checked, two thousand four hundred in the depot. Scale the share, not the count.",
+    focus: ["sp.8.2"], prep: 2, problems: 7, bogeys: 3, fuelSeconds: 260,
+  },
+  {
+    id: "ch8-03", n: 3, unitId: "ch8", name: "SQUADRON MATCH", kind: "intercept",
+    brief: "A gap of three minutes means a lot or nothing at all. Measure it against the spread.",
+    focus: ["sp.8.3"], prep: 3, problems: 8, bogeys: 3, fuelSeconds: 280,
+  },
+  {
+    id: "ch8-04", n: 4, unitId: "ch8", name: "FLY-OFF", kind: "intercept",
+    brief: "Two samples, two box plots. Say what you found and say how sure you are.",
+    focus: ["sp.8.4"], prep: 3, problems: 9, bogeys: 3, fuelSeconds: 300,
+  },
+  {
+    id: "ch8-05", n: 5, unitId: "ch8", name: "TREND LINE", kind: "patrol",
+    brief: "Scatter plots and two-way tables. Honors work: association, outliers and shares.",
+    focus: [], prep: 3, problems: 10, bogeys: 3, fuelSeconds: 300,
+  },
+  {
+    id: "ch8-06", n: 6, unitId: "ch8", name: "SAMPLE RUN", kind: "patrol",
+    brief: "From a sampling method to a conclusion, on one set of data, without overclaiming.",
+    focus: [], prep: 3, problems: 11, bogeys: 3, fuelSeconds: 320,
+  },
+  {
+    id: "ch8-07", n: 7, unitId: "ch8", name: "MIXED STATS", kind: "patrol",
+    brief: "Everything Chapters 7 and 8 have taught you, in any order, with honors work in the deck.",
+    focus: [], prep: 3, problems: 12, bogeys: 3, fuelSeconds: 340,
+  },
+  {
+    id: "ch8-08", n: 8, unitId: "ch8", name: "PRE-QUAL", kind: "intercept",
+    brief: "Last check before the qualification. Transfer problems are in the deck.",
+    focus: [], prep: 3, problems: 13, bogeys: 3, fuelSeconds: 340,
+  },
+  {
+    id: "ch8-09", n: 9, unitId: "ch8", name: "NIGHTHAWK QUALIFICATION", kind: "boss",
+    brief: "Unit 8 boss sortie. Mixed review of Chapters 1 to 8. Passing earns the F-117.",
+    focus: [], prep: 3, problems: 16, bogeys: 3, fuelSeconds: 420,
+  },
+];
+
 export const MISSIONS: Mission[] = [
   ...CH1_MISSIONS, ...CH2_MISSIONS, ...CH3_MISSIONS, ...CH4_MISSIONS, ...CH5_MISSIONS, ...CH6_MISSIONS,
+  ...CH7_MISSIONS, ...CH8_MISSIONS,
 ];
 
 export function missionsFor(unitId: string): Mission[] {

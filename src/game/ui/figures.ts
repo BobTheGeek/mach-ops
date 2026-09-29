@@ -268,6 +268,260 @@ function doubleNumberLine(
 }
 
 /**
+ * MK-6 dot plot. One dot per value, stacked over its place on the axis, so the
+ * shape of the data is the thing you see before any number is computed.
+ *
+ * `rows` draws two stacked plots (parallel-dot-plots); `marks` draws the labelled
+ * quartile lines sp.7.4 reads Q1, the median and Q3 off.
+ */
+function dotPlot(scene: Phaser.Scene, spec: FigureSpec, w: number, h: number): Phaser.GameObjects.Container {
+  const objects: Phaser.GameObjects.GameObject[] = [];
+  const g = scene.add.graphics();
+  objects.push(g);
+
+  const rows = (spec.rows as unknown as number[][] | undefined)
+    ?? [((spec.values as number[] | undefined) ?? [])];
+  const names = (spec.labels as string[] | undefined) ?? [];
+  const all = rows.flat();
+  const min = (spec.min as number | undefined) ?? Math.min(0, ...all);
+  const max = (spec.max as number | undefined) ?? Math.max(1, ...all);
+
+  const padL = 30;
+  const padR = 16;
+  // A single plot given the whole 180 px slot sat on the floor of it with all
+  // the empty space above. The band is capped and the stack centred, so one
+  // plot reads as a figure rather than as something that fell to the bottom.
+  const bandH = Math.min(h / rows.length, 110);
+  const top = Math.max(0, (h - bandH * rows.length) / 2);
+  const at = (v: number): number => padL + ((v - min) / (max - min || 1)) * (w - padL - padR);
+
+  rows.forEach((values, row) => {
+    const axisY = top + bandH * (row + 1) - 22;
+    const colour = hex(row === 0 ? SERIES_A : SERIES_B);
+
+    g.lineStyle(STROKE.hud, hex(C.textMuted), 1);
+    g.lineBetween(padL, axisY, w - padR, axisY);
+
+    const step = stepFor(min, max);
+    const first = Math.ceil(min / step) * step;
+    for (let v = first; v <= max; v += step) {
+      g.lineStyle(STROKE.hairline, hex(C.gridLine), 1);
+      g.lineBetween(at(v), axisY - 4, at(v), axisY + 5);
+      const t = scene.add.text(0, axisY + 8, tick(v), {
+        fontFamily: FONT.mono, fontSize: `${SIZE.label}px`, color: C.textMuted,
+      });
+      t.setX(at(v) - t.width / 2);
+      objects.push(t);
+    }
+
+    // Stack repeats upward. Six deep is all the band holds; beyond that the
+    // column is capped and the count is written instead of drawn.
+    const counts = new Map<number, number>();
+    for (const v of [...values].sort((a, b) => a - b)) {
+      const n = (counts.get(v) ?? 0) + 1;
+      counts.set(v, n);
+      if (n <= 6) {
+        g.fillStyle(colour, 1);
+        g.fillCircle(at(v), axisY - 8 - (n - 1) * 11, 4);
+      }
+    }
+    for (const [v, n] of counts) {
+      if (n <= 6) continue;
+      const t = scene.add.text(0, axisY - 8 - 6 * 11 - 14, `x${n}`, {
+        fontFamily: FONT.mono, fontSize: `${SIZE.label}px`, color: C.textMuted,
+      });
+      t.setX(at(v) - t.width / 2);
+      objects.push(t);
+    }
+
+    const name = names[row];
+    if (name) {
+      const t = scene.add.text(2, top + bandH * row + 2, name, {
+        fontFamily: FONT.mono, fontSize: `${SIZE.label}px`, color: row === 0 ? SERIES_A : SERIES_B,
+      });
+      objects.push(t);
+    }
+
+    if (row === 0) {
+      for (const m of (spec.marks as { at: number; label: string }[] | undefined) ?? []) {
+        g.lineStyle(STROKE.hairline, hex(C.hud), 1);
+        g.lineBetween(at(m.at), axisY - bandH + 24, at(m.at), axisY);
+        const t = scene.add.text(0, axisY - bandH + 10, m.label, {
+          fontFamily: FONT.mono, fontSize: `${SIZE.label}px`, color: C.hud,
+        });
+        t.setX(at(m.at) - t.width / 2);
+        objects.push(t);
+      }
+    }
+  });
+
+  return scene.add.container(0, 0, objects);
+}
+
+/**
+ * MK-6 box plot. The five-number summary drawn to scale on a shared axis, so two
+ * plots can be compared directly. Each of the four sections holds about a quarter
+ * of the data however long it looks, which is sp.7.6's whole point.
+ */
+function boxPlot(scene: Phaser.Scene, spec: FigureSpec, w: number, h: number): Phaser.GameObjects.Container {
+  const objects: Phaser.GameObjects.GameObject[] = [];
+  const g = scene.add.graphics();
+  objects.push(g);
+
+  type Five = { min: number; q1: number; median: number; q3: number; max: number };
+  const plots = (spec.plots as Five[] | undefined) ?? [];
+  const names = (spec.labels as string[] | undefined) ?? [];
+  if (plots.length === 0) return scene.add.container(0, 0, objects);
+
+  const all = plots.flatMap((p) => [p.min, p.max]);
+  const min = (spec.min as number | undefined) ?? Math.min(...all);
+  const max = (spec.max as number | undefined) ?? Math.max(...all);
+
+  const padL = 20;
+  const padR = 16;
+  const at = (v: number): number => padL + ((v - min) / (max - min || 1)) * (w - padL - padR);
+
+  const axisY = h - 24;
+  g.lineStyle(STROKE.hud, hex(C.textMuted), 1);
+  g.lineBetween(padL, axisY, w - padR, axisY);
+  const step = stepFor(min, max);
+  for (let v = Math.ceil(min / step) * step; v <= max; v += step) {
+    g.lineStyle(STROKE.hairline, hex(C.gridLine), 1);
+    g.lineBetween(at(v), axisY - 4, at(v), axisY + 5);
+    const t = scene.add.text(0, axisY + 8, tick(v), {
+      fontFamily: FONT.mono, fontSize: `${SIZE.label}px`, color: C.textMuted,
+    });
+    t.setX(at(v) - t.width / 2);
+    objects.push(t);
+  }
+
+  const boxH = Math.min(34, (axisY - 16) / plots.length - 12);
+  // Centred in the space above the axis. Pinned to the top, a single plot left
+  // two thirds of the slot empty.
+  const stack = plots.length * boxH + (plots.length - 1) * 18;
+  const first = Math.max(8, (axisY - 10 - stack) / 2);
+  plots.forEach((p, i) => {
+    const top = first + i * (boxH + 18);
+    const mid = top + boxH / 2;
+    const colour = hex(i === 0 ? SERIES_A : SERIES_B);
+    g.lineStyle(STROKE.hud, colour, 1);
+
+    // whiskers
+    g.lineBetween(at(p.min), mid, at(p.q1), mid);
+    g.lineBetween(at(p.q3), mid, at(p.max), mid);
+    g.lineBetween(at(p.min), top + 6, at(p.min), top + boxH - 6);
+    g.lineBetween(at(p.max), top + 6, at(p.max), top + boxH - 6);
+
+    // box and median
+    g.strokeRect(at(p.q1), top, Math.max(1, at(p.q3) - at(p.q1)), boxH);
+    g.lineStyle(STROKE.hud, hex(C.hud), 1);
+    g.lineBetween(at(p.median), top, at(p.median), top + boxH);
+
+    const name = names[i];
+    if (name) {
+      const t = scene.add.text(2, top - 2, name, {
+        fontFamily: FONT.mono, fontSize: `${SIZE.label}px`, color: i === 0 ? SERIES_A : SERIES_B,
+      });
+      objects.push(t);
+    }
+  });
+
+  return scene.add.container(0, 0, objects);
+}
+
+/**
+ * MK-1 likelihood line: 0 to 1 with the five words written under it. A
+ * probability is only meaningful against those anchors, so they are always drawn.
+ */
+function likelihoodLine(scene: Phaser.Scene, spec: FigureSpec, w: number, h: number): Phaser.GameObjects.Container {
+  const objects: Phaser.GameObjects.GameObject[] = [];
+  const g = scene.add.graphics();
+  objects.push(g);
+
+  const padL = 24;
+  const padR = 24;
+  const y = h / 2;
+  const at = (p: number): number => padL + p * (w - padL - padR);
+
+  g.lineStyle(STROKE.hud, hex(C.textMuted), 1);
+  g.lineBetween(padL, y, w - padR, y);
+
+  // Ticks and their fractions across the top.
+  for (const [p, label] of [[0, "0"], [0.25, "1/4"], [0.5, "1/2"], [0.75, "3/4"], [1, "1"]] as [number, string][]) {
+    g.lineStyle(STROKE.hairline, hex(C.gridLine), 1);
+    g.lineBetween(at(p), y - 7, at(p), y + 7);
+    const t = scene.add.text(0, y - 26, label, {
+      fontFamily: FONT.mono, fontSize: `${SIZE.label}px`, color: C.text,
+    });
+    t.setX(at(p) - t.width / 2);
+    objects.push(t);
+  }
+
+  // The five words underneath, on two rows. Side by side they do not fit the
+  // card's figure column: "IMPOSSIBLE UNLIKELY EVEN LIKELY CERTAIN" came out as
+  // one unreadable run of overlapping text.
+  for (const [p, label, row] of [
+    [0, "IMPOSSIBLE", 0], [0.5, "EVEN", 0], [1, "CERTAIN", 0],
+    [0.25, "UNLIKELY", 1], [0.75, "LIKELY", 1],
+  ] as [number, string, number][]) {
+    const t = scene.add.text(0, y + 12 + row * 16, label, {
+      fontFamily: FONT.mono, fontSize: `${SIZE.label}px`, color: C.textMuted,
+    });
+    t.setX(Math.min(w - t.width - 2, Math.max(2, at(p) - t.width / 2)));
+    objects.push(t);
+  }
+
+  for (const p of (spec.points as number[] | undefined) ?? []) {
+    g.fillStyle(hex(SERIES_A), 1);
+    g.fillCircle(at(p), y, 6);
+  }
+
+  return scene.add.container(0, 0, objects);
+}
+
+/**
+ * MK-5 tree diagram. One column per stage, every branch drawn, because the
+ * count of leaves IS the sample space the player is asked to size.
+ */
+function treeDiagram(scene: Phaser.Scene, spec: FigureSpec, w: number, h: number): Phaser.GameObjects.Container {
+  const objects: Phaser.GameObjects.GameObject[] = [];
+  const g = scene.add.graphics();
+  objects.push(g);
+
+  const stages = (spec.stages as string[][] | undefined) ?? [];
+  if (stages.length === 0) return scene.add.container(0, 0, objects);
+
+  const colW = w / (stages.length + 1);
+  let parents: number[] = [h / 2];
+
+  stages.forEach((options, depth) => {
+    const x = colW * (depth + 1);
+    const next: number[] = [];
+    const leaves = parents.length * options.length;
+    const spacing = Math.max(12, (h - 16) / Math.max(1, leaves));
+
+    parents.forEach((py, pi) => {
+      options.forEach((opt, oi) => {
+        const index = pi * options.length + oi;
+        const y = 8 + spacing * (index + 0.5);
+        next.push(y);
+        g.lineStyle(STROKE.hairline, hex(depth === 0 ? SERIES_A : C.border), 1);
+        g.lineBetween(colW * depth + (depth === 0 ? 0 : 14), py, x, y);
+        if (leaves <= 12) {
+          const t = scene.add.text(x + 4, y - 8, opt, {
+            fontFamily: FONT.mono, fontSize: `${SIZE.label}px`, color: C.text,
+          });
+          objects.push(t);
+        }
+      });
+    });
+    parents = next;
+  });
+
+  return scene.add.container(0, 0, objects);
+}
+
+/**
  * Draw a figure into a w x h slot. Returns null when the figure has no renderer
  * yet, so the card simply leaves the slot out rather than showing a broken box.
  */
@@ -292,11 +546,34 @@ export function renderFigure(
     case "arrow-table":
     case "balance-table":
     case "fact-family":
+    case "frequency-table":
+    case "proportion-table":
+    case "outcome-table":
+    case "sample-space-list":
+    case "organized-list":
+    case "simulation":
       return table(scene, spec, w, h);
     case "coordinate-plane":
     case "table-graph-equation":
     case "y=kx":
+    case "scatter-plot":
+    case "scatter-plot-with-line":
+    case "scatter":
       return coordinatePlane(scene, spec, w, h);
+    case "dot-plot":
+    case "parallel-dot-plots":
+    case "dot-plot-of-sample-means":
+    case "quartile-marks":
+    case "skew-vs-symmetric":
+      return dotPlot(scene, spec, w, h);
+    case "box-plot":
+    case "side-by-side-box-plots":
+      return boxPlot(scene, spec, w, h);
+    case "likelihood-line":
+      return likelihoodLine(scene, spec, w, h);
+    case "tree-diagram":
+    case "tree":
+      return treeDiagram(scene, spec, w, h);
     case "double-number-line":
       return doubleNumberLine(scene, spec, w, h);
     default:
