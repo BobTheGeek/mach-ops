@@ -33,6 +33,11 @@ export const add = (a: Rational, b: Rational): Rational => rat(a.n * b.d + b.n *
 export const sub = (a: Rational, b: Rational): Rational => rat(a.n * b.d - b.n * a.d, a.d * b.d);
 export const mul = (a: Rational, b: Rational): Rational => rat(a.n * b.n, a.d * b.d);
 export const neg = (a: Rational): Rational => ({ n: -a.n, d: a.d });
+/** Exact division. Named div0 because dividing by zero throws rather than returning Infinity. */
+export function div0(a: Rational, b: Rational): Rational {
+  if (b.n === 0) throw new Error("division by zero");
+  return rat(a.n * b.d, a.d * b.n);
+}
 export const abs = (a: Rational): Rational => ({ n: Math.abs(a.n), d: a.d });
 export const toNumber = (a: Rational): number => a.n / a.d;
 export const eq = (a: Rational, b: Rational): boolean => a.n * b.d === b.n * a.d;

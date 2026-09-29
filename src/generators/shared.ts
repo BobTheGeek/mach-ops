@@ -12,10 +12,17 @@ import { eq, isRational, parseRational, rat, add, mul, toNumber } from "../engin
 export const OPTION_COUNT = 4;
 export const DISTRACTOR_COUNT = OPTION_COUNT - 1;
 
-/** A candidate wrong answer plus the registry error tag that produces it. */
+/**
+ * A candidate wrong answer plus the registry error tag that produces it.
+ *
+ * `value` may be a thunk. A recipe that only makes sense for some variants often
+ * cannot even be *computed* for the others — dividing by a quantity that is zero
+ * elsewhere, for instance — and an eager value would throw before `when` was
+ * ever read. A thunk is evaluated only after the guard passes.
+ */
 export interface Candidate {
   tag: string;
-  value: Answer;
+  value: Answer | (() => Answer);
   /** skip this recipe when it does not apply to the drawn variant */
   when?: boolean;
 }
@@ -59,9 +66,10 @@ export function buildChoice(
 
   for (const c of candidates) {
     if (c.when === false) continue;
-    if (sameAnswer(c.value, correct)) continue;
-    if (distractors.some((d) => sameAnswer(d.value, c.value))) continue;
-    distractors.push({ tag: c.tag, value: c.value });
+    const value = typeof c.value === "function" ? (c.value as () => Answer)() : c.value;
+    if (sameAnswer(value, correct)) continue;
+    if (distractors.some((d) => sameAnswer(d.value, value))) continue;
+    distractors.push({ tag: c.tag, value });
     if (distractors.length === wanted) break;
   }
 

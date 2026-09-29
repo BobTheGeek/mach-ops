@@ -19,6 +19,17 @@ import { generate as h8eea3 } from "./h8/h8.ee.a3";
 import { generate as h8eea4 } from "./h8/h8.ee.a4";
 import { generate as h8eec7a } from "./h8/h8.ee.c7a";
 import { generate as h8eec7b } from "./h8/h8.ee.c7b";
+import { generate as ee31 } from "./ee/ee.3.1";
+import { generate as ee32 } from "./ee/ee.3.2";
+import { generate as ee33 } from "./ee/ee.3.3";
+import { generate as ee34 } from "./ee/ee.3.4";
+import { generate as ee41 } from "./ee/ee.4.1";
+import { generate as ee42 } from "./ee/ee.4.2";
+import { generate as ee43 } from "./ee/ee.4.3";
+import { generate as ee44 } from "./ee/ee.4.4";
+import { generate as ee45 } from "./ee/ee.4.5";
+import { generate as ee46 } from "./ee/ee.4.6";
+import { generate as ee47 } from "./ee/ee.4.7";
 
 export const GENERATORS: Record<string, Generator> = {
   "ns.1.1": ns11,
@@ -38,6 +49,17 @@ export const GENERATORS: Record<string, Generator> = {
   "h8.ee.a4": h8eea4,
   "h8.ee.c7a": h8eec7a,
   "h8.ee.c7b": h8eec7b,
+  "ee.3.1": ee31,
+  "ee.3.2": ee32,
+  "ee.3.3": ee33,
+  "ee.3.4": ee34,
+  "ee.4.1": ee41,
+  "ee.4.2": ee42,
+  "ee.4.3": ee43,
+  "ee.4.4": ee44,
+  "ee.4.5": ee45,
+  "ee.4.6": ee46,
+  "ee.4.7": ee47,
 };
 
 export const IMPLEMENTED_SKILLS = Object.keys(GENERATORS);

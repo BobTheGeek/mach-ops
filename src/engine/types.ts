@@ -43,6 +43,8 @@ export type FigureKind =
   | "number-line" | "vertical-number-line" | "zero-pairs" | "debt-table"
   // Chapter 2
   | "velocity-time" | "fact-family" | "long-division" | "area-model" | "tape-diagram"
+  // Chapters 3-4
+  | "tiles" | "area-model-reverse" | "add-the-opposite" | "balance-table" | "test-point"
   // Q1 honors
   | "powers-of-ten-line" | "bracketing" | "expanded-form" | "place-value-shift"
   | "square-and-cube-models" | "algebra-trick-10x" | "vertical-format" | "equation"
