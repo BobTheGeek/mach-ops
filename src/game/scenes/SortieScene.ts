@@ -19,6 +19,7 @@ import { ProblemCard, CARD_W } from "../ui/problemCard";
 import { ManualPanel } from "../ui/manualPanel";
 import { gameState, now } from "../state";
 import { audio } from "../audio";
+import { music } from "../music";
 import { showTip } from "../ui/firstTimeTip";
 import { buildMission, type MissionProblem } from "../missionBuilder";
 import { recordAttempt, spendCredits, recordBests, streakMultiplier, HINT_COST } from "../save";
@@ -600,6 +601,7 @@ export class SortieScene extends Phaser.Scene {
   private bulletTimeIn(): void {
     audio.play("bulletTimeIn");
     audio.setDucked(true);
+    music.setDucked(true);
     this.worldDim = dim(this, 0);
     this.tweens.add({
       targets: this.worldDim,
@@ -924,6 +926,7 @@ export class SortieScene extends Phaser.Scene {
 
   private clearLock(): void {
     audio.setDucked(false);
+    music.setDucked(false);
     this.locked = false;
     this.card?.destroy();
     this.card = undefined;

@@ -434,6 +434,11 @@ function creditsView(): HTMLElement {
         el("a", { text: "uppbeat.io", attrs: { href: "https://uppbeat.io/music/tracks/sky-toes/impetus", rel: "noopener noreferrer", target: "_blank" } }),
         el("span", { text: " \u00b7 licence OJFNUUDTBBWBIT7T" }),
       ]),
+      el("li", {}, [
+        el("span", { text: "\u201cThe Big Adventure\u201d by Alex Besss \u00b7 " }),
+        el("a", { text: "uppbeat.io", attrs: { href: "https://uppbeat.io/music/tracks/alex-besss/the-big-adventure", rel: "noopener noreferrer", target: "_blank" } }),
+        el("span", { text: " \u00b7 licence 9XF0ZV0QO6YGL54K" }),
+      ]),
     ]),
 
     el("h3", { text: "Your data" }),

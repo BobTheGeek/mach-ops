@@ -10,6 +10,14 @@
 
 /** Music sits under the cues: it is a bed, not a voice. */
 export const MUSIC_GAIN = 0.45;
+/**
+ * How far the music drops while a problem card is up.
+ *
+ * Harder than the 50% the cue engine uses on itself. A question on a timer is
+ * the one moment that has to have his whole attention, so the music gets out of
+ * the way rather than merely stepping back.
+ */
+export const DUCK = 0.25;
 /** Fade on the way out, so leaving the title is not a hard cut. */
 export const FADE_MS = 600;
 
@@ -18,6 +26,7 @@ export class Music {
   /** the src currently loaded, so the same track is never restarted */
   private playing: string | null = null;
   private volume = 0.7;
+  private ducked = false;
 
   /**
    * Start the track, looping.
@@ -72,11 +81,18 @@ export class Music {
     if (this.el) this.el.volume = this.gain();
   }
 
+  /** Called on bullet-time in and out, alongside the cue engine's own duck. */
+  setDucked(ducked: boolean): void {
+    this.ducked = ducked;
+    if (this.el) this.el.volume = this.gain();
+  }
+
   /** Fade out and release the element, so nothing plays on into the next scene. */
   stop(): void {
     const el = this.el;
     this.el = null;
     this.playing = null;
+    this.ducked = false;
     if (!el) return;
 
     // The timer belongs to this element, not to the player: a track swap leaves
@@ -95,7 +111,8 @@ export class Music {
   }
 
   private gain(): number {
-    return Math.max(0, Math.min(1, this.volume)) * MUSIC_GAIN;
+    const v = Math.max(0, Math.min(1, this.volume)) * MUSIC_GAIN;
+    return this.ducked ? v * DUCK : v;
   }
 }
 
@@ -107,14 +124,15 @@ export class Music {
  */
 export const THEME = "/audio/theme.mp3";
 export const MENU = "/audio/menu.mp3";
+export const SORTIE = "/audio/sortie.mp3";
 
 /**
  * Which track each scene plays. A scene missing from this map plays nothing.
  *
- * The sortie is the omission that matters: it is where the maths happens, and a
- * bed of music under a timed question is one more thing competing for a
- * twelve-year-old's attention. Pause is left out for the same reason, since it
- * sits on top of a sortie.
+ * Pause shares the sortie's track rather than being left out. It is an overlay
+ * launched on top of a running sortie, so an entry of its own would stop the
+ * music on pause and never start it again: resuming does not re-create the
+ * sortie, so nothing would bring it back.
  */
 export const SCENE_TRACK: Readonly<Record<string, string>> = {
   Title: THEME,
@@ -131,6 +149,9 @@ export const SCENE_TRACK: Readonly<Record<string, string>> = {
   HowToPlay: MENU,
   Settings: MENU,
   FlightSchool: MENU,
+
+  Sortie: SORTIE,
+  Pause: SORTIE,
 };
 
 /** One per page load, like the audio engine. */

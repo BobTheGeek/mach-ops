@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { SCENE_TRACK, THEME, MENU, MUSIC_GAIN } from "../../src/game/music";
+import { SCENE_TRACK, THEME, MENU, SORTIE, MUSIC_GAIN, DUCK } from "../../src/game/music";
 
 /**
  * The scene keys the game registers, from src/main.ts. Kept here as a literal so
@@ -17,12 +17,15 @@ describe("which scene plays what", () => {
     expect(SCENE_TRACK.Title).toBe(THEME);
   });
 
-  // The point of the whole map: the sortie is where the maths happens, and a
-  // bed of music under a timed question is one more thing competing for
-  // attention. Pause sits on top of a sortie, so it stays quiet too.
-  it("leaves the sortie and its pause overlay silent", () => {
-    expect(SCENE_TRACK.Sortie).toBeUndefined();
-    expect(SCENE_TRACK.Pause).toBeUndefined();
+  it("flies the sortie on its own track", () => {
+    expect(SCENE_TRACK.Sortie).toBe(SORTIE);
+  });
+
+  // Pause is an overlay launched on top of a running sortie. Give it an entry of
+  // its own and the music stops on pause and never comes back, because resuming
+  // does not re-create the sortie.
+  it("keeps the sortie track running under the pause overlay", () => {
+    expect(SCENE_TRACK.Pause).toBe(SCENE_TRACK.Sortie);
   });
 
   it("plays the menu track on every other screen the player can reach", () => {
@@ -34,13 +37,21 @@ describe("which scene plays what", () => {
     for (const key of Object.keys(SCENE_TRACK)) expect(SCENES, key).toContain(key);
   });
 
-  it("points both tracks at files, not at each other", () => {
-    expect(THEME).not.toBe(MENU);
-    for (const src of [THEME, MENU]) expect(src).toMatch(/^\/audio\/.+\.mp3$/);
+  it("points the three tracks at three different files", () => {
+    const tracks = [THEME, MENU, SORTIE];
+    expect(new Set(tracks).size).toBe(3);
+    for (const src of tracks) expect(src).toMatch(/^\/audio\/.+\.mp3$/);
   });
 
   it("mixes music under the cues rather than over them", () => {
     expect(MUSIC_GAIN).toBeGreaterThan(0);
     expect(MUSIC_GAIN).toBeLessThan(1);
+  });
+
+  // A question on a timer has to have his whole attention, so the music gets out
+  // of the way rather than merely stepping back.
+  it("ducks hard under a problem card", () => {
+    expect(DUCK).toBeGreaterThan(0);
+    expect(DUCK).toBeLessThan(0.5);
   });
 });
