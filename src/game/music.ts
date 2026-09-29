@@ -76,6 +76,11 @@ export class Music {
     void this.el.play().catch(() => { /* still refused; the next gesture tries */ });
   }
 
+  /** Is a track actually sounding right now? False while a browser holds it. */
+  isPlaying(): boolean {
+    return this.el !== null && !this.el.paused;
+  }
+
   setVolume(volume: number): void {
     this.volume = volume;
     if (this.el) this.el.volume = this.gain();

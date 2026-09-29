@@ -4,6 +4,7 @@ import Phaser from "phaser";
 import { C, N, TEXT, CANVAS, SCREEN_PAD, hex, STROKE } from "../../ui/tokens";
 import { button, capsLabel } from "../ui/kit";
 import { gameState } from "../state";
+import { music } from "../music";
 
 export class TitleScene extends Phaser.Scene {
   constructor() {
@@ -66,6 +67,38 @@ export class TitleScene extends Phaser.Scene {
     const hint = capsLabel(this, SCREEN_PAD + 28, CANVAS.height - 52, "ENTER · START", C.textMuted);
     void hint;
 
+    this.soundPrompt();
+
     this.input.keyboard?.once("keydown-ENTER", go);
+  }
+
+  /**
+   * Ask for the click that lets the music start.
+   *
+   * A browser will not play audio until the page has been touched, and the only
+   * things to touch on this screen are buttons that leave it. So the one click a
+   * pilot makes here both unblocks the theme and ends the screen it plays on: he
+   * never heard it. This gives him somewhere to click that is not a door.
+   *
+   * It only appears when the music really is being held, so a return visit —
+   * where the browser already trusts the page — shows nothing.
+   */
+  private soundPrompt(): void {
+    if (music.isPlaying()) return;
+
+    const label = capsLabel(this, SCREEN_PAD + 28, CANVAS.height - 80, "♪  CLICK ANYWHERE FOR SOUND", C.lock);
+    this.tweens.add({
+      targets: label, alpha: 0.35, duration: 900, yoyo: true, repeat: -1, ease: "Sine.easeInOut",
+    });
+
+    // Anywhere, including the buttons: pointerdown lands before the button's
+    // pointerup, so pressing ENTER HANGAR still starts the music on the way out.
+    const wake = (): void => {
+      music.resume();
+      this.tweens.killTweensOf(label);
+      label.destroy();
+    };
+    this.input.once("pointerdown", wake);
+    this.input.keyboard?.once("keydown", wake);
   }
 }
