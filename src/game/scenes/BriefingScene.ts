@@ -28,6 +28,17 @@ export const START_SHIELDS = 0.5;
 export const START_MISSILES = 2;
 export const MAX_MISSILES = 6;
 
+/** The left column: the loadout panel and the tactical map beneath it. */
+const PANEL_W = 300;
+/**
+ * 300, not the 220 it was. The note under the pips carries a worked step when
+ * the pilot asks for a hint; at 220 it ran out through the right edge on one
+ * line. The longest first step any generator writes is g.10.4's, which wraps to
+ * five lines ending 376 px down, so the panel has to reach past that.
+ * tests/generators/hintLength.test.ts keeps it from growing.
+ */
+const PANEL_H = 300;
+
 /** What a correct prep answer fills. */
 const RESOURCES = ["fuel", "shields", "missiles"] as const;
 type Resource = (typeof RESOURCES)[number];
@@ -133,7 +144,10 @@ export class BriefingScene extends Phaser.Scene {
     // resources panel on the left
     const px = SCREEN_PAD;
     const py = 90;
-    panel(this, px, py, 300, 220, { fill: C.panel });
+    // 280, not 220: the note under the pips carries a worked step when the pilot
+    // asks for a hint, and a sentence needs three lines to land inside the panel
+    // rather than running out through its right edge.
+    panel(this, px, py, PANEL_W, PANEL_H, { fill: C.panel });
     const rl = capsLabel(this, px + 16, py + 14, "LOADOUT", C.hud);
     void rl;
 
@@ -143,7 +157,9 @@ export class BriefingScene extends Phaser.Scene {
     void pl;
     this.pips = missilePips(this, px + 16, py + 172, MAX_MISSILES);
 
-    this.fillNote = this.add.text(px + 16, py + 196, "", { ...TEXT.label, color: C.hud });
+    this.fillNote = this.add.text(px + 16, py + 196, "", {
+      ...TEXT.label, color: C.hud, wordWrap: { width: PANEL_W - 32 }, lineSpacing: 3,
+    });
 
     // Briefs run to two lines. The gap between the rule at y=58 and the card
     // only fits one, so the second line was being drawn under the card edge.
@@ -154,17 +170,17 @@ export class BriefingScene extends Phaser.Scene {
     this.refreshResources();
 
     // tactical map placeholder: the sortie's sea grid, scaled down
-    const mapY = py + 240;
-    panel(this, px, mapY, 300, 210, { fill: C.sea });
+    const mapY = py + PANEL_H + 20;
+    panel(this, px, mapY, PANEL_W, 210, { fill: C.sea });
     const g = this.add.graphics();
     g.lineStyle(STROKE.hairline, hex(C.seaGrid), 1);
-    for (let x = px; x <= px + 300; x += 32) g.lineBetween(x, mapY, x, mapY + 210);
-    for (let y = mapY; y <= mapY + 210; y += 32) g.lineBetween(px, y, px + 300, y);
+    for (let x = px; x <= px + PANEL_W; x += 32) g.lineBetween(x, mapY, x, mapY + 210);
+    for (let y = mapY; y <= mapY + 210; y += 32) g.lineBetween(px, y, px + PANEL_W, y);
     if (this.textures.exists("t38-top")) {
-      this.add.image(px + 150, mapY + 150, "t38-top").setDisplaySize(34, 48);
+      this.add.image(px + PANEL_W / 2, mapY + 150, "t38-top").setDisplaySize(34, 48);
     }
     for (const [dx, dy] of [[-70, -60], [50, -80], [80, -20]] as const) {
-      this.add.image(px + 150 + dx, mapY + 150 + dy, "bogey1-top").setDisplaySize(20, 28).setTint(hex(C.bogey));
+      this.add.image(px + PANEL_W / 2 + dx, mapY + 150 + dy, "bogey1-top").setDisplaySize(20, 28).setTint(hex(C.bogey));
     }
     const ml = capsLabel(this, px + 12, mapY + 10, "TACTICAL", C.textMuted, TRACK.readout);
     void ml;
@@ -177,7 +193,7 @@ export class BriefingScene extends Phaser.Scene {
   }
 
   private get cardX(): number {
-    return SCREEN_PAD + 300 + 32;
+    return SCREEN_PAD + PANEL_W + 32;
   }
 
   private showPrep(): void {
@@ -245,13 +261,13 @@ export class BriefingScene extends Phaser.Scene {
       if (resource === "shields") this.shields = Math.min(1, this.shields + 0.25);
       if (resource === "missiles") this.missiles = Math.min(MAX_MISSILES, this.missiles + 2);
       this.refreshResources();
-      this.fillNote.setText(FILL[resource]);
+      this.setNote(FILL[resource], C.hud);
       this.index += 1;
       this.time.delayedCall(700, () => this.showPrep());
     } else {
       audio.play("miss");
       // Wrong answers cost nothing here; retry freely.
-      this.fillNote.setText("");
+      this.setNote("", C.hud);
       this.time.delayedCall(900, () => this.card?.unlock());
     }
   }
@@ -271,8 +287,17 @@ export class BriefingScene extends Phaser.Scene {
 
   private hint(mp: MissionProblem): void {
     // Free in briefings: show the first worked step.
-    this.fillNote.setColor(C.lock);
-    this.fillNote.setText(mp.problem.worked[0]?.text ?? "");
+    this.setNote(mp.problem.worked[0]?.text ?? "", C.lock);
+  }
+
+  /**
+   * The note under the pips, which is a resource award most of the time and a
+   * worked step when the pilot asks for a hint. Always set the colour with the
+   * text: the amber of a hint used to stay on for the rest of the briefing.
+   */
+  private setNote(text: string, color: string): void {
+    this.fillNote.setColor(color);
+    this.fillNote.setText(text);
   }
 
   private launchButton(): void {
