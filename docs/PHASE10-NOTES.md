@@ -123,6 +123,37 @@ you missed brings you back to it.
 and a half seconds; a tap of the key swung the nose forty degrees. It is 75 now,
 about five seconds round.
 
+### Forward is forward
+
+The first pass at this kept the old model, where the world moved along a full
+heading vector. That is correct for a map and wrong for a cockpit: at heading
+180 the ground ran backwards up the screen and the aircraft appeared to fly in
+reverse down its own track. Nothing an aircraft does looks like that.
+
+The camera rides with the aircraft now. The world always comes at you at SPEED,
+and the bank adds a sideways slide of up to 150 px/s. Turning moves you across
+the world; it never moves you back along it. The heading on the HUD is a
+compass READOUT, not the direction of travel, and it is the only place the turn
+shows as a number.
+
+## The kill had no weight
+
+A right answer shot a bogey down and it simply vanished from the screen. That is
+the one moment in a sortie that has earned some noise.
+
+`splash()` in the sortie now puts a flash, an expanding ring and eight pieces of
+debris where the bogey was, and shakes the camera for a sixth of a second. The
+debris flies on a fixed ring of angles rather than a random scatter, so a
+replayed sortie looks the same twice. Everything is tweened and destroys itself,
+so a long sortie leaves nothing behind.
+
+`bogeySplash` joins the other cues in `design/tokens.json` and is synthesised
+like all of them: a crack, a debris burst, and a thud falling away underneath.
+A Chromebook that downloaded no assets still hears the kill.
+
+Reduced motion keeps the flash and the sound and drops the ring, the debris and
+the shake.
+
 ## The locked airframes were invisible
 
 A locked row on the fleet spec sheet drew its silhouette at 0.35 alpha. The

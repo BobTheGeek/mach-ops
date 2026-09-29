@@ -164,6 +164,16 @@ export class AudioEngine {
         this.tone(1320, 1980, 300, "sine", { decay: 0.3, peak: 0.10 });
         this.haptic([20, 40, 20]);
         break;
+      case "bogeySplash": {                     // debris burst + low thud, 600 ms
+        // Three layers: the crack of it going, the debris, and the thud that
+        // falls away underneath. Synthesised like every other cue, so a
+        // Chromebook that downloaded nothing still hears the kill.
+        this.tone(900, 180, 90, "square", { decay: 0.09, peak: 0.18 });
+        this.noise(600, 2600, 180, 0.16);
+        this.tone(140, 50, 600, "sawtooth", { decay: 0.6, peak: 0.2 });
+        this.haptic(120);
+        break;
+      }
       case "miss":                              // flat buzz 180 Hz, 200 ms
         this.tone(180, 180, 200, "sawtooth", { decay: 0.2, peak: 0.18 });
         this.haptic(60);

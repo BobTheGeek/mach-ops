@@ -43,11 +43,16 @@ const PLAYER_POS = { x: 592, y: 450 };
 
 /** Flight model. Arcade, not a simulator: the stick steers a heading and the
  *  aircraft always moves forward, which is what an intercept needs. */
-// 140 was a full circle in two and a half seconds: a tap swung the nose forty
-// degrees and aiming at a bogey was guesswork. This is about five seconds round,
-// which is still quick and can actually be pointed at something.
+/**
+ * How fast the compass swings while the stick is over. The heading is a
+ * READOUT, not the direction of travel: the camera rides with the aircraft, so
+ * forward is always up the screen and the turn shows as the world sliding.
+ */
 const TURN_RATE = 75;       // degrees per second at full deflection
+/** Forward, always. The aircraft never flies backwards down its own track. */
 const SPEED = 190;          // pixels per second
+/** Sideways, at full bank. Enough to line up on a bogey without overshooting. */
+const STRAFE = 150;         // pixels per second
 /** How far the sprite rolls at full deflection. A cue, not part of the model. */
 const BANK_ANGLE = 22;      // degrees
 /** How much of its wingspan the airframe loses when rolled right over. */
@@ -311,9 +316,12 @@ export class SortieScene extends Phaser.Scene {
     this.player.setAngle(this.bank * BANK_ANGLE);
     this.player.setDisplaySize(PLAYER_W * (1 - BANK_FORESHORTEN * Math.abs(this.bank)), PLAYER_H);
 
-    const rad = Phaser.Math.DegToRad(this.heading);
-    const dx = -Math.sin(rad) * SPEED * dt;
-    const dy = Math.cos(rad) * SPEED * dt;
+    // The world always comes at you: forward is forward, and a bank slides it
+    // sideways. Steering used to rotate a full heading vector, which meant that
+    // at 180 degrees the ground ran backwards up the screen and the aircraft
+    // appeared to fly in reverse. It cannot do that now.
+    const dy = SPEED * dt;
+    const dx = -this.bank * STRAFE * dt;
 
     // The ground and the clouds take the same delta the bogeys do, so the whole
     // world swings together when the stick goes over.
@@ -355,8 +363,9 @@ export class SortieScene extends Phaser.Scene {
     } else {
       this.tgtOut.set("— NM");
     }
-    // Altitude drifts with the turn, so the ALT readout is live rather than a prop.
-    const alt = 12400 + Math.round(Math.cos(rad) * 600);
+    // Altitude drifts with the turn, so the ALT readout is live rather than a
+    // prop: a banked aircraft loses a little height.
+    const alt = 12400 - Math.round(Math.abs(this.bank) * 500);
     this.altOut.set(`${alt.toLocaleString("en-US")} FT`);
   }
 
@@ -752,6 +761,7 @@ export class SortieScene extends Phaser.Scene {
     const b = this.bogeys[this.lockedBogey];
     if (b) {
       b.alive = false;
+      this.splash(b.image.x, b.image.y);
       b.image.setVisible(false);
       this.missiles = Math.max(0, this.missiles - 1);
     }
@@ -761,6 +771,57 @@ export class SortieScene extends Phaser.Scene {
     if (this.index >= this.queue.length || this.bogeys.every((x) => !x.alive)) {
       this.endSortie("ALL TARGETS ENGAGED");
     }
+  }
+
+  /**
+   * The kill. A right answer shot a bogey down and it simply vanished, which
+   * is the one moment in the sortie that has earned some noise.
+   *
+   * A flash, a ring going out, and debris thrown clear. All of it tweened and
+   * self-destructing, so nothing is left behind to leak across a long sortie.
+   * Reduced motion gets the flash and the sound and none of the movement.
+   */
+  private splash(x: number, y: number): void {
+    audio.play("bogeySplash");
+
+    const flash = this.add.circle(x, y, 34, hex(C.alert), 0.95);
+    flash.setDepth(50);
+    this.tweens.add({
+      targets: flash, alpha: 0, scale: 2.2, duration: 320, ease: "Quad.easeOut",
+      onComplete: () => flash.destroy(),
+    });
+
+    if (gameState.file.settings.reducedMotion) return;
+
+    const ring = this.add.circle(x, y, 20);
+    ring.setStrokeStyle(STROKE.hud, hex(C.lock), 0.9);
+    ring.setDepth(50);
+    this.tweens.add({
+      targets: ring, alpha: 0, scale: 4, duration: 460, ease: "Cubic.easeOut",
+      onComplete: () => ring.destroy(),
+    });
+
+    // Debris on a fixed ring of angles rather than a random scatter, so a
+    // replayed sortie looks the same twice. Eight is enough to read as pieces.
+    for (let i = 0; i < 8; i++) {
+      const angle = (Math.PI * 2 * i) / 8;
+      const size = 3 + (i % 3) * 2;
+      const shard = this.add.rectangle(x, y, size, size * 2, hex(i % 2 ? C.lock : C.alert));
+      shard.setDepth(50);
+      const reach = 70 + (i % 4) * 22;
+      this.tweens.add({
+        targets: shard,
+        x: x + Math.cos(angle) * reach,
+        y: y + Math.sin(angle) * reach,
+        angle: 180 + i * 40,
+        alpha: 0,
+        duration: 520,
+        ease: "Quad.easeOut",
+        onComplete: () => shard.destroy(),
+      });
+    }
+
+    this.cameras.main.shake(160, 0.004);
   }
 
   private clearLock(): void {
