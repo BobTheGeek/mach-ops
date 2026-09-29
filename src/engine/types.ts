@@ -156,6 +156,15 @@ export interface Attempt {
   context: AttemptContext;
   /** distractor tag the student picked, e.g. "double-neg" */
   errorTag?: string;
+  /**
+   * Was this the first answer offered for this problem, rather than a retry?
+   *
+   * design/README.md wants first-try accuracy, and it cannot be recovered after
+   * the fact: a retry used to be logged exactly like any other answer. Absent on
+   * anything logged before this field existed, which is why it is optional —
+   * `undefined` means "not recorded", not "was a retry".
+   */
+  firstTry?: boolean;
   /** epoch ms */
   ts: number;
 }

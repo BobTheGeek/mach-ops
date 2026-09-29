@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
-  attemptsOf, topError, heatOf, chapterOf, buildRow, buildReport, allRows,
+  attemptsOf, topError, heatOf, chapterOf, buildRow, buildReport, allRows, accuracyOf,
   summarise, csvCell, toCsv, CSV_HEADER, scheduleRows, activityByDay, localDay,
   STRONG_AT, FLAGGED_BELOW,
   type ReportInput, type RegistrySkillLite, type ChapterLite,
@@ -106,7 +106,7 @@ describe("buildRow", () => {
     expect(row.heat).toBe("unseen");
   });
 
-  it("counts attempts and rounds accuracy to a whole percent", () => {
+  it("falls back to all attempts when nothing carries a first-try flag", () => {
     const log = [
       attempt("ns.1.1", true), attempt("ns.1.1", true), attempt("ns.1.1", false),
     ];
@@ -114,7 +114,25 @@ describe("buildRow", () => {
     expect(row.attempts).toBe(3);
     expect(row.correct).toBe(2);
     expect(row.accuracy).toBe(67);
+    expect(row.basis).toBe("all-attempts");
     expect(row.heat).toBe("flagged");
+  });
+
+  it("scores on first tries alone once the log records them", () => {
+    // Right first time, then wrong twice on retries of other problems.
+    const log = [
+      attempt("ns.1.1", true, { firstTry: true }),
+      attempt("ns.1.1", false, { firstTry: false }),
+      attempt("ns.1.1", false, { firstTry: false }),
+    ];
+    const row = buildRow(input(withLog(log)), skill, true);
+    expect(row.attempts).toBe(3);
+    expect(row.correct).toBe(1);
+    expect(row.firstTries).toBe(1);
+    expect(row.firstTryCorrect).toBe(1);
+    expect(row.accuracy).toBe(100);
+    expect(row.basis).toBe("first-try");
+    expect(row.heat).toBe("strong");
   });
 
   it("takes lastSeen from the most recent attempt, not the last in the array", () => {
@@ -273,5 +291,69 @@ describe("activityByDay", () => {
     // 11pm local on the 1st is the 2nd in UTC for a negative offset.
     const late = new Date(2026, 8, 1, 23, 30, 0).getTime();
     expect(localDay(late)).toBe("2026-09-01");
+  });
+});
+
+describe("accuracyOf", () => {
+  it("has no answer and no basis for an empty log", () => {
+    expect(accuracyOf([])).toEqual({
+      accuracy: null, basis: null, firstTries: 0, firstTryCorrect: 0,
+    });
+  });
+
+  it("counts every answer when none is flagged, and says so", () => {
+    const r = accuracyOf([attempt("x", true), attempt("x", false)]);
+    expect(r).toEqual({ accuracy: 50, basis: "all-attempts", firstTries: 0, firstTryCorrect: 0 });
+  });
+
+  it("counts only first tries when any are flagged", () => {
+    const r = accuracyOf([
+      attempt("x", true, { firstTry: true }),
+      attempt("x", false, { firstTry: true }),
+      attempt("x", true, { firstTry: false }),
+      attempt("x", true, { firstTry: false }),
+    ]);
+    expect(r.basis).toBe("first-try");
+    expect(r.firstTries).toBe(2);
+    expect(r.accuracy).toBe(50);
+  });
+
+  // Mixing the two would average a strict measure with a lenient one and call
+  // the result either name. A skill is scored one way or the other, never both.
+  it("does not mix the two readings on a half-migrated skill", () => {
+    const r = accuracyOf([
+      attempt("x", false),                       // logged before the flag existed
+      attempt("x", true, { firstTry: true }),
+    ]);
+    expect(r.basis).toBe("first-try");
+    expect(r.firstTries).toBe(1);
+    expect(r.accuracy).toBe(100);
+  });
+
+  it("treats a missing flag as unrecorded, not as a retry", () => {
+    // If undefined counted as firstTry:false, this would report no first tries.
+    const r = accuracyOf([attempt("x", true), attempt("x", true)]);
+    expect(r.accuracy).toBe(100);
+    expect(r.basis).toBe("all-attempts");
+  });
+});
+
+describe("the summary uses the same rule as a row", () => {
+  it("reports first-try accuracy and names the basis", () => {
+    const file = withLog([
+      attempt("ns.1.1", true, { firstTry: true }),
+      attempt("ns.1.1", false, { firstTry: false }),
+    ]);
+    const s = summarise(buildReport(input(file)), file);
+    expect(s.accuracy).toBe(100);
+    expect(s.basis).toBe("first-try");
+    expect(s.attempts).toBe(2);
+  });
+
+  it("names the fallback on a save written before the flag existed", () => {
+    const file = withLog([attempt("ns.1.1", true), attempt("ns.1.2", false)]);
+    const s = summarise(buildReport(input(file)), file);
+    expect(s.accuracy).toBe(50);
+    expect(s.basis).toBe("all-attempts");
   });
 });

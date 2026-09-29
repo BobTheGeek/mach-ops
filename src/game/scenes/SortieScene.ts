@@ -630,6 +630,9 @@ export class SortieScene extends Phaser.Scene {
       hintsUsed: this.hintUsed ? 1 : 0,
       context: mp.item.transfer ? "transfer" : "sortie",
       ...(errorTag ? { errorTag } : {}),
+      // A retry on the same lock is not a first try. The hint is recorded
+      // separately in hintsUsed, so taking one does not make this a retry.
+      firstTry: !this.attemptedThisLock,
       ts: Date.now(),
     };
 

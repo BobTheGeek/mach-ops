@@ -100,7 +100,17 @@ function skillRow(row: SkillRow): HTMLElement {
 function heatTitle(row: SkillRow): string {
   if (row.heat === "unavailable") return "This chapter has not opened yet";
   if (row.attempts === 0) return "Not attempted yet";
-  return `${row.correct} of ${row.attempts} correct · ${row.status}`;
+  const basis = row.basis === "first-try"
+    ? `${row.firstTryCorrect} of ${row.firstTries} first tries correct`
+    : `${row.correct} of ${row.attempts} correct, counting retries`;
+  return `${basis} · ${row.attempts} answers in total · ${row.status}`;
+}
+
+/** Say which answers the percentages came from, rather than let it be assumed. */
+function basisNote(basis: "first-try" | "all-attempts" | null): string {
+  if (basis === "first-try") return "Percentages are first-try accuracy: retries after a wrong answer are not counted.";
+  if (basis === "all-attempts") return "Percentages count every answer, including retries. These sorties were flown before first tries were recorded.";
+  return "Nothing answered yet.";
 }
 
 function heatView(): HTMLElement {
@@ -113,14 +123,17 @@ function heatView(): HTMLElement {
       stat("Flagged", String(sum.flagged)),
       stat("Not seen yet", String(sum.unseen)),
       stat("Answers logged", String(sum.attempts)),
-      stat("Accuracy", pct(sum.accuracy)),
+      stat(sum.basis === "all-attempts" ? "Accuracy (all answers)" : "First-try accuracy", pct(sum.accuracy)),
       stat("Last played", dateOf(sum.lastSeen)),
     ]),
   ]);
 
   const body = el("div", { class: "d-card" }, [
     el("div", { class: "d-card-head" }, [
-      el("div", { class: "d-card-title", text: `Skill heat map · ${sum.total} sub-skills` }),
+      el("div", {}, [
+        el("div", { class: "d-card-title", text: `Skill heat map · ${sum.total} sub-skills` }),
+        el("div", { class: "d-note", text: basisNote(sum.basis) }),
+      ]),
       el("div", { class: "d-legend" }, [
         legend("strong", `Strong ${STRONG_AT}%+`),
         legend("steady", `Steady ${FLAGGED_BELOW}–${STRONG_AT - 1}%`),

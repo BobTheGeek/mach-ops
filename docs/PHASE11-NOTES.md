@@ -36,17 +36,32 @@ not download Phaser.
 and the schedule table all read from it, so they agree by construction and all
 three are tested without a browser. `src/dad/main.ts` only draws.
 
-## Accuracy, not first-try accuracy
+## First-try accuracy
 
-`design/README.md` asks for "first-try accuracy history". An `Attempt` carries no
-first-try flag: a retry after a wrong answer is logged exactly like any other
-answer, so the log cannot distinguish them after the fact.
+`design/README.md` asks for "first-try accuracy history", and the log could not
+support it: a retry after a wrong answer was written exactly like any other
+answer.
 
-The heat map therefore shows accuracy across every attempt on a skill, which is
-the harsher of the two readings. `STRONG_AT` and `FLAGGED_BELOW` keep the
-design's 85 / 70 thresholds. Recording a first-try flag on the Attempt would make
-the stricter reading possible for future sorties, but it cannot be recovered for
-answers already logged.
+`Attempt.firstTry` records it now. The sortie already tracked `attemptedThisLock`
+for the intel-card rule, so the flag is `!attemptedThisLock` — taking a hint does
+not make an answer a retry, because the hint is recorded separately in
+`hintsUsed`. Every briefing answer is a first try, since a prep card is asked
+once and moves on whether it was right or wrong.
+
+The field is optional on purpose. Anything logged before it existed has no flag,
+and `undefined` there means "not recorded", not "was a retry".
+
+`accuracyOf` therefore picks one reading per skill and names it:
+
+- any answer carrying the flag → first-try accuracy, counting only those
+- none → accuracy across every attempt, labelled as such on the page
+
+It is all-or-nothing per skill rather than a blend, because averaging a strict
+measure with a lenient one produces a number that is neither. The page says which
+it is showing, in the summary tile and under the heat map title.
+
+This is a harsher number, which is the point. A skill answered wrong and then
+right on the retry now reads 0%, not 50%.
 
 ## The error tag is the useful column
 
@@ -71,6 +86,9 @@ Left out rather than faked.
 ego-browser, against `pnpm dev`, on a save seeded with 141 answers across 18
 skills at deliberately mixed accuracy:
 
+- A sortie flown with one answer deliberately wrong then right on the retry:
+  the log recorded `ns.1.5 N ft=true` then `ns.1.5 Y ft=false`, and the heat map
+  scored that skill 0%, not 50%
 - Heat map with all five heat states, honors badges, collapse and honors-only
 - Forcing Ch 4 open wrote `{"ch4":true}` to the save and the pill read
   `Forced open` with a `Clear` beside it

@@ -17,17 +17,20 @@ import type { Attempt, SystemsStatus } from "../engine/types";
  */
 export type Heat = "strong" | "steady" | "flagged" | "unseen" | "unavailable";
 
-/**
- * Percent accuracy at or above which a skill reads as strong.
- *
- * design/README.md calls this first-try accuracy, but an Attempt carries no
- * first-try flag: a retry after a wrong answer is logged the same as any other
- * answer. So this is accuracy across every attempt on the skill, which is the
- * harsher of the two readings and the only one the log can actually support.
- */
+/** Percent first-try accuracy at or above which a skill reads as strong. */
 export const STRONG_AT = 85;
 /** Below this it is flagged for attention. */
 export const FLAGGED_BELOW = 70;
+
+/**
+ * Which answers the headline accuracy was computed from.
+ *
+ * design/README.md asks for first-try accuracy, and `Attempt.firstTry` records
+ * it — but only for answers logged after that field existed. A save from before
+ * then falls back to accuracy across every attempt, and says so rather than
+ * quietly passing one off as the other.
+ */
+export type AccuracyBasis = "first-try" | "all-attempts";
 
 export interface SkillRow {
   id: string;
@@ -39,8 +42,13 @@ export interface SkillRow {
   status: SystemsStatus;
   attempts: number;
   correct: number;
+  /** answers flagged as a first try, and how many of those were right */
+  firstTries: number;
+  firstTryCorrect: number;
   /** 0..100, or null when the skill has never been attempted */
   accuracy: number | null;
+  /** null exactly when accuracy is null */
+  basis: AccuracyBasis | null;
   /** epoch ms of the most recent attempt, or null */
   lastSeen: number | null;
   /** the error tag picked most often, and how often */
@@ -127,12 +135,47 @@ export interface ReportInput {
   now: number;
 }
 
+/**
+ * First-try accuracy where the log records it, all-attempt accuracy otherwise.
+ *
+ * Preferring first-try even when only some answers carry the flag would mix two
+ * different measures in one number, so the choice is all-or-nothing per skill.
+ */
+export function accuracyOf(attempts: readonly Attempt[]): {
+  accuracy: number | null;
+  basis: AccuracyBasis | null;
+  firstTries: number;
+  firstTryCorrect: number;
+} {
+  const firsts = attempts.filter((a) => a.firstTry === true);
+  const firstTryCorrect = firsts.filter((a) => a.correct).length;
+
+  if (firsts.length > 0) {
+    return {
+      accuracy: Math.round((firstTryCorrect / firsts.length) * 100),
+      basis: "first-try",
+      firstTries: firsts.length,
+      firstTryCorrect,
+    };
+  }
+  if (attempts.length === 0) {
+    return { accuracy: null, basis: null, firstTries: 0, firstTryCorrect: 0 };
+  }
+  const correct = attempts.filter((a) => a.correct).length;
+  return {
+    accuracy: Math.round((correct / attempts.length) * 100),
+    basis: "all-attempts",
+    firstTries: 0,
+    firstTryCorrect: 0,
+  };
+}
+
 export function buildRow(input: ReportInput, skill: RegistrySkillLite, open: boolean): SkillRow {
   const attempts = attemptsOf(input.file.log, skill.id);
   const correct = attempts.filter((a) => a.correct).length;
   const chapter = chapterOf(skill);
   const ch = input.chapters.find((c) => c.id === chapter);
-  const accuracy = attempts.length === 0 ? null : Math.round((correct / attempts.length) * 100);
+  const { accuracy, basis, firstTries, firstTryCorrect } = accuracyOf(attempts);
   return {
     id: skill.id,
     name: skill.name,
@@ -142,7 +185,10 @@ export function buildRow(input: ReportInput, skill: RegistrySkillLite, open: boo
     status: statusFor(input.file.log, skill.id),
     attempts: attempts.length,
     correct,
+    firstTries,
+    firstTryCorrect,
     accuracy,
+    basis,
     lastSeen: attempts.length === 0 ? null : Math.max(...attempts.map((a) => a.ts)),
     topError: topError(attempts),
     heat: heatOf(accuracy, open),
@@ -207,8 +253,10 @@ export interface Summary {
   flagged: number;
   unseen: number;
   attempts: number;
-  /** across every attempt, 0..100, or null when nothing has been answered */
+  /** 0..100, or null when nothing has been answered */
   accuracy: number | null;
+  /** which answers that accuracy came from, by the same rule a row uses */
+  basis: AccuracyBasis | null;
   sortiesFlown: number;
   lastSeen: number | null;
 }
@@ -216,7 +264,7 @@ export interface Summary {
 export function summarise(report: QuarterGroup[], file: SaveFile): Summary {
   const rows = allRows(report);
   const attempts = file.log.length;
-  const correct = file.log.filter((a) => a.correct).length;
+  const overall = accuracyOf(file.log);
   const seen = rows.map((r) => r.lastSeen).filter((t): t is number => t !== null);
   return {
     total: rows.length,
@@ -224,7 +272,8 @@ export function summarise(report: QuarterGroup[], file: SaveFile): Summary {
     flagged: rows.filter((r) => r.heat === "flagged").length,
     unseen: rows.filter((r) => r.heat === "unseen" || r.heat === "unavailable").length,
     attempts,
-    accuracy: attempts === 0 ? null : Math.round((correct / attempts) * 100),
+    accuracy: overall.accuracy,
+    basis: overall.basis,
     sortiesFlown: file.sortiesFlown,
     lastSeen: seen.length === 0 ? null : Math.max(...seen),
   };
@@ -240,7 +289,8 @@ export function csvCell(value: string | number | null): string {
 
 export const CSV_HEADER = [
   "skill", "name", "chapter", "quarter", "honors", "status",
-  "attempts", "correct", "accuracy_pct", "top_error", "top_error_count", "last_seen_iso",
+  "attempts", "correct", "first_tries", "first_try_correct",
+  "accuracy_pct", "accuracy_basis", "top_error", "top_error_count", "last_seen_iso",
 ];
 
 export function toCsv(rows: readonly SkillRow[]): string {
@@ -248,7 +298,8 @@ export function toCsv(rows: readonly SkillRow[]): string {
   for (const r of rows) {
     lines.push([
       r.id, r.name, r.chapter, r.quarter, r.honors ? "yes" : "no", r.status,
-      r.attempts, r.correct, r.accuracy,
+      r.attempts, r.correct, r.firstTries, r.firstTryCorrect,
+      r.accuracy, r.basis,
       r.topError?.tag ?? null, r.topError?.count ?? null,
       r.lastSeen === null ? null : new Date(r.lastSeen).toISOString(),
     ].map(csvCell).join(","));

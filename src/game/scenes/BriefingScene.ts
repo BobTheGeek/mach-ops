@@ -223,6 +223,9 @@ export class BriefingScene extends Phaser.Scene {
       hintsUsed: 0,
       context: mp.item.transfer ? "transfer" : "briefing",
       ...(errorTag ? { errorTag } : {}),
+      // A prep card is asked once and moves on whether it was right or wrong,
+      // so every briefing answer is a first try.
+      firstTry: true,
       ts: Date.now(),
     };
 
