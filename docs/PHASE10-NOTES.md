@@ -222,7 +222,35 @@ than bogeys, every boss must ask more than one pass of its bogeys, and every
 mission must ask at least `FIRST_TRY_HITS_FOR_CARD` problems so a card stays
 reachable.
 
-**Not yet flown.** ego-browser hung on five consecutive calls while this was
-being set up, so the boss run, the unlock reveal and the first sortie in the
-F-4E have not been watched on screen. The fix typechecks, builds, and the
-campaign arithmetic is covered, but the visual chain is still unverified.
+### Flying it turned up a second fault
+
+Streaming contacts exposed something the three-kill cap had been hiding. The
+spawn lanes were fixed screen positions — 300, 640 and 980 — and the player
+holds station at x 592 against a 340 px lock range. The right-hand lane is
+388 px away: a contact there could never be locked at all. With only three kills
+that rarely mattered; with twelve it stalled the sortie.
+
+Lanes are offsets from the player's own column now, ±170 and centre, all inside
+lock range. Every contact passes close enough to shoot at, and the stick is for
+choosing which one rather than for finding them.
+
+A hard turn could still push every live contact off to one side, where they wrap
+and sit. A contact outside lock range now edges back toward the player's column
+at 60 px/s, which reads as the bogeys hunting too and means a sortie can never
+stall with nothing lockable.
+
+### The whole chain, flown
+
+The Chapter 2 boss was flown end to end in the browser: three prep problems and
+all twelve sortie problems, each one locked, answered and confirmed from the
+scene's own queue.
+
+- The queue reported `0/12` through `11/12`. Before the fix it stopped at 3.
+- `AIRFRAME UNLOCKED · PHANTOM II · F-4E` on the reveal screen.
+- The save afterwards: `airframes=t38,f4`, `bosses=ch1,ch2`,
+  `cards={"t38":[1,2]}`, credits 2000 → 4300, streak 23.
+- **An intel card was earned.** Card 2 for the T-38, the first card the game has
+  ever been able to award. It goes to the trainer because that is what the
+  sortie was flown in; the F-4E arrives at the debrief, after the card.
+- The next briefing header read `SORTIE 01 · FIRST LIGHT · F-4E`, and the sortie
+  drew the Phantom.

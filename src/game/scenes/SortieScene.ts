@@ -69,8 +69,20 @@ const OUT_OF_RANGE_ALPHA = 0.4;
 const BOGEY_SPRITES = ["bogey1-top", "bogey2-top", "bogey3-top"];
 /** Per-lane drift, px/s. Fixed rather than random so a mission replays the same. */
 const BOGEY_DRIFT: [number, number][] = [[16, 12], [-19, 9], [11, 17]];
-/** Where contacts come in. Fixed, so a mission flies the same way twice. */
-const LANES: [number, number][] = [[300, 140], [640, 90], [980, 170]];
+/**
+ * Where contacts come in, as an offset from the player's own column.
+ *
+ * They were fixed screen positions, and the rightmost was 388 px from the
+ * player against a 340 px lock range: that contact could never be locked
+ * without hunting for it. Every offset here is inside lock range, so every
+ * contact passes close enough to shoot at, and the stick is for choosing which
+ * one rather than for finding them at all.
+ */
+const LANE_OFFSETS = [-170, 0, 170];
+/** The height each of the opening contacts starts at. */
+const LANE_TOPS = [140, 90, 170];
+/** How fast a contact outside lock range works its way back, px/s. */
+const CLOSE_RATE = 60;
 /** How far above the screen a replacement contact appears. */
 const SPAWN_Y = -90;
 
@@ -225,7 +237,8 @@ export class SortieScene extends Phaser.Scene {
   }
 
   private spawnBogeys(): void {
-    const lanes = LANES.slice(0, this.mission.bogeys);
+    const lanes = LANE_OFFSETS.slice(0, this.mission.bogeys)
+      .map((dx, i) => [PLAYER_POS.x + dx, LANE_TOPS[i] ?? 120] as const);
     lanes.forEach(([x, y], i) => {
       const key = BOGEY_SPRITES[i % BOGEY_SPRITES.length]!;
       const img = this.add.image(x, y, this.textures.exists(key) ? key : BOGEY_SPRITES[0]!);
@@ -300,6 +313,11 @@ export class SortieScene extends Phaser.Scene {
       if (!b.alive) continue;
       b.image.x += b.vx * dt;
       b.image.y += b.vy * dt;
+      // Contacts are hunting the player too. One pushed outside lock range by a
+      // hard turn edges back toward their column, so a sortie can never stall
+      // with every contact parked off to one side and nothing lockable.
+      const off = b.image.x - PLAYER_POS.x;
+      if (Math.abs(off) > LOCK_RANGE) b.image.x -= Math.sign(off) * CLOSE_RATE * dt;
     }
   }
 
@@ -787,9 +805,9 @@ export class SortieScene extends Phaser.Scene {
 
   /** Put a downed contact back in the air, in from above on the next lane. */
   private sendNextContact(b: Bogey): void {
-    const lane = LANES[this.index % LANES.length]!;
+    const dx = LANE_OFFSETS[this.index % LANE_OFFSETS.length]!;
     const drift = BOGEY_DRIFT[this.index % BOGEY_DRIFT.length]!;
-    b.image.setPosition(lane[0], SPAWN_Y);
+    b.image.setPosition(PLAYER_POS.x + dx, SPAWN_Y);
     b.image.setVisible(true);
     b.image.setAlpha(1);
     b.vx = drift[0];
