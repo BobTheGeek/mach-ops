@@ -1,0 +1,392 @@
+/* The parent view. design/README.md 14C–14E: light, plain, IBM Plex Sans, and
+   deliberately NOT the game skin — a parent reading a progress table should not
+   have to decode a cockpit. Every literal below is from that section.
+
+   src/style.css sets the dark game body, so `body.dad` overrides it here rather
+   than the other way round; the @font-face rules there are what this page wants. */
+
+body.dad {
+  background: #f4f6f8;
+  color: #1a222c;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  overflow: auto;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.dad * {
+  box-sizing: border-box;
+}
+
+#dad {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ------------------------------------------------------------------ head */
+
+.d-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.d-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.d-sub {
+  color: #5b6875;
+  font-size: 13px;
+}
+
+.d-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.d-tab {
+  padding: 10px 14px;
+  border: 1px solid #c7cfd8;
+  border-radius: 8px;
+  background: #fff;
+  color: #1a222c;
+  font: inherit;
+  cursor: pointer;
+}
+
+.d-tab[aria-current="true"] {
+  background: #1a222c;
+  border-color: #1a222c;
+  color: #fff;
+}
+
+.d-tab:focus-visible {
+  outline: 2px solid #1a222c;
+  outline-offset: 2px;
+}
+
+/* ----------------------------------------------------------------- cards */
+
+.d-card {
+  background: #fff;
+  border: 1px solid #d5dbe2;
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+.d-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.d-card-title {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.d-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.d-stat-label {
+  color: #5b6875;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.d-stat-value {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+/* -------------------------------------------------------------- heat map */
+
+.d-quarter {
+  font-weight: 500;
+  margin: 14px 0 6px;
+  padding-top: 10px;
+  border-top: 1px solid #eef1f4;
+}
+
+.d-quarter:first-child {
+  border-top: 0;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.d-chapter {
+  border: 1px solid #e3e8ed;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+/* The whole chapter bar is the toggle, so it is one big target rather than a
+   12 px triangle. */
+.d-chapter-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #fff;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.d-chapter[open] .d-chapter-bar {
+  border-bottom-color: #eef1f4;
+}
+
+.d-caret {
+  color: #8a96a3;
+  width: 12px;
+  flex: none;
+}
+
+.d-chapter-name {
+  flex: 1;
+}
+
+.d-chapter-meta {
+  color: #5b6875;
+  font-size: 13px;
+}
+
+.d-rows {
+  padding: 4px 12px 10px;
+}
+
+.d-row {
+  display: grid;
+  grid-template-columns: 64px 1fr 92px 64px 1fr;
+  gap: 10px;
+  align-items: center;
+  height: 22px;
+  border-top: 1px solid #f1f3f5;
+}
+
+.d-row:first-child {
+  border-top: 0;
+}
+
+.d-skill-id {
+  color: #5b6875;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px;
+}
+
+.d-skill-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.d-pct {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.d-muted {
+  color: #8a96a3;
+}
+
+.d-err {
+  color: #5b6875;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The heat cell. 22 px rows, per design/README.md. */
+.d-cell {
+  height: 14px;
+  border-radius: 3px;
+  background: #e3e8ed;
+}
+
+.d-cell.strong { background: #3daf62; }
+.d-cell.steady { background: #86d9a0; }
+.d-cell.flagged { background: #e8963f; }
+.d-cell.unseen { background: #e3e8ed; }
+.d-cell.unavailable {
+  background: #f1f3f5;
+  border: 1px dashed #d5dbe2;
+}
+
+.d-legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  color: #5b6875;
+  font-size: 12px;
+  align-items: center;
+}
+
+.d-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.d-legend .d-cell {
+  width: 22px;
+}
+
+/* Honors badge: 18 px, amber, per design/README.md. Shape as well as colour,
+   because docs/design.md principle 3 says never colour alone. */
+.d-honors {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #b07a14;
+  border-radius: 3px;
+  color: #b07a14;
+  font-size: 11px;
+  line-height: 1;
+  flex: none;
+}
+
+/* ------------------------------------------------------------- schedule */
+
+.d-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.d-table th {
+  text-align: left;
+  font-weight: 500;
+  color: #5b6875;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0 10px 8px 0;
+  border-bottom: 1px solid #e3e8ed;
+}
+
+.d-table td {
+  padding: 8px 10px 8px 0;
+  border-bottom: 1px solid #f1f3f5;
+  vertical-align: middle;
+}
+
+.d-pill {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: #eef1f4;
+  color: #5b6875;
+  white-space: nowrap;
+}
+
+.d-pill.open {
+  background: #e4f5ea;
+  color: #1f7a3f;
+}
+
+.d-pill.forced {
+  background: #1a222c;
+  color: #fff;
+}
+
+.d-btn {
+  padding: 6px 10px;
+  border: 1px solid #c7cfd8;
+  border-radius: 6px;
+  background: #fff;
+  color: #1a222c;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.d-btn:hover {
+  border-color: #8a96a3;
+}
+
+.d-btn:focus-visible {
+  outline: 2px solid #1a222c;
+  outline-offset: 2px;
+}
+
+.d-btn.primary {
+  background: #1a222c;
+  border-color: #1a222c;
+  color: #fff;
+}
+
+.d-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.d-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.d-toggle input {
+  margin-top: 3px;
+}
+
+.d-toggle-note {
+  color: #5b6875;
+  font-size: 12px;
+}
+
+/* --------------------------------------------------------------- misc */
+
+.d-empty {
+  color: #5b6875;
+  padding: 24px 0;
+  text-align: center;
+}
+
+.d-note {
+  color: #5b6875;
+  font-size: 12px;
+}
+
+.d-credits h3 {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 16px 0 4px;
+}
+
+.d-credits p,
+.d-credits li {
+  color: #5b6875;
+  margin: 4px 0;
+}
+
+.d-credits a {
+  color: #1a222c;
+}

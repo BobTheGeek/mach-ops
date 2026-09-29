@@ -164,6 +164,20 @@ export class SettingsScene extends Phaser.Scene {
       label: "REPLAY FLIGHT SCHOOL", variant: "ghost",
       onClick: () => this.scene.start("FlightSchool"),
     });
+    // The parent view is a separate plain page, not a scene: design/README.md
+    // keeps it off the game skin on purpose. This is the only way in to it.
+    button(this, {
+      x: SCREEN_PAD + (w + 16) * 2, y, width: w, height: HIT.lg,
+      label: "PARENT VIEW  \u2197", variant: "ghost",
+      onClick: () => {
+        audio.play("uiConfirm");
+        try {
+          globalThis.open("/dad.html", "_blank", "noopener,noreferrer");
+        } catch {
+          // A blocked popup must never take the settings screen down with it.
+        }
+      },
+    });
     button(this, {
       x: CANVAS.width - SCREEN_PAD - 220, y, width: 220, height: HIT.lg,
       label: "DONE", variant: "primary", onClick: () => this.done(),

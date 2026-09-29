@@ -8,7 +8,7 @@ Read in this order: `docs/design.md`, `docs/engine-rules.md`, `content/GENERATOR
 
 ```
 pnpm install
-pnpm dev          # play it: http://localhost:5173
+pnpm dev          # play it: http://localhost:5173 · parent view: /dad.html
 pnpm test         # property tests over 10k seeds per generator, plus engine and game tests
 pnpm build        # typecheck + production bundle
 pnpm curriculum   # merge + validate content/curriculum/*.json -> src/data/curriculum.json
@@ -27,5 +27,10 @@ Every dimension on the fleet spec sheet comes from `design/accuracy-check.md`, w
 cites a USAF, NAVAIR, NASA or National Museum fact sheet per airframe. Where that
 document gives no figure, the screen shows a dash rather than a guess.
 
+The `/dad.html` parent view is a second, plain page: a skill heat map across all
+83 sub-skills, the chapter schedule with force-open overrides, activity by day,
+credits, and a CSV export. It is deliberately off the game skin and does not load
+Phaser.
+
 Phase status: see `docs/engine-rules.md` "Build plan" and the phase notes in
-`docs/` (`PHASE1-NOTES.md` through `PHASE10-NOTES.md`) and `DECISIONS.md`.
+`docs/` (`PHASE1-NOTES.md` through `PHASE11-NOTES.md`) and `DECISIONS.md`.
