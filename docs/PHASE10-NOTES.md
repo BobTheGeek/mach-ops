@@ -96,3 +96,36 @@ ego-browser, against `pnpm dev`, on a save with six airframes unlocked:
 - Profile: rank, callsign edit (typed, committed, reloaded, still there),
   record, both paint pickers
 - A sortie flown in the F/A-18E in Blue Angels paint, terrain and bogeys intact
+
+## Motion pass: the sortie did not read as flight
+
+Four things were wrong at once, and each one hid the others.
+
+**The aircraft never moved.** Turning changed a heading number and nothing else.
+The sprite now rolls into the turn, up to 22 degrees, losing a fifth of its
+wingspan as it goes over, and levels out again when the stick comes back. It is
+a cue only: the flight model still holds the airframe on station and moves the
+world around it.
+
+**The ground ignored the aircraft.** It scrolled downward at a fixed 26 px/s
+whatever the pilot did. Terrain now takes the same world delta the bogeys do, so
+a turn swings the ground sideways. It is drawn four times, two wide by two tall,
+so it wraps in both axes. The clouds take a larger share of that delta than the
+ground does, and the gap between them is what reads as height.
+
+**The bogeys arrived on their own schedule.** On top of the world motion, each
+one marched down the screen at a speed the stick could not beat, so they swept
+past whatever the pilot did and steering felt inert. They now drift at 10 to 20
+px/s against the player's 190, and they wrap on both axes, so turning onto one
+you missed brings you back to it.
+
+**The turn was too fast to aim.** 140 degrees per second is a full circle in two
+and a half seconds; a tap of the key swung the nose forty degrees. It is 75 now,
+about five seconds round.
+
+## The locked airframes were invisible
+
+A locked row on the fleet spec sheet drew its silhouette at 0.35 alpha. The
+silhouette export is near black and the panel behind it is near black, so the
+panel read as empty. It is tinted to the muted text grey at 0.55 now, and the
+shape he has not earned yet is clearly a shape.

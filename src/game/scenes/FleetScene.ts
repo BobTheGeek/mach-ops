@@ -152,7 +152,14 @@ export class FleetScene extends Phaser.Scene {
     const img = this.add.image(cx, cy, key);
     const width = Math.min(500, CANVAS.width - SCREEN_PAD * 2 - LIST_W - 60);
     img.setDisplaySize(width, width * (img.height / img.width));
-    img.setAlpha(unlocked ? 1 : 0.35);
+    // A locked airframe is a shape he has not earned yet, so it has to be
+    // clearly a shape. The silhouette export is near black and the panel behind
+    // it is near black too, so it is tinted up to the muted text grey and left
+    // nearly opaque; at the old 0.35 it read as an empty panel.
+    if (!unlocked) {
+      img.setTintFill(hex(C.textMuted));
+      img.setAlpha(0.55);
+    }
     this.detail?.add(img);
   }
 }

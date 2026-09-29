@@ -43,19 +43,34 @@ const PLAYER_POS = { x: 592, y: 450 };
 
 /** Flight model. Arcade, not a simulator: the stick steers a heading and the
  *  aircraft always moves forward, which is what an intercept needs. */
-const TURN_RATE = 140;      // degrees per second at full deflection
+// 140 was a full circle in two and a half seconds: a tap swung the nose forty
+// degrees and aiming at a bogey was guesswork. This is about five seconds round,
+// which is still quick and can actually be pointed at something.
+const TURN_RATE = 75;       // degrees per second at full deflection
 const SPEED = 190;          // pixels per second
+/** How far the sprite rolls at full deflection. A cue, not part of the model. */
+const BANK_ANGLE = 22;      // degrees
+/** How much of its wingspan the airframe loses when rolled right over. */
+const BANK_FORESHORTEN = 0.2;
+/** Seconds-ish constant for the roll easing in and out; higher is snappier. */
+const BANK_RATE = 7;
+const PLAYER_W = 85;
+const PLAYER_H = 120;
 const LOCK_RANGE = 340;     // pixels; SPACE locks the nearest bogey inside this
 /** Screen scale for the HUD's range readout: 60 px reads as one nautical mile. */
 const PX_PER_NM = 60;
 /** Bogeys outside lock range are dimmed, so range is visible and not guesswork. */
 const OUT_OF_RANGE_ALPHA = 0.4;
 const BOGEY_SPRITES = ["bogey1-top", "bogey2-top", "bogey3-top"];
+/** Per-lane drift, px/s. Fixed rather than random so a mission replays the same. */
+const BOGEY_DRIFT: [number, number][] = [[16, 12], [-19, 9], [11, 17]];
 
 interface Bogey {
   image: Phaser.GameObjects.Image;
   alive: boolean;
-  speed: number;
+  /** its own drift in pixels per second, well under the player's own speed */
+  vx: number;
+  vy: number;
 }
 
 export class SortieScene extends Phaser.Scene {
@@ -84,6 +99,8 @@ export class SortieScene extends Phaser.Scene {
   private altOut!: ReturnType<typeof readout>;
   private tgtOut!: ReturnType<typeof readout>;
   private bogeys: Bogey[] = [];
+  /** −1 rolled fully left, +1 fully right; eases toward the stick. */
+  private bank = 0;
   private lockedBogey = -1;
   private locked = false;
   private paused = false;
@@ -177,7 +194,7 @@ export class SortieScene extends Phaser.Scene {
     // loaded here and the sprite swapped in when it arrives. The T-38 stands in
     // for the one frame that takes, rather than the sortie starting empty.
     this.player = this.add.image(PLAYER_POS.x, PLAYER_POS.y, "t38-top-flame");
-    this.player.setDisplaySize(85, 120);
+    this.player.setDisplaySize(PLAYER_W, PLAYER_H);
     void this.wearLivery();
   }
 
@@ -195,7 +212,7 @@ export class SortieScene extends Phaser.Scene {
       .find((k) => k && this.textures.exists(k));
     if (!key) return;
     this.player.setTexture(key);
-    this.player.setDisplaySize(85, 120);
+    this.player.setDisplaySize(PLAYER_W, PLAYER_H);
   }
 
   private spawnBogeys(): void {
@@ -205,7 +222,12 @@ export class SortieScene extends Phaser.Scene {
       const img = this.add.image(x, y, this.textures.exists(key) ? key : BOGEY_SPRITES[0]!);
       img.setDisplaySize(51, 72);
       img.setAngle(180); // nose toward the player
-      this.bogeys.push({ image: img, alive: true, speed: 4 + i });
+      // A slow drift each, so they are alive without being the thing that
+      // decides the intercept. The player closes at SPEED; this is a tenth of
+      // it. Before, they marched down the screen at a speed the stick could not
+      // beat, so bogeys arrived on their own schedule and steering felt inert.
+      const drift = BOGEY_DRIFT[i % BOGEY_DRIFT.length]!;
+      this.bogeys.push({ image: img, alive: true, vx: drift[0], vy: drift[1] });
     });
   }
 
@@ -254,7 +276,7 @@ export class SortieScene extends Phaser.Scene {
   override update(_time: number, deltaMs: number): void {
     if (this.locked || this.paused) return; // bullet-time holds the world
 
-    this.terrain?.update(deltaMs);
+
     this.fuelLeft -= deltaMs / 1000;
     this.fuel = Math.max(0, this.fuelLeft / this.mission.fuelSeconds);
     this.refreshHud();
@@ -267,8 +289,8 @@ export class SortieScene extends Phaser.Scene {
 
     for (const b of this.bogeys) {
       if (!b.alive) continue;
-      b.image.y += b.speed * dt * 10;
-      if (b.image.y > CANVAS.height + 80) b.image.y = -80;
+      b.image.x += b.vx * dt;
+      b.image.y += b.vy * dt;
     }
   }
 
@@ -282,17 +304,30 @@ export class SortieScene extends Phaser.Scene {
     const turn = (down(this.keys.right) ? 1 : 0) - (down(this.keys.left) ? 1 : 0);
     if (turn !== 0) this.heading = (this.heading + turn * TURN_RATE * dt + 360) % 360;
 
-    this.player.setAngle(0); // the airframe stays nose-up; the world rotates
+    // The airframe holds its heading on screen, but it rolls into the turn and
+    // levels out again. Nothing else about the aircraft moves, so without this
+    // a turn looked like nothing at all was happening.
+    this.bank += (turn - this.bank) * Math.min(1, dt * BANK_RATE);
+    this.player.setAngle(this.bank * BANK_ANGLE);
+    this.player.setDisplaySize(PLAYER_W * (1 - BANK_FORESHORTEN * Math.abs(this.bank)), PLAYER_H);
+
     const rad = Phaser.Math.DegToRad(this.heading);
     const dx = -Math.sin(rad) * SPEED * dt;
     const dy = Math.cos(rad) * SPEED * dt;
 
+    // The ground and the clouds take the same delta the bogeys do, so the whole
+    // world swings together when the stick goes over.
+    this.terrain?.update(dx, dy);
+
     for (const b of this.bogeys) {
       b.image.x += dx;
       b.image.y += dy;
-      // Wrap so a bogey flown past comes round again rather than vanishing.
+      // Wrap on both axes, so a bogey flown past comes round again rather than
+      // vanishing: the player can always turn back onto one they missed.
       if (b.image.x < -100) b.image.x = CANVAS.width + 100;
       if (b.image.x > CANVAS.width + 100) b.image.x = -100;
+      if (b.image.y < -100) b.image.y = CANVAS.height + 100;
+      if (b.image.y > CANVAS.height + 100) b.image.y = -100;
     }
 
     this.hdgOut.set(`${String(Math.round(this.heading)).padStart(3, "0")}°`);
