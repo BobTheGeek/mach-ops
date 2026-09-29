@@ -30,6 +30,18 @@ import { generate as ee44 } from "./ee/ee.4.4";
 import { generate as ee45 } from "./ee/ee.4.5";
 import { generate as ee46 } from "./ee/ee.4.6";
 import { generate as ee47 } from "./ee/ee.4.7";
+import { generate as rp51 } from "./rp/rp.5.1";
+import { generate as rp52 } from "./rp/rp.5.2";
+import { generate as rp53 } from "./rp/rp.5.3";
+import { generate as rp54 } from "./rp/rp.5.4";
+import { generate as rp55 } from "./rp/rp.5.5";
+import { generate as rp56 } from "./rp/rp.5.6";
+import { generate as rp61 } from "./rp/rp.6.1";
+import { generate as rp62 } from "./rp/rp.6.2";
+import { generate as rp63 } from "./rp/rp.6.3";
+import { generate as rp64 } from "./rp/rp.6.4";
+import { generate as rp65 } from "./rp/rp.6.5";
+import { generate as rp66 } from "./rp/rp.6.6";
 
 export const GENERATORS: Record<string, Generator> = {
   "ns.1.1": ns11,
@@ -60,6 +72,18 @@ export const GENERATORS: Record<string, Generator> = {
   "ee.4.5": ee45,
   "ee.4.6": ee46,
   "ee.4.7": ee47,
+  "rp.5.1": rp51,
+  "rp.5.2": rp52,
+  "rp.5.3": rp53,
+  "rp.5.4": rp54,
+  "rp.5.5": rp55,
+  "rp.5.6": rp56,
+  "rp.6.1": rp61,
+  "rp.6.2": rp62,
+  "rp.6.3": rp63,
+  "rp.6.4": rp64,
+  "rp.6.5": rp65,
+  "rp.6.6": rp66,
 };
 
 export const IMPLEMENTED_SKILLS = Object.keys(GENERATORS);

@@ -45,6 +45,9 @@ export type FigureKind =
   | "velocity-time" | "fact-family" | "long-division" | "area-model" | "tape-diagram"
   // Chapters 3-4
   | "tiles" | "area-model-reverse" | "add-the-opposite" | "balance-table" | "test-point"
+  // Chapters 5-6
+  | "ratio-table" | "double-number-line" | "arrow-table" | "y=kx" | "table-graph-equation"
+  | "scale-drawing" | "grid" | "scale-bar" | "hundred-grid" | "part-whole-bar" | "tape-diagram-100"
   // Q1 honors
   | "powers-of-ten-line" | "bracketing" | "expanded-form" | "place-value-shift"
   | "square-and-cube-models" | "algebra-trick-10x" | "vertical-format" | "equation"

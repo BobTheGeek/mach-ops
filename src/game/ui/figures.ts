@@ -148,6 +148,105 @@ function table(scene: Phaser.Scene, spec: FigureSpec, w: number, _h: number): Ph
 }
 
 /**
+ * MK-2 coordinate plane. Proportional relationships live or die on whether the
+ * line goes through the origin, so the origin is always drawn and always labelled.
+ */
+function coordinatePlane(
+  scene: Phaser.Scene,
+  spec: FigureSpec,
+  w: number,
+  h: number,
+): Phaser.GameObjects.Container {
+  const objects: Phaser.GameObjects.GameObject[] = [];
+  const g = scene.add.graphics();
+  objects.push(g);
+
+  const pad = 26;
+  const maxX = spec.max ?? 10;
+  const maxY = (spec.maxY as number | undefined) ?? maxX;
+  const plotW = w - pad * 2;
+  const plotH = h - pad * 2;
+  const px = (x: number): number => pad + (x / (maxX || 1)) * plotW;
+  const py = (y: number): number => h - pad - (y / (maxY || 1)) * plotH;
+
+  // grid
+  g.lineStyle(STROKE.hairline, hex(C.gridLine), 1);
+  const step = Math.max(1, Math.round(maxX / 5));
+  for (let x = 0; x <= maxX; x += step) g.lineBetween(px(x), py(0), px(x), py(maxY));
+  for (let y = 0; y <= maxY; y += Math.max(1, Math.round(maxY / 5))) g.lineBetween(px(0), py(y), px(maxX), py(y));
+
+  // axes
+  g.lineStyle(STROKE.hud, hex(C.textMuted), 1);
+  g.lineBetween(px(0), py(0), px(maxX), py(0));
+  g.lineBetween(px(0), py(0), px(0), py(maxY));
+
+  const origin = scene.add.text(px(0) - 12, py(0) + 4, "0", {
+    fontFamily: FONT.mono, fontSize: `${SIZE.label}px`, color: C.textMuted,
+  });
+  objects.push(origin);
+
+  // Each series is a list of [x, y] pairs; A is ice blue solid, B amber dashed.
+  const series = (spec.series as number[][][] | undefined) ?? [];
+  series.forEach((points, i) => {
+    const colour = hex(i === 0 ? SERIES_A : SERIES_B);
+    g.lineStyle(STROKE.hud, colour, 1);
+    points.forEach((pt, j) => {
+      const [x, y] = pt as [number, number];
+      if (j > 0) {
+        const [prevX, prevY] = points[j - 1] as [number, number];
+        g.lineBetween(px(prevX), py(prevY), px(x), py(y));
+      }
+    });
+    for (const pt of points) {
+      const [x, y] = pt as [number, number];
+      if (i === 0) { g.fillStyle(colour, 1); g.fillCircle(px(x), py(y), 4); }
+      else g.strokeCircle(px(x), py(y), 4);
+    }
+  });
+
+  return scene.add.container(0, 0, objects);
+}
+
+/**
+ * MK-4 double number line: two parallel scales with matching tick positions, so
+ * the pairing between the quantities is the thing you see.
+ */
+function doubleNumberLine(
+  scene: Phaser.Scene,
+  spec: FigureSpec,
+  w: number,
+  h: number,
+): Phaser.GameObjects.Container {
+  const objects: Phaser.GameObjects.GameObject[] = [];
+  const g = scene.add.graphics();
+  objects.push(g);
+
+  const rows = (spec.rows ?? []) as (string | number)[][];
+  const pad = 20;
+  const span = w - pad * 2;
+  const topY = h / 2 - 22;
+  const bottomY = h / 2 + 22;
+
+  for (const [rowIndex, y] of [topY, bottomY].entries()) {
+    g.lineStyle(STROKE.hud, hex(rowIndex === 0 ? SERIES_A : SERIES_B), 1);
+    g.lineBetween(pad, y, pad + span, y);
+
+    const cells = rows[rowIndex] ?? [];
+    cells.forEach((cell, i) => {
+      const x = pad + (cells.length > 1 ? (i / (cells.length - 1)) * span : span / 2);
+      g.lineBetween(x, y - 6, x, y + 6);
+      const t = scene.add.text(0, rowIndex === 0 ? y - 26 : y + 10, String(cell), {
+        fontFamily: FONT.mono, fontSize: `${SIZE.label}px`, color: C.text,
+      });
+      t.setX(x - t.width / 2);
+      objects.push(t);
+    });
+  }
+
+  return scene.add.container(0, 0, objects);
+}
+
+/**
  * Draw a figure into a w x h slot. Returns null when the figure has no renderer
  * yet, so the card simply leaves the slot out rather than showing a broken box.
  */
@@ -168,7 +267,17 @@ export function renderFigure(
     case "debt-table":
     case "table":
     case "two-way-table":
+    case "ratio-table":
+    case "arrow-table":
+    case "balance-table":
+    case "fact-family":
       return table(scene, spec, w, h);
+    case "coordinate-plane":
+    case "table-graph-equation":
+    case "y=kx":
+      return coordinatePlane(scene, spec, w, h);
+    case "double-number-line":
+      return doubleNumberLine(scene, spec, w, h);
     default:
       return null;
   }
