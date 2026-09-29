@@ -76,19 +76,41 @@ describe("buildMission", () => {
     }
   });
 
-  it("never repeats a hash inside one mission", () => {
+  it("repeats a hash inside one mission only when the guard gave up", () => {
+    // GENERATOR_SPEC section 6: the guard retries with seed + 1 up to 50 times,
+    // "then log and accept". A skill whose registry ranges are small — the
+    // honors classify cards have about fifty possible draws — can exhaust it.
+    // What must never happen is a silent repeat with the guard still fresh.
     for (let seed = 0; seed < 20; seed++) {
       const mission = buildMission({ ...base, file, log: file.log, count: 20, seed });
-      const hashes = mission.map((m) => m.problem.hash);
-      expect(new Set(hashes).size, `seed ${seed}`).toBe(hashes.length);
+      const seen = new Map<string, number>();
+      mission.forEach((m, i) => {
+        const prior = seen.get(m.problem.hash);
+        if (prior !== undefined) {
+          expect(m.guardExhausted, `seed ${seed}: ${m.problem.skill} repeated at ${i} without exhausting the guard`).toBe(true);
+        }
+        seen.set(m.problem.hash, i);
+      });
     }
   });
 
-  it("never serves a hash the save has already seen", () => {
+  it("re-serves a remembered hash only when the guard gave up", () => {
     const seeded = buildMission({ ...base, file, log: file.log, count: 20, seed: 5 });
     const withHistory: SaveFile = { ...file, recentHashes: seeded.map((m) => m.problem.hash) };
     const next = buildMission({ ...base, file: withHistory, log: withHistory.log, count: 20, seed: 5 });
-    for (const m of next) expect(withHistory.recentHashes).not.toContain(m.problem.hash);
+    for (const m of next) {
+      if (withHistory.recentHashes.includes(m.problem.hash)) {
+        expect(m.guardExhausted, `${m.problem.skill} re-served without exhausting the guard`).toBe(true);
+      }
+    }
+  });
+
+  it("mostly avoids remembered hashes even so", () => {
+    const seeded = buildMission({ ...base, file, log: file.log, count: 20, seed: 5 });
+    const withHistory: SaveFile = { ...file, recentHashes: seeded.map((m) => m.problem.hash) };
+    const next = buildMission({ ...base, file: withHistory, log: withHistory.log, count: 20, seed: 5 });
+    const repeats = next.filter((m) => withHistory.recentHashes.includes(m.problem.hash)).length;
+    expect(repeats / next.length).toBeLessThan(0.2);
   });
 
   it("is deterministic for the same save and seed", () => {

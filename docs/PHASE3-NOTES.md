@@ -7,7 +7,7 @@
 
 ```
 pnpm dev          # play it
-pnpm test         # 299 tests, 26 files
+pnpm test         # 373 tests, 34 files
 pnpm build        # typecheck + production bundle
 ```
 
@@ -15,6 +15,14 @@ pnpm build        # typecheck + production bundle
 
 - `ns.2.1` – `ns.2.5`: Chapter 2 generators, Flight Manual pages and the eight
   property tests each.
+- The seven Q1 honors skills — `h8.ns.a1`, `h8.ns.a2`, `h8.ee.a1`, `h8.ee.a3`,
+  `h8.ee.a4`, `h8.ee.c7a`, `h8.ee.c7b` — with their pages and tests. The five
+  attached to Chapter 2 serve in Chapter 2 sorties now; `c7a` and `c7b` attach to
+  Chapter 4 and will serve when it opens. Honors problems are badged HONORS on
+  the card, in the briefing and in the manual library.
+- `src/engine/quantity.ts`: square roots, multiples of pi, the repeating-decimal
+  trick done exactly, and scientific notation. These are the things the honors
+  skills need that a Rational cannot hold.
 - Exact repeating decimals in `src/engine/rational.ts` — long division with
   remainder tracking, a vinculum over the repetend — which `ns.2.3` is built on.
 - A ten-sortie Chapter 2 campaign ending in the Phantom Qualification.
@@ -39,8 +47,8 @@ what `docs/design.md` section 7 asks for.
 
 ## Bugs this phase found
 
-Two of the same class Phase 1 and 2 turned up, both caught by the "every registry
-tag is used" test rather than by reading the code:
+Four of the same class Phase 1 and 2 turned up, three caught by tests rather than
+by reading the code:
 
 1. **All three of `ns.2.1`'s error tags compute the same number** — the answer
    with the wrong sign. The first listed took the slot and `square-sign` and
@@ -51,6 +59,24 @@ tag is used" test rather than by reading the code:
    twenty, so 1/2 came up as often as every twenty-fifth put together: 14.8% of
    every tier-1 draw was the same card. It now draws uniformly over the value
    space, which also took tier 1 from 43 distinct problems to 129.
+
+3. **`h8.ns.a1` hashed only the repeating digits**, not the whole part or the
+   non-repeating digit, so widening the problem space did nothing: every card
+   with the same repeat collided into one hash and the no-repeat guard could not
+   tell them apart. Found because the guard started logging that it had given up.
+4. **The magnitude fallback padded written answers with trailing spaces.** The
+   spec's fallback is "correct x2 or ±10", which means nothing for an answer like
+   `x⁶` or `ONE SOLUTION`, so the card showed options that differed only by
+   invisible whitespace. A written answer now yields a narrower option set rather
+   than a fake one, and a card that ends up with fewer than two options becomes
+   free entry instead.
+
+The no-repeat guard now logs when it gives up, as GENERATOR_SPEC section 6 says
+it should. That log is a content signal: it means a skill's registry ranges are
+too narrow to keep a mission fresh. It fired for `h8.ns.a1`, whose foil lists are
+now generated rather than hand-written (50 values became 264) and whose repeating
+decimals gained a whole part and an optional non-repeating digit (9 became 1,117
+at tier 2). Nothing else trips it.
 
 Also found by playing it: locking had no range limit and no way to see where a
 target was, so SPACE either worked or silently did nothing. The HUD gained a TGT
@@ -66,12 +92,19 @@ says IN RANGE or NO TARGET IN RANGE.
 | Flight model | Arcade: fixed speed, 140°/s turn, the world rotates around a centred player | The packet specifies the HUD and the lock rules, not a flight model. |
 | Lock range | 340 px, and 60 px reads as 1 NM on the TGT readout | The artboards show "3.0 NM" style ranges but no screen scale. |
 | Audio | Every cue synthesised from its `tokens.audio` description | The tokens describe each sound in words ("rising two-tone 440→880 Hz, 180 ms"); those descriptions are the spec and the code follows them literally. |
+| Honors repeating decimals | A whole part and an optional non-repeating digit are allowed | The registry fixes the number of *repeating* digits, not what sits in front of them, and the method is identical. Without it tier 2 had nine possible problems. |
+| Slot distribution test | The spec's 20–30% band for four options over a full sweep; four standard deviations of the binomial for other widths | A tier that mixes variants produces mixed option counts, so a thin slice of one width needs a band that accounts for its sample size. |
+
+## A registry inconsistency to raise
+
+`h8.ee.c7a` and `h8.ee.c7b` carry `quarter: 1` and appear under quarter 1 in
+`schedule.json`, but their `attachTo` is `ch4`, which `tokens.json` puts in
+quarter 2. Both were built because GENERATOR_SPEC section 10 lists them as Q1
+honors, but they cannot be served until Chapter 4 opens. **Either the quarter or
+the attachment is wrong.**
 
 ## Still not delivered
 
-- **Q1 honors skills.** `GENERATOR_SPEC.md` section 10 puts `h8.ns.*`,
-  `h8.ee.a*` and `h8.ee.c7*` after Chapter 2. Seven generators and seven manual
-  pages, not yet written. This is the remaining half of the Phase 3 content row.
 - **Fonts.** Still expected at `public/fonts/`; see `docs/PHASE2-NOTES.md`.
 - **Terrain tiles.** Still CSS swatches only; the sortie uses the sea grid.
 - **04C Tanker refuel**, Profile (12), Fleet (09/09B), Unlock reveal (10), and

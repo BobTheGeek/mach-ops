@@ -16,8 +16,9 @@ pnpm mission      # print a 20-problem mission for a sample attempt log
 ```
 
 Playable end to end: Flight School, hangar, twenty sorties across Chapters 1 and
-2, briefing, sortie with a steerable T-38 and synthesised avionics audio, debrief,
-intel cards, Flight Manual, How to Play and settings.
+2 with the Q1 honors skills mixed in, briefing, sortie with a steerable T-38 and
+synthesised avionics audio, debrief, intel cards, Flight Manual, How to Play and
+settings. 17 of the 83 skills have generators, manual pages and property tests.
 
 Phase status: see `docs/engine-rules.md` "Build plan" and the phase notes in
 `docs/` (`PHASE1-NOTES.md`, `PHASE2-NOTES.md`, `PHASE3-NOTES.md`).

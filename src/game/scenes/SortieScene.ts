@@ -403,7 +403,10 @@ export class SortieScene extends Phaser.Scene {
       scene: this,
       problem: mp.problem,
       mode: "lock",
-      chapterLabel: `CH ${gameState.chapter(this.loadout.unitId).n} · S${String(this.mission.n).padStart(2, "0")}`,
+      // design/README.md: honors skills are badged HONORS wherever they appear.
+      chapterLabel: `CH ${gameState.chapter(this.loadout.unitId).n} · S${String(this.mission.n).padStart(2, "0")}${
+        gameState.skill(mp.problem.skill).honors ? " · HONORS" : ""
+      }`,
       multiplier: "×1.5",
       hintCost: HINT_COST,
       onCommit: (r) => this.onCommit(mp, r.correct, r.errorTag),

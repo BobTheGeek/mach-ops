@@ -38,6 +38,10 @@ export class ManualLibraryScene extends Phaser.Scene {
 
       panel(this, x, y, tileW, tileH, { fill: C.panelRaised });
       const code = capsLabel(this, x + 14, y + 14, skill, C.lock, TRACK.readout);
+      if (registry.honors) {
+        const badge = capsLabel(this, 0, y + 14, "HONORS", C.lock, TRACK.readout);
+        badge.setX(x + tileW - 14 - badge.width);
+      }
       void code;
       const name = this.add.text(x + 14, y + 36, registry.name, {
         ...TEXT.body, wordWrap: { width: tileW - 28 },

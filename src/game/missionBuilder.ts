@@ -84,7 +84,18 @@ export function buildMission(input: MissionInput): MissionProblem[] {
 
   const queue = buildQueue({ ...queueInput, seed });
 
-  return queue.map((item, i) =>
+  const drawn = queue.map((item, i) =>
     drawProblem(item, hash32(`${seed}|${item.skill}|${i}`) % 1_000_000, recent),
   );
+
+  // GENERATOR_SPEC section 6: after 50 re-seeds the guard gives up and accepts a
+  // repeat, but it must say so. An exhausted guard means that skill's registry
+  // ranges are too narrow to keep a mission fresh, which is content to fix.
+  const exhausted = drawn.filter((d) => d.guardExhausted);
+  if (exhausted.length > 0) {
+    const skills = [...new Set(exhausted.map((d) => d.problem.skill))].join(", ");
+    console.warn(`[machops] no-repeat guard exhausted for ${skills}: the registry ranges are too small for a mission this long`);
+  }
+
+  return drawn;
 }

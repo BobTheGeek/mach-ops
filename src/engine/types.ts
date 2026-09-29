@@ -46,6 +46,7 @@ export type FigureKind =
   // Q1 honors
   | "powers-of-ten-line" | "bracketing" | "expanded-form" | "place-value-shift"
   | "square-and-cube-models" | "algebra-trick-10x" | "vertical-format" | "equation"
+  | "hanger-diagram"
   // later chapters
   | "coordinate-plane" | "table" | "tape" | "hanger"
   | "tree" | "box-plot" | "dot-plot" | "angle" | "net" | "solid"
@@ -99,6 +100,12 @@ export interface Problem {
    */
   answerText: string;
   optionText?: string[];
+  /**
+   * `order` format only: how each item in `answer` should be written. An
+   * irrational has to read as "√40" rather than as its decimal, and the reorder
+   * input has no other way to know that.
+   */
+  orderLabels?: string[];
   /** one step per numbered step in the manual's "How to solve it" */
   worked: WorkedStep[];
   /** formatted wrong-answer text -> registry error tag */

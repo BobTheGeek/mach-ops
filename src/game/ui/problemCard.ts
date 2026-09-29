@@ -290,10 +290,11 @@ export class ProblemCard {
       const active = i === this.cursor;
       row.g.lineStyle(active ? INPUT.ring : STROKE.hairline, hex(active ? C.hud : C.border), 1);
       row.g.strokeRoundedRect(x, top, w, rowH, RADIUS.input);
+      const labels = this.problem.orderLabels;
       const v = values[valueIndex];
-      const text = typeof v === "object" && v !== null && "n" in v
+      const text = labels?.[valueIndex] ?? (typeof v === "object" && v !== null && "n" in v
         ? fmtFraction(v as { n: number; d: number })
-        : String(v);
+        : String(v));
       row.label.setText(`${i + 1}   ${text}`);
       row.label.setPosition(x + 16, top + (rowH - SIZE.number) / 2);
     });

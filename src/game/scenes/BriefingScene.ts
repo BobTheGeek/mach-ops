@@ -174,7 +174,9 @@ export class BriefingScene extends Phaser.Scene {
       scene: this,
       problem: mp.problem,
       mode: "briefing",
-      chapterLabel: `PREP ${this.index + 1}/${this.preps.length} · ${FILL[resource]}`,
+      chapterLabel: `PREP ${this.index + 1}/${this.preps.length} · ${FILL[resource]}${
+        gameState.skill(mp.problem.skill).honors ? " · HONORS" : ""
+      }`,
       hintCost: 0, // hints are free in briefings
       onCommit: (r) => this.onCommit(mp, resource, r.correct, r.errorTag),
       onManual: () => this.openManual(mp),

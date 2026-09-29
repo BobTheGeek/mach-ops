@@ -4,7 +4,9 @@ import { join } from "node:path";
 import { parseManual, SECTIONS } from "../../src/game/manual";
 import curriculum from "../../src/data/curriculum.json";
 
-const registry = (curriculum as unknown as { skills: { id: string; chapter?: string }[] }).skills;
+const registry = (curriculum as unknown as {
+  skills: { id: string; chapter?: string; honors: boolean; attachTo?: string[] }[];
+}).skills;
 
 const DIR = join(import.meta.dirname, "..", "..", "src", "data", "manual");
 const pages = readdirSync(DIR).filter((f) => f.endsWith(".md"));
@@ -17,8 +19,12 @@ describe("parseManual", () => {
       expect(page.skill, f).toBe(f.replace(/\.md$/, ""));
       expect(page.title.length, f).toBeGreaterThan(0);
       expect(page.standards.length, f).toBeGreaterThan(0);
-      const chapter = registry.find((s) => s.id === page.skill)?.chapter;
-      expect(`ch${page.chapter}`, `${f} chapter`).toBe(chapter);
+      // Core skills carry a chapter; an honors skill carries the chapters it is
+      // attached to instead, and its page names the first of them.
+      const skill = registry.find((s) => s.id === page.skill)!;
+      const expected = skill.chapter ?? skill.attachTo?.[0];
+      expect(`ch${page.chapter}`, `${f} chapter`).toBe(expected);
+      expect(page.honors, `${f} honors`).toBe(skill.honors);
       expect(page.khan, f).toMatch(/^https:\/\//);
     }
   });

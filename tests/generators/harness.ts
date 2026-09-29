@@ -167,10 +167,20 @@ export function describeGenerator(spec: GeneratorSpec): void {
           const n = slots.reduce((x, y) => x + y, 0);
           if (n < 100) continue; // too few of this width at this tier to judge
           const uniform = 100 / width;
+
+          // The spec's 20-30% band is the four-option case measured over a full
+          // sweep. Other widths, and thin slices of a tier that mixes widths,
+          // need a band that accounts for how many samples there actually are:
+          // four standard deviations of the binomial, which still fails loudly
+          // on real bias (a generator favouring one slot) but not on noise.
+          const p = 1 / width;
+          const sigma = Math.sqrt((p * (1 - p)) / n) * 100;
+          const tolerance = width === 4 && n >= 500 ? 5 : Math.max(5, 4 * sigma);
+
           for (let i = 0; i < width; i++) {
             const pct = (slots[i]! / n) * 100;
-            expect(pct, `${skill} T${tier} ${width}-option slot ${i}`).toBeGreaterThanOrEqual(uniform - 5);
-            expect(pct, `${skill} T${tier} ${width}-option slot ${i}`).toBeLessThanOrEqual(uniform + 5);
+            expect(pct, `${skill} T${tier} ${width}-option slot ${i} (n=${n})`).toBeGreaterThanOrEqual(uniform - tolerance);
+            expect(pct, `${skill} T${tier} ${width}-option slot ${i} (n=${n})`).toBeLessThanOrEqual(uniform + tolerance);
           }
         }
       }

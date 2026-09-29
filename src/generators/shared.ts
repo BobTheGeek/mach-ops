@@ -28,6 +28,9 @@ function sameAnswer(a: Answer, b: Answer): boolean {
   return a === b;
 }
 
+/** True when a Choice has enough distinct options to be worth showing. */
+export const isUsableChoice = (c: Choice): boolean => c.options.length >= 2;
+
 export interface Choice {
   distractors: Distractor[];
   options: Answer[];
@@ -62,12 +65,19 @@ export function buildChoice(
     if (distractors.length === wanted) break;
   }
 
-  let bump = 0;
-  while (distractors.length < wanted) {
-    const value = magnitudeFallback(correct, bump++);
-    if (sameAnswer(value, correct)) continue;
-    if (distractors.some((d) => sameAnswer(d.value, value))) continue;
-    distractors.push({ tag: "magnitude", value });
+  // The spec's magnitude fallback only means something for a number: "correct x2"
+  // or "correct +/- 10". For a written answer there is no such neighbour, and
+  // padding one with whitespace would put a visibly broken option on the card,
+  // so a short recipe list simply yields a narrower set of options.
+  if (typeof correct !== "string") {
+    let bump = 0;
+    let guard = 0;
+    while (distractors.length < wanted && guard++ < 20) {
+      const value = magnitudeFallback(correct, bump++);
+      if (sameAnswer(value, correct)) continue;
+      if (distractors.some((d) => sameAnswer(d.value, value))) continue;
+      distractors.push({ tag: "magnitude", value });
+    }
   }
 
   const order = shuffle(rng, [correct, ...distractors.map((d) => d.value)]);
@@ -83,7 +93,7 @@ export function buildChoice(
 }
 
 /** The spec's fallback: correct x2, correct / 2, correct +/- 10. */
-function magnitudeFallback(correct: Answer, i: number): Answer {
+function magnitudeFallback(correct: Exclude<Answer, string>, i: number): Answer {
   if (isRational(correct)) {
     // An integer problem never gets a fractional option: the form itself would
     // be the cue. Halving is only offered where the answer is already fractional.
@@ -96,7 +106,9 @@ function magnitudeFallback(correct: Answer, i: number): Answer {
     const steps = [correct * 2, correct + 10, correct - 10, correct + 1, correct + 2];
     return steps[i % steps.length]!;
   }
-  return `${String(correct)}${" ".repeat(i + 1)}`;
+  // An ordered answer has no magnitude neighbour either; return it unchanged so
+  // the caller's duplicate check drops it and the option set stays honest.
+  return correct;
 }
 
 /* --------------------------------------------------------- acceptance */
