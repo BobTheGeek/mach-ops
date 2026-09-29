@@ -129,20 +129,31 @@ function table(scene: Phaser.Scene, spec: FigureSpec, w: number, _h: number): Ph
   objects.push(g);
 
   const rowH = 28;
-  rows.forEach((row, i) => {
+  const style = { fontFamily: FONT.mono, fontSize: `${SIZE.label}px`, color: C.text };
+
+  // The first cell of each row is its name — MISSILES, SORTIES, FUEL (L) — and
+  // it is always longer than the numbers beside it. Splitting the width evenly
+  // ran the name straight over the first value, so the name column is measured
+  // and the data columns share what is left.
+  const measured = rows.map((row) => row.map((cell) => {
+    const t = scene.add.text(0, 0, String(cell), style);
+    objects.push(t);
+    return t;
+  }));
+  const labelW = Math.min(
+    w * 0.45,
+    Math.max(0, ...measured.map((cells) => (cells[0]?.width ?? 0))) + 14,
+  );
+  const cols = Math.max(1, ...rows.map((r) => r.length));
+  const dataW = cols > 1 ? (w - 32 - labelW) / (cols - 1) : 0;
+
+  measured.forEach((cells, i) => {
     const y = 8 + i * rowH;
     g.fillStyle(N.panelRaised, i === 0 ? 1 : 0);
     g.fillRect(8, y, w - 16, rowH);
     g.lineStyle(STROKE.hairline, hex(C.border), 1);
     g.strokeRect(8, y, w - 16, rowH);
-    row.forEach((cell, j) => {
-      const t = scene.add.text(16 + j * ((w - 32) / Math.max(1, row.length)), y + 6, String(cell), {
-        fontFamily: FONT.mono,
-        fontSize: `${SIZE.label}px`,
-        color: C.text,
-      });
-      objects.push(t);
-    });
+    cells.forEach((t, j) => t.setPosition(16 + (j === 0 ? 0 : labelW + (j - 1) * dataW), y + 6));
   });
   return scene.add.container(0, 0, objects);
 }
@@ -187,6 +198,8 @@ function coordinatePlane(
 
   // Each series is a list of [x, y] pairs; A is ice blue solid, B amber dashed.
   const series = (spec.series as number[][][] | undefined) ?? [];
+  // When a card asks the player to choose between lines, the lines need names.
+  const seriesLabels = (spec.seriesLabels as string[] | undefined) ?? [];
   series.forEach((points, i) => {
     const colour = hex(i === 0 ? SERIES_A : SERIES_B);
     g.lineStyle(STROKE.hud, colour, 1);
@@ -201,6 +214,14 @@ function coordinatePlane(
       const [x, y] = pt as [number, number];
       if (i === 0) { g.fillStyle(colour, 1); g.fillCircle(px(x), py(y), 4); }
       else g.strokeCircle(px(x), py(y), 4);
+    }
+    const name = seriesLabels[i];
+    const end = points[points.length - 1] as [number, number] | undefined;
+    if (name && end) {
+      const tag = scene.add.text(px(end[0]) - 18, py(end[1]) - 18, name, {
+        fontFamily: FONT.mono, fontSize: `${SIZE.label}px`, color: i === 0 ? SERIES_A : SERIES_B,
+      });
+      objects.push(tag);
     }
   });
 

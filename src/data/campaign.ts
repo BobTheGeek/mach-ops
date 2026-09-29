@@ -253,7 +253,126 @@ export const CH4_MISSIONS: Mission[] = [
   },
 ];
 
-export const MISSIONS: Mission[] = [...CH1_MISSIONS, ...CH2_MISSIONS, ...CH3_MISSIONS, ...CH4_MISSIONS];
+/**
+ * Chapter 5, Ratios and Proportions. Six skills, so six sorties introduce one
+ * each; the boss unlocks the F-14. Eleven Grade 8 honors skills hang off this
+ * chapter, so the mixed sorties carry the heaviest honors decks in the game.
+ */
+export const CH5_MISSIONS: Mission[] = [
+  {
+    id: "ch5-01", n: 1, unitId: "ch5", name: "FUEL LADDER", kind: "intercept",
+    brief: "A ratio table of fuel against distance. Scale both rows together, never add to one.",
+    focus: ["rp.5.1"], prep: 2, problems: 6, bogeys: 3, fuelSeconds: 240,
+  },
+  {
+    id: "ch5-02", n: 2, unitId: "ch5", name: "BURN RATE", kind: "intercept",
+    brief: "Litres per minute, kilometres per litre. Divide to get one, and keep the units on.",
+    focus: ["rp.5.2"], prep: 2, problems: 6, bogeys: 3, fuelSeconds: 240,
+  },
+  {
+    id: "ch5-03", n: 3, unitId: "ch5", name: "STRAIGHT AND TRUE", kind: "intercept",
+    brief: "Some tables are a steady rate and some are not. Check every row, then check the origin.",
+    focus: ["rp.5.3"], prep: 2, problems: 7, bogeys: 3, fuelSeconds: 260,
+  },
+  {
+    id: "ch5-04", n: 4, unitId: "ch5", name: "LONG LEG", kind: "intercept",
+    brief: "Write the proportion with the units lined up, then scale or cross multiply.",
+    focus: ["rp.5.4"], prep: 2, problems: 7, bogeys: 3, fuelSeconds: 260,
+  },
+  {
+    id: "ch5-05", n: 5, unitId: "ch5", name: "PLOT THE CLIMB", kind: "intercept",
+    brief: "A proportional line goes through the origin. Read k at x = 1 and write y = kx.",
+    focus: ["rp.5.5"], prep: 3, problems: 8, bogeys: 3, fuelSeconds: 280,
+  },
+  {
+    id: "ch5-06", n: 6, unitId: "ch5", name: "MAP READ", kind: "intercept",
+    brief: "One centimetre on the chart is kilometres on the ground. Areas scale twice over.",
+    focus: ["rp.5.6"], prep: 3, problems: 9, bogeys: 3, fuelSeconds: 300,
+  },
+  {
+    id: "ch5-07", n: 7, unitId: "ch5", name: "CROSS CHECK", kind: "patrol",
+    brief: "Tables, graphs and equations for the same rate. Move between them without losing the units.",
+    focus: [], prep: 3, problems: 10, bogeys: 3, fuelSeconds: 300,
+  },
+  {
+    id: "ch5-08", n: 8, unitId: "ch5", name: "MIXED TRACK", kind: "patrol",
+    brief: "Everything Chapter 5 has taught you, in any order, with honors work in the deck.",
+    focus: [], prep: 3, problems: 11, bogeys: 3, fuelSeconds: 320,
+  },
+  {
+    id: "ch5-09", n: 9, unitId: "ch5", name: "PRE-QUAL", kind: "intercept",
+    brief: "Last check before the qualification. Transfer problems are in the deck.",
+    focus: [], prep: 3, problems: 12, bogeys: 3, fuelSeconds: 320,
+  },
+  {
+    id: "ch5-10", n: 10, unitId: "ch5", name: "TOMCAT QUALIFICATION", kind: "boss",
+    brief: "Unit 5 boss sortie. Mixed review of Chapters 1 to 5. Passing earns the F-14.",
+    focus: [], prep: 3, problems: 14, bogeys: 3, fuelSeconds: 380,
+  },
+];
+
+/**
+ * Chapter 6, Percents. Six skills and six introducing sorties. Every skill here
+ * is the same equation in different clothes, so the mixed sorties matter more
+ * than usual: telling the four questions apart is the real work. Boss unlocks
+ * the F-15C.
+ */
+export const CH6_MISSIONS: Mission[] = [
+  {
+    id: "ch6-01", n: 1, unitId: "ch6", name: "GAUGE READ", kind: "intercept",
+    brief: "The same amount as a fraction, a decimal and a percent. Move the point two places, the right way.",
+    focus: ["rp.6.1"], prep: 2, problems: 6, bogeys: 3, fuelSeconds: 240,
+  },
+  {
+    id: "ch6-02", n: 2, unitId: "ch6", name: "PART AND WHOLE", kind: "intercept",
+    brief: "Part over whole equals percent over 100. Find the whole first: it is what the percent is of.",
+    focus: ["rp.6.2"], prep: 2, problems: 6, bogeys: 3, fuelSeconds: 240,
+  },
+  {
+    id: "ch6-03", n: 3, unitId: "ch6", name: "BASE SHOP", kind: "intercept",
+    brief: "Price times the rate as a decimal. Tax and fees are added on top, not instead.",
+    focus: ["rp.6.3"], prep: 2, problems: 7, bogeys: 3, fuelSeconds: 260,
+  },
+  {
+    id: "ch6-04", n: 4, unitId: "ch6", name: "DELTA CHECK", kind: "intercept",
+    brief: "How big was the change compared with where you started? Always divide by the original.",
+    focus: ["rp.6.4"], prep: 2, problems: 7, bogeys: 3, fuelSeconds: 260,
+  },
+  {
+    id: "ch6-05", n: 5, unitId: "ch6", name: "CLEARANCE SALE", kind: "intercept",
+    brief: "A quarter off means you pay three quarters. One multiplication, not two steps.",
+    focus: ["rp.6.5"], prep: 3, problems: 8, bogeys: 3, fuelSeconds: 280,
+  },
+  {
+    id: "ch6-06", n: 6, unitId: "ch6", name: "CREDIT LINE", kind: "intercept",
+    brief: "Interest is principal times rate times time, with the rate as a decimal and the time in years.",
+    focus: ["rp.6.6"], prep: 3, problems: 9, bogeys: 3, fuelSeconds: 300,
+  },
+  {
+    id: "ch6-07", n: 7, unitId: "ch6", name: "INVOICE RUN", kind: "patrol",
+    brief: "Four questions that look alike. Decide what is being asked before you multiply anything.",
+    focus: [], prep: 3, problems: 10, bogeys: 3, fuelSeconds: 300,
+  },
+  {
+    id: "ch6-08", n: 8, unitId: "ch6", name: "MIXED LEDGER", kind: "patrol",
+    brief: "Everything Chapter 6 has taught you, in any order, with honors work in the deck.",
+    focus: [], prep: 3, problems: 11, bogeys: 3, fuelSeconds: 320,
+  },
+  {
+    id: "ch6-09", n: 9, unitId: "ch6", name: "PRE-QUAL", kind: "intercept",
+    brief: "Last check before the qualification. Transfer problems are in the deck.",
+    focus: [], prep: 3, problems: 12, bogeys: 3, fuelSeconds: 320,
+  },
+  {
+    id: "ch6-10", n: 10, unitId: "ch6", name: "EAGLE QUALIFICATION", kind: "boss",
+    brief: "Unit 6 boss sortie. Mixed review of Chapters 1 to 6. Passing earns the F-15C.",
+    focus: [], prep: 3, problems: 15, bogeys: 3, fuelSeconds: 400,
+  },
+];
+
+export const MISSIONS: Mission[] = [
+  ...CH1_MISSIONS, ...CH2_MISSIONS, ...CH3_MISSIONS, ...CH4_MISSIONS, ...CH5_MISSIONS, ...CH6_MISSIONS,
+];
 
 export function missionsFor(unitId: string): Mission[] {
   return MISSIONS.filter((m) => m.unitId === unitId).sort((a, b) => a.n - b.n);

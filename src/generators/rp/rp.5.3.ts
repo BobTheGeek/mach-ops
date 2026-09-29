@@ -30,8 +30,8 @@ const SKINS = {
 
 type SkinKey = keyof typeof SKINS;
 
-/** The registry's k values: whole numbers plus a few common fractions. */
-const K_VALUES = [2, 3, 4, 5, 6, 8, 10, 12] as const;
+/** The registry's k values: "k in {2..12, 1/2, 1/4, 1.5, 2.5}". */
+const K_VALUES = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
 const K_FRACTIONS = [[1, 2], [1, 4], [3, 2], [5, 2]] as const;
 
 export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Problem {
@@ -44,13 +44,29 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
     ? rat(pick(rng, K_VALUES))
     : ((): Rational => { const f = pick(rng, K_FRACTIONS); return rat(f[0], f[1]); })();
 
-  const xs = [1, 2, 3, 4].map((n) => rat(n * int(rng, 1, 3)));
+  // A fresh multiplier per column put the same x in two columns (1, 6, 6, 8),
+  // which reads as a broken table before the player has done any thinking.
+  // One start and one step keeps the four values distinct and increasing.
+  const xStart = int(rng, 1, 6);
+  const xStep = int(rng, 1, 6);
+  const xs = [0, 1, 2, 3].map((n) => rat(xStart + n * xStep));
 
   /** A table that breaks proportionality, and how it breaks. */
   type Break = "none" | "constant" | "one-row";
+  // A yes/no question has to be a coin flip. Drawing uniformly from the three
+  // kinds would make "not proportional" right two thirds of the time, and a
+  // student who always answers no would score 67% without reading the table.
+  // A yes/no question has to be a coin flip. Drawing uniformly from the three
+  // kinds would make "not proportional" right two thirds of the time, and a
+  // student who always answers no would score 67% without reading the table.
+  // "equation" states y = kx + b in words, so a single broken row would not
+  // match what it says; it flips between none and a constant only. "find-k"
+  // tells the player the table is proportional, so it never breaks.
   const breakKind: Break = variant === "yes-no" || variant === "which"
-    ? pick(rng, ["none", "constant", "one-row"] as Break[])
-    : "none";
+    ? ((): Break => { const r = rng(); return r < 0.5 ? "none" : r < 0.75 ? "constant" : "one-row"; })()
+    : variant === "equation"
+      ? (rng() < 0.5 ? "none" : "constant")
+      : "none";
   const offset = rat(int(rng, 1, 9));
 
   const ys = xs.map((x, i) => {
@@ -160,7 +176,7 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
 
   return {
     skill: SKILL, tier, seed,
-    hash: sha1(`${SKILL}|${tier}|${variant}|${k.n}/${k.d}|${breakKind}|${xs.map((x) => x.n).join(",")}`),
+    hash: sha1(`${SKILL}|${tier}|${variant}|${k.n}/${k.d}|${breakKind}|${breakKind === "none" ? 0 : offset.n}|${xs.map((x) => x.n).join(",")}`),
     format: "yes-no",
     prompt,
     answer: options[correctIndex]!,

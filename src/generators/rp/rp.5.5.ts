@@ -69,6 +69,10 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
   const line = [0, maxX].map((x) => [x, toNumber(mul(k, rat(x)))]);
   const intercept = int(rng, 1, 3);
   const foil = [0, maxX].map((x) => [x, intercept + toNumber(mul(k, rat(x)))]);
+  // The two lines are named, not described. Describing them as "the line through
+  // (0, 0)" would put the answer in the option text and the graph would be decoration.
+  const originIsA = rng() < 0.5;
+  const graphSeries = originIsA ? [line, foil] : [foil, line];
 
   const prompt = {
     text: variant === "which-graph"
@@ -86,7 +90,8 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
       max: maxX,
       maxY,
       // read-k needs the (1, k) point marked, or there is nothing to read.
-      series: variant === "which-graph" ? [line, foil] : [line, [[1, toNumber(k)]]],
+      series: variant === "which-graph" ? graphSeries : [line, [[1, toNumber(k)]]],
+      ...(variant === "which-graph" ? { seriesLabels: ["A", "B"] } : {}),
       labels: [skin.x, skin.y],
     },
   };
@@ -100,22 +105,24 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
 
   /* -------- which graph: pick the line through the origin ------------ */
   if (variant === "which-graph") {
-    const options = ["THE LINE THROUGH (0, 0)", `THE LINE THROUGH (0, ${intercept})`];
-    const correctIndex = 0;
+    const right = originIsA ? "LINE A" : "LINE B";
+    const wrong = originIsA ? "LINE B" : "LINE A";
+    const options = ["LINE A", "LINE B"];
+    const correctIndex = options.indexOf(right);
     return {
       skill: SKILL, tier, seed,
       hash: sha1(`${SKILL}|${tier}|${variant}|${k.n}/${k.d}|${intercept}|${readAt}`),
       format: "graph-select",
       prompt,
-      answer: options[0]!,
-      answerText: options[0]!,
-      accept: (input: Answer) => input === options[0],
-      distractors: [{ tag: "any-line", value: options[1]! }],
+      answer: right,
+      answerText: right,
+      accept: (input: Answer) => input === right,
+      distractors: [{ tag: "any-line", value: wrong }],
       options,
       optionText: options,
       correctIndex,
       worked,
-      errorTagsByAnswer: { [options[1]!]: "any-line" },
+      errorTagsByAnswer: { [wrong]: "any-line" },
       params: { variant, skin: skinKey, k: `${k.n}/${k.d}`, intercept },
     };
   }
@@ -155,8 +162,15 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
   /* -------- what the point means ------------------------------------ */
   if (variant === "meaning") {
     const y = mul(k, rat(readAt));
-    const right = `${readAt} ${skin.x.split(" ")[0]!.toLowerCase()} gives ${fmtFraction(y)} ${skin.y.split(" ")[0]!.toLowerCase()}`;
-    const swapped = `${fmtFraction(y)} ${skin.x.split(" ")[0]!.toLowerCase()} gives ${readAt} ${skin.y.split(" ")[0]!.toLowerCase()}`;
+    const xUnit = skin.x.split(" ")[0]!.toLowerCase();
+    const yUnit = skin.y.split(" ")[0]!.toLowerCase();
+    const right = `${readAt} ${xUnit} gives ${fmtFraction(y)} ${yUnit}`;
+    // Swapping the two numbers is the error this foil models. When k is 1 the
+    // numbers are equal, so the swap returns the right answer; there the foil
+    // swaps the units instead, which is the same misreading of (x, y).
+    const swapped = fmtFraction(y) === String(readAt)
+      ? `${readAt} ${yUnit} gives ${fmtFraction(y)} ${xUnit}`
+      : `${fmtFraction(y)} ${xUnit} gives ${readAt} ${yUnit}`;
     const options = shuffle(rng, [right, swapped]);
     const correctIndex = options.indexOf(right);
 

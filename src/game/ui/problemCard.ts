@@ -70,6 +70,8 @@ export class ProblemCard {
   /** AI-6 pick one of N */
   private optionRows: { g: Phaser.GameObjects.Graphics; label: Phaser.GameObjects.Text; y: number }[] = [];
   private picked = -1;
+  private inputX = PAD;
+  private inputW = CARD_W - PAD * 2;
 
   /** AI-7 reorder */
   private order: number[] = [];
@@ -124,6 +126,11 @@ export class ProblemCard {
       inputX = PAD + FIGURE_W + GAP;
       inputW = CARD_W - inputX - PAD;
     }
+    // Redraws must reuse this column. Deriving it from prompt.figure instead
+    // put the boxes in the figure layout while the labels stayed full width,
+    // for any figure kind that has a spec but no renderer yet.
+    this.inputX = inputX;
+    this.inputW = inputW;
 
     const inputTop = y;
     const inputHeight = this.isPick
@@ -353,8 +360,8 @@ export class ProblemCard {
   private pick(i: number): void {
     audio.play("uiMove");
     this.picked = i;
-    const x = PAD + (this.problem.prompt.figure ? FIGURE_W + GAP : 0);
-    const w = CARD_W - x - PAD;
+    const x = this.inputX;
+    const w = this.inputW;
     this.optionRows.forEach((_, idx) => this.drawPickRow(idx, x, w, idx === i ? "picked" : "default"));
   }
 
@@ -396,8 +403,8 @@ export class ProblemCard {
 
   private showResult(correct: boolean, given: string): void {
     const state: CardState = correct ? "correct" : "wrong";
-    const x = PAD + (this.problem.prompt.figure ? FIGURE_W + GAP : 0);
-    const w = CARD_W - x - PAD;
+    const x = this.inputX;
+    const w = this.inputW;
 
     if (this.isPick) {
       this.optionRows.forEach((_, i) => {
@@ -444,8 +451,8 @@ export class ProblemCard {
     this.refreshTyped();
     this.feedback.setText("");
     this.caret?.setVisible(true);
-    const x = PAD + (this.problem.prompt.figure ? FIGURE_W + GAP : 0);
-    const w = CARD_W - x - PAD;
+    const x = this.inputX;
+    const w = this.inputW;
     if (this.isPick) this.optionRows.forEach((_, i) => this.drawPickRow(i, x, w, "default"));
     else if (this.inputBox && this.typedText) this.drawTypedBox(x, this.typedText.y - (HIT.min - SIZE.h3) / 2, w, "default");
     this.frame.clear();

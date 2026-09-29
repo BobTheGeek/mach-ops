@@ -74,9 +74,14 @@ export class ManualPanel {
     const title = s.add.text(x + PAD, y, this.page.title, { ...TEXT.h3, wordWrap: { width: PANEL_W - PAD * 2 - 60 } });
     y += title.height + 6;
 
-    const codes = capsLabel(s, x + PAD, y, this.page.standards.join(" · "), C.textMuted, TRACK.readout);
+    // Four standards run past the status pill, so the codes wrap in the space
+    // to its left rather than being drawn straight through it.
     const pill = statusPill(s, x + PANEL_W - PAD - 130, y - 4, this.opts.status);
-    y += SIZE.label + 10;
+    const codes = s.add.text(x + PAD, y, this.page.standards.join(" · ").toUpperCase(), {
+      ...TEXT.label, color: C.textMuted, wordWrap: { width: PANEL_W - PAD * 2 - 140 }, lineSpacing: 2,
+    });
+    codes.setLetterSpacing(TRACK.readout * SIZE.label);
+    y += Math.max(SIZE.label + 10, codes.height + 8);
 
     // What opening this costs, stated plainly. It wraps: the sortie note is long
     // and must never be clipped, because the whole point is that the player can
@@ -161,12 +166,18 @@ export class ManualPanel {
         cursor += t.height + 6;
       });
 
+      // Only reserve the 180 px slot when there is something to draw in it.
+      // A skill whose figure kind has no renderer yet was getting a large empty
+      // box between the steps and the worked example.
+      const fig = renderFigure(s, this.worked.prompt.figure, inner, SLOT_H);
+      if (!fig) return cursor;
+
       const slot = s.add.graphics();
       slot.lineStyle(STROKE.hairline, hex(C.shield), 0.6);
       slot.strokeRoundedRect(14, cursor + 4, inner, SLOT_H, RADIUS.panel);
       this.body.add(slot);
-      const fig = renderFigure(s, this.worked.prompt.figure, inner, SLOT_H);
-      if (fig) { fig.setPosition(14, cursor + 4); this.body.add(fig); }
+      fig.setPosition(14, cursor + 4);
+      this.body.add(fig);
       return cursor + 4 + SLOT_H;
     });
 

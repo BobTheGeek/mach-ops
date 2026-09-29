@@ -17,6 +17,9 @@ import { applyAttempt, initialTierState } from "../../engine/tiers";
 import { isFast } from "../../engine/mastery";
 import type { Attempt } from "../../engine/types";
 
+/** Card top. Leaves room under the rule for a two-line brief. */
+const BRIEF_CARD_Y = 116;
+
 export const PREP_COUNT = 3;
 export const START_FUEL = 0.4;
 export const START_SHIELDS = 0.5;
@@ -126,7 +129,9 @@ export class BriefingScene extends Phaser.Scene {
 
     this.fillNote = this.add.text(px + 16, py + 196, "", { ...TEXT.label, color: C.hud });
 
-    const briefLine = this.add.text(this.cardX, 62, this.mission.brief, {
+    // Briefs run to two lines. The gap between the rule at y=58 and the card
+    // only fits one, so the second line was being drawn under the card edge.
+    const briefLine = this.add.text(this.cardX, 66, this.mission.brief, {
       ...TEXT.body, color: C.textMuted, wordWrap: { width: 560 }, lineSpacing: 2,
     });
     void briefLine;
@@ -183,7 +188,7 @@ export class BriefingScene extends Phaser.Scene {
       onManual: () => this.openManual(mp),
       onHint: () => this.hint(mp),
     });
-    this.card.container.setPosition(this.cardX, 96);
+    this.card.container.setPosition(this.cardX, BRIEF_CARD_Y);
     this.card.setTimer("UNTIMED");
   }
 
@@ -246,8 +251,8 @@ export class BriefingScene extends Phaser.Scene {
   }
 
   private launchButton(): void {
-    const note = this.add.text(this.cardX, 120, "PREP COMPLETE", { ...TEXT.h2, color: C.hud });
-    const detail = this.add.text(this.cardX, 170, "Fuel, shields and missiles are loaded. Launch when ready.", {
+    const note = this.add.text(this.cardX, 140, "PREP COMPLETE", { ...TEXT.h2, color: C.hud });
+    const detail = this.add.text(this.cardX, 190, "Fuel, shields and missiles are loaded. Launch when ready.", {
       ...TEXT.bodyLg,
       color: C.textMuted,
       wordWrap: { width: CARD_W },
@@ -257,7 +262,7 @@ export class BriefingScene extends Phaser.Scene {
 
     button(this, {
       x: this.cardX,
-      y: 240,
+      y: 260,
       width: 260,
       height: HIT.lg,
       label: "LAUNCH",
@@ -269,7 +274,7 @@ export class BriefingScene extends Phaser.Scene {
 
     button(this, {
       x: this.cardX + 280,
-      y: 240,
+      y: 260,
       width: 200,
       height: HIT.lg,
       label: "CAMPAIGN",

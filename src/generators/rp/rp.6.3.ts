@@ -25,10 +25,35 @@ export const VARIANTS: Record<Tier, Variant[]> = {
 /** The registry's rate list. */
 const RATES = [5, 6, 7, 8, 10, 15, 20] as const;
 
+// A commission is money coming IN, so it cannot share the shop's verbs: "a kill
+// bounty costs 260 CR" and "what do you pay" were both backwards. Each skin
+// carries its own opening clause, its own question and a short tag for the
+// figure, so no sentence is assembled from parts that do not belong together.
 const SKINS = {
-  shop: { item: "A missile", rateName: "base tax", unit: "CR" },
-  hangar: { item: "A hangar slot", rateName: "the hangar fee", unit: "CR" },
-  commission: { item: "A kill bounty", rateName: "the pilot commission", unit: "CR" },
+  shop: {
+    lead: "A missile costs {{price}} CR",
+    rateName: "base tax", tag: "TAX",
+    partQ: "How much is the tax?",
+    totalQ: "What do you pay in total?",
+    settle: "bill",
+    unit: "CR",
+  },
+  hangar: {
+    lead: "A hangar slot costs {{price}} CR",
+    rateName: "the hangar fee", tag: "FEE",
+    partQ: "How much is the fee?",
+    totalQ: "What do you pay in total?",
+    settle: "bill",
+    unit: "CR",
+  },
+  commission: {
+    lead: "A confirmed kill pays a bounty of {{price}} CR",
+    rateName: "the pilot commission", tag: "COMMISSION",
+    partQ: "How much is the commission?",
+    totalQ: "What are you paid in total?",
+    settle: "payout",
+    unit: "CR",
+  },
 } as const;
 
 /** "base tax is 8%" at the start of a sentence needs a capital. */
@@ -39,7 +64,11 @@ type SkinKey = keyof typeof SKINS;
 export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Problem {
   const rng = mulberry32(hash32(`${SKILL}|${tier}|${seed}`));
   const variant = opts.transfer && tier === 4 ? "multi" : pick(rng, VARIANTS[tier]);
-  const skinKey = (opts.skin as SkinKey | undefined) ?? pick(rng, Object.keys(SKINS) as SkinKey[]);
+  // Two charges stacked on one base is a purchase, not a payout: a handling fee
+  // taken off what you are paid would be a subtraction. The multi variant keeps
+  // to the skins where both percents really are added.
+  const skinPool = (variant === "multi" ? ["shop", "hangar"] : Object.keys(SKINS)) as SkinKey[];
+  const skinKey = (opts.skin as SkinKey | undefined) ?? pick(rng, skinPool);
   const skin = SKINS[skinKey];
 
   // --- 1. choose the price and the rate ---------------------------------
@@ -63,19 +92,20 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
   const show = (r: Rational): string => (isTerminating(r) ? fmtDecimal(r) : fmtFraction(r));
 
   // --- 2. prompt --------------------------------------------------------
+  const lead = bind(skin.lead, { price: show(price) });
   const text =
-    variant === "part" ? bind("{{item}} costs {{price}} CR and {{rateName}} is {{rate}}%. How much is that?", {
-      item: skin.item, price: show(price), rateName: skin.rateName, rate: show(rate),
+    variant === "part" ? bind("{{lead}} and {{rateName}} is {{rate}}%. {{q}}", {
+      lead, rateName: skin.rateName, rate: show(rate), q: skin.partQ,
     })
-      : variant === "total" ? bind("{{item}} costs {{price}} CR and {{rateName}} is {{rate}}%. What do you pay in total?", {
-        item: skin.item, price: show(price), rateName: skin.rateName, rate: show(rate),
+      : variant === "total" ? bind("{{lead}} and {{rateName}} is {{rate}}%, added on top. {{q}}", {
+        lead, rateName: skin.rateName, rate: show(rate), q: skin.totalQ,
       })
-        : variant === "reverse" ? bind("{{item}} costs {{price}} CR and you pay {{total}} CR. What percent was added?", {
-          item: skin.item, price: show(price), total: show(total),
+        : variant === "reverse" ? bind("{{lead}} and the {{settle}} comes to {{total}} CR. What percent was added?", {
+          lead, settle: skin.settle, total: show(total),
         })
-          : bind("{{item}} costs {{price}} CR. {{rateName}} is {{rate}}% and a handling fee is {{rate2}}%, both on the price. What do you pay?", {
-            item: skin.item, price: show(price),
-            rateName: startCase(skin.rateName), rate: show(rate), rate2: show(secondRate),
+          : bind("{{lead}}. {{rateName}} is {{rate}}% and a handling fee is {{rate2}}%, both on the base. {{q}}", {
+            lead, rateName: startCase(skin.rateName), rate: show(rate),
+            rate2: show(secondRate), q: skin.totalQ,
           });
 
   const prompt = {
@@ -83,7 +113,7 @@ export function generate(tier: Tier, seed: number, opts: GenerateOpts = {}): Pro
     units: skin.unit,
     figure: {
       kind: "tape-diagram" as const,
-      rows: [["PRICE", show(price)], [skin.rateName.toUpperCase(), show(taxAmount)], ["TOTAL", show(total)]],
+      rows: [["BASE", show(price)], [skin.tag, show(taxAmount)], ["TOTAL", show(total)]],
     },
   };
 
