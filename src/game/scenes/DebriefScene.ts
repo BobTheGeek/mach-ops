@@ -27,9 +27,19 @@ export interface DebriefData {
   failed: boolean;
 }
 
+/** The left column: the sortie summary, then the intel card under it. */
+const SUMMARY_TOP = 80;
+/** First row, measured from the panel top; the heading sits above it. */
+const ROWS_TOP = 44;
+const ROW_GAP = 32;
+/** Room under the last row, so a descender is not flush with the border. */
+const ROW_PAD = 18;
+
 export class DebriefScene extends Phaser.Scene {
   private debrief!: DebriefData;
   private manual?: ManualPanel;
+  /** where the summary panel ended, so the intel panel can follow it */
+  private summaryBottom = 0;
   private cardEarned: IntelCard | null = null;
   private unlocked: string | null = null;
 
@@ -84,10 +94,7 @@ export class DebriefScene extends Phaser.Scene {
 
   private summary(): void {
     const x = SCREEN_PAD;
-    const y = 80;
-    panel(this, x, y, 340, 212, { fill: C.panel });
-    const h = capsLabel(this, x + 16, y + 14, "SORTIE", C.hud);
-    void h;
+    const y = SUMMARY_TOP;
 
     const rows: [string, string, string][] = [
       ["CREDITS", `${gameState.file.credits}`, C.lock],
@@ -98,8 +105,17 @@ export class DebriefScene extends Phaser.Scene {
       ["FUEL", `${Math.round(this.debrief.fuel * 100)}%`, C.hud],
       ["SHIELDS", `${Math.round(this.debrief.shields * 100)}%`, C.shield],
     ];
+    // Height from the rows, not a number typed once and forgotten. Adding the
+    // ESCAPED row is what put SHIELDS 14 px below the bottom edge; deriving it
+    // means the next row grows the panel instead of spilling out of it.
+    this.summaryBottom = y + ROWS_TOP + rows.length * ROW_GAP + ROW_PAD;
+    panel(this, x, y, 340, this.summaryBottom - y, { fill: C.panel });
+
+    const h = capsLabel(this, x + 16, y + 14, "SORTIE", C.hud);
+    void h;
+
     rows.forEach(([label, value, color], i) => {
-      const ry = y + 44 + i * 32;
+      const ry = y + ROWS_TOP + i * ROW_GAP;
       const l = capsLabel(this, x + 16, ry, label, C.textMuted, TRACK.readout);
       const v = this.add.text(x + 180, ry - 4, value, { ...TEXT.value, color });
       void l;
@@ -110,7 +126,7 @@ export class DebriefScene extends Phaser.Scene {
   /** Screens 08: a sortie with 6+ first-try hits earns one intel card. */
   private intelPanel(): void {
     const x = SCREEN_PAD;
-    const y = 316;
+    const y = this.summaryBottom + 24;
     const w = 340;
     const h = 190;
     panel(this, x, y, w, h, { fill: C.panel, border: this.cardEarned ? C.lock : C.border });
