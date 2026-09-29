@@ -65,6 +65,8 @@ export type FigureKind =
   | "can-label-net"
   // Q4 honors
   | "transversal-diagram" | "squares-on-sides" | "right-triangle-labelled"
+  | "coordinate-plane-two-lines" | "coordinate-plane-shaded" | "coordinate-plane-sketch"
+  | "mapping-diagram" | "slope-triangle" | "dilation-pair" | "words"
   | "coordinate-plane-right-triangle"
   // later chapters
   | "coordinate-plane" | "table" | "tape" | "hanger"

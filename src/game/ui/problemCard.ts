@@ -13,6 +13,7 @@ import Phaser from "phaser";
 import { C, N, SIZE, FONT, TEXT, TRACK, RADIUS, STROKE, HIT, INPUT, hex } from "../../ui/tokens";
 import { panel, capsLabel } from "./kit";
 import { renderFigure } from "./figures";
+import { createGridInput, sameGridAnswer, type GridInput, type GridMode } from "./gridInput";
 import { parseRational, fmtFraction, MINUS } from "../../engine/rational";
 import { audio } from "../audio";
 import type { Problem } from "../../engine/types";
@@ -25,6 +26,8 @@ export const PAD = 20;
 export const GAP = 14;
 export const FIGURE_W = 240;
 export const FIGURE_H = 140;
+/** The interactive grid is square-ish and as wide as the card allows. */
+export const GRID_H = 260;
 
 export interface CommitResult {
   correct: boolean;
@@ -57,6 +60,7 @@ export class ProblemCard {
   private frame!: Phaser.GameObjects.Graphics;
   private header!: Phaser.GameObjects.Text;
   private timerText!: Phaser.GameObjects.Text;
+  private readout?: Phaser.GameObjects.Text;
   private feedback!: Phaser.GameObjects.Text;
   private height = 0;
   private locked = false;
@@ -72,6 +76,9 @@ export class ProblemCard {
   private picked = -1;
   private inputX = PAD;
   private inputW = CARD_W - PAD * 2;
+
+  /** AI-3, AI-4 and AI-5: the interactive grid */
+  private grid?: GridInput;
 
   /** AI-7 reorder */
   private order: number[] = [];
@@ -99,6 +106,21 @@ export class ProblemCard {
     return this.problem.format === "order";
   }
 
+  /**
+   * The three formats where the FIGURE is the input: the player puts a point on
+   * the grid, drags a line across it, or picks a side of a boundary to shade.
+   * These take the whole width of the card, because a 240 px figure column is
+   * not something a twelve-year-old can hit a lattice point in.
+   */
+  private get gridMode(): GridMode | null {
+    switch (this.problem.format) {
+      case "plot-point": return "point";
+      case "drag-line": return "line";
+      case "shade-region": return "region";
+      default: return null;
+    }
+  }
+
   private build(): void {
     const s = this.scene;
     let y = PAD;
@@ -117,8 +139,10 @@ export class ProblemCard {
     });
     y += prompt.height + GAP;
 
-    // figure sits left of the input when there is one
-    const figure = renderFigure(s, this.problem.prompt.figure, FIGURE_W, FIGURE_H);
+    // The grid formats replace the figure entirely: the grid IS the figure and
+    // the input at once, so drawing a separate one would show the question twice.
+    const mode = this.gridMode;
+    const figure = mode ? null : renderFigure(s, this.problem.prompt.figure, FIGURE_W, FIGURE_H);
     let inputX = PAD;
     let inputW = CARD_W - PAD * 2;
     if (figure) {
@@ -133,13 +157,23 @@ export class ProblemCard {
     this.inputW = inputW;
 
     const inputTop = y;
-    const inputHeight = this.isPick
-      ? this.buildPickRows(inputX, inputTop, inputW)
-      : this.isOrder
-        ? this.buildOrderRows(inputX, inputTop, inputW)
-        : this.buildTypedInput(inputX, inputTop, inputW);
+    const inputHeight = mode
+      ? this.buildGrid(mode, inputTop)
+      : this.isPick
+        ? this.buildPickRows(inputX, inputTop, inputW)
+        : this.isOrder
+          ? this.buildOrderRows(inputX, inputTop, inputW)
+          : this.buildTypedInput(inputX, inputTop, inputW);
 
     y = inputTop + Math.max(inputHeight, figure ? FIGURE_H : 0) + GAP;
+
+    // A grid answer needs saying in words as well as shown, or the player
+    // cannot tell a (3, −2) they meant from one they slipped into.
+    if (mode) {
+      this.readout = capsLabel(s, PAD, y, "", C.hud, TRACK.readout);
+      this.refreshReadout();
+      y += SIZE.label + GAP;
+    }
 
     // one-line feedback ("YOU n · ANSWER n · RETRY")
     this.feedback = s.add.text(PAD, y, "", { ...TEXT.label, color: C.alert });
@@ -164,6 +198,8 @@ export class ProblemCard {
     this.container.sendToBack(this.frame);
     for (const r of this.optionRows) this.container.add([r.g, r.label]);
     for (const r of this.orderRows) this.container.add([r.g, r.label]);
+    if (this.grid) this.container.add(this.grid.container);
+    if (this.readout) this.container.add(this.readout);
     if (this.inputBox) this.container.add(this.inputBox);
     if (this.typedText) this.container.add(this.typedText);
     if (this.caret) this.container.add(this.caret);
@@ -171,6 +207,32 @@ export class ProblemCard {
     this.timerText.setX(CARD_W - PAD - this.timerText.width);
     this.fitHeader();
     this.container.setSize(CARD_W, this.height);
+  }
+
+  /** AI-3/4/5: a full-width grid, plus the line of text that reads it back. */
+  private buildGrid(mode: GridMode, top: number): number {
+    const span = Number(this.problem.prompt.figure?.max ?? 10);
+    const boundary = this.problem.prompt.figure?.boundary as
+      { m: { n: number; d: number }; b: { n: number; d: number }; strict: boolean } | undefined;
+    this.grid = createGridInput({
+      scene: this.scene,
+      mode,
+      width: CARD_W - PAD * 2,
+      height: GRID_H,
+      span: Number.isFinite(span) && span > 0 ? span : 10,
+      onChange: () => this.refreshReadout(),
+      ...(boundary ? { boundary } : {}),
+      ...(this.problem.prompt.figure?.labels
+        ? { labels: (this.problem.prompt.figure.labels as string[]).slice(0, 2) as [string, string] }
+        : {}),
+    });
+    this.grid.container.setPosition(PAD, top);
+    return GRID_H;
+  }
+
+  private refreshReadout(): void {
+    const t = this.grid?.text() ?? "";
+    this.readout?.setText(t ? `YOU: ${t}` : "MOVE IT WITH THE ARROW KEYS OR TAP THE GRID");
   }
 
   private borderColor(): string {
@@ -340,6 +402,11 @@ export class ProblemCard {
       if (k === "m" || k === "M") { e.preventDefault(); this.opts.onManual(); return; }
       if (k === "h" || k === "H") { e.preventDefault(); this.opts.onHint(); return; }
 
+      if (this.grid) {
+        if (this.grid.key(k)) { e.preventDefault(); this.refreshReadout(); }
+        return;
+      }
+
       if (this.isPick) {
         const n = Number(k);
         if (Number.isInteger(n) && n >= 1 && n <= this.optionRows.length) { e.preventDefault(); this.pick(n - 1); }
@@ -395,7 +462,14 @@ export class ProblemCard {
     let given: string;
     let correct: boolean;
 
-    if (this.isPick) {
+    if (this.grid) {
+      const entered = this.grid.value();
+      if (entered === null) return;
+      given = this.grid.text();
+      correct = this.problem.accept(entered) || sameGridAnswer(entered, this.problem.answer);
+      this.grid.lock();
+      if (!correct) this.grid.reveal(this.problem.answer);
+    } else if (this.isPick) {
       if (this.picked < 0) return;
       given = this.problem.optionText?.[this.picked] ?? String(this.picked);
       correct = this.picked === this.problem.correctIndex;

@@ -12,6 +12,7 @@ import { audio } from "../audio";
 import { showTip } from "../ui/firstTimeTip";
 import { mission as findMission, type Mission } from "../../data/campaign";
 import { buildMission, type MissionProblem } from "../missionBuilder";
+import { generatorFor, IMPLEMENTED_SKILLS } from "../../generators/index";
 import { recordAttempt } from "../save";
 import { applyAttempt, initialTierState } from "../../engine/tiers";
 import { isFast } from "../../engine/mastery";
@@ -77,6 +78,20 @@ export class BriefingScene extends Phaser.Scene {
 
   create(): void {
     this.cameras.main.setBackgroundColor(N.ground);
+
+    // Development only: ?card=<skill>&tier=<n> serves that one skill in prep
+    // instead of the queue's choice. The interactive inputs cannot be checked
+    // any other way — an honors skill turns up in maybe one prep card in ten,
+    // and "reload until it appears" is not a way to look at a figure.
+    const forced = import.meta.env.DEV ? forcedCard() : null;
+    if (forced) {
+      this.preps = forced;
+      audio.setVolume(gameState.file.settings.volume);
+      this.chrome();
+      this.showPrep();
+      return;
+    }
+
     this.preps = buildMission({
       file: gameState.file,
       skills: gameState.playableSkills,
@@ -304,4 +319,23 @@ export class BriefingScene extends Phaser.Scene {
       onComplete: () => this.scene.start("Sortie", loadout),
     });
   }
+}
+
+/**
+ * Development only. `?card=g.9.1&tier=3` builds two cards of that one skill so a
+ * figure or an input can be looked at directly. Returns null when the parameter
+ * is absent or names a skill with no generator.
+ */
+function forcedCard(): MissionProblem[] | null {
+  const params = new URLSearchParams(globalThis.location?.search ?? "");
+  const skill = params.get("card");
+  if (!skill || !IMPLEMENTED_SKILLS.includes(skill)) return null;
+  const raw = Number(params.get("tier"));
+  const tier = ([1, 2, 3, 4] as const).includes(raw as 1 | 2 | 3 | 4) ? (raw as 1 | 2 | 3 | 4) : 1;
+  const seedBase = Number(params.get("seed")) || 0;
+  return [0, 1].map((i) => ({
+    problem: generatorFor(skill)(tier, seedBase + i),
+    item: { skill, tier, slice: "current" as const, transfer: false },
+    guardExhausted: false,
+  }));
 }

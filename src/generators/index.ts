@@ -73,6 +73,18 @@ import { generate as h8gb3 } from "./h8/h8.g.b3";
 import { generate as h8gb4 } from "./h8/h8.g.b4";
 import { generate as h8gb5 } from "./h8/h8.g.b5";
 import { generate as h8gc6 } from "./h8/h8.g.c6";
+import { generate as h8eec8b } from "./h8/h8.ee.c8b";
+import { generate as h8ga1d } from "./h8/h8.g.a1d";
+import { generate as h8eeb5 } from "./h8/h8.ee.b5";
+import { generate as h8eeb6 } from "./h8/h8.ee.b6";
+import { generate as h8eec8a } from "./h8/h8.ee.c8a";
+import { generate as h8eec9 } from "./h8/h8.ee.c9";
+import { generate as h8fa1 } from "./h8/h8.f.a1";
+import { generate as h8fa2 } from "./h8/h8.f.a2";
+import { generate as h8fa3 } from "./h8/h8.f.a3";
+import { generate as h8fb4 } from "./h8/h8.f.b4";
+import { generate as h8fb5 } from "./h8/h8.f.b5";
+import { generate as h8spa2 } from "./h8/h8.sp.a2";
 
 export const GENERATORS: Record<string, Generator> = {
   "ns.1.1": ns11,
@@ -146,6 +158,18 @@ export const GENERATORS: Record<string, Generator> = {
   "h8.g.b4": h8gb4,
   "h8.g.b5": h8gb5,
   "h8.g.c6": h8gc6,
+  "h8.ee.c8b": h8eec8b,
+  "h8.g.a1d": h8ga1d,
+  "h8.ee.b5": h8eeb5,
+  "h8.ee.b6": h8eeb6,
+  "h8.ee.c8a": h8eec8a,
+  "h8.ee.c9": h8eec9,
+  "h8.f.a1": h8fa1,
+  "h8.f.a2": h8fa2,
+  "h8.f.a3": h8fa3,
+  "h8.f.b4": h8fb4,
+  "h8.f.b5": h8fb5,
+  "h8.sp.a2": h8spa2,
 };
 
 export const IMPLEMENTED_SKILLS = Object.keys(GENERATORS);
