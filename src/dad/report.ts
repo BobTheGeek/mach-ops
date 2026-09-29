@@ -313,11 +313,13 @@ export function toCsv(rows: readonly SkillRow[]): string {
 export interface ScheduleRow {
   unit: ScheduleUnit;
   chapterName: string;
-  /** the date in force: the parent's override date if set, else the schedule's */
+  /** the date in force: the parent's edit if there is one, else the shipped date */
   opens: string;
   open: boolean;
   /** forced open or closed by the parent, rather than by the date */
   overridden: boolean;
+  /** the parent has moved this chapter's date */
+  moved: boolean;
   /** the airframe passing this unit's boss earns, or null */
   earns: string | null;
 }
@@ -333,6 +335,7 @@ export function scheduleRows(
     opens: unit.opens,
     open: unitOpen(input, unit),
     overridden: Object.prototype.hasOwnProperty.call(input.file.scheduleOverrides, unit.id),
+    moved: Object.prototype.hasOwnProperty.call(input.file.scheduleDates, unit.id),
     earns: unlocks[unit.id] ?? null,
   }));
 }

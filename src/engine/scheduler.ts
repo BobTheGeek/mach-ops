@@ -88,6 +88,39 @@ export function isoToMs(iso: string): number {
   return Date.parse(`${iso}T00:00:00Z`);
 }
 
+/**
+ * The schedule actually in force, after the parent's date edits.
+ *
+ * schedule.json ships the district's placeholder dates and the game fetches it
+ * from a deployed URL, so the browser cannot write to it. A parent who moves a
+ * chapter is really adding an override to their own save, and this folds those
+ * overrides back into a Schedule so everything downstream — isUnitOpen,
+ * openUnits, activeUnit, the hangar, the heat map — keeps reading one shape and
+ * cannot disagree about what the dates are.
+ *
+ * A quarter's start is not a separate setting: it is the earliest chapter in
+ * that quarter, so moving the first chapter moves the quarter with it and the
+ * two can never contradict each other.
+ */
+export function withDateOverrides(
+  schedule: Schedule,
+  dates: Readonly<Record<string, string>> = {},
+): Schedule {
+  if (Object.keys(dates).length === 0) return schedule;
+
+  const units = schedule.units.map((u) => {
+    const moved = dates[u.id];
+    return moved && !Number.isNaN(isoToMs(moved)) ? { ...u, opens: moved } : u;
+  });
+
+  const quarters = schedule.quarters.map((q) => {
+    const inQuarter = units.filter((u) => u.quarter === q.q).map((u) => u.opens).sort();
+    return inQuarter.length === 0 ? q : { ...q, starts: inQuarter[0]! };
+  });
+
+  return { ...schedule, units, quarters };
+}
+
 export interface UnlockInput {
   schedule: Schedule;
   now: number;

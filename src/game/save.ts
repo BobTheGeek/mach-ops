@@ -57,6 +57,13 @@ export interface SaveFile {
   settings: Settings;
   /** /dad overrides: unit id -> forced open/closed */
   scheduleOverrides: Record<string, boolean>;
+  /**
+   * /dad date edits: unit id -> ISO date, replacing the one in schedule.json.
+   *
+   * Separate from scheduleOverrides because they answer different questions:
+   * this moves when a chapter opens, that forces it open or shut regardless.
+   */
+  scheduleDates: Record<string, string>;
   parentToggles: ParentToggles;
 }
 
@@ -81,6 +88,7 @@ export function newSave(): SaveFile {
     flightSchoolDone: false,
     settings: { volume: 0.7, keypadEntry: false, colorblindHud: false, reducedMotion: false },
     scheduleOverrides: {},
+    scheduleDates: {},
     parentToggles: { allowEarlyUnlockOnBossPass: false, honorsRequiredForBoss: false },
   };
 }
@@ -174,6 +182,14 @@ export function setCallsign(file: SaveFile, callsign: string): SaveFile {
 /** Choose a paint scheme for one airframe. An empty id is the standard one. */
 export function setPaint(file: SaveFile, airframe: string, livery: string): SaveFile {
   return { ...file, paint: { ...file.paint, [airframe]: livery } };
+}
+
+/** Move a chapter's opening date. A blank date clears the edit. */
+export function setChapterDate(file: SaveFile, unitId: string, iso: string): SaveFile {
+  const next = { ...file.scheduleDates };
+  if (iso === "") delete next[unitId];
+  else next[unitId] = iso;
+  return { ...file, scheduleDates: next };
 }
 
 export function unlockAirframe(file: SaveFile, airframe: string): SaveFile {

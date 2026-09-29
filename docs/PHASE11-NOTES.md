@@ -12,8 +12,9 @@ pnpm build        # typecheck + both pages
 
 - **14C Heat map** — 83 sub-skills grouped quarter → chapter → skill, collapsible,
   honors badged, with the most-picked error tag on every row.
-- **14D Schedule** — every chapter, the date it opens, the airframe its boss
-  earns, and force-open / force-shut overrides. Plus the two parent rules.
+- **14D Schedule** — every chapter with an editable opening date, the airframe
+  its boss earns, and force-open / force-shut overrides. Plus the two parent
+  rules.
 - **Activity** — answers, correct and distinct skills per day, newest first.
 - **14E Credits** — curriculum, aircraft figures, Khan Academy, fonts, sound and
   a plain statement of where the data lives.
@@ -70,16 +71,31 @@ distractor in the registry is a named mistake, the sortie records which one was
 picked, and the heat map now surfaces the one picked most often on each row —
 `double-neg ×2` next to a 44%. That is the column worth reading.
 
-## What the parent can change, and what they cannot
+## What the parent can change
 
-The save holds `scheduleOverrides` as `Record<string, boolean>`, so a parent can
-force a chapter open or shut, and clear the override. That covers the design's
-"open next unit now".
+Two different questions, two separate fields.
 
-Editing the *dates* themselves, which 14D also shows, is not possible without a
-save-format change: the dates live in `schedule.json`, which the game fetches and
-the browser cannot write, and the override map holds booleans rather than dates.
-Left out rather than faked.
+`scheduleOverrides` forces a chapter open or shut regardless of its date, which
+is the design's "open next unit now". `scheduleDates` moves the date itself, so
+the schedule can be made to match the real school calendar rather than the
+placeholder dates `schedule.json` ships with.
+
+`schedule.json` is fetched from a deployed URL and the browser cannot write to
+it, so a date edit is an override in the pilot's own save.
+`withDateOverrides(schedule, dates)` folds those edits back into a `Schedule`,
+and `gameState.schedule` returns that rather than the raw JSON. Everything
+downstream — `isUnitOpen`, `openUnits`, `activeUnit`, the hangar, the heat map —
+keeps reading one shape and cannot disagree about when a chapter opens. It
+returns the schedule unchanged when there is nothing to apply, so the ordinary
+case costs nothing.
+
+A quarter's start is not a separate setting. It is the earliest chapter in that
+quarter, recomputed from the units, so moving the first chapter moves the quarter
+with it and the two can never contradict each other. Moving Chapter 4 from
+October to September was enough to open Quarter 2 in the hangar.
+
+An unparseable date is ignored rather than treated as zero, which would have
+opened everything at once.
 
 ## Verified in the browser
 
@@ -96,3 +112,6 @@ skills at deliberately mixed accuracy:
 - Export CSV downloaded `mach-ops-viper.csv`: 84 lines, header plus 83 skills
 - The empty state on a cleared save
 - `PARENT VIEW ↗` on the Settings row
+- Moving Chapter 4 to 15 September wrote `{"ch4":"2026-09-15"}`, flipped its row
+  to Open with a Reset beside it, and the game's hangar then showed Quarter 2
+  open with Chapter 4 flyable and Chapter 5 still locked

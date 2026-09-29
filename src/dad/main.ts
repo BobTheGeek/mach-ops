@@ -7,10 +7,10 @@
 
 import curriculumJson from "../data/curriculum.json";
 import scheduleJson from "../data/schedule.json";
-import { load, save, type SaveFile } from "../game/save";
+import { load, save, setChapterDate, type SaveFile } from "../game/save";
 import { BOSS_UNLOCKS } from "../data/campaign";
 import { fleetEntry } from "../data/fleet";
-import type { Schedule } from "../engine/scheduler";
+import { withDateOverrides, type Schedule } from "../engine/scheduler";
 import {
   buildReport, summarise, allRows, toCsv, scheduleRows, activityByDay,
   STRONG_AT, FLAGGED_BELOW,
@@ -65,7 +65,15 @@ function isoToLabel(iso: string): string {
 }
 
 function input(): ReportInput {
-  return { file, skills: curriculum.skills, chapters: curriculum.chapters, schedule, now: Date.now() };
+  // The schedule with the parent's own date edits folded in, which is the same
+  // one gameState hands the game.
+  return {
+    file,
+    skills: curriculum.skills,
+    chapters: curriculum.chapters,
+    schedule: withDateOverrides(schedule, file.scheduleDates),
+    now: Date.now(),
+  };
 }
 
 /** Persist and redraw. The game reads the same key on its next launch. */
@@ -283,9 +291,25 @@ function scheduleView(): HTMLElement {
         : null,
     ]);
 
+    // An ordinary date field: a parent matching a school calendar should be able
+    // to type or pick a date, not nudge a stepper.
+    const date = el("input", {
+      class: "d-date",
+      attrs: { type: "date", value: r.opens, "aria-label": `${r.chapterName} opens` },
+    });
+    date.addEventListener("change", () => update(setChapterDate(file, r.unit.id, date.value)));
+
+    const dateCell = el("td", {}, [
+      date,
+      r.moved
+        ? button("Reset", () => update(setChapterDate(file, r.unit.id, "")))
+        : null,
+    ]);
+    dateCell.className = "d-datecell";
+
     body.append(el("tr", {}, [
       el("td", { text: `Ch ${r.unit.id.replace("ch", "")} · ${r.chapterName}` }),
-      el("td", { text: isoToLabel(r.opens) }),
+      dateCell,
       el("td", { text: r.earns ? (fleetEntry(r.earns)?.designation ?? r.earns) : "—" }),
       el("td", {}, [pill]),
       el("td", {}, [controls]),
@@ -315,7 +339,7 @@ function scheduleView(): HTMLElement {
     el("div", { class: "d-card" }, [
       el("div", { class: "d-card-head" }, [
         el("div", { class: "d-card-title", text: "Chapter schedule" }),
-        el("div", { class: "d-note", text: "Dates come from schedule.json. An override here wins until you clear it." }),
+        el("div", { class: "d-note", text: "Dates ship with the game; changing one here moves that chapter for this pilot until you reset it. A quarter starts with its earliest chapter." }),
       ]),
       table,
     ]),

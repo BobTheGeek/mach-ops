@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   newSave, recordAttempt, spendCredits, seeTip, passBoss, earnIntelCard, unlockAirframe,
-  setCallsign, setPaint,
+  setCallsign, setPaint, setChapterDate,
   hasSeenHash, load, save, clear, SAVE_KEY, RECENT_HASHES, BASE_CREDITS, FAST_MULTIPLIER,
   type SaveFile,
 } from "../../src/game/save";
@@ -188,5 +188,33 @@ describe("the pilot's own settings", () => {
     delete old.paint;
     storage.setItem(SAVE_KEY, JSON.stringify(old));
     expect(load(storage).paint).toEqual({});
+  });
+});
+
+describe("chapter dates", () => {
+  const file = newSave();
+
+  it("starts with no date edits", () => {
+    expect(file.scheduleDates).toEqual({});
+  });
+
+  it("records a moved chapter and leaves the others alone", () => {
+    const one = setChapterDate(file, "ch4", "2026-11-09");
+    const two = setChapterDate(one, "ch5", "2026-12-01");
+    expect(two.scheduleDates).toEqual({ ch4: "2026-11-09", ch5: "2026-12-01" });
+    expect(file.scheduleDates).toEqual({});
+  });
+
+  it("removes the edit on a blank date rather than storing an empty string", () => {
+    const moved = setChapterDate(file, "ch4", "2026-11-09");
+    expect(setChapterDate(moved, "ch4", "").scheduleDates).toEqual({});
+  });
+
+  it("gives a save written before date edits existed an empty map", () => {
+    const storage = memoryStorage();
+    const old = { ...newSave() } as Partial<SaveFile>;
+    delete old.scheduleDates;
+    storage.setItem(SAVE_KEY, JSON.stringify(old));
+    expect(load(storage).scheduleDates).toEqual({});
   });
 });

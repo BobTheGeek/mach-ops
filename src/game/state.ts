@@ -6,7 +6,7 @@
 import curriculumJson from "../data/curriculum.json";
 import scheduleJson from "../data/schedule.json";
 import { load, save as persist, type SaveFile } from "./save";
-import { activeUnit, openUnits, type Schedule, type ScheduleUnit } from "../engine/scheduler";
+import { activeUnit, openUnits, withDateOverrides, type Schedule, type ScheduleUnit } from "../engine/scheduler";
 import { statusFor, masteryScore } from "../engine/mastery";
 import { tierFor } from "../engine/tiers";
 import type { QueueSkill } from "../engine/queue";
@@ -85,8 +85,14 @@ export class GameState {
     return curriculum.chapters;
   }
 
+  /**
+   * The schedule the game actually runs on: the shipped dates with the parent's
+   * edits folded in. Every scene reads this rather than the raw JSON, so the
+   * hangar, the campaign gate and the /dad view can never disagree about when a
+   * chapter opens.
+   */
   get schedule(): Schedule {
-    return schedule;
+    return withDateOverrides(schedule, this.file.scheduleDates);
   }
 
   skill(id: string): RegistrySkill {
@@ -129,7 +135,9 @@ export class GameState {
 
   private unlockInput() {
     return {
-      schedule,
+      // this.schedule, not the raw JSON: a chapter the parent has moved must
+      // gate on its new date.
+      schedule: this.schedule,
       now: now(),
       bossesPassed: new Set(this.file.bossesPassed),
       overrides: this.file.scheduleOverrides,
