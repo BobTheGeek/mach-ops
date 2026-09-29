@@ -18,6 +18,8 @@ import { HowToPlayScene } from "./game/scenes/HowToPlayScene";
 import { PauseScene } from "./game/scenes/PauseScene";
 import { FlightSchoolScene } from "./game/scenes/FlightSchoolScene";
 import { SettingsScene } from "./game/scenes/SettingsScene";
+import { music, SCENE_TRACK } from "./game/music";
+import { gameState } from "./game/state";
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,
@@ -34,6 +36,33 @@ const game = new Phaser.Game({
     DebriefScene, UnlockScene, FleetScene, ProfileScene, ManualLibraryScene, DossierScene, HowToPlayScene, PauseScene, FlightSchoolScene, SettingsScene,
   ],
 });
+
+/**
+ * Music follows the scene, decided in one place.
+ *
+ * Every scene is instantiated when the game boots, so each one's own CREATE
+ * event can be listened to here rather than have fourteen scenes each remember
+ * to start and stop a track. A scene missing from SCENE_TRACK stops the music,
+ * which is how the sortie stays silent.
+ *
+ * A browser will not start audio before the page has been touched, so the first
+ * pointer or key anywhere resumes whatever is meant to be playing.
+ */
+// Attached on READY, not straight after the constructor: Phaser boots
+// asynchronously, so game.scene.scenes is still empty at that point and the
+// listeners went nowhere.
+game.events.once(Phaser.Core.Events.READY, () => {
+  for (const scene of game.scene.scenes) {
+    scene.events.on(Phaser.Scenes.Events.CREATE, () => {
+      const track = SCENE_TRACK[scene.scene.key];
+      if (track) music.play(track, gameState.file.settings.volume);
+      else music.stop();
+    });
+  }
+});
+
+window.addEventListener("pointerdown", () => music.resume());
+window.addEventListener("keydown", () => music.resume());
 
 // Dev-only handle so a QA script can jump straight to a scene instead of
 // clicking the whole funnel. Stripped from production builds.

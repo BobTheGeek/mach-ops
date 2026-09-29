@@ -45,9 +45,10 @@ runs `tsc --noEmit` first, so a type error fails the deploy rather than shipping
 relying on auto-detection, and marks the hashed bundles and the fonts immutable
 so a Chromebook on school wifi fetches them once.
 
-The title theme is "Strength & Honor" by Sky Toes, re-encoded to 112 kbps and
-served from `public/audio/`. Confirm its licence terms before publishing the game
-anywhere beyond family use.
+Music is two Sky Toes tracks licensed from Uppbeat, re-encoded to 112 kbps and
+served from `public/audio/`: "Strength & Honor" on the title (licence
+J1E8TSMAGMHMWR7I) and "Impetus" everywhere else (OJFNUUDTBBWBIT7T). The sortie
+is silent on purpose. Both are credited on the /dad credits page.
 
 Nothing is stored server-side: the pilot lives in that browser's localStorage, so
 progress is per-device and clearing site data erases it.

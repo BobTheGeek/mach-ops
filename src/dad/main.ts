@@ -421,8 +421,20 @@ function creditsView(): HTMLElement {
     el("p", { text: "Chakra Petch and IBM Plex, both under the SIL Open Font License 1.1. They are self-hosted so the game works offline." }),
 
     el("h3", { text: "Sound" }),
-    el("p", { text: "Every avionics cue is synthesised in the browser with the Web Audio API." }),
-    el("p", { text: "The title theme is \u201cStrength & Honor\u201d by Sky Toes." }),
+    el("p", { text: "Every avionics cue is synthesised in the browser with the Web Audio API. No sound effects ship as files." }),
+    el("p", { text: "Music from Uppbeat, licensed:" }),
+    el("ul", {}, [
+      el("li", {}, [
+        el("span", { text: "\u201cStrength & Honor\u201d by Sky Toes \u00b7 " }),
+        el("a", { text: "uppbeat.io", attrs: { href: "https://uppbeat.io/music/tracks/sky-toes/strength-and-honor", rel: "noopener noreferrer", target: "_blank" } }),
+        el("span", { text: " \u00b7 licence J1E8TSMAGMHMWR7I" }),
+      ]),
+      el("li", {}, [
+        el("span", { text: "\u201cImpetus\u201d by Sky Toes \u00b7 " }),
+        el("a", { text: "uppbeat.io", attrs: { href: "https://uppbeat.io/music/tracks/sky-toes/impetus", rel: "noopener noreferrer", target: "_blank" } }),
+        el("span", { text: " \u00b7 licence OJFNUUDTBBWBIT7T" }),
+      ]),
+    ]),
 
     el("h3", { text: "Your data" }),
     el("p", { text: "Everything this page shows is stored in this browser only, under the key machops.save.v1. Nothing is sent anywhere. Export CSV writes a copy to your downloads; clearing the browser's site data erases the pilot." }),

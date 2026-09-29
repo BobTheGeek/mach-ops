@@ -15,8 +15,9 @@ export const FADE_MS = 600;
 
 export class Music {
   private el: HTMLAudioElement | null = null;
+  /** the src currently loaded, so the same track is never restarted */
+  private playing: string | null = null;
   private volume = 0.7;
-  private fade?: ReturnType<typeof setInterval>;
 
   /**
    * Start the track, looping.
@@ -31,10 +32,22 @@ export class Music {
    */
   play(src: string, volume: number): void {
     this.volume = volume;
-    if (this.el) return;
+
+    // Already on this track: leave it running. Walking hangar to briefing to
+    // debrief is one continuous screen to a player, and restarting the music at
+    // every door would make it feel like four.
+    if (this.el && this.playing === src) {
+      this.el.volume = this.gain();
+      this.resume();
+      return;
+    }
+    // A different track: fade the old one out from under the new one.
+    this.stop();
+
 
     const el = document.createElement("audio");
     el.src = src;
+    this.playing = src;
     el.loop = true;
     el.preload = "auto";
     el.volume = this.gain();
@@ -63,25 +76,22 @@ export class Music {
   stop(): void {
     const el = this.el;
     this.el = null;
+    this.playing = null;
     if (!el) return;
 
-    this.clearFade();
+    // The timer belongs to this element, not to the player: a track swap leaves
+    // the outgoing one fading while the incoming one is already up.
     const step = 50;
     const drop = el.volume / Math.max(1, FADE_MS / step);
-    this.fade = setInterval(() => {
+    const timer = setInterval(() => {
       el.volume = Math.max(0, el.volume - drop);
       if (el.volume > 0) return;
-      this.clearFade();
+      clearInterval(timer);
       el.pause();
       // Release the buffer and the node rather than leave a paused stream behind.
       el.src = "";
       el.remove();
     }, step);
-  }
-
-  private clearFade(): void {
-    if (this.fade !== undefined) clearInterval(this.fade);
-    this.fade = undefined;
   }
 
   private gain(): number {
@@ -91,9 +101,37 @@ export class Music {
 
 /**
  * Served from public/, not bundled: a three-minute track has no business inside
- * the JavaScript, and this way it streams while the title screen is already up.
+ * the JavaScript, and this way it streams while the screen is already up.
+ *
+ * Both are by Sky Toes, licensed from Uppbeat.
  */
 export const THEME = "/audio/theme.mp3";
+export const MENU = "/audio/menu.mp3";
+
+/**
+ * Which track each scene plays. A scene missing from this map plays nothing.
+ *
+ * The sortie is the omission that matters: it is where the maths happens, and a
+ * bed of music under a timed question is one more thing competing for a
+ * twelve-year-old's attention. Pause is left out for the same reason, since it
+ * sits on top of a sortie.
+ */
+export const SCENE_TRACK: Readonly<Record<string, string>> = {
+  Title: THEME,
+
+  Hangar: MENU,
+  Campaign: MENU,
+  Briefing: MENU,
+  Debrief: MENU,
+  Unlock: MENU,
+  Fleet: MENU,
+  Profile: MENU,
+  Dossier: MENU,
+  ManualLibrary: MENU,
+  HowToPlay: MENU,
+  Settings: MENU,
+  FlightSchool: MENU,
+};
 
 /** One per page load, like the audio engine. */
 export const music = new Music();
