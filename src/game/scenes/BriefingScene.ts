@@ -49,6 +49,11 @@ const FILL: Record<Resource, string> = {
   missiles: "+2 AIM",
 };
 
+/** Short labels for the loadout choice, matching the bars they fill. */
+const PICK: Record<Resource, string> = { fuel: "FUEL", shields: "SHLD", missiles: "AIM" };
+/** Height of the row of choice buttons under the loadout panel. */
+const PICK_H = 44;
+
 export interface SortieLoadout {
   unitId: string;
   missionId: string;
@@ -70,6 +75,19 @@ export class BriefingScene extends Phaser.Scene {
   private shields = START_SHIELDS;
   private missiles = START_MISSILES;
 
+  /**
+   * Which bar the next correct prep answer fills.
+   *
+   * Prep used to rotate fuel, shields, missiles by index, so the questions were
+   * a toll booth: the same three answers filled the same three bars whatever he
+   * did. Choosing makes the prep part of the mission — a long sortie wants fuel,
+   * a hard one wants shields — and the rotation is still the default, so
+   * ignoring the choice costs nothing.
+   */
+  private chosen: Resource = RESOURCES[0];
+  private pickRow?: Phaser.GameObjects.Container;
+  /** where the choice row sits, so it can be redrawn without re-laying it out */
+  private pickAt = { x: 0, y: 0 };
   private fuelBar!: ReturnType<typeof resourceBar>;
   private shieldBar!: ReturnType<typeof resourceBar>;
   private pips!: ReturnType<typeof missilePips>;
@@ -170,7 +188,9 @@ export class BriefingScene extends Phaser.Scene {
     this.refreshResources();
 
     // tactical map placeholder: the sortie's sea grid, scaled down
-    const mapY = py + PANEL_H + 20;
+    this.drawPicks(px, py + PANEL_H + 12);
+
+    const mapY = py + PANEL_H + 12 + PICK_H + 12;
     panel(this, px, mapY, PANEL_W, 210, { fill: C.sea });
     const g = this.add.graphics();
     g.lineStyle(STROKE.hairline, hex(C.seaGrid), 1);
@@ -184,6 +204,31 @@ export class BriefingScene extends Phaser.Scene {
     }
     const ml = capsLabel(this, px + 12, mapY + 10, "TACTICAL", C.textMuted, TRACK.readout);
     void ml;
+  }
+
+  /** The three choices, redrawn whenever the selection changes. */
+  private drawPicks(x = this.pickAt.x, y = this.pickAt.y): void {
+    this.pickAt = { x, y };
+    this.pickRow?.destroy(true);
+    const w = (PANEL_W - 16) / RESOURCES.length;
+    const made: Phaser.GameObjects.GameObject[] = [];
+
+    RESOURCES.forEach((r, i) => {
+      const b = button(this, {
+        x: x + i * (w + 8), y, width: w, height: PICK_H,
+        label: PICK[r],
+        variant: this.chosen === r ? "primary" : "ghost",
+        onClick: () => {
+          this.chosen = r;
+          audio.play("uiMove");
+          this.drawPicks();
+          this.showPrep();
+        },
+      });
+      made.push(b.container);
+    });
+
+    this.pickRow = this.add.container(0, 0, made);
   }
 
   private refreshResources(): void {
@@ -200,12 +245,16 @@ export class BriefingScene extends Phaser.Scene {
     this.card?.destroy();
 
     if (this.index >= this.preps.length) {
+      // Nothing left to allocate, so the choice row goes rather than sit there
+      // inviting a press that would do nothing.
+      this.pickRow?.destroy(true);
+      this.pickRow = undefined;
       this.launchButton();
       return;
     }
 
     const mp = this.preps[this.index]!;
-    const resource = RESOURCES[this.index % RESOURCES.length]!;
+    const resource = this.chosen;
     this.shownAt = this.time.now;
 
     this.card = new ProblemCard({
@@ -262,6 +311,10 @@ export class BriefingScene extends Phaser.Scene {
       if (resource === "missiles") this.missiles = Math.min(MAX_MISSILES, this.missiles + 2);
       this.refreshResources();
       this.setNote(FILL[resource], C.hud);
+      // Advance the default, so a pilot who never touches the buttons still gets
+      // the old spread across all three rather than three of the same.
+      this.chosen = RESOURCES[(RESOURCES.indexOf(resource) + 1) % RESOURCES.length]!;
+      this.drawPicks();
       this.index += 1;
       this.time.delayedCall(700, () => this.showPrep());
     } else {

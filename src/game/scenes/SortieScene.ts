@@ -30,6 +30,7 @@ import type { SortieLoadout } from "./BriefingScene";
 import { MAX_MISSILES } from "./BriefingScene";
 import { mission as findMission, type Mission } from "../../data/campaign";
 import { createTerrain, type Terrain } from "../ui/terrain";
+import { LOCK_RANGE, BOSS_LOCK_RANGE, LANE_OFFSETS } from "../sortieRules";
 import { generatorFor } from "../../generators/index";
 import { loadSprites, phase2Variants } from "../assets";
 
@@ -62,7 +63,7 @@ const BANK_FORESHORTEN = 0.2;
 const BANK_RATE = 7;
 const PLAYER_W = 85;
 const PLAYER_H = 120;
-const LOCK_RANGE = 340;     // pixels; SPACE locks the nearest bogey inside this
+
 /** Screen scale for the HUD's range readout: 60 px reads as one nautical mile. */
 const PX_PER_NM = 60;
 /** Bogeys outside lock range are dimmed, so range is visible and not guesswork. */
@@ -70,16 +71,6 @@ const OUT_OF_RANGE_ALPHA = 0.4;
 const BOGEY_SPRITES = ["bogey1-top", "bogey2-top", "bogey3-top"];
 /** Per-lane drift, px/s. Fixed rather than random so a mission replays the same. */
 const BOGEY_DRIFT: [number, number][] = [[16, 12], [-19, 9], [11, 17]];
-/**
- * Where contacts come in, as an offset from the player's own column.
- *
- * They were fixed screen positions, and the rightmost was 388 px from the
- * player against a 340 px lock range: that contact could never be locked
- * without hunting for it. Every offset here is inside lock range, so every
- * contact passes close enough to shoot at, and the stick is for choosing which
- * one rather than for finding them at all.
- */
-const LANE_OFFSETS = [-170, 0, 170];
 /** The height each of the opening contacts starts at. */
 const LANE_TOPS = [140, 90, 170];
 /** How fast a contact outside lock range works its way back, px/s. */
@@ -207,6 +198,11 @@ export class SortieScene extends Phaser.Scene {
     this.world();
     this.hud();
     this.spawnBogeys();
+
+    // The boss rule, stated rather than left to be discovered by losing.
+    if (this.mission.kind === "boss") {
+      this.flashBanner("BOSS · BANDITS FLY TIGHTER · CLOSE TO LOCK", C.lock);
+    }
 
     const kb = this.input.keyboard;
     this.keys = {
@@ -345,7 +341,7 @@ export class SortieScene extends Phaser.Scene {
       // hard turn edges back toward their column, so a sortie can never stall
       // with every contact parked off to one side and nothing lockable.
       const off = b.image.x - PLAYER_POS.x;
-      if (Math.abs(off) > LOCK_RANGE) b.image.x -= Math.sign(off) * CLOSE_RATE * dt;
+      if (Math.abs(off) > this.lockRange) b.image.x -= Math.sign(off) * CLOSE_RATE * dt;
 
       // A contact allowed all the way past the tail gets away. It costs the
       // credits and the card it would have been worth and nothing else: no
@@ -360,6 +356,11 @@ export class SortieScene extends Phaser.Scene {
    * A line across the top that fades itself out. The tanker already drew one of
    * these inline; escapes need the same thing, so it lives in one place now.
    */
+  /** The lock cone in force: tighter on a boss. */
+  private get lockRange(): number {
+    return this.mission.kind === "boss" ? BOSS_LOCK_RANGE : LOCK_RANGE;
+  }
+
   private flashBanner(text: string, color: string): void {
     const banner = capsLabel(this, 0, 96, text, color, TRACK.readout);
     banner.setX((CANVAS.width - banner.width) / 2);
@@ -426,11 +427,11 @@ export class SortieScene extends Phaser.Scene {
     for (const b of this.bogeys) {
       if (!b.alive) continue;
       const d = Phaser.Math.Distance.Between(PLAYER_POS.x, PLAYER_POS.y, b.image.x, b.image.y);
-      b.image.setAlpha(d <= LOCK_RANGE ? 1 : OUT_OF_RANGE_ALPHA);
+      b.image.setAlpha(d <= this.lockRange ? 1 : OUT_OF_RANGE_ALPHA);
       nearest = Math.min(nearest, d);
     }
     if (Number.isFinite(nearest)) {
-      const inRange = nearest <= LOCK_RANGE;
+      const inRange = nearest <= this.lockRange;
       this.tgtOut.set(`${(nearest / PX_PER_NM).toFixed(1)} NM`);
       this.tgtOut.value.setColor(inRange ? C.lock : C.textMuted);
       if (inRange && !this.locked) {
@@ -452,7 +453,7 @@ export class SortieScene extends Phaser.Scene {
   /** The nearest live bogey inside lock range, or -1. */
   private nearestBogey(): number {
     let best = -1;
-    let bestDist = LOCK_RANGE;
+    let bestDist = this.lockRange;
     this.bogeys.forEach((b, i) => {
       if (!b.alive) return;
       const d = Phaser.Math.Distance.Between(PLAYER_POS.x, PLAYER_POS.y, b.image.x, b.image.y);
