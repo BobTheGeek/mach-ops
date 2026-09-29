@@ -3,6 +3,7 @@
 
 import Phaser from "phaser";
 import { loadSprites, phase2Variants } from "../assets";
+import { FONT, SIZE } from "../../ui/tokens";
 import { C, N, TEXT, CANVAS } from "../../ui/tokens";
 import { capsLabel } from "../ui/kit";
 
@@ -19,11 +20,32 @@ export class BootScene extends Phaser.Scene {
     void this.boot(label);
   }
 
+  /** Every face declared in src/style.css, which is every weight the game uses. */
+  private async loadFonts(): Promise<void> {
+    if (!document.fonts) return;
+    const faces = [
+      `700 ${SIZE.wordmark}px ${FONT.display}`,
+      `400 ${SIZE.body}px ${FONT.mono}`,
+      `500 ${SIZE.label}px ${FONT.mono}`,
+      `600 ${SIZE.number}px ${FONT.mono}`,
+      `400 ${SIZE.body}px ${FONT.body}`,
+      `500 ${SIZE.body}px ${FONT.body}`,
+    ];
+    // One missing file must not stop the game: it falls back to a system face.
+    await Promise.all(faces.map((f) => document.fonts.load(f, "0123456789").catch(() => [])));
+    await document.fonts.ready;
+  }
+
   private async boot(label: Phaser.GameObjects.Text): Promise<void> {
     try {
       // Fonts first: Phaser measures text at creation, so a late-arriving face
       // would leave every label mismeasured.
-      if (document.fonts?.ready) await document.fonts.ready;
+      //
+      // document.fonts.ready only waits for loads already in flight. A weight
+      // no element has asked for yet is not in flight, so each face has to be
+      // requested explicitly or the first screen that uses it measures against
+      // a fallback and then reflows underneath itself.
+      await this.loadFonts();
       await loadSprites(this, phase2Variants("t38"));
       this.scene.start("Title");
     } catch (err) {

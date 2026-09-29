@@ -3,8 +3,8 @@
 Self-hosted per `design/README.md` ("Self-host fonts for offline Chromebooks").
 All three families are OFL 1.1. **Ship the licence files with them.**
 
-Drop these six files in this directory, named exactly like this. `src/style.css`
-already declares them; nothing else needs changing.
+These six files are in place. `src/style.css` declares them and
+`BootScene` loads every one before the first screen renders.
 
 | File | Family | Weight | Used for |
 | --- | --- | --- | --- |
@@ -30,8 +30,15 @@ which is not what the artboards are drawn in.
 `design/tokens.json → font` is the authority on which families and weights the
 game uses. If that changes, change these declarations to match.
 
-## Until they land
+## If a file goes missing
 
-The game runs. `src/style.css` falls back to the nearest system faces, so letter
-shapes and metrics change but layout does not: every measurement comes from
-`design/tokens.json`, not from the font.
+The game still runs. `src/style.css` falls back to the nearest system face and
+`BootScene` swallows the failed load, so letter shapes change but layout does
+not: every measurement comes from `design/tokens.json`, not from the font.
+
+## How these were produced
+
+- IBM Plex: copied straight from the `woff2/` folders of the IBM/plex release.
+- Chakra Petch: the project ships TTF only, so `ChakraPetch-Bold.ttf` was
+  converted with `woff2_compress` (62 KB TTF to 25 KB woff2). Only the 700
+  weight is used, so only that one was converted.
