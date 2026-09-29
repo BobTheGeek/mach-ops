@@ -13,7 +13,17 @@ export const FAST_WINDOW_MS = 5000;
 /** The score window: "over the last 10 attempts". */
 export const WINDOW = 10;
 
-export const WEIGHTS = { accuracy: 0.5, fluency: 0.3, transfer: 0.2 } as const;
+/**
+ * Accuracy dominates, fluency nudges.
+ *
+ * docs/engine-rules.md quotes the game design doc at 50/30/20. At that weighting
+ * a pilot who answered 10 of 10 correctly but slowly read CALIBRATING, while one
+ * who got 7 of 10 but answered fast read ONLINE — speed outranked being right.
+ * Bob ruled on 2026-09-28 to keep fluency but shrink it; see docs/DECISIONS.md.
+ *
+ * Green now needs 8 of the last 10, or 9 of 10 at a slower pace.
+ */
+export const WEIGHTS = { accuracy: 0.7, fluency: 0.1, transfer: 0.2 } as const;
 
 /** Tier weight applied to both the correct count and the denominator. */
 export const TIER_WEIGHT: Record<Tier, number> = { 1: 1.0, 2: 1.25, 3: 1.5, 4: 2.0 };

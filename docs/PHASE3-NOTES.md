@@ -95,13 +95,11 @@ says IN RANGE or NO TARGET IN RANGE.
 | Honors repeating decimals | A whole part and an optional non-repeating digit are allowed | The registry fixes the number of *repeating* digits, not what sits in front of them, and the method is identical. Without it tier 2 had nine possible problems. |
 | Slot distribution test | The spec's 20–30% band for four options over a full sweep; four standard deviations of the binomial for other widths | A tier that mixes variants produces mixed option counts, so a thin slice of one width needs a band that accounts for its sample size. |
 
-## A registry inconsistency to raise
+## A registry inconsistency, since resolved
 
-`h8.ee.c7a` and `h8.ee.c7b` carry `quarter: 1` and appear under quarter 1 in
-`schedule.json`, but their `attachTo` is `ch4`, which `tokens.json` puts in
-quarter 2. Both were built because GENERATOR_SPEC section 10 lists them as Q1
-honors, but they cannot be served until Chapter 4 opens. **Either the quarter or
-the attachment is wrong.**
+`h8.ee.c7a` and `h8.ee.c7b` carried `quarter: 1` while attached to `ch4`, which
+`tokens.json` puts in quarter 2. Ruled quarter 2; see `docs/DECISIONS.md`. A test
+now holds every honors skill's quarter to its chapter attachment.
 
 ## Still not delivered
 
@@ -112,11 +110,14 @@ the attachment is wrong.**
 - **Flight School lesson 1** still explains the stick rather than handing it
   over. Now that the flight model exists it can become real stick time.
 
-## Two rulings still open
+## Rulings
 
-Unchanged from `docs/PHASE2-NOTES.md`, and both still need a decision:
+All three open questions were decided on 2026-09-28 and are recorded in
+`docs/DECISIONS.md`:
 
-1. **Status thresholds.** The HP5 card states the engine's real rule (weighted
-   score, bands at 0.60 and 0.85); the artboard says "70% first-try".
-2. **Ranks.** The build uses mastered skills per `DESIGN_RECONCILIATION.md`
-   section 4; two artboards say XP. There is no XP in the game.
+1. **Status thresholds** — fluency kept but shrunk to 10%. ONLINE now needs 8 of
+   the last 10, or 9 of 10 at a slower pace. The old 50/30/20 blend let speed
+   outrank accuracy: 10 of 10 correct but slow read CALIBRATING while 7 of 10
+   fast read ONLINE.
+2. **Ranks** — from mastered skills, not XP. No XP is modelled.
+3. **`h8.ee.c7a` / `c7b`** — quarter 2, matching their chapter 4 attachment.

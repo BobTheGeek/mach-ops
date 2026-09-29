@@ -2,11 +2,11 @@
 // so the rules the player reads are the rules the engine runs.
 //
 // One correction to the artboard text: HP5 describes ONLINE as "70% or better
-// first-try over the last 10" and OPTIMIZED as "90%+ including a transfer
-// problem". The engine scores a weighted blend of accuracy, fluency and transfer
-// (docs/engine-rules.md), with bands at 0.60 and 0.85. The card states the
-// engine's actual rule rather than a number the game does not use; flagged in
-// docs/PHASE2-NOTES.md.
+// first-try over the last 10". The engine scores a weighted blend of accuracy,
+// fluency and transfer, reweighted on 2026-09-28 so accuracy dominates (see
+// docs/DECISIONS.md). The card states what that blend actually comes to, in
+// answers rather than in score, because a card that quotes a number the game
+// does not use is worse than no card.
 
 import Phaser from "phaser";
 import { C, N, SIZE, TEXT, TRACK, CANVAS, SCREEN_PAD, STROKE, HIT, hex } from "../../ui/tokens";
@@ -82,10 +82,10 @@ const CARDS: Card[] = [
     id: "HP5",
     title: "SYSTEMS, RANKS & UNLOCKS",
     rows: [
-      { key: "OFFLINE", text: "Skill not yet seen: fewer than three attempts." },
-      { key: "CALIBRATING", text: "Seen, but the mastery score is still under 0.60." },
-      { key: "ONLINE", text: "Score 0.60 to 0.85 over the last ten attempts." },
-      { key: "OPTIMIZED", text: "Above 0.85 with two transfer problems correct." },
+      { key: "OFFLINE", text: "Not seen yet: fewer than three attempts." },
+      { key: "CALIBRATING", text: "Seen, but not steady yet." },
+      { key: "ONLINE", text: "8 of your last 10 right, or 9 of 10 if you are taking your time. Getting it right counts for more than getting it fast." },
+      { key: "OPTIMIZED", text: "Nearly everything right, quickly, plus two transfer problems correct." },
     ],
     showPills: true,
     footer: "RANKS COME FROM MASTERED SKILLS: CADET · 2ND LT · CAPTAIN · MAJOR · COLONEL · INTEL CARDS ARE REAL FACTS ABOUT EACH AIRCRAFT, TEN PER AIRFRAME. A SORTIE WITH 6+ FIRST-TRY HITS EARNS ONE.",

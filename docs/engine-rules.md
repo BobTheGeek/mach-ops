@@ -2,6 +2,8 @@
 
 These three sections are lifted from "Mach Ops: Weapons-Grade Math — Game Design Doc & Build Spec". Use them until docs/design.md holds the full export; if the two ever disagree, the design doc wins.
 
+**Two things below have since been ruled on and no longer match the build.** The mastery weights are now 70/10/20, not 50/30/20, and `8.EE.C.7a` / `8.EE.C.7b` are quarter 2, not quarter 1. This file is kept as the quoted source; `docs/DECISIONS.md` records what was decided and why, and is the operative version.
+
 ## Adaptive progression engine
 
 Pure TypeScript, no Phaser imports, unit-testable with synthetic attempt logs.

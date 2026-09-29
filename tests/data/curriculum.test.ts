@@ -7,7 +7,10 @@ import { IMPLEMENTED_SKILLS } from "../../src/generators/index";
 const ROOT = join(import.meta.dirname, "..", "..");
 const read = <T,>(...p: string[]): T => JSON.parse(readFileSync(join(ROOT, ...p), "utf8")) as T;
 
-interface Skill { id: string; honors: boolean; chapter?: string; errors: { tag: string }[]; tiers: string[] }
+interface Skill {
+  id: string; honors: boolean; chapter?: string; quarter?: number;
+  attachTo?: string[]; errors: { tag: string }[]; tiers: string[];
+}
 interface Curriculum { counts: { total: number; core: number; honors: number }; chapters: { id: string; n: number; quarter: number }[]; skills: Skill[] }
 
 const curriculum = read<Curriculum>("src", "data", "curriculum.json");
@@ -46,6 +49,25 @@ describe("curriculum.json", () => {
   it("uses kebab-case error tags everywhere", () => {
     for (const s of curriculum.skills) {
       for (const e of s.errors) expect(e.tag, `${s.id} tag ${e.tag}`).toMatch(/^[a-z0-9-]+$/);
+    }
+  });
+
+  it("gives every honors skill the quarter of the chapters it attaches to", () => {
+    // h8.ee.c7a and c7b were quarter 1 while attached to ch4, which tokens.json
+    // puts in quarter 2, so they could never be served in the quarter they
+    // claimed. Ruled quarter 2 on 2026-09-28; see docs/DECISIONS.md.
+    const quarterOfChapter = new Map<string, number>();
+    for (const [key, ns] of Object.entries(tokens.structure.quarterChapters)) {
+      for (const n of ns) quarterOfChapter.set(`ch${n}`, Number(key.slice(1)));
+    }
+
+    for (const s of curriculum.skills.filter((x) => x.honors)) {
+      expect(s.quarter, `${s.id} has no quarter`).toBeDefined();
+      for (const unit of s.attachTo ?? []) {
+        expect(quarterOfChapter.get(unit), `${s.id} attaches to unknown ${unit}`).toBeDefined();
+        expect(quarterOfChapter.get(unit), `${s.id} is quarter ${s.quarter} but attaches to ${unit}`)
+          .toBe(s.quarter);
+      }
     }
   });
 

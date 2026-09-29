@@ -112,7 +112,7 @@
       "skin": "SR-71 range in meters, fuel mass in grams, fleet totals"
     },
     {
-      "id": "h8.ee.c7b", "quarter": 1, "attachTo": ["ch4"], "honors": true,
+      "id": "h8.ee.c7b", "quarter": 2, "attachTo": ["ch4"], "honors": true,
       "name": "Multi-step equations with variables on both sides",
       "standards": ["8.EE.C.7b"],
       "im": ["G8.U4.L1", "G8.U4.L2", "G8.U4.L3", "G8.U4.L4", "G8.U4.L5", "G8.U4.L6"], "khan": "K8-ALG:equations with variables on both sides",
@@ -133,7 +133,7 @@
       "skin": "when two aircraft at different speeds/starts meet, cost comparison of two loadouts"
     },
     {
-      "id": "h8.ee.c7a", "quarter": 1, "attachTo": ["ch4"], "honors": true,
+      "id": "h8.ee.c7a", "quarter": 2, "attachTo": ["ch4"], "honors": true,
       "name": "One, none, or infinitely many solutions",
       "standards": ["8.EE.C.7a"],
       "im": ["G8.U4.L7", "G8.U4.L8"], "khan": "K8-ALG:number of solutions",

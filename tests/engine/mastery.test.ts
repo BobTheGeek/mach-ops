@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   masteryScore, stateFor, statusFor, diagnose, baselineMs, median,
-  accuracyComponent, transferComponent, TRANSFER_CAP, FAST_WINDOW_MS,
+  accuracyComponent, transferComponent, TRANSFER_CAP, FAST_WINDOW_MS, WEIGHTS,
 } from "../../src/engine/mastery";
 import { attempt, fastCorrect, fastWrong, slowCorrect, slowWrong } from "./helpers";
 import type { Attempt } from "../../src/engine/types";
@@ -119,5 +119,38 @@ describe("speed as a diagnostic", () => {
     expect(diagnose(fastWrong())).toBe("fast-wrong");
     expect(diagnose(slowCorrect())).toBe("slow-correct");
     expect(diagnose(slowWrong())).toBe("slow-wrong");
+  });
+});
+
+describe("accuracy outranks speed (ruling, 2026-09-28)", () => {
+  const fastRun = (n: number, correct: boolean): Attempt[] =>
+    Array.from({ length: n }, () => (correct ? fastCorrect({ skill: S }) : fastWrong({ skill: S })));
+  const slowRun = (n: number, correct: boolean): Attempt[] =>
+    Array.from({ length: n }, () => (correct ? slowCorrect({ skill: S }) : slowWrong({ skill: S })));
+  /** A baseline of fast answers on another skill, so "slow" means slow for this pilot. */
+  const baseline = many(10, () => fastCorrect({ skill: "other" }));
+
+  it("puts a pilot who gets everything right but is slow ONLINE", () => {
+    expect(statusFor([...baseline, ...slowRun(10, true)], S)).toBe("ONLINE");
+  });
+
+  it("keeps a pilot who gets 7 of 10 right CALIBRATING, however fast", () => {
+    expect(statusFor([...baseline, ...fastRun(7, true), ...fastRun(3, false)], S)).toBe("CALIBRATING");
+  });
+
+  it("needs 8 of the last 10 at pace", () => {
+    expect(statusFor([...baseline, ...fastRun(8, true), ...fastRun(2, false)], S)).toBe("ONLINE");
+  });
+
+  it("needs 9 of the last 10 when slow", () => {
+    expect(statusFor([...baseline, ...slowRun(8, true), ...slowRun(2, false)], S)).toBe("CALIBRATING");
+    expect(statusFor([...baseline, ...slowRun(9, true), ...slowRun(1, false)], S)).toBe("ONLINE");
+  });
+
+  it("still weights accuracy above fluency and fluency above nothing", () => {
+    expect(WEIGHTS.accuracy).toBeGreaterThan(WEIGHTS.transfer);
+    expect(WEIGHTS.transfer).toBeGreaterThan(WEIGHTS.fluency);
+    expect(WEIGHTS.fluency).toBeGreaterThan(0);
+    expect(WEIGHTS.accuracy + WEIGHTS.fluency + WEIGHTS.transfer).toBeCloseTo(1, 10);
   });
 });
