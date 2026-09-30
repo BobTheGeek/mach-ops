@@ -27,6 +27,14 @@ export interface Mission {
   bogeys: number;
   /** seconds of fuel */
   fuelSeconds: number;
+  /**
+   * The Blackbird Qualification and nothing else.
+   *
+   * A capstone is a boss with the whole year behind it: the tighter cone, the
+   * patrol weave and faster contacts at once, and it says so on the HUD rather
+   * than leaving it to be noticed.
+   */
+  capstone?: boolean;
 }
 
 /**
@@ -595,7 +603,7 @@ export const CH10_MISSIONS: Mission[] = [
   {
     id: "ch10-10", n: 10, unitId: "ch10", name: "BLACKBIRD QUALIFICATION", kind: "boss",
     brief: "Unit 10 boss sortie. Mixed review of the whole year, all ten chapters. Passing earns the F-35A.",
-    focus: [], prep: 3, problems: 18, bogeys: 3, fuelSeconds: 460,
+    focus: [], prep: 3, problems: 18, bogeys: 3, fuelSeconds: 460, capstone: true,
   },
 ];
 

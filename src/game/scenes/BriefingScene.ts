@@ -74,6 +74,10 @@ export class BriefingScene extends Phaser.Scene {
   private fuel = START_FUEL;
   private shields = START_SHIELDS;
   private missiles = START_MISSILES;
+  /** a retry on the same prep card is not a first try, mirroring the sortie */
+  private attemptedThisPrep = false;
+  /** the hint flag the attempt log records; free hints still count as hints */
+  private hintUsed = false;
 
   /**
    * Which bar the next correct prep answer fills.
@@ -256,6 +260,8 @@ export class BriefingScene extends Phaser.Scene {
     const mp = this.preps[this.index]!;
     const resource = this.chosen;
     this.shownAt = this.time.now;
+    this.attemptedThisPrep = false;
+    this.hintUsed = false;
 
     this.card = new ProblemCard({
       scene: this,
@@ -285,12 +291,12 @@ export class BriefingScene extends Phaser.Scene {
       tier: mp.problem.tier,
       correct,
       responseMs: this.time.now - this.shownAt,
-      hintsUsed: 0,
+      hintsUsed: this.hintUsed ? 1 : 0,
       context: mp.item.transfer ? "transfer" : "briefing",
       ...(errorTag ? { errorTag } : {}),
-      // A prep card is asked once and moves on whether it was right or wrong,
-      // so every briefing answer is a first try.
-      firstTry: true,
+      // A retry on the same prep card is not a first try. The prep is asked
+      // again after a miss, so "first try" has to mean the first commit on it.
+      firstTry: !this.attemptedThisPrep,
       ts: Date.now(),
     };
 
@@ -320,6 +326,7 @@ export class BriefingScene extends Phaser.Scene {
     } else {
       audio.play("miss");
       // Wrong answers cost nothing here; retry freely.
+      this.attemptedThisPrep = true;
       this.setNote("", C.hud);
       this.time.delayedCall(900, () => this.card?.unlock());
     }
@@ -340,6 +347,7 @@ export class BriefingScene extends Phaser.Scene {
 
   private hint(mp: MissionProblem): void {
     // Free in briefings: show the first worked step.
+    this.hintUsed = true;
     this.setNote(mp.problem.worked[0]?.text ?? "", C.lock);
   }
 

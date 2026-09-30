@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { CH1_MISSIONS, CH2_MISSIONS, CH3_MISSIONS, CH4_MISSIONS, CH5_MISSIONS, CH6_MISSIONS, CH7_MISSIONS, CH8_MISSIONS, CH9_MISSIONS, CH10_MISSIONS, MISSIONS, missionsFor, mission, BOSS_UNLOCKS, CAPSTONE_AIRFRAME, nextUnlock } from "../../src/data/campaign";
 import { DOSSIERS, dossier, CARDS_PER_AIRFRAME, FIRST_TRY_HITS_FOR_CARD } from "../../src/data/intel";
+import { FLEET } from "../../src/data/fleet";
 import { IMPLEMENTED_SKILLS } from "../../src/generators/index";
 import curriculum from "../../src/data/curriculum.json";
 
@@ -134,8 +135,17 @@ describe("intel cards", () => {
     expect(t38.crew).toBe(2);
   });
 
-  it("returns null for an airframe with no dossier yet", () => {
-    expect(dossier("sr71")).toBeNull();
+  it("returns null for an airframe that does not exist", () => {
+    expect(dossier("not-an-airframe")).toBeNull();
+  });
+
+  it("writes a dossier for every airframe in the fleet", () => {
+    for (const f of FLEET) {
+      const d = dossier(f.airframe);
+      expect(d, f.airframe).not.toBeNull();
+      expect(d!.designation, f.airframe).toBe(f.designation);
+      expect(d!.cards).toHaveLength(CARDS_PER_AIRFRAME);
+    }
   });
 
   it("needs six first-try hits for a card", () => {

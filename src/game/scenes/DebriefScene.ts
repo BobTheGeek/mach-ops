@@ -7,7 +7,7 @@ import { panel, capsLabel, button, statusPill } from "../ui/kit";
 import { ManualPanel } from "../ui/manualPanel";
 import { gameState } from "../state";
 import { hasPage } from "../manual";
-import { completeSortie, passBoss, unlockAirframe } from "../save";
+import { completeSortie, passBoss, unlockAirframe, gradeSortie, recordMissionBest, type MissionBest, type SortieGrade } from "../save";
 import { mission as findMission, BOSS_UNLOCKS, CAPSTONE_AIRFRAME } from "../../data/campaign";
 import { dossier, CARDS_PER_AIRFRAME, FIRST_TRY_HITS_FOR_CARD, type IntelCard } from "../../data/intel";
 import { fleetEntry } from "../../data/fleet";
@@ -25,6 +25,10 @@ export interface DebriefData {
   fuel: number;
   shields: number;
   failed: boolean;
+  /** flight time, ms, for the rating and the per-mission best */
+  durationMs: number;
+  /** credits the sortie actually earned, for the per-mission best */
+  credits: number;
 }
 
 /** The left column: the sortie summary, then the intel card under it. */
@@ -35,6 +39,13 @@ const ROW_GAP = 32;
 /** Room under the last row, so a descender is not flush with the border. */
 const ROW_PAD = 18;
 
+/** The systems vocabulary, in its usual colours: green, amber, muted. */
+const GRADE_COLOR: Record<SortieGrade, string> = {
+  OPTIMIZED: C.hud,
+  ONLINE: C.lock,
+  CALIBRATING: C.textMuted,
+};
+
 export class DebriefScene extends Phaser.Scene {
   private debrief!: DebriefData;
   private manual?: ManualPanel;
@@ -42,6 +53,13 @@ export class DebriefScene extends Phaser.Scene {
   private summaryBottom = 0;
   private cardEarned: IntelCard | null = null;
   private unlocked: string | null = null;
+  /** how this sortie rated, and the mission's bests including it */
+  private grade: SortieGrade = "CALIBRATING";
+  private best: MissionBest | null = null;
+  /** every distinct skill sharpened, and the page of the list being shown */
+  private sharpenedSkills: string[] = [];
+  private sharpenedPage = 0;
+  private sharpenedLayer?: Phaser.GameObjects.Container;
 
   constructor() {
     super("Debrief");
@@ -64,7 +82,22 @@ export class DebriefScene extends Phaser.Scene {
       hitsNeeded: FIRST_TRY_HITS_FOR_CARD,
       cardsPerAirframe: CARDS_PER_AIRFRAME,
     });
-    gameState.update(result.file);
+
+    // The rating is a fact about this sortie; the best is what the campaign
+    // screen shows next time, so a flown mission has something to beat.
+    this.grade = gradeSortie({
+      firstTryHits: this.debrief.firstTryHits,
+      problems: this.debrief.problems,
+      escaped: this.debrief.escaped,
+      failed: this.debrief.failed,
+      hitsNeeded: FIRST_TRY_HITS_FOR_CARD,
+    });
+    gameState.update(recordMissionBest(result.file, this.debrief.missionId, {
+      grade: this.grade,
+      firstTryHits: this.debrief.firstTryHits,
+      durationMs: this.debrief.durationMs,
+    }));
+    this.best = gameState.file.missionBests[this.debrief.missionId] ?? null;
     this.unlocked = this.settleBoss();
     this.cardEarned = result.cardEarned
       ? dossier(airframe)?.cards.find((c) => c.n === result.cardEarned) ?? null
@@ -97,10 +130,12 @@ export class DebriefScene extends Phaser.Scene {
     const y = SUMMARY_TOP;
 
     const rows: [string, string, string][] = [
-      ["CREDITS", `${gameState.file.credits}`, C.lock],
-      ["STREAK", `${gameState.file.streak} (BEST ${gameState.file.bestStreak})`, C.text],
+      ["RATING", this.grade, GRADE_COLOR[this.grade]],
       ["FIRST-TRY", `${this.debrief.firstTryHits} / ${this.debrief.problems}`,
         this.debrief.firstTryHits >= FIRST_TRY_HITS_FOR_CARD ? C.hud : C.textMuted],
+      ["BEST", this.bestLine(), C.textMuted],
+      ["CREDITS", `${this.debrief.credits >= 0 ? "+" : ""}${this.debrief.credits}`, C.lock],
+      ["STREAK", `${gameState.file.streak} (BEST ${gameState.file.bestStreak})`, C.text],
       ["ESCAPED", `${this.debrief.escaped}`, this.debrief.escaped > 0 ? C.alert : C.textMuted],
       ["FUEL", `${Math.round(this.debrief.fuel * 100)}%`, C.hud],
       ["SHIELDS", `${Math.round(this.debrief.shields * 100)}%`, C.shield],
@@ -123,6 +158,13 @@ export class DebriefScene extends Phaser.Scene {
     });
   }
 
+  /** The mission's bests, which this flight has just been folded into. */
+  private bestLine(): string {
+    const b = this.best;
+    if (!b) return "FIRST FLIGHT";
+    return `${b.grade} · ${b.firstTryHits}/${this.debrief.problems} · ${(b.fastestMs / 1000).toFixed(1)} S`;
+  }
+
   /** Screens 08: a sortie with 6+ first-try hits earns one intel card. */
   private intelPanel(): void {
     const x = SCREEN_PAD;
@@ -134,20 +176,27 @@ export class DebriefScene extends Phaser.Scene {
     const head = capsLabel(this, x + 16, y + 14, this.cardEarned ? "INTEL CARD EARNED" : "INTEL", C.lock);
     void head;
 
+    const airframe = gameState.currentAirframe();
+    const designation = fleetEntry(airframe)?.designation ?? "T-38";
+    const have = (gameState.file.intelCards[airframe] ?? []).length;
+    // The dossier's own card count, not a constant: the copy must never claim a
+    // collection is complete when the airframe has no cards written for it.
+    const total = dossier(airframe)?.cards.length ?? CARDS_PER_AIRFRAME;
+
     if (!this.cardEarned) {
       const need = FIRST_TRY_HITS_FOR_CARD - this.debrief.firstTryHits;
       const copy = this.add.text(x + 16, y + 44,
         need > 0
           ? `${need} more first-try hit${need === 1 ? "" : "s"} in one sortie earns a card.`
-          : `All ten ${fleetEntry(gameState.currentAirframe())?.designation ?? "T-38"} cards collected.`,
+          : have >= total
+            ? `All ${total} ${designation} intel cards collected.`
+            : `${have} of ${total} ${designation} intel cards collected.`,
         { ...TEXT.body, color: C.textMuted, wordWrap: { width: w - 32 } });
       void copy;
       return;
     }
 
-    const airframe = gameState.currentAirframe();
-    const have = (gameState.file.intelCards[airframe] ?? []).length;
-    const code = capsLabel(this, x + 16, y + 40, `${fleetEntry(airframe)?.designation ?? "T-38"} · ${String(this.cardEarned.n).padStart(2, "0")}   ${have} OF ${CARDS_PER_AIRFRAME}`, C.textMuted, TRACK.readout);
+    const code = capsLabel(this, x + 16, y + 40, `${designation} · ${String(this.cardEarned.n).padStart(2, "0")}   ${have} OF ${total}`, C.textMuted, TRACK.readout);
     void code;
 
     const title = this.add.text(x + 16, y + 62, this.cardEarned.title, { ...TEXT.h3, fontSize: "18px" });
@@ -167,8 +216,8 @@ export class DebriefScene extends Phaser.Scene {
     const head = capsLabel(this, x + 16, y + 14, "SYSTEMS SHARPENED", C.hud);
     void head;
 
-    const skills = [...new Set(this.debrief.sharpened)];
-    if (skills.length === 0) {
+    this.sharpenedSkills = [...new Set(this.debrief.sharpened)];
+    if (this.sharpenedSkills.length === 0) {
       const none = this.add.text(x + 16, y + 52, "No systems came online this sortie. Open the Flight Manual and try again — practice never counts against you.", {
         ...TEXT.body,
         color: C.textMuted,
@@ -178,9 +227,32 @@ export class DebriefScene extends Phaser.Scene {
       return;
     }
 
-    skills.forEach((skill, i) => {
+    this.renderSharpenedPage();
+  }
+
+  /**
+   * One page of the sharpened list.
+   *
+   * This used to draw whatever fitted and silently drop the rest, so a sortie
+   * that touched more than eight skills reported fewer than it earned. A page
+   * holds what fits and the arrows account for the remainder.
+   */
+  private renderSharpenedPage(): void {
+    this.sharpenedLayer?.destroy(true);
+    const items: Phaser.GameObjects.GameObject[] = [];
+
+    const x = SCREEN_PAD + 372;
+    const y = 80;
+    const w = CANVAS.width - x - SCREEN_PAD;
+    const h = CANVAS.height - y - 120;
+    const perPage = Math.max(1, Math.floor((h - 158) / 52) + 1);
+    const pages = Math.max(1, Math.ceil(this.sharpenedSkills.length / perPage));
+    this.sharpenedPage = Math.min(this.sharpenedPage, pages - 1);
+    const start = this.sharpenedPage * perPage;
+    const slice = this.sharpenedSkills.slice(start, start + perPage);
+
+    slice.forEach((skill, i) => {
       const ry = y + 48 + i * 52;
-      if (ry > y + h - 60) return;
       const registry = gameState.skill(skill);
 
       // Bounded at the status pill rather than left to run. The longest skill
@@ -190,11 +262,10 @@ export class DebriefScene extends Phaser.Scene {
         ...TEXT.body, wordWrap: { width: w - 32 - 300 - 16 },
       });
       const code = capsLabel(this, x + 16, ry + 22, `${skill} · ${registry.standards.join(" · ")}`, C.textMuted, TRACK.readout);
-      void name;
-      void code;
+      items.push(name, code);
 
       const pill = statusPill(this, x + w - 16 - 300, ry, gameState.statusOf(skill));
-      void pill;
+      items.push(pill);
 
       if (hasPage(skill)) {
         const review = button(this, {
@@ -205,9 +276,27 @@ export class DebriefScene extends Phaser.Scene {
           variant: "secondary",
           onClick: () => this.openManual(skill),
         });
-        void review;
+        items.push(review.container);
       }
     });
+
+    if (pages > 1) {
+      const rowY = y + h - 50;
+      const label = capsLabel(this, x + 16, rowY + 14, `${start + 1}-${start + slice.length} OF ${this.sharpenedSkills.length}`, C.textMuted, TRACK.readout);
+      const next = button(this, {
+        x: x + w - 16 - 80, y: rowY, width: 80, height: HIT.min,
+        label: "NEXT", variant: "ghost",
+        onClick: () => { if (this.sharpenedPage < pages - 1) { this.sharpenedPage += 1; this.renderSharpenedPage(); } },
+      });
+      const prev = button(this, {
+        x: x + w - 16 - 80 - 90, y: rowY, width: 80, height: HIT.min,
+        label: "PREV", variant: "ghost",
+        onClick: () => { if (this.sharpenedPage > 0) { this.sharpenedPage -= 1; this.renderSharpenedPage(); } },
+      });
+      items.push(label, next.container, prev.container);
+    }
+
+    this.sharpenedLayer = this.add.container(0, 0, items);
   }
 
   private openManual(skill: string): void {

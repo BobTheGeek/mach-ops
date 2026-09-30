@@ -357,3 +357,39 @@ describe("the summary uses the same rule as a row", () => {
     expect(s.basis).toBe("all-attempts");
   });
 });
+
+describe("fluency and hints in the report", () => {
+  const skill = curriculum.skills.find((s) => s.id === "ns.1.1")!;
+
+  it("counts hint presses and manual opens against the skill", () => {
+    const log = [
+      attempt("ns.1.1", true, { hintsUsed: 1 }),
+      attempt("ns.1.1", false, { hintsUsed: 2 }),
+      attempt("ns.1.1", true, { hintsUsed: 0 }),
+    ];
+    expect(buildRow(input(withLog(log)), skill, true).hints).toBe(3);
+  });
+
+  it("takes the median pace from correct answers only", () => {
+    const log = [
+      attempt("ns.1.1", true, { responseMs: 2000 }),
+      attempt("ns.1.1", true, { responseMs: 6000 }),
+      attempt("ns.1.1", false, { responseMs: 60_000 }),
+    ];
+    expect(buildRow(input(withLog(log)), skill, true).medianCorrectMs).toBe(4000);
+  });
+
+  it("reports no pace for a skill with no correct answers", () => {
+    const log = [attempt("ns.1.1", false), attempt("ns.1.1", false)];
+    expect(buildRow(input(withLog(log)), skill, true).medianCorrectMs).toBeNull();
+  });
+
+  it("carries both into the CSV", () => {
+    const log = [attempt("ns.1.1", true, { hintsUsed: 1, responseMs: 3000 })];
+    const csv = toCsv([buildRow(input(withLog(log)), skill, true)]);
+    const [header, row] = csv.trim().split("\n");
+    expect(header).toContain('"hints"');
+    expect(header).toContain('"median_correct_ms"');
+    expect(row).toContain('"3000"');
+  });
+});

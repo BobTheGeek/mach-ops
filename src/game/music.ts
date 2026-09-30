@@ -160,5 +160,23 @@ export const SCENE_TRACK: Readonly<Record<string, string>> = {
   Pause: SORTIE,
 };
 
+/**
+ * The track for a scene, given the data it was launched with.
+ *
+ * A scene launched as an overlay reads `resumeTo` and borrows the host's track
+ * rather than its own. The manual, settings and how-to-play are all menu scenes
+ * in their own right, but opened over a paused sortie they are part of that
+ * sortie, and the sortie's track has to keep running underneath them: swap to
+ * the menu track and nothing would bring the sortie track back, because
+ * resuming does not re-create the scene.
+ */
+export function trackFor(key: string, data?: unknown): string | null {
+  const host = data && typeof data === "object" && "resumeTo" in data
+    ? (data as { resumeTo?: unknown }).resumeTo
+    : undefined;
+  if (typeof host === "string" && SCENE_TRACK[host]) return SCENE_TRACK[host]!;
+  return SCENE_TRACK[key] ?? null;
+}
+
 /** One per page load, like the audio engine. */
 export const music = new Music();

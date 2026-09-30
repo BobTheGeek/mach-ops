@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { SCENE_TRACK, THEME, MENU, SORTIE, MUSIC_GAIN, DUCK } from "../../src/game/music";
+import { SCENE_TRACK, trackFor, THEME, MENU, SORTIE, MUSIC_GAIN, DUCK } from "../../src/game/music";
 
 /**
  * The scene keys the game registers, from src/main.ts. Kept here as a literal so
@@ -53,5 +53,34 @@ describe("which scene plays what", () => {
   it("ducks hard under a problem card", () => {
     expect(DUCK).toBeGreaterThan(0);
     expect(DUCK).toBeLessThan(0.5);
+  });
+});
+
+describe("trackFor", () => {
+  it("gives a scene its own track when it is not an overlay", () => {
+    expect(trackFor("Settings")).toBe(MENU);
+    expect(trackFor("Sortie")).toBe(SORTIE);
+    expect(trackFor("Title")).toBe(THEME);
+  });
+
+  it("says nothing for a scene with no decision", () => {
+    expect(trackFor("Boot")).toBeNull();
+    expect(trackFor("NotAScene")).toBeNull();
+  });
+
+  // The manual, settings and how-to-play are menu screens in their own right,
+  // but opened over a paused sortie they are part of that sortie. Switching to
+  // the menu track there would never be undone: resuming a scene does not
+  // re-create it, so nothing would restart the sortie track.
+  it("borrows the host track when launched as an overlay", () => {
+    expect(trackFor("Settings", { resumeTo: "Pause" })).toBe(SORTIE);
+    expect(trackFor("Manual", { resumeTo: "Sortie" })).toBe(SORTIE);
+    expect(trackFor("HowToPlay", { resumeTo: "Pause" })).toBe(SORTIE);
+  });
+
+  it("ignores junk data rather than throwing", () => {
+    expect(trackFor("Settings", { resumeTo: 42 })).toBe(MENU);
+    expect(trackFor("Settings", { resumeTo: "NotAScene" })).toBe(MENU);
+    expect(trackFor("Settings", "not an object")).toBe(MENU);
   });
 });

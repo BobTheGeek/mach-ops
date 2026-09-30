@@ -39,6 +39,15 @@ const TOGGLES: Toggle[] = [
 
 export class SettingsScene extends Phaser.Scene {
   private returnTo = "Hangar";
+  /**
+   * When opened as an overlay (from the pause menu), the scene to return to
+   * instead of returnTo, and the data to reopen it with. The host stays paused
+   * underneath, so this screen never ends a sortie it was opened over.
+   */
+  private resumeTo?: string;
+  private resumeData?: object;
+  /** called before navigating away for real, so a paused sortie is ended */
+  private onLeave?: () => void;
   private rows: { toggle: Toggle; label: Phaser.GameObjects.Text }[] = [];
   private volumeBar!: Phaser.GameObjects.Graphics;
   private volumeText!: Phaser.GameObjects.Text;
@@ -47,8 +56,11 @@ export class SettingsScene extends Phaser.Scene {
     super("Settings");
   }
 
-  init(data: { returnTo?: string }): void {
+  init(data: { returnTo?: string; resumeTo?: string; resumeData?: object; onLeave?: () => void }): void {
     this.returnTo = data.returnTo ?? "Hangar";
+    this.resumeTo = data.resumeTo;
+    this.resumeData = data.resumeData;
+    this.onLeave = data.onLeave;
   }
 
   create(): void {
@@ -77,6 +89,11 @@ export class SettingsScene extends Phaser.Scene {
   private done(): void {
     audio.play("uiBack");
     gameState.save();
+    if (this.resumeTo) {
+      this.scene.stop();
+      this.scene.start(this.resumeTo, this.resumeData);
+      return;
+    }
     this.scene.start(this.returnTo);
   }
 
@@ -165,7 +182,12 @@ export class SettingsScene extends Phaser.Scene {
     button(this, {
       x: SCREEN_PAD + w + 16, y, width: w, height: HIT.lg,
       label: "REPLAY FLIGHT SCHOOL", variant: "ghost",
-      onClick: () => this.scene.start("FlightSchool"),
+      onClick: () => {
+        // Leaving for the school ends any sortie this screen was opened over,
+        // rather than leaving it paused with no way back to it.
+        this.onLeave?.();
+        this.scene.start("FlightSchool");
+      },
     });
     // The parent view is a separate plain page, not a scene: design/README.md
     // keeps it off the game skin on purpose. This is the only way in to it.

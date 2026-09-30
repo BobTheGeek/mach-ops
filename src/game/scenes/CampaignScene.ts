@@ -90,7 +90,14 @@ export class CampaignScene extends Phaser.Scene {
     // "BOSS" rides on the right-hand detail, not the left label: the left label
     // is fixed width so the two can never collide however long the detail gets.
     const focus = m.focus.length ? m.focus.join(" · ") : "MIXED REVIEW";
-    const parts = [boss ? "BOSS" : "", focus, `${m.problems} PROBLEMS`, `${m.prep} PREP`, flown ? "FLOWN" : ""]
+    const best = gameState.file.missionBests[m.id];
+    // A flown sortie shows what there is to beat rather than the word FLOWN:
+    // "beat your best on this sortie" is a reason to fly it again.
+    const flownLabel = best
+      ? `${best.grade} · ${best.firstTryHits}/${m.problems}`
+      : "FLOWN";
+    const kindLabel = m.capstone ? "CAPSTONE" : boss ? "BOSS" : "";
+    const parts = [kindLabel, focus, `${m.problems} PROBLEMS`, `${m.prep} PREP`, flown ? flownLabel : ""]
       .filter(Boolean);
     const detail = capsLabel(this, 0, y + 12, parts.join(" · "), boss ? C.lock : C.textMuted, TRACK.readout);
     detail.setX(Math.max(num.x + num.width + 16, x + w - 14 - ctaW - 16 - detail.width));

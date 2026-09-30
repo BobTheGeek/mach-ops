@@ -19,7 +19,7 @@ import { PauseScene } from "./game/scenes/PauseScene";
 import { FlightSchoolScene } from "./game/scenes/FlightSchoolScene";
 import { SettingsScene } from "./game/scenes/SettingsScene";
 import { ShopScene } from "./game/scenes/ShopScene";
-import { music, SCENE_TRACK } from "./game/music";
+import { music, trackFor } from "./game/music";
 import { gameState } from "./game/state";
 
 const game = new Phaser.Game({
@@ -53,12 +53,16 @@ const game = new Phaser.Game({
 // asynchronously, so game.scene.scenes is still empty at that point and the
 // listeners went nowhere.
 game.events.once(Phaser.Core.Events.READY, () => {
+  const applyTrack = (scene: Phaser.Scene): void => {
+    const track = trackFor(scene.scene.key, scene.sys.settings.data);
+    if (track) music.play(track, gameState.file.settings.volume);
+    else music.stop();
+  };
   for (const scene of game.scene.scenes) {
-    scene.events.on(Phaser.Scenes.Events.CREATE, () => {
-      const track = SCENE_TRACK[scene.scene.key];
-      if (track) music.play(track, gameState.file.settings.volume);
-      else music.stop();
-    });
+    scene.events.on(Phaser.Scenes.Events.CREATE, () => applyTrack(scene));
+    // A resumed scene never re-fires CREATE, so without this the menu track a
+    // settings overlay started would keep playing over the sortie underneath.
+    scene.events.on(Phaser.Scenes.Events.RESUME, () => applyTrack(scene));
   }
 });
 

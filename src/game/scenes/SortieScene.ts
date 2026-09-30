@@ -30,7 +30,8 @@ import type { SortieLoadout } from "./BriefingScene";
 import { MAX_MISSILES } from "./BriefingScene";
 import { mission as findMission, type Mission } from "../../data/campaign";
 import { createTerrain, type Terrain } from "../ui/terrain";
-import { LOCK_RANGE, BOSS_LOCK_RANGE, LANE_OFFSETS } from "../sortieRules";
+import { LOCK_RANGE, BOSS_LOCK_RANGE, LANE_OFFSETS, patrolWeave } from "../sortieRules";
+import { BANK_ANGLE, BANK_FORESHORTEN, PLAYER_H, PLAYER_W, newFlight, stepFlight } from "../flight";
 import { generatorFor } from "../../generators/index";
 import { loadSprites, phase2Variants } from "../assets";
 
@@ -43,26 +44,8 @@ const SHIELD_HIT = 0.2;
 /** design/README.md: the player sprite sits at (592, 450) at 120 px. */
 const PLAYER_POS = { x: 592, y: 450 };
 
-/** Flight model. Arcade, not a simulator: the stick steers a heading and the
- *  aircraft always moves forward, which is what an intercept needs. */
-/**
- * How fast the compass swings while the stick is over. The heading is a
- * READOUT, not the direction of travel: the camera rides with the aircraft, so
- * forward is always up the screen and the turn shows as the world sliding.
- */
-const TURN_RATE = 75;       // degrees per second at full deflection
-/** Forward, always. The aircraft never flies backwards down its own track. */
-const SPEED = 190;          // pixels per second
-/** Sideways, at full bank. Enough to line up on a bogey without overshooting. */
-const STRAFE = 150;         // pixels per second
-/** How far the sprite rolls at full deflection. A cue, not part of the model. */
-const BANK_ANGLE = 22;      // degrees
-/** How much of its wingspan the airframe loses when rolled right over. */
-const BANK_FORESHORTEN = 0.2;
-/** Seconds-ish constant for the roll easing in and out; higher is snappier. */
-const BANK_RATE = 7;
-const PLAYER_W = 85;
-const PLAYER_H = 120;
+/** A capstone flies everything like a boss and moves the contact picture faster. */
+const CAPSTONE_DRIFT = 1.8;
 
 /** Screen scale for the HUD's range readout: 60 px reads as one nautical mile. */
 const PX_PER_NM = 60;
@@ -109,8 +92,8 @@ export class SortieScene extends Phaser.Scene {
   private sharpened = new Set<string>();
 
   private player!: Phaser.GameObjects.Image;
-  /** compass heading in degrees; 0 is north, which is up the screen */
-  private heading = 0;
+  /** compass heading and roll, owned by the shared flight model */
+  private flight = newFlight();
   private keys!: {
     left: Phaser.Input.Keyboard.Key[];
     right: Phaser.Input.Keyboard.Key[];
@@ -119,8 +102,6 @@ export class SortieScene extends Phaser.Scene {
   private altOut!: ReturnType<typeof readout>;
   private tgtOut!: ReturnType<typeof readout>;
   private bogeys: Bogey[] = [];
-  /** −1 rolled fully left, +1 fully right; eases toward the stick. */
-  private bank = 0;
   private lockedBogey = -1;
   private locked = false;
   private paused = false;
@@ -145,6 +126,8 @@ export class SortieScene extends Phaser.Scene {
   private multOut!: ReturnType<typeof readout>;
   /** contacts allowed past the tail, reported at the debrief */
   private escaped = 0;
+  /** seconds since launch, which the patrol weave is a function of */
+  private elapsed = 0;
   /** wall clock at launch, for the fastest-sortie record */
   private startedAt = 0;
   /** credits before the sortie, so the debrief can report what it earned */
@@ -176,6 +159,8 @@ export class SortieScene extends Phaser.Scene {
     this.wrongRun = 0;
     this.sharpened = new Set();
     this.bogeys = [];
+    this.flight = newFlight();
+    this.elapsed = 0;
   }
 
   create(): void {
@@ -202,6 +187,15 @@ export class SortieScene extends Phaser.Scene {
     // The boss rule, stated rather than left to be discovered by losing.
     if (this.mission.kind === "boss") {
       this.flashBanner("BOSS · BANDITS FLY TIGHTER · CLOSE TO LOCK", C.lock);
+    }
+    // A patrol is its own shape: the contacts weave, so a lock has to be flown
+    // onto rather than waited for. Said once at the top rather than discovered.
+    if (this.mission.kind === "patrol") {
+      this.flashBanner("PATROL · BANDITS JINK · FLY THEM ONTO YOUR NOSE", C.hud);
+    }
+    // The capstone is every rule at once, and it says so.
+    if (this.mission.capstone) {
+      this.flashBanner("BLACKBIRD QUALIFICATION · BOSS CONE · JINKING BANDITS", C.lock);
     }
 
     const kb = this.input.keyboard;
@@ -331,12 +325,17 @@ export class SortieScene extends Phaser.Scene {
     if (this.fuelLeft <= 0) { audio.play("flameOut"); this.endSortie("BINGO FUEL"); return; }
 
     const dt = deltaMs / 1000;
+    this.elapsed += dt;
     this.fly(dt);
+
+    // A capstone flies its contacts harder as well as tighter; the drift is
+    // still fixed, so the same sortie replays the same.
+    const drift = this.mission.capstone ? CAPSTONE_DRIFT : 1;
 
     for (const b of this.bogeys) {
       if (!b.alive) continue;
-      b.image.x += b.vx * dt;
-      b.image.y += b.vy * dt;
+      b.image.x += b.vx * drift * dt;
+      b.image.y += b.vy * drift * dt;
       // Contacts are hunting the player too. One pushed outside lock range by a
       // hard turn edges back toward their column, so a sortie can never stall
       // with every contact parked off to one side and nothing lockable.
@@ -388,28 +387,32 @@ export class SortieScene extends Phaser.Scene {
   private fly(dt: number): void {
     const down = (keys: Phaser.Input.Keyboard.Key[]): boolean => keys.some((k) => k.isDown);
     const turn = (down(this.keys.right) ? 1 : 0) - (down(this.keys.left) ? 1 : 0);
-    if (turn !== 0) this.heading = (this.heading + turn * TURN_RATE * dt + 360) % 360;
+
+    // The shared model turns the heading and eases the roll; the world delta it
+    // returns is what moves the terrain, the bogeys and the player's own frame.
+    const { dx, dy } = stepFlight(this.flight, turn, dt);
 
     // The airframe holds its heading on screen, but it rolls into the turn and
     // levels out again. Nothing else about the aircraft moves, so without this
     // a turn looked like nothing at all was happening.
-    this.bank += (turn - this.bank) * Math.min(1, dt * BANK_RATE);
-    this.player.setAngle(this.bank * BANK_ANGLE);
-    this.player.setDisplaySize(PLAYER_W * (1 - BANK_FORESHORTEN * Math.abs(this.bank)), PLAYER_H);
+    this.player.setAngle(this.flight.bank * BANK_ANGLE);
+    this.player.setDisplaySize(PLAYER_W * (1 - BANK_FORESHORTEN * Math.abs(this.flight.bank)), PLAYER_H);
 
     // The world always comes at you: forward is forward, and a bank slides it
     // sideways. Steering used to rotate a full heading vector, which meant that
     // at 180 degrees the ground ran backwards up the screen and the aircraft
     // appeared to fly in reverse. It cannot do that now.
-    const dy = SPEED * dt;
-    const dx = -this.bank * STRAFE * dt;
-
-    // The ground and the clouds take the same delta the bogeys do, so the whole
-    // world swings together when the stick goes over.
     this.terrain?.update(dx, dy);
 
     for (const b of this.bogeys) {
-      b.image.x += dx;
+      // A patrol never flies a straight line: the contacts weave off their
+      // column, so lining one up is work the player has to do rather than
+      // something the drift does for them.
+      const lane = this.bogeys.indexOf(b);
+      const weave = this.mission.kind === "patrol" || this.mission.capstone
+        ? patrolWeave(this.elapsed, lane)
+        : 0;
+      b.image.x += dx + weave * dt;
       b.image.y += dy;
       // Wrap on both axes, so a bogey flown past comes round again rather than
       // vanishing: the player can always turn back onto one they missed.
@@ -419,7 +422,7 @@ export class SortieScene extends Phaser.Scene {
       if (b.image.y > CANVAS.height + 100) b.image.y = -100;
     }
 
-    this.hdgOut.set(`${String(Math.round(this.heading)).padStart(3, "0")}°`);
+    this.hdgOut.set(`${String(Math.round(this.flight.heading)).padStart(3, "0")}°`);
 
     // Range to the nearest bogey, and dim anything out of lock range so the
     // player can see why SPACE will or will not take.
@@ -446,7 +449,7 @@ export class SortieScene extends Phaser.Scene {
     }
     // Altitude drifts with the turn, so the ALT readout is live rather than a
     // prop: a banked aircraft loses a little height.
-    const alt = 12400 - Math.round(Math.abs(this.bank) * 500);
+    const alt = 12400 - Math.round(Math.abs(this.flight.bank) * 500);
     this.altOut.set(`${alt.toLocaleString("en-US")} FT`);
   }
 
@@ -1059,6 +1062,8 @@ export class SortieScene extends Phaser.Scene {
       shields: this.shields,
       // 07B: shields or fuel at zero ends the sortie, progress kept.
       failed: this.shields <= 0 || this.fuelLeft <= 0,
+      durationMs: this.time.now - this.startedAt,
+      credits: gameState.file.credits - this.creditsAtLaunch,
     });
   }
 }

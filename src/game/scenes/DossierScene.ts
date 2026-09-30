@@ -71,7 +71,7 @@ export class DossierScene extends Phaser.Scene {
       ["SPAN", `${d.spanM.toFixed(1)} M`],
       ["HEIGHT", `${d.heightM.toFixed(1)} M`],
       ["ENGINE", d.engine],
-      ["TOP SPEED", d.topSpeed],
+      ["TOP SPEED", d.topSpeed ?? "—"],
       ["CREW", String(d.crew)],
     ];
     rows.forEach(([label, value], i) => {

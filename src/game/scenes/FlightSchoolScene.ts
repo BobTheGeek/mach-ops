@@ -9,10 +9,14 @@ import Phaser from "phaser";
 import { C, N, SIZE, TEXT, TRACK, CANVAS, SCREEN_PAD, STROKE, HIT, MOTION, hex } from "../../ui/tokens";
 import { panel, capsLabel, button, resourceBar, missilePips, readout, dim } from "../ui/kit";
 import { gameState } from "../state";
+import { audio } from "../audio";
 import { dossier } from "../../data/intel";
 import { CH1_MISSIONS } from "../../data/campaign";
+import { createTerrain, type Terrain } from "../ui/terrain";
+import { BANK_ANGLE, BANK_FORESHORTEN, PLAYER_H, PLAYER_W, newFlight, stepFlight, type Flight } from "../flight";
+import { LOCK_RANGE } from "../sortieRules";
 
-type StepKind = "intro" | "callout" | "pick" | "type" | "complete";
+type StepKind = "intro" | "callout" | "pick" | "type" | "fly" | "lock" | "complete";
 
 interface Step {
   lesson: 0 | 1 | 2 | 3 | 4 | 5;
@@ -32,9 +36,29 @@ interface Step {
   because?: string;
 }
 
+/** Flight School sits in the trainer, and the trainer holds station here. */
+const PLAYER_POS = { x: 592, y: 450 };
+/** Same display size the sortie draws the airframe at. */
+const FS_PLAYER_W = PLAYER_W;
+const FS_PLAYER_H = PLAYER_H;
+/** A lesson ring is a gate, not a bullseye: generous enough to be steered into. */
+const RING_R = 30;
+const RING_CATCH = 46;
+/** How far a ring may pass the nose before it swings around again. */
+const RING_WRAP_Y = CANVAS.height + 60;
+/** Lanes a ring cycles through each time it comes around, so camping fails. */
+const RING_LANES = [-170, 0, 170];
+/** How far above the screen a wrapped ring re-enters. */
+const RING_SPAWN_Y = -80;
+
 const STEPS: Step[] = [
-  { lesson: 1, kind: "callout", callout: "Fly through the ring. Arrow keys or WASD steer.", action: "DO IT" },
-  { lesson: 1, kind: "callout", callout: "Altitude changes as you climb or dive. Watch it tick.", action: "NEXT · ENTER" },
+  // Lesson 1 is the stick, and it is flown, not read: the rings have to be
+  // steered through before the lesson opens. It used to be a callout sitting
+  // over a picture of rings, which taught the controls the way a screenshot does.
+  { lesson: 1, kind: "fly", callout: "Three rings ahead. W A S D or the arrow keys steer; the aircraft rolls into the turn.", action: "FLY" },
+  { lesson: 1, kind: "callout", callout: "The ground and the contacts both slide when you bank. At altitude, watch it tick.", action: "NEXT · ENTER" },
+  // Lesson 2 opens with one real lock, again flown rather than described.
+  { lesson: 2, kind: "lock", callout: "One slow bogey. Fly it inside the lock range and press SPACE.", action: "LOCK IT" },
   {
     lesson: 2, kind: "pick",
     title: "INTERCEPT SOLUTION",
@@ -100,6 +124,22 @@ export class FlightSchoolScene extends Phaser.Scene {
   private answered = false;
   private keyHandler?: (e: KeyboardEvent) => void;
 
+  /** the flown lessons (kind "fly" and "lock") */
+  private flight: Flight = newFlight();
+  private keys?: { left: Phaser.Input.Keyboard.Key[]; right: Phaser.Input.Keyboard.Key[] };
+  private terrain?: Terrain;
+  private player?: Phaser.GameObjects.Image;
+  private flyStatus?: Phaser.GameObjects.Text;
+  private elapsed = 0;
+  /** lesson 1: the rings still to be flown through, and how many are done */
+  private rings: { lane: number; x: number; y: number; gone: boolean; circle: Phaser.GameObjects.Arc }[] = [];
+  private ringsTaken = 0;
+  /** lesson 2: the one slow bogey and the lock the player takes on it */
+  private bogey?: Phaser.GameObjects.Image;
+  private bogeyDrift = { x: -14, y: 10 };
+  private reticle?: Phaser.GameObjects.Container;
+  private lockedTarget = false;
+
   constructor() {
     super("FlightSchool");
   }
@@ -109,13 +149,31 @@ export class FlightSchoolScene extends Phaser.Scene {
     this.typed = "";
     this.picked = -1;
     this.answered = false;
+    this.flight = newFlight();
+    this.elapsed = 0;
+    this.rings = [];
+    this.ringsTaken = 0;
+    this.bogey = undefined;
+    this.reticle = undefined;
+    this.lockedTarget = false;
   }
 
   create(): void {
     this.cameras.main.setBackgroundColor(N.ground);
     this.attachKeys();
+
+    const kb = this.input.keyboard;
+    this.keys = {
+      left: [kb?.addKey("A"), kb?.addKey("LEFT")].filter(Boolean) as Phaser.Input.Keyboard.Key[],
+      right: [kb?.addKey("D"), kb?.addKey("RIGHT")].filter(Boolean) as Phaser.Input.Keyboard.Key[],
+    };
+    kb?.on("keydown-SPACE", () => this.trySchoolLock());
+
     this.render();
-    this.events.once("shutdown", () => this.detachKeys());
+    this.events.once("shutdown", () => {
+      this.detachKeys();
+      this.terrain?.destroy();
+    });
   }
 
   private attachKeys(): void {
@@ -123,6 +181,9 @@ export class FlightSchoolScene extends Phaser.Scene {
       const step = STEPS[this.step];
 
       if (e.key === "Escape") { e.preventDefault(); this.finish(true); return; }
+      // A flown step is finished by flying, not by pressing Enter. The lock
+      // step listens for SPACE through Phaser's own keyboard plugin.
+      if (step && (step.kind === "fly" || step.kind === "lock")) return;
       if (e.key === "Enter") {
         e.preventDefault();
         if (!step || step.kind === "callout") this.advance();
@@ -150,11 +211,28 @@ export class FlightSchoolScene extends Phaser.Scene {
   }
 
   private advance(): void {
+    this.leaveFlight();
     this.step += 1;
     this.typed = "";
     this.picked = -1;
     this.answered = false;
     this.render();
+  }
+
+  /** Tear down the flown lesson's world when its step is left. */
+  private leaveFlight(): void {
+    this.terrain?.destroy();
+    this.terrain = undefined;
+    this.player = undefined;
+    this.bogey = undefined;
+    this.reticle = undefined;
+    this.flyStatus = undefined;
+    this.rings = [];
+    this.ringsTaken = 0;
+    this.lockedTarget = false;
+    this.elapsed = 0;
+    this.flight = newFlight();
+    audio.setDucked(false);
   }
 
   private commit(): void {
@@ -184,6 +262,127 @@ export class FlightSchoolScene extends Phaser.Scene {
     this.scene.start(skipped ? "Hangar" : "Campaign", skipped ? {} : { unitId: "ch1" });
   }
 
+  /* -------------------------------------------------------------- flying */
+
+  /**
+   * The flown lessons. Both use the same model the sortie flies, so what the
+   * lesson teaches is exactly what the sortie expects.
+   */
+  override update(_time: number, deltaMs: number): void {
+    const step = STEPS[this.step];
+    if (!step || (step.kind !== "fly" && step.kind !== "lock") || !this.player) return;
+
+    const dt = Math.min(0.05, deltaMs / 1000);
+    this.elapsed += dt;
+
+    const down = (keys: Phaser.Input.Keyboard.Key[]): boolean => keys.some((k) => k.isDown);
+    const turn = (down(this.keys?.right ?? []) ? 1 : 0) - (down(this.keys?.left ?? []) ? 1 : 0);
+
+    const { dx, dy } = stepFlight(this.flight, turn, dt);
+    this.player.setAngle(this.flight.bank * BANK_ANGLE);
+    this.player.setDisplaySize(FS_PLAYER_W * (1 - BANK_FORESHORTEN * Math.abs(this.flight.bank)), FS_PLAYER_H);
+    this.terrain?.update(dx, dy);
+
+    if (this.lockedTarget) return;
+    if (step.kind === "fly") this.stepRings(dx, dy);
+    else this.stepBogey(dx, dy, dt);
+  }
+
+  private stepRings(dx: number, dy: number): void {
+    for (const ring of this.rings) {
+      if (ring.gone) continue;
+      ring.x += dx;
+      ring.y += dy;
+      ring.circle.setPosition(ring.x, ring.y);
+
+      const d = Phaser.Math.Distance.Between(PLAYER_POS.x, PLAYER_POS.y, ring.x, ring.y);
+      if (d <= RING_CATCH) { this.takeRing(ring); continue; }
+
+      // A missed ring is not a failure: it swings around and comes back, in the
+      // next lane, so the stick gets the workout rather than the scoreboard.
+      if (ring.y > RING_WRAP_Y) {
+        ring.lane = (ring.lane + 1) % RING_LANES.length;
+        ring.x = PLAYER_POS.x + RING_LANES[ring.lane]!;
+        ring.y = RING_SPAWN_Y;
+      }
+    }
+  }
+
+  private takeRing(ring: { gone: boolean; circle: Phaser.GameObjects.Arc }): void {
+    ring.gone = true;
+    ring.circle.setVisible(false);
+    this.ringsTaken += 1;
+    audio.play("uiConfirm");
+    this.flyStatus?.setText(this.ringStatus());
+    this.flyStatus?.setColor(C.lock);
+    if (this.ringsTaken >= this.rings.length) {
+      this.time.delayedCall(700, () => {
+        if (STEPS[this.step]?.kind === "fly") this.advance();
+      });
+    }
+  }
+
+  private ringStatus(): string {
+    return this.ringsTaken >= this.rings.length
+      ? "RINGS 3 / 3 · NICE HANDLING"
+      : `RINGS ${this.ringsTaken} / 3`;
+  }
+
+  private stepBogey(dx: number, dy: number, dt: number): void {
+    const b = this.bogey;
+    if (!b) return;
+    // The world comes at the player, so the contact does too, but only at part
+    // of the world's speed: a contact that closed at the player's own rate
+    // could not be caught by steering.
+    b.x += dx + this.bogeyDrift.x * dt;
+    b.y += dy * 0.55 + this.bogeyDrift.y * dt;
+    if (b.y > CANVAS.height + 60) {
+      b.setPosition(PLAYER_POS.x + RING_LANES[(this.elapsed | 0) % RING_LANES.length]!, RING_SPAWN_Y);
+    }
+
+    const d = Phaser.Math.Distance.Between(PLAYER_POS.x, PLAYER_POS.y, b.x, b.y);
+    b.setAlpha(d <= LOCK_RANGE ? 1 : 0.4);
+    if (d <= LOCK_RANGE) {
+      this.flyStatus?.setText("IN RANGE · SPACE TO LOCK");
+      this.flyStatus?.setColor(C.lock);
+    } else {
+      this.flyStatus?.setText(`CONTACT ${Math.round(d)} PX · CLOSE TO LOCK`);
+      this.flyStatus?.setColor(C.textMuted);
+    }
+  }
+
+  /** SPACE in the lock lesson. Same rule as the sortie: in range or nothing. */
+  private trySchoolLock(): void {
+    const step = STEPS[this.step];
+    if (!step || step.kind !== "lock" || this.lockedTarget || !this.bogey) return;
+    const d = Phaser.Math.Distance.Between(PLAYER_POS.x, PLAYER_POS.y, this.bogey.x, this.bogey.y);
+    if (d > LOCK_RANGE) return;
+
+    this.lockedTarget = true;
+    audio.play("lockAcquire");
+    audio.setDucked(true);
+
+    const g = this.add.graphics();
+    const r = 64;
+    const b = 50;
+    g.lineStyle(STROKE.hud, hex(C.lock), 1);
+    g.strokeCircle(0, 0, r);
+    for (const [sx, sy] of [[-1, -1], [1, -1], [-1, 1], [1, 1]] as const) {
+      g.lineBetween(sx * b, sy * b, sx * b, sy * (b - 18));
+      g.lineBetween(sx * b, sy * b, sx * (b - 18), sy * b);
+    }
+    const label = capsLabel(this, r + 12, -8, "TGT", C.lock, TRACK.readout);
+    this.reticle = this.add.container(this.bogey.x, this.bogey.y, [g, label]);
+    this.layer?.add(this.reticle);
+    this.flyStatus?.setText("LOCKED · TARGET SOLUTION FOLLOWS");
+    this.flyStatus?.setColor(C.lock);
+
+    this.time.delayedCall(1000, () => {
+      audio.setDucked(false);
+      if (STEPS[this.step]?.kind === "lock") this.advance();
+    });
+  }
+
   /* ----------------------------------------------------------- rendering */
 
   private render(): void {
@@ -194,6 +393,9 @@ export class FlightSchoolScene extends Phaser.Scene {
     if (this.step >= STEPS.length) { this.renderComplete(); return; }
 
     const step = STEPS[this.step]!;
+    if (step.kind === "fly") { this.renderRollRingStep(step); return; }
+    if (step.kind === "lock") { this.renderLockStep(step); return; }
+
     this.renderBackdrop(step);
     this.renderChrome(step);
     if (step.kind !== "callout") this.renderProblem(step);
@@ -248,6 +450,78 @@ export class FlightSchoolScene extends Phaser.Scene {
     const foot = capsLabel(this, 0, CANVAS.height - 60, "REPLAY ANY TIME FROM THE HANGAR", C.textMuted, TRACK.readout);
     foot.setX((CANVAS.width - foot.width) / 2);
     this.add2(foot);
+  }
+
+  /**
+   * The flown backdrop: real terrain, the real aircraft, the real model.
+   *
+   * A lesson that answers to a different flight model than the sortie would be
+   * worse than no lesson, so both go through stepFlight, and the terrain is the
+   * same generator the sortie scrolls.
+   */
+  private startFlightView(step: Step): void {
+    this.cameras.main.setBackgroundColor(hex(C.sea));
+    this.terrain?.destroy();
+    this.terrain = createTerrain(this, `flight-school|${step.kind}`);
+    // The terrain container is appended after the lesson layer, so on its own it
+    // paints straight over the aircraft, the rings and the callout. The layer
+    // rides on top of the world.
+    if (this.layer) this.children.bringToTop(this.layer);
+    this.player = this.add.image(PLAYER_POS.x, PLAYER_POS.y, "t38-top-flame").setDisplaySize(FS_PLAYER_W, FS_PLAYER_H);
+    this.add2(this.player);
+    this.renderChrome(step);
+  }
+
+  /** Lesson 1: three rings that have to be steered through. */
+  private renderRollRingStep(step: Step): void {
+    this.startFlightView(step);
+
+    this.ringsTaken = 0;
+    this.rings = RING_LANES.map((offset, lane) => {
+      const x = PLAYER_POS.x + offset;
+      const y = 150 + lane * 40;
+      const circle = this.add.circle(x, y, RING_R);
+      circle.setStrokeStyle(STROKE.hud * 2, hex(C.hud), 0.9);
+      circle.setFillStyle(hex(C.hud), 0.06);
+      this.add2(circle);
+      return { lane, x, y, gone: false, circle };
+    });
+
+    this.flyStatus = capsLabel(this, 0, 96, this.ringStatus(), C.hud, TRACK.readout);
+    this.flyStatus.setX((CANVAS.width - this.flyStatus.width) / 2);
+    this.add2(this.flyStatus);
+    this.renderFlyCallout(step, "A D OR \u2190 \u2192 · STEER");
+  }
+
+  /** Lesson 2: one slow bogey and a real SPACE lock. */
+  private renderLockStep(step: Step): void {
+    this.startFlightView(step);
+
+    this.lockedTarget = false;
+    // Starts off the nose and outside lock range, so the lesson is to fly it
+    // into the cone rather than to press SPACE at whatever is on screen.
+    this.bogey = this.add.image(PLAYER_POS.x - 250, 90, this.textures.exists("bogey1-top") ? "bogey1-top" : "t38-top");
+    this.bogey.setDisplaySize(51, 72).setAngle(180);
+    this.add2(this.bogey);
+
+    this.flyStatus = capsLabel(this, 0, 96, "CONTACT · CLOSE TO LOCK", C.textMuted, TRACK.readout);
+    this.flyStatus.setX((CANVAS.width - this.flyStatus.width) / 2);
+    this.add2(this.flyStatus);
+    this.renderFlyCallout(step, "SPACE · LOCK WHEN IN RANGE");
+  }
+
+  /** The callout for a flown step: no CHECK button, because flying is the check. */
+  private renderFlyCallout(step: Step, chip: string): void {
+    const w = 420;
+    const x = CANVAS.width - SCREEN_PAD - w;
+    const y = CANVAS.height - 210;
+
+    this.add2(panel(this, x, y, w, 120, { fill: C.panelRaised, border: C.hud }));
+    const text = this.add.text(x + 16, y + 16, step.callout ?? "", {
+      ...TEXT.body, wordWrap: { width: w - 32 }, lineSpacing: 3,
+    });
+    this.add2(text);
+    this.add2(capsLabel(this, x + 16, y + 120 - 16 - SIZE.label, chip, C.hud, TRACK.readout));
   }
 
   /** Lessons 1 and 2 sit over the sortie world; 3 and 4 over the dark ground. */

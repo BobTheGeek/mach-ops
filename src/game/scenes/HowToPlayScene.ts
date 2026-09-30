@@ -111,6 +111,9 @@ export class HowToPlayScene extends Phaser.Scene {
   /** the scene to return to when the player is done */
   private returnTo = "Hangar";
   private returnData: object = {};
+  /** overlay mode: hand control back to a paused host instead of returnTo */
+  private resumeTo?: string;
+  private resumeData?: object;
   private page?: Phaser.GameObjects.Container;
   private dots: Phaser.GameObjects.Graphics[] = [];
 
@@ -118,10 +121,12 @@ export class HowToPlayScene extends Phaser.Scene {
     super("HowToPlay");
   }
 
-  init(data: { returnTo?: string; returnData?: object; index?: number }): void {
+  init(data: { returnTo?: string; returnData?: object; index?: number; resumeTo?: string; resumeData?: object }): void {
     this.returnTo = data.returnTo ?? "Hangar";
     this.returnData = data.returnData ?? {};
     this.index = data.index ?? 0;
+    this.resumeTo = data.resumeTo;
+    this.resumeData = data.resumeData;
   }
 
   create(): void {
@@ -182,6 +187,11 @@ export class HowToPlayScene extends Phaser.Scene {
   }
 
   private done(): void {
+    if (this.resumeTo) {
+      this.scene.stop();
+      this.scene.start(this.resumeTo, this.resumeData);
+      return;
+    }
     this.scene.start(this.returnTo, this.returnData);
   }
 

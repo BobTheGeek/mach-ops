@@ -16,6 +16,8 @@ import { renderFigure } from "./figures";
 import { createGridInput, sameGridAnswer, type GridInput, type GridMode } from "./gridInput";
 import { parseRational, fmtFraction, MINUS } from "../../engine/rational";
 import { audio } from "../audio";
+import { gameState } from "../state";
+import { inputKindFor } from "./inputKind";
 import type { Problem } from "../../engine/types";
 
 export type CardMode = "lock" | "briefing";
@@ -80,6 +82,9 @@ export class ProblemCard {
   /** AI-3, AI-4 and AI-5: the interactive grid */
   private grid?: GridInput;
 
+  /** the on-screen keypad, when the pilot asked for one in Settings */
+  private keypad?: Phaser.GameObjects.Container;
+
   /** AI-7 reorder */
   private order: number[] = [];
   private orderRows: { g: Phaser.GameObjects.Graphics; label: Phaser.GameObjects.Text }[] = [];
@@ -98,8 +103,14 @@ export class ProblemCard {
 
   /* ------------------------------------------------------------- build */
 
+  /**
+   * A choice, according to the problem's format rather than whether it carries
+   * options: generators attach distractors to almost every problem so the error
+   * tags are available whichever input is shown, and treating options as "is a
+   * choice" served every numeric problem as four pick rows.
+   */
   private get isPick(): boolean {
-    return this.problem.options !== undefined && this.problem.format !== "order";
+    return inputKindFor(this.problem.format, this.problem.options !== undefined) === "pick";
   }
 
   private get isOrder(): boolean {
@@ -165,7 +176,19 @@ export class ProblemCard {
           ? this.buildOrderRows(inputX, inputTop, inputW)
           : this.buildTypedInput(inputX, inputTop, inputW);
 
-    y = inputTop + Math.max(inputHeight, figure ? FIGURE_H : 0) + GAP;
+    // The keypad sits under the typed box, full card width. It is the answer
+    // input for a touchpad-only Chromebook, so it exists everywhere a typed
+    // answer is possible, not just in one scene. When a figure shares the row,
+    // the keypad waits below it rather than covering the diagram.
+    const typed = !mode && !this.isPick && !this.isOrder;
+    const keypadTop = inputTop + Math.max(HIT.min, figure ? FIGURE_H : 0) + GAP;
+    const keypadHeight = typed && this.keypadOn
+      ? this.buildKeypad(PAD, keypadTop, CARD_W - PAD * 2)
+      : 0;
+
+    y = keypadHeight
+      ? keypadTop + keypadHeight + GAP
+      : inputTop + Math.max(inputHeight, figure ? FIGURE_H : 0) + GAP;
 
     // A grid answer needs saying in words as well as shown, or the player
     // cannot tell a (3, −2) they meant from one they slipped into.
@@ -203,6 +226,7 @@ export class ProblemCard {
     if (this.inputBox) this.container.add(this.inputBox);
     if (this.typedText) this.container.add(this.typedText);
     if (this.caret) this.container.add(this.caret);
+    if (this.keypad) this.container.add(this.keypad);
 
     this.timerText.setX(CARD_W - PAD - this.timerText.width);
     this.fitHeader();
@@ -253,6 +277,58 @@ export class ProblemCard {
     s.tweens.add({ targets: this.caret, alpha: 0, duration: 500, yoyo: true, repeat: -1 });
     this.drawTypedBox(x, y, w, "default");
     return HIT.min;
+  }
+
+  private get keypadOn(): boolean {
+    return gameState.file.settings.keypadEntry;
+  }
+
+  /**
+   * THE keypad: digits, the fraction and sign keys, backspace and commit.
+   *
+   * HP1 has promised "ON-SCREEN KEYPAD FOR ANSWERS" on touchpad-only
+   * Chromebooks since the design shipped, and the Settings toggle stored a
+   * preference nothing read. Both are true now.
+   */
+  private buildKeypad(x: number, y: number, w: number): number {
+    const s = this.scene;
+    const rows = [
+      ["1", "2", "3", "/"],
+      ["4", "5", "6", MINUS],
+      ["7", "8", "9", "."],
+      ["\u232B", "0", "%", "\u2713"],
+    ];
+    const gap = 6;
+    const keyW = (w - gap * 3) / 4;
+    const keyH = HIT.min;
+    const items: Phaser.GameObjects.GameObject[] = [];
+
+    rows.forEach((row, r) => {
+      row.forEach((label, c) => {
+        const kx = x + c * (keyW + gap);
+        const ky = y + r * (keyH + gap);
+        const g = s.add.graphics();
+        g.lineStyle(STROKE.hairline, hex(C.border), 1);
+        g.strokeRoundedRect(kx, ky, keyW, keyH, RADIUS.input);
+        const t = s.add.text(kx + keyW / 2, ky + keyH / 2, label, {
+          ...TEXT.value, fontSize: "18px",
+        }).setOrigin(0.5, 0.5);
+        const zone = s.add.zone(kx, ky, keyW, keyH).setOrigin(0, 0).setInteractive({ useHandCursor: true });
+        zone.on("pointerup", () => this.keypadPress(label));
+        items.push(g, t, zone);
+      });
+    });
+
+    this.keypad = s.add.container(0, 0, items);
+    return rows.length * keyH + (rows.length - 1) * gap;
+  }
+
+  private keypadPress(label: string): void {
+    if (this.locked) return;
+    if (label === "\u2713") { this.commit(); return; }
+    this.typed = label === "\u232B" ? this.typed.slice(0, -1) : this.typed + label;
+    audio.play("keyTick");
+    this.refreshTyped();
   }
 
   private drawTypedBox(x: number, y: number, w: number, state: CardState): void {
@@ -396,6 +472,11 @@ export class ProblemCard {
   private attachKeys(): void {
     this.keyHandler = (e: KeyboardEvent) => {
       if (this.locked) return;
+      // A paused or stopped scene must not answer keys that belong to the
+      // overlay on top of it. The sortie now stays alive under the pause menu,
+      // and without this M opened the manual library and the card's manual at
+      // the same time, leaving a stale panel behind the pause menu.
+      if (!this.scene.scene.isActive() || this.scene.scene.isPaused()) return;
       const k = e.key;
 
       if (k === "Enter") { e.preventDefault(); this.commit(); return; }

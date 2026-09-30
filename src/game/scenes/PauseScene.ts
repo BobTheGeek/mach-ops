@@ -63,6 +63,9 @@ export class PauseScene extends Phaser.Scene {
     this.input.keyboard?.on("keydown-Q", () => this.quit());
     this.input.keyboard?.on("keydown-M", () => this.open("Manual"));
     this.input.keyboard?.on("keydown-S", () => this.open("Settings"));
+    // The row advertises "?"; the handler was missing, so the key did nothing.
+    this.input.keyboard?.on("keydown-QUESTION_MARK", () => this.open("HowToPlay"));
+    this.input.keyboard?.on("keydown-SLASH", () => this.open("HowToPlay"));
   }
 
   private resume(): void {
@@ -70,10 +73,30 @@ export class PauseScene extends Phaser.Scene {
     this.scene.resume(this.opts.resumeTo);
   }
 
+  /**
+   * Open a reference screen over the paused sortie.
+   *
+   * This used to stop the sortie and hand the overlay a returnTo of "Hangar",
+   * so opening the manual mid-lock ended the sortie it had just promised to
+   * hold. The host is left paused and the overlay is told to hand control back
+   * to it, which is what "LOCK HELD · TIMER PAUSED · NO COST" says happens. The
+   * overlay's own DONE button reopens this menu, so the player lands back on
+   * pause rather than mid-flight.
+   *
+   * onLeave is for the one screen that can navigate away for real (Settings can
+   * replay Flight School): it stops the sortie first, so a paused sortie cannot
+   * be left running in the background with no way back to it.
+   */
   private open(key: string): void {
+    const manager = this.scene.manager;
+    const resumeTo = this.opts.resumeTo;
     this.scene.stop();
-    this.scene.stop(this.opts.resumeTo);
-    this.scene.start(key, { returnTo: "Hangar" });
+    this.scene.start(key, {
+      resumeTo: "Pause",
+      resumeData: this.opts,
+      returnTo: "Hangar",
+      onLeave: () => manager.stop(resumeTo),
+    });
   }
 
   private quit(): void {

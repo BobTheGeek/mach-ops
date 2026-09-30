@@ -4,6 +4,7 @@ import {
   setCallsign, setPaint, setChapterDate, buyItem, owns, equip, recordBests,
   streakMultiplier, STREAK_STEP, STREAK_CAP,
   hasSeenHash, load, save, clear, SAVE_KEY, RECENT_HASHES, BASE_CREDITS, FAST_MULTIPLIER,
+  gradeSortie, recordMissionBest,
   type SaveFile,
 } from "../../src/game/save";
 import type { Attempt } from "../../src/engine/types";
@@ -346,5 +347,61 @@ describe("personal bests", () => {
     delete old.records;
     storage.setItem(SAVE_KEY, JSON.stringify(old));
     expect(load(storage).records.mostFirstTryHits).toBe(0);
+  });
+});
+
+describe("sortie ratings", () => {
+  const input = (over: Partial<Parameters<typeof gradeSortie>[0]> = {}) => ({
+    firstTryHits: 6, problems: 10, escaped: 0, failed: false, hitsNeeded: 6, ...over,
+  });
+
+  it("rates a near-perfect clean flight OPTIMIZED", () => {
+    expect(gradeSortie(input({ firstTryHits: 9 }))).toBe("OPTIMIZED");
+    expect(gradeSortie(input({ firstTryHits: 10 }))).toBe("OPTIMIZED");
+  });
+
+  it("will not rate a flight with an escaped contact OPTIMIZED", () => {
+    expect(gradeSortie(input({ firstTryHits: 10, escaped: 1 }))).toBe("ONLINE");
+  });
+
+  it("rates a card-earning flight ONLINE", () => {
+    expect(gradeSortie(input({ firstTryHits: 6 }))).toBe("ONLINE");
+    expect(gradeSortie(input({ firstTryHits: 5 }))).toBe("CALIBRATING");
+  });
+
+  it("rates a sortie that ran out of fuel or shields CALIBRATING", () => {
+    expect(gradeSortie(input({ firstTryHits: 10, failed: true }))).toBe("CALIBRATING");
+  });
+
+  it("survives a mission with no problems at all", () => {
+    expect(gradeSortie(input({ problems: 0, firstTryHits: 0 }))).toBe("CALIBRATING");
+  });
+});
+
+describe("per-mission bests", () => {
+  const base = newSave();
+
+  it("records the first flight as the best of everything", () => {
+    const f = recordMissionBest(base, "ch1-01", { grade: "ONLINE", firstTryHits: 7, durationMs: 80_000 });
+    expect(f.missionBests["ch1-01"]).toEqual({ grade: "ONLINE", firstTryHits: 7, fastestMs: 80_000 });
+  });
+
+  it("keeps the better rating, the bigger hits and the quicker time", () => {
+    let f = recordMissionBest(base, "ch1-01", { grade: "ONLINE", firstTryHits: 7, durationMs: 80_000 });
+    f = recordMissionBest(f, "ch1-01", { grade: "OPTIMIZED", firstTryHits: 6, durationMs: 95_000 });
+    expect(f.missionBests["ch1-01"]).toEqual({ grade: "OPTIMIZED", firstTryHits: 7, fastestMs: 80_000 });
+  });
+
+  it("never lets a worse run lower a best", () => {
+    let f = recordMissionBest(base, "ch1-01", { grade: "OPTIMIZED", firstTryHits: 9, durationMs: 60_000 });
+    f = recordMissionBest(f, "ch1-01", { grade: "CALIBRATING", firstTryHits: 2, durationMs: 120_000 });
+    expect(f.missionBests["ch1-01"]).toEqual({ grade: "OPTIMIZED", firstTryHits: 9, fastestMs: 60_000 });
+  });
+
+  it("keeps missions apart from each other", () => {
+    let f = recordMissionBest(base, "ch1-01", { grade: "ONLINE", firstTryHits: 7, durationMs: 80_000 });
+    f = recordMissionBest(f, "ch1-02", { grade: "CALIBRATING", firstTryHits: 3, durationMs: 100_000 });
+    expect(f.missionBests["ch1-01"]!.firstTryHits).toBe(7);
+    expect(f.missionBests["ch1-02"]!.firstTryHits).toBe(3);
   });
 });

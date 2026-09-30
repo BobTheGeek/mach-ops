@@ -6,7 +6,7 @@
 // browser and all three agree by construction.
 
 import type { SaveFile } from "../game/save";
-import { statusFor } from "../engine/mastery";
+import { statusFor, median } from "../engine/mastery";
 import { isUnitOpen, type Schedule, type ScheduleUnit } from "../engine/scheduler";
 import type { Attempt, SystemsStatus } from "../engine/types";
 
@@ -53,6 +53,16 @@ export interface SkillRow {
   lastSeen: number | null;
   /** the error tag picked most often, and how often */
   topError: { tag: string; count: number } | null;
+  /** hint presses and manual opens recorded against this skill */
+  hints: number;
+  /**
+   * Median response time on correct answers, ms, or null with none.
+   *
+   * The engine already scores fluency from this; the parent view reported only
+   * accuracy, so a skill answered right but slowly looked identical to a fast
+   * one. It is a pace, not a grade: lower is quicker.
+   */
+  medianCorrectMs: number | null;
   heat: Heat;
 }
 
@@ -176,6 +186,7 @@ export function buildRow(input: ReportInput, skill: RegistrySkillLite, open: boo
   const chapter = chapterOf(skill);
   const ch = input.chapters.find((c) => c.id === chapter);
   const { accuracy, basis, firstTries, firstTryCorrect } = accuracyOf(attempts);
+  const correctTimes = attempts.filter((a) => a.correct).map((a) => a.responseMs);
   return {
     id: skill.id,
     name: skill.name,
@@ -191,6 +202,8 @@ export function buildRow(input: ReportInput, skill: RegistrySkillLite, open: boo
     basis,
     lastSeen: attempts.length === 0 ? null : Math.max(...attempts.map((a) => a.ts)),
     topError: topError(attempts),
+    hints: attempts.reduce((n, a) => n + (a.hintsUsed ?? 0), 0),
+    medianCorrectMs: correctTimes.length === 0 ? null : Math.round(median(correctTimes)),
     heat: heatOf(accuracy, open),
   };
 }
@@ -290,7 +303,8 @@ export function csvCell(value: string | number | null): string {
 export const CSV_HEADER = [
   "skill", "name", "chapter", "quarter", "honors", "status",
   "attempts", "correct", "first_tries", "first_try_correct",
-  "accuracy_pct", "accuracy_basis", "top_error", "top_error_count", "last_seen_iso",
+  "accuracy_pct", "accuracy_basis", "top_error", "top_error_count",
+  "hints", "median_correct_ms", "last_seen_iso",
 ];
 
 export function toCsv(rows: readonly SkillRow[]): string {
@@ -301,6 +315,7 @@ export function toCsv(rows: readonly SkillRow[]): string {
       r.attempts, r.correct, r.firstTries, r.firstTryCorrect,
       r.accuracy, r.basis,
       r.topError?.tag ?? null, r.topError?.count ?? null,
+      r.hints, r.medianCorrectMs,
       r.lastSeen === null ? null : new Date(r.lastSeen).toISOString(),
     ].map(csvCell).join(","));
   }

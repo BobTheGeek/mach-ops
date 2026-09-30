@@ -11,6 +11,8 @@ import { C, N, SIZE, FONT, STROKE, hex, tokens } from "../../ui/tokens";
 import type { FigureSpec } from "../../engine/types";
 import { mathKitFor } from "../../engine/mathkit";
 import { MINUS } from "../../engine/rational";
+import { gameState } from "../state";
+import { seriesTag } from "../diagramTags";
 
 const SERIES_A = tokens.color.mathKit.seriesA;
 const SERIES_B = tokens.color.mathKit.seriesB;
@@ -215,7 +217,7 @@ function coordinatePlane(
       if (i === 0) { g.fillStyle(colour, 1); g.fillCircle(px(x), py(y), 4); }
       else g.strokeCircle(px(x), py(y), 4);
     }
-    const name = seriesLabels[i];
+    const name = seriesTag(seriesLabels, i, gameState.file.settings.colorblindHud);
     const end = points[points.length - 1] as [number, number] | undefined;
     if (name && end) {
       const tag = scene.add.text(px(end[0]) - 18, py(end[1]) - 18, name, {

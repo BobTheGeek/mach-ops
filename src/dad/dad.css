@@ -180,7 +180,7 @@ body.dad {
 
 .d-row {
   display: grid;
-  grid-template-columns: 64px 1fr 92px 64px 1fr;
+  grid-template-columns: 64px 1fr 92px 64px 74px 1fr;
   gap: 10px;
   align-items: center;
   height: 22px;
@@ -205,6 +205,13 @@ body.dad {
 
 .d-pct {
   text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Median time on correct answers: the fluency the engine scores, in seconds. */
+.d-pace {
+  text-align: right;
+  color: #5b6875;
   font-variant-numeric: tabular-nums;
 }
 

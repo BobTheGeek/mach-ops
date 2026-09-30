@@ -23,9 +23,17 @@ export class ManualLibraryScene extends Phaser.Scene {
   private page = 0;
   private grid?: Phaser.GameObjects.Container;
   private pageLabel?: Phaser.GameObjects.Text;
+  /** overlay mode: hand control back to a paused host instead of the hangar */
+  private resumeTo?: string;
+  private resumeData?: object;
 
   constructor() {
     super("Manual");
+  }
+
+  init(data: { resumeTo?: string; resumeData?: object } = {}): void {
+    this.resumeTo = data.resumeTo;
+    this.resumeData = data.resumeData;
   }
 
   private get pages(): string[] {
@@ -60,11 +68,20 @@ export class ManualLibraryScene extends Phaser.Scene {
     });
     button(this, {
       x: right - 310, y: 8, width: 110, height: HIT.min, label: "BACK", variant: "ghost",
-      onClick: () => this.scene.start("Hangar"),
+      onClick: () => this.back(),
     });
     this.pageLabel = capsLabel(this, 0, 22, "", C.textMuted, TRACK.readout);
 
     this.renderGrid();
+  }
+
+  private back(): void {
+    if (this.resumeTo) {
+      this.scene.stop();
+      this.scene.start(this.resumeTo, this.resumeData);
+      return;
+    }
+    this.scene.start("Hangar");
   }
 
   private turn(by: number): void {

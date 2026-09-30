@@ -58,6 +58,8 @@ export interface SaveFile {
   reticle: string;
   /** bests worth chasing, which the log alone cannot answer cheaply */
   records: Records;
+  /** mission id -> that mission's bests, for a campaign worth replaying */
+  missionBests: Record<string, MissionBest>;
   /** first-time tip ids already dismissed */
   tipsSeen: string[];
   flightSchoolDone: boolean;
@@ -96,6 +98,47 @@ export const NO_RECORDS: Records = {
   bestSortieCredits: 0,
 };
 
+/**
+ * How a flown sortie rated.
+ *
+ * The words are the ones the systems already use, so a rating is not a new
+ * vocabulary to learn: OPTIMIZED is the near-perfect run, ONLINE clears the bar
+ * an intel card needs, CALIBRATING is a sortie that was flown but is not there
+ * yet. A sortie that ran out of fuel or shields is not failed — nothing in this
+ * game is — it just did not rate above CALIBRATING.
+ */
+export type SortieGrade = "OPTIMIZED" | "ONLINE" | "CALIBRATING";
+
+export const GRADE_RANK: Record<SortieGrade, number> = {
+  CALIBRATING: 0,
+  ONLINE: 1,
+  OPTIMIZED: 2,
+};
+
+/** One mission's bests. Anything not better than what is stored is ignored. */
+export interface MissionBest {
+  grade: SortieGrade;
+  /** most first-try hits in a single flight of this mission */
+  firstTryHits: number;
+  /** milliseconds, the quickest flight of this mission to a debrief */
+  fastestMs: number;
+}
+
+export function gradeSortie(input: {
+  firstTryHits: number;
+  problems: number;
+  escaped: number;
+  failed: boolean;
+  /** first-try hits needed for a card, which is where ONLINE starts */
+  hitsNeeded: number;
+}): SortieGrade {
+  if (input.failed) return "CALIBRATING";
+  const rate = input.problems > 0 ? input.firstTryHits / input.problems : 0;
+  if (rate >= 0.9 && input.escaped === 0) return "OPTIMIZED";
+  if (input.firstTryHits >= input.hitsNeeded) return "ONLINE";
+  return "CALIBRATING";
+}
+
 export function newSave(): SaveFile {
   const firstAirframe = STRUCTURE.airframes[0] ?? "t38";
   return {
@@ -117,6 +160,7 @@ export function newSave(): SaveFile {
     hud: "",
     reticle: "",
     records: { ...NO_RECORDS },
+    missionBests: {},
     tipsSeen: [],
     flightSchoolDone: false,
     settings: { volume: 0.7, keypadEntry: false, colorblindHud: false, reducedMotion: false },
@@ -268,6 +312,28 @@ export function recordBests(
       bestSortieCredits: Math.max(r.bestSortieCredits, sortie.credits),
     },
   };
+}
+
+/**
+ * Fold one finished sortie into that mission's bests.
+ *
+ * Per-mission rather than global, because "beat your best on this sortie" is a
+ * reason to fly a mission again and "beat your best ever" is not: a pilot who
+ * had one brilliant run early has nothing left to chase anywhere. A slower or
+ * worse run never lowers a best.
+ */
+export function recordMissionBest(
+  file: SaveFile,
+  missionId: string,
+  result: { grade: SortieGrade; firstTryHits: number; durationMs: number },
+): SaveFile {
+  const prev = file.missionBests[missionId];
+  const best: MissionBest = {
+    grade: !prev || GRADE_RANK[result.grade] > GRADE_RANK[prev.grade] ? result.grade : prev.grade,
+    firstTryHits: Math.max(prev?.firstTryHits ?? 0, result.firstTryHits),
+    fastestMs: prev ? Math.min(prev.fastestMs, result.durationMs) : result.durationMs,
+  };
+  return { ...file, missionBests: { ...file.missionBests, [missionId]: best } };
 }
 
 /** Wear a bought look. An empty id goes back to the default. */

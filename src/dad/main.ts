@@ -99,6 +99,11 @@ function skillRow(row: SkillRow): HTMLElement {
       text: row.heat === "unavailable" && row.attempts === 0 ? "—" : pct(row.accuracy),
     }),
     el("span", {
+      class: "d-pace" + (row.medianCorrectMs === null ? " d-muted" : ""),
+      attrs: { title: "Median time on correct answers" },
+      text: row.medianCorrectMs === null ? "—" : `${(row.medianCorrectMs / 1000).toFixed(1)}s`,
+    }),
+    el("span", {
       class: "d-err",
       text: row.topError ? `${row.topError.tag} ×${row.topError.count}` : "",
     }),
@@ -111,7 +116,9 @@ function heatTitle(row: SkillRow): string {
   const basis = row.basis === "first-try"
     ? `${row.firstTryCorrect} of ${row.firstTries} first tries correct`
     : `${row.correct} of ${row.attempts} correct, counting retries`;
-  return `${basis} · ${row.attempts} answers in total · ${row.status}`;
+  const pace = row.medianCorrectMs === null ? "no correct answers yet" : `median correct answer ${(row.medianCorrectMs / 1000).toFixed(1)} s`;
+  const hints = row.hints > 0 ? `${row.hints} hint${row.hints === 1 ? "" : "s"} used` : "no hints used";
+  return `${basis} · ${row.attempts} answers in total · ${pace} · ${hints} · ${row.status}`;
 }
 
 /** Say which answers the percentages came from, rather than let it be assumed. */
