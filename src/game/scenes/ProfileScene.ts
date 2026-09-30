@@ -9,13 +9,11 @@ import { C, N, SIZE, TEXT, TRACK, CANVAS, SCREEN_PAD, STROKE, HIT, hex } from ".
 import { panel, capsLabel, button, resourceBar } from "../ui/kit";
 import { gameState } from "../state";
 import { shopItem, liveryItemId } from "../../data/shop";
-import { setCallsign, setPaint, owns } from "../save";
+import { setCallsign, setPaint, owns, MAX_CALLSIGN, isCallsignChar } from "../save";
 import { rankFor, nextRank, rankProgress, RANKS } from "../../engine/ranks";
 import { FLEET } from "../../data/fleet";
 import { loadSprites, phase2Variants } from "../assets";
 import { audio } from "../audio";
-
-const MAX_CALLSIGN = 12;
 
 export class ProfileScene extends Phaser.Scene {
   private editing = false;
@@ -113,7 +111,7 @@ export class ProfileScene extends Phaser.Scene {
       if (e.key === "Enter") { e.preventDefault(); this.commitEdit(); return; }
       if (e.key === "Escape") { e.preventDefault(); this.cancelEdit(); return; }
       if (e.key === "Backspace") { e.preventDefault(); this.draft = this.draft.slice(0, -1); }
-      else if (/^[a-zA-Z0-9 -]$/.test(e.key) && this.draft.length < MAX_CALLSIGN) {
+      else if (isCallsignChar(e.key) && this.draft.length < MAX_CALLSIGN) {
         e.preventDefault();
         this.draft += e.key.toUpperCase();
       } else return;

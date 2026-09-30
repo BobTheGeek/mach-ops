@@ -4,7 +4,7 @@ import {
   setCallsign, setPaint, setChapterDate, buyItem, owns, equip, recordBests,
   streakMultiplier, STREAK_STEP, STREAK_CAP,
   hasSeenHash, load, save, clear, SAVE_KEY, RECENT_HASHES, BASE_CREDITS, FAST_MULTIPLIER,
-  gradeSortie, recordMissionBest,
+  gradeSortie, recordMissionBest, needsPilotName, isCallsignChar, DEFAULT_CALLSIGN, MAX_CALLSIGN,
   type SaveFile,
 } from "../../src/game/save";
 import type { Attempt } from "../../src/engine/types";
@@ -173,7 +173,7 @@ describe("the pilot's own settings", () => {
   });
 
   it("cuts a long callsign to twelve characters, which is what the card fits", () => {
-    expect(setCallsign(file, "abcdefghijklmnopq").callsign).toHaveLength(12);
+    expect(setCallsign(file, "abcdefghijklmnopq").callsign).toHaveLength(MAX_CALLSIGN);
   });
 
   it("records a paint scheme per airframe and leaves the others alone", () => {
@@ -194,6 +194,36 @@ describe("the pilot's own settings", () => {
     delete old.paint;
     storage.setItem(SAVE_KEY, JSON.stringify(old));
     expect(load(storage).paint).toEqual({});
+  });
+});
+
+describe("the pilot's name prompt", () => {
+  it("asks a fresh pilot to name themselves", () => {
+    expect(newSave().callsign).toBe(DEFAULT_CALLSIGN);
+    expect(needsPilotName(newSave())).toBe(true);
+  });
+
+  it("stops asking once a real callsign is committed", () => {
+    expect(needsPilotName(setCallsign(newSave(), "goose"))).toBe(false);
+  });
+
+  it("keeps asking when a blank entry left the default in place", () => {
+    expect(needsPilotName(setCallsign(newSave(), "   "))).toBe(true);
+  });
+
+  it("asks again when a pilot deliberately goes back to the default name", () => {
+    const named = setCallsign(newSave(), "goose");
+    expect(needsPilotName(setCallsign(named, "maverick"))).toBe(true);
+  });
+});
+
+describe("callsign characters", () => {
+  it("accepts letters, digits, space and dash, which is what a callsign may carry", () => {
+    for (const k of ["a", "Z", "7", " ", "-"]) expect(isCallsignChar(k)).toBe(true);
+  });
+
+  it("refuses everything else, keys the game binds elsewhere included", () => {
+    for (const k of ["_", ".", "@", "Enter", "Escape", "Backspace"]) expect(isCallsignChar(k)).toBe(false);
   });
 });
 

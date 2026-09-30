@@ -9,6 +9,12 @@ import { STRUCTURE } from "../ui/tokens";
 
 export const SAVE_KEY = "machops.save.v1";
 
+/**
+ * The callsign a fresh pilot starts with. The title screen's naming prompt
+ * watches for this exact name, so the prompt and newSave() share one source.
+ */
+export const DEFAULT_CALLSIGN = "MAVERICK";
+
 /** GENERATOR_SPEC section 6: the no-repeat guard remembers the last 500 hashes. */
 export const RECENT_HASHES = 500;
 
@@ -143,7 +149,7 @@ export function newSave(): SaveFile {
   const firstAirframe = STRUCTURE.airframes[0] ?? "t38";
   return {
     version: 1,
-    callsign: "MAVERICK",
+    callsign: DEFAULT_CALLSIGN,
     credits: 0,
     streak: 0,
     bestStreak: 0,
@@ -269,9 +275,26 @@ export function earnIntelCard(file: SaveFile, airframe: string, card: number): S
   return { ...file, intelCards: { ...file.intelCards, [airframe]: [...have, card].sort((a, b) => a - b) } };
 }
 
+/**
+ * True while the pilot still flies under the default name. The title screen
+ * raises the naming prompt on this, so it returns on every launch until a real
+ * callsign is committed.
+ */
+export function needsPilotName(file: SaveFile): boolean {
+  return file.callsign === DEFAULT_CALLSIGN;
+}
+
+/** The length the profile card fits. setCallsign enforces it; both inputs cap at it. */
+export const MAX_CALLSIGN = 12;
+
+/** One keystroke a callsign may carry: letters, digits, space and dash. */
+export function isCallsignChar(key: string): boolean {
+  return /^[a-zA-Z0-9 -]$/.test(key);
+}
+
 /** Rename the pilot. Blank or whitespace keeps the one they had. */
 export function setCallsign(file: SaveFile, callsign: string): SaveFile {
-  const clean = callsign.trim().toUpperCase().slice(0, 12);
+  const clean = callsign.trim().toUpperCase().slice(0, MAX_CALLSIGN);
   return clean.length === 0 ? file : { ...file, callsign: clean };
 }
 

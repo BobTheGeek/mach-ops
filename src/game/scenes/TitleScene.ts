@@ -3,6 +3,7 @@
 import Phaser from "phaser";
 import { C, N, TEXT, CANVAS, SCREEN_PAD, hex, STROKE } from "../../ui/tokens";
 import { button, capsLabel } from "../ui/kit";
+import { showCallsignPrompt } from "../ui/callsignPrompt";
 import { gameState } from "../state";
 import { music } from "../music";
 
@@ -69,7 +70,16 @@ export class TitleScene extends Phaser.Scene {
 
     this.soundPrompt();
 
-    this.input.keyboard?.once("keydown-ENTER", go);
+    // A pilot still flying under the default name is asked to name themselves
+    // before the title's doors open. LATER dismisses it for this launch only,
+    // so the prompt returns next time; a committed name restarts the screen.
+    const prompt = showCallsignPrompt(this, {
+      onClose: (confirmed) => {
+        if (confirmed) { this.scene.restart(); return; }
+        this.input.keyboard?.once("keydown-ENTER", go);
+      },
+    });
+    if (!prompt) this.input.keyboard?.once("keydown-ENTER", go);
   }
 
   /**
