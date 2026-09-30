@@ -16,6 +16,7 @@ import { generatorFor, IMPLEMENTED_SKILLS } from "../../generators/index";
 import { recordAttempt } from "../save";
 import { applyAttempt, initialTierState } from "../../engine/tiers";
 import { isFast } from "../../engine/mastery";
+import { estimatedSortieMs, estimateMinutes, paceMs } from "../../engine/pacing";
 import type { Attempt } from "../../engine/types";
 import { fleetEntry } from "../../data/fleet";
 
@@ -149,9 +150,13 @@ export class BriefingScene extends Phaser.Scene {
   private chrome(): void {
     const title = this.add.text(SCREEN_PAD, 14, "BRIEFING", { ...TEXT.h3 });
     title.setLetterSpacing(TRACK.display * SIZE.h3);
+    // How long this sortie should take, from the pilot's own pace: answers plus
+    // the flying between contacts. The briefing is where the choice to fly is
+    // made, so it is where the time belongs.
+    const est = estimateMinutes(estimatedSortieMs(this.mission.problems, paceMs(gameState.file.log)));
     const sub = capsLabel(
       this, SCREEN_PAD + 170, 22,
-      `SORTIE ${String(this.mission.n).padStart(2, "0")} · ${this.mission.name} · ${fleetEntry(gameState.currentAirframe())?.designation ?? "T-38"}`,
+      `SORTIE ${String(this.mission.n).padStart(2, "0")} · ${this.mission.name} · ${fleetEntry(gameState.currentAirframe())?.designation ?? "T-38"} · ~${est} MIN`,
       this.mission.kind === "boss" ? C.lock : C.textMuted, TRACK.readout,
     );
     void sub;

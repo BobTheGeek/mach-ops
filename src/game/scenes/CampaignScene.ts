@@ -6,10 +6,13 @@ import Phaser from "phaser";
 import { C, N, SIZE, TEXT, TRACK, CANVAS, SCREEN_PAD, STROKE, hex } from "../../ui/tokens";
 import { panel, capsLabel, button } from "../ui/kit";
 import { gameState } from "../state";
+import { estimatedSortieMs, estimateMinutes, paceMs } from "../../engine/pacing";
 import { missionsFor, type Mission } from "../../data/campaign";
 
 export class CampaignScene extends Phaser.Scene {
   private unitId = "ch1";
+  /** the pilot's median answer pace, so every card estimates the same way */
+  private pace = 0;
 
   constructor() {
     super("Campaign");
@@ -21,6 +24,7 @@ export class CampaignScene extends Phaser.Scene {
 
   create(): void {
     this.cameras.main.setBackgroundColor(N.ground);
+    this.pace = paceMs(gameState.file.log);
     const chapter = gameState.chapter(this.unitId);
 
     const title = this.add.text(SCREEN_PAD, 14, `CH ${chapter.n}`, { ...TEXT.h3 });
@@ -97,7 +101,11 @@ export class CampaignScene extends Phaser.Scene {
       ? `${best.grade} · ${best.firstTryHits}/${m.problems}`
       : "FLOWN";
     const kindLabel = m.capstone ? "CAPSTONE" : boss ? "BOSS" : "";
-    const parts = [kindLabel, focus, `${m.problems} PROBLEMS`, `${m.prep} PREP`, flown ? flownLabel : ""]
+    // Expected time from the pilot's own pace, so a long capstone is not a
+    // surprise at the briefing. It sits with the problem count, which is what
+    // it is derived from.
+    const eta = `~${estimateMinutes(estimatedSortieMs(m.problems, this.pace))} MIN`;
+    const parts = [kindLabel, focus, `${m.problems} PROBLEMS · ${eta}`, `${m.prep} PREP`, flown ? flownLabel : ""]
       .filter(Boolean);
     const detail = capsLabel(this, 0, y + 12, parts.join(" · "), boss ? C.lock : C.textMuted, TRACK.readout);
     detail.setX(Math.max(num.x + num.width + 16, x + w - 14 - ctaW - 16 - detail.width));

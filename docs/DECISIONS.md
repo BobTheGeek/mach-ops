@@ -70,3 +70,26 @@ quarter of the chapters it attaches to, so this cannot come back.
 **Separate, still open:** the placeholder schedule opens chapter 4 on
 **2026-10-05**, but quarter 2 starts **2026-10-12**, so chapter 4 currently opens
 a week inside quarter 1. Fix when the real FSD calendar lands.
+
+---
+
+## 2026-09-30 · The speed baseline starts from the 8 s prior
+
+**The disagreement.** `baselineMs()` was the median of the fastest 20% of the
+pilot's correct answers, with the 8 s `DEFAULT_BASELINE_MS` used only when there
+were none. In theory the fastest slice is the pilot's own pace. In practice, a
+measurement from one answer is a bad measurement: a single lucky 1.5 s answer on
+the first card set the baseline to 1.5 s, and every honest 12 s answer after it
+read as slow until the log was long enough to lift the baseline back.
+
+**Why it mattered.** The fluency component is 10% of mastery, but it feeds the
+tier rules and the status pills, so a cold-start fluke could read a careful pilot
+as CALIBRATING and push the scheduler's "slow" responses for days.
+
+**Ruled.** The 8 s default is a prior, not a cliff. It counts as one observation
+and each correct answer counts as one, which is the scalar Kalman update for
+equal variances: `(prior + n x observed) / (n + 1)`. One fast answer can only
+pull the baseline halfway toward it, and the prior fades out at 1/n.
+
+**Changed:** `src/engine/mastery.ts`; `tests/engine/mastery.test.ts` pins the
+cold start, the convergence and the four boundary cases from the 70/10/20 ruling.

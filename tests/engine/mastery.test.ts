@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   masteryScore, stateFor, statusFor, diagnose, baselineMs, median,
   accuracyComponent, transferComponent, TRANSFER_CAP, FAST_WINDOW_MS, WEIGHTS,
+  DEFAULT_BASELINE_MS,
 } from "../../src/engine/mastery";
 import { attempt, fastCorrect, fastWrong, slowCorrect, slowWrong } from "./helpers";
 import type { Attempt } from "../../src/engine/types";
@@ -50,16 +51,39 @@ describe("mastery score", () => {
 });
 
 describe("baseline and fluency", () => {
-  it("takes the baseline from the fastest 20% of correct answers across all skills", () => {
+  it("leans on the fastest 20% once there are answers to measure", () => {
     const log = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000].map((ms) =>
       attempt({ responseMs: ms, correct: true }));
-    // fastest 20% of 10 = 2 attempts: 1000 and 2000 -> median 1500
-    expect(baselineMs(log)).toBe(1500);
+    // fastest 20% of 10 = 2 attempts: 1000 and 2000 -> median 1500, blended with
+    // the 8 s prior as one observation: (8000 + 10 x 1500) / 11 = 2091
+    expect(baselineMs(log)).toBe(2091);
+  });
+
+  // The prior exists so one lucky answer cannot set the pilot's pace. This was
+  // the bug: a 1.5 s fast answer on the first problem read as the baseline, and
+  // honest answers afterwards looked slow until the log grew.
+  it("does not let a single lucky answer collapse the baseline", () => {
+    const log = [attempt({ responseMs: 1000, correct: true })];
+    expect(baselineMs(log)).toBe((DEFAULT_BASELINE_MS + 1000) / 2);
+    expect(baselineMs(log)).toBeGreaterThan(4000);
+  });
+
+  it("fades the prior out as evidence accumulates", () => {
+    const log = many(100, () => fastCorrect({ responseMs: 2000 }));
+    const b = baselineMs(log);
+    // (8000 + 100 x 2000) / 101 = 2059: close to the measured 2 s
+    expect(b).toBe(2059);
+    expect(b).toBeLessThan(2200);
   });
 
   it("ignores wrong answers when setting the baseline", () => {
     const log = [attempt({ responseMs: 100, correct: false }), attempt({ responseMs: 4000, correct: true })];
-    expect(baselineMs(log)).toBe(4000);
+    expect(baselineMs(log)).toBe((DEFAULT_BASELINE_MS + 4000) / 2);
+  });
+
+  it("uses the default alone when nothing correct has been answered", () => {
+    expect(baselineMs([attempt({ correct: false })])).toBe(DEFAULT_BASELINE_MS);
+    expect(baselineMs([])).toBe(DEFAULT_BASELINE_MS);
   });
 
   it("median handles even and odd lengths", () => {

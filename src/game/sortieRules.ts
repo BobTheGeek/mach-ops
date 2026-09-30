@@ -8,6 +8,14 @@
 export const LOCK_RANGE = 340;
 
 /**
+ * Seconds of fuel left when the bingo warning sounds and the tanker is called.
+ * Fuel only burns in flight, never while a problem card is up.
+ */
+export const BINGO_SECONDS = 90;
+/** How much fuel a successful refuel buys, in seconds. */
+export const TANKER_SECONDS = 120;
+
+/**
  * A boss holds a tighter cone.
  *
  * The one rule a boss rule must not break: thinking time stays free. The world

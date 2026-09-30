@@ -30,14 +30,11 @@ import type { SortieLoadout } from "./BriefingScene";
 import { MAX_MISSILES } from "./BriefingScene";
 import { mission as findMission, type Mission } from "../../data/campaign";
 import { createTerrain, type Terrain } from "../ui/terrain";
-import { LOCK_RANGE, BOSS_LOCK_RANGE, LANE_OFFSETS, patrolWeave } from "../sortieRules";
+import { LOCK_RANGE, BOSS_LOCK_RANGE, LANE_OFFSETS, patrolWeave, BINGO_SECONDS, TANKER_SECONDS } from "../sortieRules";
 import { BANK_ANGLE, BANK_FORESHORTEN, PLAYER_H, PLAYER_W, newFlight, stepFlight } from "../flight";
 import { generatorFor } from "../../generators/index";
 import { loadSprites, phase2Variants } from "../assets";
 
-const BINGO_SECONDS = 90;
-/** 04C: how much fuel a successful refuel buys, in seconds. */
-const TANKER_SECONDS = 120;
 /** The refuel problem is a rate problem, which is what a tanker actually is. */
 const TANKER_SKILL = "rp.5.2";
 const SHIELD_HIT = 0.2;

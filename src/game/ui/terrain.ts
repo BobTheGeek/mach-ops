@@ -7,6 +7,12 @@
 // It is generated from the mission's own seed, so the same sortie always has
 // the same ground. A player who flies a mission twice should recognise it.
 //
+// Coastlines and island edges come from seeded Perlin noise (noise.ts). Random
+// per-step bites read as repeated triangles at speed; noise wanders without
+// repeating, and the profile is sampled on a circle so it is periodic with the
+// block. A coastline that seamed at the wrap showed as a jump every twenty-odd
+// seconds, and that has to stay fixed.
+//
 // Everything is drawn once into a block FOUR screens big (two wide by two tall)
 // and then scrolled; when it has moved a full screen in either axis it jumps
 // back, which is invisible because the block repeats. Redrawing procedural
@@ -18,6 +24,7 @@
 import Phaser from "phaser";
 import { C, N, CANVAS, STROKE, hex } from "../../ui/tokens";
 import { mulberry32, hash32 } from "../../engine/rng";
+import { createNoise2D, fbm2, periodicProfile } from "../noise";
 
 /**
  * How much of the aircraft's own motion each layer takes.
@@ -40,6 +47,9 @@ export interface Terrain {
 
 type Band = "SEA" | "COAST" | "DESERT";
 
+/** One coastline sample every 48 px: finer than the eye reads at 190 px/s. */
+const COAST_STEP = 48;
+
 /**
  * A strip of world, drawn into a container that is scrolled downward. The strip
  * is two screens tall and its bottom half repeats its top half, so sliding it
@@ -47,6 +57,7 @@ type Band = "SEA" | "COAST" | "DESERT";
  */
 export function createTerrain(scene: Phaser.Scene, seed: string): Terrain {
   const rng = mulberry32(hash32(`terrain|${seed}`));
+  const noise = createNoise2D(seed);
   const H = CANVAS.height;
   const W = CANVAS.width;
 
@@ -58,11 +69,10 @@ export function createTerrain(scene: Phaser.Scene, seed: string): Terrain {
 
   // --- the world, described once -----------------------------------------
   // The shape is computed into arrays BEFORE anything is drawn, because the
-  // strip is drawn twice and the two copies have to be identical. Drawing
-  // straight from the rng gave the top and bottom halves different coastlines,
-  // and the wrap showed as a jump every twenty-odd seconds.
+  // strip is drawn four times and the copies have to be identical.
   const bandCount = 3 + Math.floor(rng() * 2);
-  const bands: { kind: Band; top: number; height: number; coast: number[] }[] = [];
+  interface BandShape { kind: Band; top: number; height: number; amplitude: number; phase: number }
+  const bands: BandShape[] = [];
   let y = 0;
   for (let i = 0; i < bandCount; i++) {
     const kind: Band = rng() < 0.5 ? "SEA" : rng() < 0.6 ? "COAST" : "DESERT";
@@ -72,27 +82,31 @@ export function createTerrain(scene: Phaser.Scene, seed: string): Terrain {
     const height = i === bandCount - 1
       ? Math.max(60, H - y)
       : Math.min(Math.round((H / bandCount) * share), Math.round(H * 0.38));
-    // A coastline is a ragged edge: one height per step along the top of the
-    // band, drawn as overlapping wedges of varying size.
-    const steps = Math.ceil(W / 48) + 1;
-    const coast = Array.from({ length: steps }, () => 6 + rng() * 30);
-    bands.push({ kind, top: y, height: Math.max(50, height), coast });
+    bands.push({
+      kind,
+      top: y,
+      height: Math.max(50, height),
+      // How far the band's edge wanders, and its own place in the noise field.
+      amplitude: 6 + rng() * 20,
+      phase: i * 31.7 + rng() * 9,
+    });
     y += height;
   }
   // The last band is stretched to the bottom whatever the arithmetic did.
   const last = bands[bands.length - 1]!;
   last.height = Math.max(50, H - last.top);
 
-  interface Blob { x: number; y: number; r: number; band: number }
-  const blobs: Blob[] = [];
-  bands.forEach((band, i) => {
+  interface Island { cx: number; cy: number; r: number; phase: number; lobes: number }
+  const islands: Island[] = [];
+  bands.forEach((band) => {
     const count = band.kind === "SEA" ? 1 + Math.floor(rng() * 3) : Math.floor(rng() * 2);
     for (let k = 0; k < count; k++) {
-      blobs.push({
-        x: 40 + rng() * (W - 80),
-        y: band.top + 20 + rng() * Math.max(1, band.height - 40),
-        r: 14 + rng() * 34,
-        band: i,
+      islands.push({
+        cx: 60 + rng() * (W - 120),
+        cy: band.top + 30 + rng() * Math.max(1, band.height - 60),
+        r: 16 + rng() * 40,
+        phase: rng() * 50,
+        lobes: rng() < 0.45 ? 2 : 1,
       });
     }
   });
@@ -100,26 +114,66 @@ export function createTerrain(scene: Phaser.Scene, seed: string): Terrain {
   const fillFor = (kind: Band): number =>
     kind === "SEA" ? N.sea : kind === "COAST" ? hex(C.coast) : hex(C.desert);
 
+  /**
+   * A wobbly closed blob, its edge driven by noise so no two are alike. The
+   * caller owns beginPath/fillPath, which is what lets a two-lobe island fill
+   * as one shape.
+   */
+  const islandPath = (ox: number, offset: number, isle: Island, dx = 0, dy = 0, scale = 1): void => {
+    const points = 16;
+    const r = isle.r * scale;
+    for (let i = 0; i <= points; i++) {
+      const a = (i / points) * Math.PI * 2;
+      const wobble = 0.62 + 0.5 * (fbm2(
+        noise,
+        Math.cos(a) * 1.4 + isle.phase + dx,
+        Math.sin(a) * 1.4 - isle.phase + dy,
+        2,
+      ) * 0.5 + 0.5);
+      const px = isle.cx + dx + Math.cos(a) * r * wobble;
+      const py = isle.cy + dy + Math.sin(a) * r * wobble * 0.72;
+      if (i === 0) g.moveTo(ox + px, offset + py);
+      else g.lineTo(ox + px, offset + py);
+    }
+    g.closePath();
+  };
+
   /** Draw one screen of world at the given offset, from the arrays above. */
   const drawScreen = (ox: number, offset: number): void => {
     for (const band of bands) {
+      const top = offset + band.top;
       g.fillStyle(fillFor(band.kind), 1);
-      g.fillRect(ox, offset + band.top, W, band.height);
-      if (band.kind === "SEA") continue;
-      band.coast.forEach((bite, i) => {
-        const x = ox + i * 48;
-        g.fillTriangle(
-          x, offset + band.top,
-          x + 48, offset + band.top,
-          x + 24, offset + band.top - bite,
-        );
-      });
+
+      if (band.kind === "COAST") {
+        // One filled path: the land under the band, plus a coast that wanders
+        // above it. The profile repeats with the block, so the seam is gone.
+        g.beginPath();
+        g.moveTo(ox, top + band.height);
+        g.lineTo(ox, top);
+        const steps = Math.ceil(W / COAST_STEP);
+        for (let i = 1; i <= steps; i++) {
+          const t = i * COAST_STEP;
+          const wobble = periodicProfile(noise, t, W, band.phase);
+          g.lineTo(ox + t, top - wobble * band.amplitude);
+        }
+        g.lineTo(ox + W, top + band.height);
+        g.closePath();
+        g.fillPath();
+      } else {
+        g.fillRect(ox, top, W, band.height);
+      }
     }
 
-    for (const blob of blobs) {
-      const kind = bands[blob.band]!.kind;
-      g.fillStyle(kind === "SEA" ? hex(C.coast) : N.sea, 1);
-      g.fillEllipse(ox + blob.x, offset + blob.y, blob.r * 2, blob.r * 1.4);
+    // Islands and lakes are the same shape in opposite colours: land in the
+    // sea, water on the land.
+    for (const isle of islands) {
+      const band = bands.find((b) => isle.cy >= b.top && isle.cy < b.top + b.height);
+      if (!band) continue;
+      g.fillStyle(band.kind === "SEA" ? hex(C.coast) : N.sea, 1);
+      g.beginPath();
+      islandPath(ox, offset, isle);
+      if (isle.lobes > 1) islandPath(ox, offset, isle, isle.r * 0.9, isle.r * 0.35, 0.7);
+      g.fillPath();
     }
 
     // The grid the HUD reads against, drawn over the ground so it stays legible
@@ -134,19 +188,26 @@ export function createTerrain(scene: Phaser.Scene, seed: string): Terrain {
   for (const ox of [0, -W]) for (const oy of [0, -H]) drawScreen(ox, oy);
 
   // --- cloud layer -------------------------------------------------------
-  // A few soft shapes above the ground and below the aircraft, at a different
-  // speed, which is what makes the height read. Its own container, because it
-  // scrolls faster than the ground does.
+  // Banks of puffs rather than lone ovals: a few overlapping ellipses per
+  // anchor, varying in size and alpha, read as cloud from above. Its own
+  // container, because it scrolls faster than the ground does.
   const cloudLayer = scene.add.container(0, 0);
   container.add(cloudLayer);
   const clouds = scene.add.graphics();
   cloudLayer.add(clouds);
-  clouds.fillStyle(hex(C.cloud), 0.35);
-  for (let i = 0; i < 14; i++) {
+
+  for (let i = 0; i < 16; i++) {
     const cx = -W + rng() * (W * 2);
     const cy = -H + rng() * (H * 2);
-    const w = 60 + rng() * 120;
-    clouds.fillEllipse(cx, cy, w, w * 0.34);
+    const w = 70 + rng() * 130;
+    const puffs = 3 + Math.floor(rng() * 3);
+    for (let k = 0; k < puffs; k++) {
+      const px = cx + (rng() - 0.5) * w * 1.2;
+      const py = cy + (rng() - 0.5) * w * 0.4;
+      const pw = w * (0.45 + rng() * 0.55);
+      clouds.fillStyle(hex(C.cloud), 0.2 + rng() * 0.18);
+      clouds.fillEllipse(px, py, pw, pw * 0.34);
+    }
   }
 
   // Scroll positions, kept inside one screen so the numbers never grow without

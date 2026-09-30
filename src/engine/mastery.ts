@@ -39,7 +39,13 @@ export const NEW_MIN_ATTEMPTS = 3;
 /** Fluency floor: at 3x the player's own baseline the fluency component is 0. */
 export const FLUENCY_SLOW_MULTIPLE = 3;
 
-/** Fallback baseline (ms) before the player has enough correct answers to set one. */
+/**
+ * Fallback baseline (ms) before the player has enough correct answers to set one.
+ *
+ * It is not a cliff: it acts as a prior and counts as one observation, so it
+ * washes out as real answers accumulate rather than snapping off when the first
+ * one lands.
+ */
 export const DEFAULT_BASELINE_MS = 8000;
 
 export function median(xs: readonly number[]): number {
@@ -51,13 +57,23 @@ export function median(xs: readonly number[]): number {
 
 /**
  * The player's personal speed baseline: the median of the fastest 20% of their
- * correct answers across all skills. It is a floor for "fluent", not a target.
+ * correct answers across all skills, blended with the 8 s default as a prior.
+ *
+ * The fastest slice is a measurement, and a measurement from one answer is a
+ * bad one: before this filter, a single lucky 1.5 s answer set the baseline to
+ * 1.5 s, and every honest 12 s answer afterwards read as "slow" until enough
+ * correct answers had piled up to lift it back. The default is now a prior that
+ * counts as one observation (a scalar Kalman update with equal variances), so
+ * one fast answer can only pull the baseline halfway toward it and the prior
+ * fades out at 1/n as evidence accumulates. It is a floor for "fluent", not a
+ * target.
  */
 export function baselineMs(log: readonly Attempt[]): number {
   const times = log.filter((a) => a.correct).map((a) => a.responseMs).sort((x, y) => x - y);
   if (times.length === 0) return DEFAULT_BASELINE_MS;
   const n = Math.max(1, Math.ceil(times.length * 0.2));
-  return median(times.slice(0, n));
+  const observed = median(times.slice(0, n));
+  return Math.round((DEFAULT_BASELINE_MS + times.length * observed) / (times.length + 1));
 }
 
 export function isFast(a: Attempt): boolean {
