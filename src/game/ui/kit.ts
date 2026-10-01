@@ -80,7 +80,7 @@ export function readout(
 
 /* --------------------------------------------------------------- buttons */
 
-export type ButtonVariant = "primary" | "secondary" | "ghost" | "disabled";
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "disabled" | "danger";
 
 export interface ButtonOpts {
   x: number;
@@ -121,10 +121,17 @@ export function button(scene: Phaser.Scene, o: ButtonOpts): Button {
       g.fillRoundedRect(0, 0, w, h, RADIUS.input);
       label.setColor(C.ground);
     } else {
-      const line = variant === "secondary" ? C.hud : C.border;
+      // Danger carries the alert colour, so a destructive action never reads
+      // like the neutral ghost buttons beside it.
+      const line = variant === "secondary" ? C.hud : variant === "danger" ? C.alert : C.border;
       g.lineStyle(STROKE.hairline, hex(line), 1);
       g.strokeRoundedRect(0, 0, w, h, RADIUS.input);
-      label.setColor(variant === "disabled" ? C.border : variant === "secondary" ? C.hud : C.textMuted);
+      label.setColor(
+        variant === "disabled" ? C.border
+          : variant === "secondary" ? C.hud
+            : variant === "danger" ? C.alert
+              : C.textMuted,
+      );
     }
     label.setPosition((w - label.width) / 2, (h - label.height) / 2);
   };

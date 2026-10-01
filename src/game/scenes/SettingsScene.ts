@@ -5,11 +5,11 @@
 
 import Phaser from "phaser";
 import { C, N, SIZE, TEXT, TRACK, CANVAS, SCREEN_PAD, STROKE, HIT, hex } from "../../ui/tokens";
-import { panel, capsLabel, button } from "../ui/kit";
+import { panel, capsLabel, button, dim } from "../ui/kit";
 import { gameState } from "../state";
 import { audio } from "../audio";
 import { music } from "../music";
-import type { Settings } from "../save";
+import { clear, newSave, type Settings } from "../save";
 
 type Toggle = { key: keyof Settings; label: string; note: string; on: string; off: string };
 
@@ -48,6 +48,8 @@ export class SettingsScene extends Phaser.Scene {
   private resumeData?: object;
   /** called before navigating away for real, so a paused sortie is ended */
   private onLeave?: () => void;
+  /** the erase confirmation modal's pieces, or null when it is closed */
+  private eraseModal: Phaser.GameObjects.GameObject[] | null = null;
   private rows: { toggle: Toggle; label: Phaser.GameObjects.Text }[] = [];
   private volumeBar!: Phaser.GameObjects.Graphics;
   private volumeText!: Phaser.GameObjects.Text;
@@ -83,7 +85,16 @@ export class SettingsScene extends Phaser.Scene {
 
     this.actions(CANVAS.height - 150);
 
-    this.input.keyboard?.on("keydown-ESC", () => this.done());
+    // ESC backs out of the erase confirmation first; only when nothing is
+    // open does it leave the screen.
+    this.input.keyboard?.on("keydown-ESC", () => {
+      if (this.eraseModal) {
+        audio.play("uiBack");
+        this.closeEraseConfirm();
+        return;
+      }
+      this.done();
+    });
   }
 
   private done(): void {
@@ -171,6 +182,15 @@ export class SettingsScene extends Phaser.Scene {
 
   private actions(y: number): void {
     const w = 300;
+
+    // Destructive and irreversible, so it sits on its own row above the rest
+    // and only ever acts through a two-step confirmation.
+    button(this, {
+      x: SCREEN_PAD, y: y - HIT.lg - 12, width: w, height: HIT.lg,
+      label: "ERASE PROGRESS", variant: "danger",
+      onClick: () => this.eraseConfirm(1),
+    });
+
     button(this, {
       x: SCREEN_PAD, y, width: w, height: HIT.lg,
       label: "SHOW FIRST-TIME TIPS AGAIN", variant: "ghost",
@@ -207,5 +227,74 @@ export class SettingsScene extends Phaser.Scene {
       x: CANVAS.width - SCREEN_PAD - 220, y, width: 220, height: HIT.lg,
       label: "DONE", variant: "primary", onClick: () => this.done(),
     });
+  }
+
+  /* ------------------------------------------------------- erase progress */
+
+  /**
+   * The two-step erase confirmation.
+   *
+   * Step 1 names exactly what dies; step 2 asks the really, really sure
+   * question. Clicking the scrim or pressing ESC backs out at either step, so
+   * nothing here can be reached by a single click.
+   */
+  private eraseConfirm(step: 1 | 2): void {
+    this.closeEraseConfirm();
+
+    const parts: Phaser.GameObjects.GameObject[] = [];
+
+    const scrim = dim(this, 0.55);
+    scrim.on("pointerup", () => this.closeEraseConfirm());
+    parts.push(scrim);
+
+    const w = 640;
+    const h = 260;
+    const x = (CANVAS.width - w) / 2;
+    const y = (CANVAS.height - h) / 2;
+    parts.push(panel(this, x, y, w, h, { fill: C.panel }));
+
+    const title = this.add.text(x + 24, y + 22, step === 1 ? "ERASE ALL PROGRESS?" : "ARE YOU REALLY, REALLY SURE?", { ...TEXT.h3, color: C.alert });
+    title.setLetterSpacing(TRACK.display * SIZE.h3);
+    parts.push(title);
+
+    const body = this.add.text(x + 24, y + 22 + title.height + 14, step === 1
+      ? `This deletes everything for PILOT ${gameState.file.callsign}: credits, unlocked airframes, missions flown, every answer in the log, and the schedule changes made on the parent page.`
+      : "All progress will be lost and the game will go back to the beginning. This cannot be undone.",
+      { ...TEXT.body, color: C.text, wordWrap: { width: w - 48 }, lineSpacing: 3 });
+    parts.push(body);
+
+    const bw = 250;
+    const by = y + h - 22 - HIT.lg;
+    const keep = button(this, {
+      x: x + 24, y: by, width: bw, height: HIT.lg,
+      label: step === 1 ? "KEEP MY PROGRESS" : "CANCEL", variant: "ghost",
+      onClick: () => this.closeEraseConfirm(),
+    });
+    const go = button(this, {
+      x: x + w - 24 - bw, y: by, width: bw, height: HIT.lg,
+      label: step === 1 ? "CONTINUE" : "ERASE EVERYTHING", variant: "danger",
+      onClick: () => {
+        if (step === 1) this.eraseConfirm(2);
+        else this.eraseProgress();
+      },
+    });
+    parts.push(keep.container, go.container);
+
+    this.eraseModal = parts;
+  }
+
+  private closeEraseConfirm(): void {
+    if (!this.eraseModal) return;
+    for (const p of this.eraseModal) p.destroy();
+    this.eraseModal = null;
+  }
+
+  /** Wipe the save and send the pilot back to the title, as a fresh install. */
+  private eraseProgress(): void {
+    this.closeEraseConfirm();
+    clear();                     // drop the stored save first...
+    gameState.update(newSave()); // ...then hold a fresh one in its place
+    this.onLeave?.();            // a paused sortie is ended, not left running
+    this.scene.start("Title");
   }
 }
