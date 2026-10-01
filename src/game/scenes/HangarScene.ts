@@ -6,7 +6,7 @@
 // count, HONORS n/n badge, 44 px CTA.
 
 import Phaser from "phaser";
-import { C, N, SIZE, TEXT, TRACK, CANVAS, SCREEN_PAD, RADIUS, STROKE, HIT, hex, STRUCTURE } from "../../ui/tokens";
+import { C, N, SIZE, TEXT, TRACK, CANVAS, SCREEN_PAD, RADIUS, STROKE, HIT, hex, STRUCTURE, MEDAL, MEDAL_METAL } from "../../ui/tokens";
 import { panel, capsLabel, button } from "../ui/kit";
 import { gameState } from "../state";
 import { nextUnlock } from "../../data/campaign";
@@ -14,19 +14,42 @@ import { fleetEntry } from "../../data/fleet";
 import { SYSTEMS, systemStatus } from "../systems";
 import { statusPill } from "../ui/kit";
 import { IMPLEMENTED_SKILLS } from "../../generators/index";
+import { loadMedalSprites, medalKey } from "../assets";
+import { seeMedal } from "../save";
+import { gapLineShort, type MedalStanding } from "../../engine/medals";
+import { stateFor } from "../../engine/mastery";
 
 const BAND_GAP = 16;
 const BAND_PAD = 12;
 
 export class HangarScene extends Phaser.Scene {
+  /** units whose unseen medal was drawn this visit, so it can be marked seen */
+  private unseenDrawn: string[] = [];
+
   constructor() {
     super("Hangar");
   }
 
   create(): void {
     this.cameras.main.setBackgroundColor(N.ground);
+    // The medal sheets load after the scene is up, so the cards wait for them
+    // rather than draw a medal a frame late. UnlockScene's reveal does the same.
+    void this.build();
+  }
+
+  private async build(): Promise<void> {
+    await loadMedalSprites(this);
+    if (!this.scene.isActive()) return;
+    this.unseenDrawn = [];
     this.topBar();
     this.quarters();
+    // Mark unseen medals seen only after the cards have drawn them: the ring
+    // shows on this visit and is gone on the next.
+    if (this.unseenDrawn.length > 0) {
+      let file = gameState.file;
+      for (const id of new Set(this.unseenDrawn)) file = seeMedal(file, id);
+      gameState.update(file);
+    }
   }
 
   private topBar(): void {
@@ -155,6 +178,11 @@ export class HangarScene extends Phaser.Scene {
       return st === "ONLINE" || st === "OPTIMIZED";
     }).length;
 
+    const held = gameState.file.medals[unitId] ?? null;
+    const seen = gameState.file.medalsSeen[unitId] ?? 0;
+    const isNew = held !== null && held > seen;
+    if (isNew) this.unseenDrawn.push(unitId);
+
     panel(this, x, y, w, h, { fill: C.panelRaised, border: C.border });
 
     // 72 px sprite column
@@ -163,7 +191,31 @@ export class HangarScene extends Phaser.Scene {
       img.setDisplaySize(72, 27); // side profiles are 1000 x 370
     }
 
-    const textX = x + 14 + 72 + 14;
+    // The medal: full size beside the sprite when the card has the height, the
+    // handoff's compact chip beside the CTA when it does not. Quarter 1 and 3
+    // cards are ~69 px tall and cannot hold a 48 px pendant, a ribbon and a
+    // gap line, so a short card carries tier (and the NEW ring) only.
+    const tall = h >= 96;
+    const medalSize = tall ? 48 : 24;
+    const texture = medalKey(held ?? 1, held ? (isNew ? "new" : "earned") : "locked");
+    if (this.textures.exists(texture)) {
+      const cx = tall ? x + 14 + 72 + 8 + medalSize / 2 : x + w - 14 - 120 - 10 - medalSize / 2;
+      const cy = tall ? y + h / 2 : y + 12 + medalSize / 2;
+      const medal = this.add.image(cx, cy, texture);
+      // Pendants are portrait (108 x 148); size by the long side.
+      medal.setDisplaySize(medalSize * (medal.width / medal.height), medalSize);
+      if (isNew) {
+        this.tweens.add({
+          targets: medal,
+          scaleX: medal.scaleX * 1.06, scaleY: medal.scaleY * 1.06,
+          duration: MEDAL.pulseMs, yoyo: true, repeat: -1, ease: "Sine.easeInOut",
+        });
+      }
+    }
+
+    const textX = x + 14 + 72 + 14 + (tall ? 56 : 0);
+    const ctaW = 120;
+    const textRoom = w - (textX - x) - ctaW - (tall ? 0 : 34);
     const header = capsLabel(this, textX, y + 12, `CH ${chapter.n}${chapter.n === 10 ? " · BOSS" : ""}`, C.lock, TRACK.readout);
     void header;
 
@@ -171,7 +223,7 @@ export class HangarScene extends Phaser.Scene {
       ...TEXT.h3,
       fontSize: "15px",
       color: C.text,
-      wordWrap: { width: w - (textX - x) - 120 },
+      wordWrap: { width: textRoom },
     });
 
     // The artboard's card carries the skills count and the HONORS badge, not a
@@ -184,10 +236,29 @@ export class HangarScene extends Phaser.Scene {
     const parts = [`${skills.length} SKILLS`];
     if (honors.length) parts.push(`HONORS ${honorsDone}/${honors.length}`);
     if (online > 0) parts.push(`${online} ONLINE`);
-    const count = capsLabel(this, textX, title.y + title.height + 6, parts.join("   "), C.textMuted, TRACK.readout);
+    const rowY = title.y + title.height + 6;
+    const count = capsLabel(this, textX, rowY, parts.join("   "), C.textMuted, TRACK.readout);
     void count;
 
-    const ctaW = 120;
+    if (tall) {
+      const standing: MedalStanding = {
+        bossPassed: gameState.file.bossesPassed.includes(unitId),
+        shieldsNeverZero: true,
+        core: skills.filter((s) => !s.honors).map((s) => stateFor(gameState.file.log, s.id)),
+        honors: honors.map((s) => stateFor(gameState.file.log, s.id)),
+      };
+      const gapY = y + h - 14 - SIZE.label;
+      const gap = capsLabel(this, textX, gapY, gapLineShort(held, standing), held ? MEDAL_METAL[held] : C.textMuted, TRACK.readout);
+      void gap;
+
+      // The ribbon bar rides under the pendant in the sprite column, clear of
+      // the gap line's text and of the CTA.
+      const ribbon = medalKey(held ?? 1, held ? "earned" : "locked", "ribbon");
+      if (this.textures.exists(ribbon)) {
+        const img = this.add.image(x + 14 + 72 + 8 + medalSize / 2, gapY + SIZE.label / 2, ribbon);
+        img.setDisplaySize(56, 56 * (img.height / img.width));
+      }
+    }
 
     const cta = button(this, {
       x: x + w - 14 - ctaW,

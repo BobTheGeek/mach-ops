@@ -17,6 +17,8 @@ const HERO_W = 900;
 export interface UnlockData {
   airframe: string;
   unitId: string;
+  /** when set, the reveal hands off to another screen instead of the hangar */
+  next?: { scene: string; data?: object };
 }
 
 /** What each airframe is called on the reveal, and one line about it. */
@@ -78,9 +80,9 @@ export class UnlockScene extends Phaser.Scene {
       y: CANVAS.height - 84,
       width: 260,
       height: HIT.lg,
-      label: "TO THE HANGAR",
+      label: this.unlock.next ? "CONTINUE" : "TO THE HANGAR",
       variant: "primary",
-      onClick: () => this.scene.start("Hangar"),
+      onClick: () => this.advance(),
     });
     button(this, {
       x: SCREEN_PAD + 280,
@@ -92,7 +94,13 @@ export class UnlockScene extends Phaser.Scene {
       onClick: () => this.scene.start("Dossier"),
     });
 
-    this.input.keyboard?.once("keydown-ENTER", () => this.scene.start("Hangar"));
+    this.input.keyboard?.once("keydown-ENTER", () => this.advance());
+  }
+
+  /** Leave for whatever comes next: another reveal, or the hangar. */
+  private advance(): void {
+    if (this.unlock.next) this.scene.start(this.unlock.next.scene, this.unlock.next.data);
+    else this.scene.start("Hangar");
   }
 
   /** Silhouette first, then the livery fades in over it. */

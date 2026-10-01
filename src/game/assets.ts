@@ -29,13 +29,54 @@ export const BOGEY_SPRITE = 72;
 export const HANGAR_SPRITE = 320;
 
 export function svgUrl(name: string): string {
-  const key = Object.keys(SVG_URLS).find((k) => k.endsWith(`/${name}.svg`));
+  const key = Object.keys(SVG_URLS).find((k) => k.endsWith(`/${name}.svg`))
+    ?? Object.keys(MEDAL_SVG_URLS).find((k) => k.endsWith(`/${name}.svg`));
   if (!key) throw new Error(`no sprite design/svg/${name}.svg`);
-  return SVG_URLS[key]!;
+  return (SVG_URLS[key] ?? MEDAL_SVG_URLS[key])!;
 }
 
 export function hasSprite(name: string): boolean {
   return Object.keys(SVG_URLS).some((k) => k.endsWith(`/${name}.svg`));
+}
+
+/* ------------------------------------------------------------- medals */
+
+/** Medal sheets, vendored from the design handoff under their own folder. */
+const MEDAL_SVG_URLS = import.meta.glob("../../design/svg/medals/*.svg", {
+  query: "?url",
+  import: "default",
+  eager: true,
+}) as Record<string, string>;
+
+/** The 15 medal sprites the handoff ships, by texture key. */
+export const MEDAL_SPRITE_FILES: readonly string[] = [
+  "medal-1-earned", "medal-1-locked", "medal-1-new",
+  "medal-2-earned", "medal-2-locked", "medal-2-new",
+  "medal-3-earned", "medal-3-locked", "medal-3-new",
+  "ribbon-1-earned", "ribbon-1-locked",
+  "ribbon-2-earned", "ribbon-2-locked",
+  "ribbon-3-earned", "ribbon-3-locked",
+];
+
+/** Texture key for a medal sprite. Ribbons have no `new` state. */
+export function medalKey(
+  tier: 1 | 2 | 3,
+  state: "earned" | "locked" | "new",
+  kind: "pendant" | "ribbon" = "pendant",
+): string {
+  const prefix = kind === "ribbon" ? "ribbon" : "medal";
+  const resolved = kind === "ribbon" && state === "new" ? "earned" : state;
+  return `${prefix}-${tier}-${resolved}`;
+}
+
+/** Rasterise every medal sheet: pendants at 300 px, ribbons at 120 px. */
+export async function loadMedalSprites(scene: Phaser.Scene): Promise<void> {
+  const variants: Variant[] = MEDAL_SPRITE_FILES.map((name) => ({
+    key: name,
+    file: `medals/${name}`,
+    size: name.startsWith("ribbon") ? 120 : 300,
+  }));
+  await loadSprites(scene, variants);
 }
 
 interface Variant {

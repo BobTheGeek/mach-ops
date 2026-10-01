@@ -92,3 +92,31 @@ export const TOPBAR_PAD_Y = 20;
 
 /** Modal dim behind problem cards and panels. */
 export const MODAL_DIM = { color: 0x0a1018, alpha: 0.55 } as const;
+
+/* ------------------------------------------------------------- medals */
+
+/**
+ * Chapter medal palette, derived from the handoff's `medals` token block.
+ * Fictional decorations only — no real decoration is reproduced.
+ */
+export const MEDAL = {
+  bronze: raw.medals.tiers["1"].metal,
+  silver: raw.medals.tiers["2"].metal,
+  gold: raw.medals.tiers["3"].metal,
+  bronzeDark: raw.medals.tiers["1"].dark,
+  silverDark: raw.medals.tiers["2"].dark,
+  goldDark: raw.medals.tiers["3"].dark,
+  locked: raw.medals.locked.fill,
+  lockedLine: raw.medals.locked.line,
+  newRing: raw.medals.newRing.color,
+  pulseMs: raw.medals.newRing.pulseMs,
+  stripeGreen: raw.medals.tiers["1"].ribbonStripes[0]!,
+  stripeBlue: raw.medals.tiers["2"].ribbonStripes[0]!,
+} as const;
+
+/** The metal per tier, for gap lines and counts. */
+export const MEDAL_METAL: Record<1 | 2 | 3, string> = {
+  1: MEDAL.bronze,
+  2: MEDAL.silver,
+  3: MEDAL.gold,
+};

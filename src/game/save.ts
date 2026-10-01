@@ -5,6 +5,7 @@
 // browser; only load()/save() touch localStorage.
 
 import type { Attempt, Tier } from "../engine/types";
+import { MEDAL_CREDITS, type MedalTier } from "../engine/medals";
 import { STRUCTURE } from "../ui/tokens";
 
 export const SAVE_KEY = "machops.save.v1";
@@ -80,6 +81,10 @@ export interface SaveFile {
    */
   scheduleDates: Record<string, string>;
   parentToggles: ParentToggles;
+  /** unit id -> highest chapter medal tier ever awarded (1 = AIRMANSHIP) */
+  medals: Record<string, MedalTier>;
+  /** unit id -> highest tier the hangar has drawn; clears the NEW ring */
+  medalsSeen: Record<string, MedalTier>;
 }
 
 /**
@@ -173,6 +178,8 @@ export function newSave(): SaveFile {
     scheduleOverrides: {},
     scheduleDates: {},
     parentToggles: { allowEarlyUnlockOnBossPass: false, honorsRequiredForBoss: false },
+    medals: {},
+    medalsSeen: {},
   };
 }
 
@@ -273,6 +280,47 @@ export function earnIntelCard(file: SaveFile, airframe: string, card: number): S
   const have = file.intelCards[airframe] ?? [];
   if (have.includes(card)) return file;
   return { ...file, intelCards: { ...file.intelCards, [airframe]: [...have, card].sort((a, b) => a - b) } };
+}
+
+/* ------------------------------------------------------- chapter medals */
+
+/**
+ * Raise a chapter's medal to a tier. Medals only ever go up: replaying a boss
+ * can upgrade one, and skill decay can never claw it back.
+ */
+export function awardMedal(file: SaveFile, unitId: string, tier: MedalTier): SaveFile {
+  const held = file.medals[unitId] ?? 0;
+  if (tier <= held) return file;
+  return { ...file, medals: { ...file.medals, [unitId]: tier } };
+}
+
+/** Mark the held medal as drawn in the hangar, which clears its NEW ring. */
+export function seeMedal(file: SaveFile, unitId: string): SaveFile {
+  const held = file.medals[unitId];
+  if (!held || (file.medalsSeen[unitId] ?? 0) >= held) return file;
+  return { ...file, medalsSeen: { ...file.medalsSeen, [unitId]: held } };
+}
+
+/**
+ * One medal award applied to the save: the medal itself, its credits, at most
+ * one intel card and at most one livery. The caller decides what the tier
+ * grants; this only writes it down.
+ */
+export function applyMedalAward(
+  file: SaveFile,
+  opts: {
+    unitId: string;
+    tier: MedalTier;
+    card: { airframe: string; index: number } | null;
+    paintItem: string | null;
+  },
+): SaveFile {
+  let next: SaveFile = { ...file, credits: file.credits + MEDAL_CREDITS[opts.tier] };
+  if (opts.card) next = earnIntelCard(next, opts.card.airframe, opts.card.index);
+  if (opts.paintItem && !next.owned.includes(opts.paintItem)) {
+    next = { ...next, owned: [...next.owned, opts.paintItem] };
+  }
+  return awardMedal(next, opts.unitId, opts.tier);
 }
 
 /**

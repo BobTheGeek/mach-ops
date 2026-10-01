@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   newSave, recordAttempt, spendCredits, seeTip, passBoss, earnIntelCard, unlockAirframe,
+  awardMedal, seeMedal, applyMedalAward,
   setCallsign, setPaint, setChapterDate, buyItem, owns, equip, recordBests,
   streakMultiplier, STREAK_STEP, STREAK_CAP,
   hasSeenHash, load, save, clear, SAVE_KEY, RECENT_HASHES, BASE_CREDITS, FAST_MULTIPLIER,
@@ -433,5 +434,51 @@ describe("per-mission bests", () => {
     f = recordMissionBest(f, "ch1-02", { grade: "CALIBRATING", firstTryHits: 3, durationMs: 100_000 });
     expect(f.missionBests["ch1-01"]!.firstTryHits).toBe(7);
     expect(f.missionBests["ch1-02"]!.firstTryHits).toBe(3);
+  });
+});
+
+describe("chapter medals", () => {
+  it("starts with no medals and none seen", () => {
+    const f = newSave();
+    expect(f.medals).toEqual({});
+    expect(f.medalsSeen).toEqual({});
+  });
+
+  it("raises a medal and never lowers it", () => {
+    const a = awardMedal(newSave(), "ch2", 1);
+    const b = awardMedal(a, "ch2", 2);
+    expect(b.medals.ch2).toBe(2);
+    expect(awardMedal(b, "ch2", 1).medals.ch2).toBe(2);
+  });
+
+  it("marks a medal seen only when one was earned", () => {
+    expect(seeMedal(newSave(), "ch2").medalsSeen.ch2).toBeUndefined();
+    expect(seeMedal(awardMedal(newSave(), "ch2", 2), "ch2").medalsSeen.ch2).toBe(2);
+  });
+
+  it("pays credits, a card and a livery in one application", () => {
+    const f = applyMedalAward(newSave(), {
+      unitId: "ch7", tier: 2, card: { airframe: "f18", index: 1 }, paintItem: null,
+    });
+    expect(f.credits).toBe(500);
+    expect(f.intelCards.f18).toEqual([1]);
+    expect(f.medals.ch7).toBe(2);
+    const g = applyMedalAward(f, {
+      unitId: "ch7", tier: 3, card: null, paintItem: "livery.f18.blueangels",
+    });
+    expect(g.credits).toBe(1500);
+    expect(g.owned).toContain("livery.f18.blueangels");
+    expect(g.medals.ch7).toBe(3);
+  });
+
+  it("fills the new maps on a save written before medals existed", () => {
+    const storage = memoryStorage();
+    const old = JSON.parse(JSON.stringify(newSave())) as Record<string, unknown>;
+    delete old.medals;
+    delete old.medalsSeen;
+    storage.setItem(SAVE_KEY, JSON.stringify(old));
+    const loaded = load(storage);
+    expect(loaded.medals).toEqual({});
+    expect(loaded.medalsSeen).toEqual({});
   });
 });

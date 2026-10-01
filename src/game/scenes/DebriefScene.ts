@@ -7,10 +7,13 @@ import { panel, capsLabel, button, statusPill } from "../ui/kit";
 import { ManualPanel } from "../ui/manualPanel";
 import { gameState } from "../state";
 import { hasPage } from "../manual";
-import { completeSortie, passBoss, unlockAirframe, gradeSortie, recordMissionBest, type MissionBest, type SortieGrade } from "../save";
+import { completeSortie, passBoss, unlockAirframe, gradeSortie, recordMissionBest, applyMedalAward, type MissionBest, type SortieGrade } from "../save";
 import { mission as findMission, BOSS_UNLOCKS, CAPSTONE_AIRFRAME } from "../../data/campaign";
 import { dossier, CARDS_PER_AIRFRAME, FIRST_TRY_HITS_FOR_CARD, type IntelCard } from "../../data/intel";
 import { fleetEntry } from "../../data/fleet";
+import { liveryItemId } from "../../data/shop";
+import { candidateTier, rewardFor, type MedalStanding, type MedalTier } from "../../engine/medals";
+import { stateFor } from "../../engine/mastery";
 import { audio } from "../audio";
 
 export interface DebriefData {
@@ -53,6 +56,8 @@ export class DebriefScene extends Phaser.Scene {
   private summaryBottom = 0;
   private cardEarned: IntelCard | null = null;
   private unlocked: string | null = null;
+  /** the medal this pass moved, when it moved one, and what it granted */
+  private medal: { unitId: string; tier: MedalTier; upgraded: boolean; card: { airframe: string; index: number } | null } | null = null;
   /** how this sortie rated, and the mission's bests including it */
   private grade: SortieGrade = "CALIBRATING";
   private best: MissionBest | null = null;
@@ -99,6 +104,7 @@ export class DebriefScene extends Phaser.Scene {
     }));
     this.best = gameState.file.missionBests[this.debrief.missionId] ?? null;
     this.unlocked = this.settleBoss();
+    this.medal = this.settleMedal();
     this.cardEarned = result.cardEarned
       ? dossier(airframe)?.cards.find((c) => c.n === result.cardEarned) ?? null
       : null;
@@ -354,6 +360,51 @@ export class DebriefScene extends Phaser.Scene {
     return unlocked;
   }
 
+  /**
+   * The chapter medal, when this pass moved it.
+   *
+   * Evaluated only after the boss has settled, and only an upgrade is ever
+   * returned: the stored tier is a high-water mark, so replaying a boss can
+   * raise a medal and a later skill decay can never lower one.
+   */
+  private settleMedal(): { unitId: string; tier: MedalTier; upgraded: boolean; card: { airframe: string; index: number } | null } | null {
+    const m = findMission(this.debrief.missionId);
+    if (m.kind !== "boss" || this.debrief.failed) return null;
+
+    const skills = gameState.skillsIn(m.unitId);
+    const honors = skills.filter((s) => s.honors);
+    const standing: MedalStanding = {
+      bossPassed: true, // settleBoss has just passed it
+      shieldsNeverZero: this.debrief.shields > 0,
+      core: skills.filter((s) => !s.honors).map((s) => stateFor(gameState.file.log, s.id)),
+      honors: honors.map((s) => stateFor(gameState.file.log, s.id)),
+    };
+
+    const candidate = candidateTier(standing);
+    const stored = gameState.file.medals[m.unitId] ?? 0;
+    if (candidate === null || candidate <= stored) return null;
+
+    const reward = rewardFor(candidate);
+
+    let card: { airframe: string; index: number } | null = null;
+    if (reward.intelCard) {
+      const airframe = BOSS_UNLOCKS[m.unitId] ?? gameState.currentAirframe();
+      const have = (gameState.file.intelCards[airframe] ?? []).length;
+      const total = dossier(airframe)?.cards.length ?? CARDS_PER_AIRFRAME;
+      if (have < total) card = { airframe, index: have + 1 };
+    }
+
+    let paintItem: string | null = null;
+    if (reward.paint) {
+      const airframe = BOSS_UNLOCKS[m.unitId];
+      const scheme = airframe ? fleetEntry(airframe)?.liveries[0] : undefined;
+      if (airframe && scheme) paintItem = liveryItemId(airframe, scheme.id);
+    }
+
+    gameState.update(applyMedalAward(gameState.file, { unitId: m.unitId, tier: candidate, card, paintItem }));
+    return { unitId: m.unitId, tier: candidate, upgraded: stored > 0, card };
+  }
+
   private actions(): void {
     const y = CANVAS.height - 92;
     button(this, {
@@ -386,10 +437,19 @@ export class DebriefScene extends Phaser.Scene {
 
     // The reveal is a screen of its own, and it is the first thing the player
     // should see after a boss. It goes last so the debrief is already built
-    // underneath when they come back from it.
+    // underneath when they come back from it. When one pass both unlocks an
+    // airframe and moves the medal, the chain is Unlock then MedalAward.
     if (this.unlocked) {
       const airframe = this.unlocked;
-      this.time.delayedCall(700, () => this.scene.start("Unlock", { airframe, unitId: this.debrief.unitId }));
+      const medal = this.medal;
+      this.time.delayedCall(700, () => this.scene.start("Unlock", {
+        airframe,
+        unitId: this.debrief.unitId,
+        ...(medal ? { next: { scene: "MedalAward", data: medal } } : {}),
+      }));
+    } else if (this.medal) {
+      const medal = this.medal;
+      this.time.delayedCall(700, () => this.scene.start("MedalAward", medal));
     }
   }
 }

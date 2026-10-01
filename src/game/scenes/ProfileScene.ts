@@ -12,7 +12,8 @@ import { shopItem, liveryItemId } from "../../data/shop";
 import { setCallsign, setPaint, owns, MAX_CALLSIGN, isCallsignChar } from "../save";
 import { rankFor, nextRank, rankProgress, RANKS } from "../../engine/ranks";
 import { FLEET } from "../../data/fleet";
-import { loadSprites, phase2Variants } from "../assets";
+import { loadSprites, phase2Variants, loadMedalSprites, medalKey } from "../assets";
+import { MEDAL_METAL } from "../../ui/tokens";
 import { audio } from "../audio";
 
 export class ProfileScene extends Phaser.Scene {
@@ -46,8 +47,56 @@ export class ProfileScene extends Phaser.Scene {
     this.identity();
     this.record();
     this.paint();
+    // The rack's sheets rasterise asynchronously, like every other sprite.
+    void this.rack();
 
     this.events.once("shutdown", () => this.detachKeys());
+  }
+
+  /* -------------------------------------------------------------- rack */
+
+  /**
+   * CHAPTER MEDALS: one ribbon per chapter in order, locked silhouettes for
+   * chapters without one, and the counts of each tier beside the rack.
+   */
+  private async rack(): Promise<void> {
+    await loadMedalSprites(this);
+    if (!this.scene.isActive()) return;
+
+    const top = 638;
+    const label = capsLabel(this, SCREEN_PAD + 20, top, "CHAPTER MEDALS", C.hud, TRACK.readout);
+    void label;
+
+    const chapters = [...gameState.chapters].sort((a, b) => a.n - b.n);
+    const counts: Record<1 | 2 | 3, number> = { 1: 0, 2: 0, 3: 0 };
+    let x = SCREEN_PAD + 20;
+    const ribbonY = top + 28;
+
+    for (const chapter of chapters) {
+      const held = gameState.file.medals[chapter.id] ?? null;
+      if (held) counts[held] += 1;
+      const key = medalKey(held ?? 1, held ? "earned" : "locked", "ribbon");
+      if (this.textures.exists(key)) {
+        const ribbon = this.add.image(x, ribbonY, key).setOrigin(0, 0.5);
+        ribbon.setDisplaySize(72, 72 * (ribbon.height / ribbon.width));
+      }
+      x += 72 + 6;
+    }
+
+    // Counts against the rack: ACE, DISTINGUISHED, AIRMANSHIP, TOTAL.
+    const total = counts[1] + counts[2] + counts[3];
+    const parts: [string, number, string][] = [
+      ["ACE", counts[3], MEDAL_METAL[3]],
+      ["DISTINGUISHED", counts[2], MEDAL_METAL[2]],
+      ["AIRMANSHIP", counts[1], MEDAL_METAL[1]],
+      ["TOTAL", total, C.text],
+    ];
+    let cx = SCREEN_PAD + 20;
+    parts.forEach(([name, n, color]) => {
+      const text = name === "TOTAL" ? `${name} ${n} / ${chapters.length}` : `${name} ${n}`;
+      const item = capsLabel(this, cx, top + 52, text, color, TRACK.readout);
+      cx += item.width + 18;
+    });
   }
 
   /* -------------------------------------------------------- identity */
