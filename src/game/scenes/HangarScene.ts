@@ -11,7 +11,6 @@ import { panel, capsLabel, button } from "../ui/kit";
 import { gameState } from "../state";
 import { nextUnlock } from "../../data/campaign";
 import { fleetEntry } from "../../data/fleet";
-import { isoToMs } from "../../engine/scheduler";
 import { SYSTEMS, systemStatus } from "../systems";
 import { statusPill } from "../ui/kit";
 import { IMPLEMENTED_SKILLS } from "../../generators/index";
@@ -129,26 +128,16 @@ export class HangarScene extends Phaser.Scene {
       .map((n) => gameState.chapters.find((c) => c.n === n))
       .filter((c): c is NonNullable<typeof c> => c !== undefined);
 
-    const anyOpen = chapters.some((c) => gameState.isOpen(c.id));
-    const quarterStart = gameState.schedule.quarters.find((x2) => x2.q === q)?.starts ?? "";
-
+    // Since the 2026-09-30 unlock ruling every quarter is open, so bands are
+    // never dashed and carry no opening date.
     const g = this.add.graphics();
     g.fillStyle(N.panel, 1);
     g.fillRoundedRect(x, y, w, h, RADIUS.panel);
-    if (anyOpen) {
-      g.lineStyle(STROKE.hairline, hex(C.border), 1);
-      g.strokeRoundedRect(x, y, w, h, RADIUS.panel);
-    } else {
-      // Future quarters read as dashed and carry their opening date.
-      this.dashedRect(g, x, y, w, h);
-    }
+    g.lineStyle(STROKE.hairline, hex(C.border), 1);
+    g.strokeRoundedRect(x, y, w, h, RADIUS.panel);
 
-    const label = capsLabel(this, x + BAND_PAD, y + BAND_PAD, `QUARTER ${q}`, anyOpen ? C.hud : C.textMuted);
+    const label = capsLabel(this, x + BAND_PAD, y + BAND_PAD, `QUARTER ${q}`, C.hud);
     void label;
-    if (!anyOpen && quarterStart) {
-      const opens = capsLabel(this, 0, y + BAND_PAD, `OPENS ${formatDate(quarterStart)}`, C.textMuted, TRACK.readout);
-      opens.setX(x + w - BAND_PAD - opens.width);
-    }
 
     const cardTop = y + BAND_PAD + SIZE.label + 10;
     const cardH = (h - (cardTop - y) - BAND_PAD - (chapters.length - 1) * 8) / Math.max(1, chapters.length);
@@ -159,8 +148,6 @@ export class HangarScene extends Phaser.Scene {
 
   private chapterCard(x: number, y: number, w: number, h: number, unitId: string): void {
     const chapter = gameState.chapter(unitId);
-    const open = gameState.isOpen(unitId);
-    const playable = open && gameState.isPlayable(unitId);
     const skills = gameState.skillsIn(unitId);
     const honors = skills.filter((s) => s.honors);
     const honorsDone = honors.filter((s) => {
@@ -168,23 +155,22 @@ export class HangarScene extends Phaser.Scene {
       return st === "ONLINE" || st === "OPTIMIZED";
     }).length;
 
-    panel(this, x, y, w, h, { fill: C.panelRaised, border: open ? C.border : C.gridLine });
+    panel(this, x, y, w, h, { fill: C.panelRaised, border: C.border });
 
-    // 72 px sprite column; locked chapters use the silhouette export
-    const spriteKey = open ? "t38-side" : "t38-side-silhouette";
-    if (this.textures.exists(spriteKey)) {
-      const img = this.add.image(x + 14 + 36, y + h / 2, spriteKey);
+    // 72 px sprite column
+    if (this.textures.exists("t38-side")) {
+      const img = this.add.image(x + 14 + 36, y + h / 2, "t38-side");
       img.setDisplaySize(72, 27); // side profiles are 1000 x 370
     }
 
     const textX = x + 14 + 72 + 14;
-    const header = capsLabel(this, textX, y + 12, `CH ${chapter.n}${chapter.n === 10 ? " · BOSS" : ""}`, open ? C.lock : C.textMuted, TRACK.readout);
+    const header = capsLabel(this, textX, y + 12, `CH ${chapter.n}${chapter.n === 10 ? " · BOSS" : ""}`, C.lock, TRACK.readout);
     void header;
 
     const title = this.add.text(textX, y + 12 + SIZE.label + 4, chapter.name, {
       ...TEXT.h3,
       fontSize: "15px",
-      color: open ? C.text : C.textMuted,
+      color: C.text,
       wordWrap: { width: w - (textX - x) - 120 },
     });
 
@@ -197,7 +183,7 @@ export class HangarScene extends Phaser.Scene {
     }).length;
     const parts = [`${skills.length} SKILLS`];
     if (honors.length) parts.push(`HONORS ${honorsDone}/${honors.length}`);
-    if (open && online > 0) parts.push(`${online} ONLINE`);
+    if (online > 0) parts.push(`${online} ONLINE`);
     const count = capsLabel(this, textX, title.y + title.height + 6, parts.join("   "), C.textMuted, TRACK.readout);
     void count;
 
@@ -207,37 +193,12 @@ export class HangarScene extends Phaser.Scene {
       x: x + w - 14 - ctaW,
       y: y + h - 14 - HIT.min,
       width: ctaW,
-      label: playable ? "SORTIES" : open ? "SOON" : "LOCKED",
-      variant: playable ? "primary" : "disabled",
+      label: "SORTIES",
+      variant: "primary",
       onClick: () => {
-        if (!playable) return;
         this.scene.start("Campaign", { unitId });
       },
     });
     void cta;
   }
-
-  private dashedRect(g: Phaser.GameObjects.Graphics, x: number, y: number, w: number, h: number): void {
-    g.lineStyle(STROKE.hairline, hex(C.border), 1);
-    const dash = 6;
-    const gap = 5;
-    const run = (x1: number, y1: number, x2: number, y2: number): void => {
-      const len = Math.hypot(x2 - x1, y2 - y1);
-      const steps = Math.floor(len / (dash + gap));
-      for (let i = 0; i < steps; i++) {
-        const t0 = (i * (dash + gap)) / len;
-        const t1 = (i * (dash + gap) + dash) / len;
-        g.lineBetween(x1 + (x2 - x1) * t0, y1 + (y2 - y1) * t0, x1 + (x2 - x1) * t1, y1 + (y2 - y1) * t1);
-      }
-    };
-    run(x, y, x + w, y);
-    run(x + w, y, x + w, y + h);
-    run(x + w, y + h, x, y + h);
-    run(x, y + h, x, y);
-  }
-}
-
-function formatDate(iso: string): string {
-  const d = new Date(isoToMs(iso));
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
 }

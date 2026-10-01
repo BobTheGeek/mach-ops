@@ -154,7 +154,6 @@ function heatView(): HTMLElement {
         legend("steady", `Steady ${FLAGGED_BELOW}–${STRONG_AT - 1}%`),
         legend("flagged", `Flagged under ${FLAGGED_BELOW}%`),
         legend("unseen", "Not seen"),
-        legend("unavailable", "Not open yet"),
       ]),
     ]),
     el("div", { class: "d-card-head" }, [
@@ -194,7 +193,7 @@ function heatView(): HTMLElement {
         el("span", { class: "d-chapter-name", text: `Ch ${c.n} · ${c.name}` }),
         el("span", {
           class: "d-chapter-meta",
-          text: `${c.skills.length} skills · ${c.open ? `accuracy ${pct(c.accuracy)}` : "not open yet"}`,
+          text: `${c.skills.length} skills · accuracy ${pct(c.accuracy)}`,
         }),
       ]);
       bar.addEventListener("click", () => {
@@ -272,32 +271,11 @@ function scheduleView(): HTMLElement {
     el("th", { text: "Chapter" }),
     el("th", { text: "Opens" }),
     el("th", { text: "Earns" }),
-    el("th", { text: "State" }),
-    el("th", { text: "Override" }),
   ]);
   table.append(el("thead", {}, [head]));
 
   const body = el("tbody");
   for (const r of rows) {
-    const forced = r.overridden;
-    const pill = el("span", {
-      class: "d-pill" + (forced ? " forced" : r.open ? " open" : ""),
-      text: forced ? (r.open ? "Forced open" : "Forced shut") : r.open ? "Open" : `Opens ${isoToLabel(r.opens)}`,
-    });
-
-    const controls = el("div", { class: "d-legend" }, [
-      button(r.open ? "Close now" : "Open now", () => {
-        update({ ...file, scheduleOverrides: { ...file.scheduleOverrides, [r.unit.id]: !r.open } });
-      }),
-      forced
-        ? button("Clear", () => {
-            const next = { ...file.scheduleOverrides };
-            delete next[r.unit.id];
-            update({ ...file, scheduleOverrides: next });
-          })
-        : null,
-    ]);
-
     // An ordinary date field: a parent matching a school calendar should be able
     // to type or pick a date, not nudge a stepper.
     const date = el("input", {
@@ -318,8 +296,6 @@ function scheduleView(): HTMLElement {
       el("td", { text: `Ch ${r.unit.id.replace("ch", "")} · ${r.chapterName}` }),
       dateCell,
       el("td", { text: r.earns ? (fleetEntry(r.earns)?.designation ?? r.earns) : "—" }),
-      el("td", {}, [pill]),
-      el("td", {}, [controls]),
     ]));
   }
   table.append(body);
@@ -333,12 +309,6 @@ function scheduleView(): HTMLElement {
         file.parentToggles.honorsRequiredForBoss,
         (on) => update({ ...file, parentToggles: { ...file.parentToggles, honorsRequiredForBoss: on } }),
       ),
-      checkbox(
-        "Passing a boss opens the next chapter early",
-        "On, a chapter opens as soon as the previous boss is passed, without waiting for its date.",
-        file.parentToggles.allowEarlyUnlockOnBossPass,
-        (on) => update({ ...file, parentToggles: { ...file.parentToggles, allowEarlyUnlockOnBossPass: on } }),
-      ),
     ]),
   ]);
 
@@ -346,7 +316,7 @@ function scheduleView(): HTMLElement {
     el("div", { class: "d-card" }, [
       el("div", { class: "d-card-head" }, [
         el("div", { class: "d-card-title", text: "Chapter schedule" }),
-        el("div", { class: "d-note", text: "Dates ship with the game; changing one here moves that chapter for this pilot until you reset it. A quarter starts with its earliest chapter." }),
+        el("div", { class: "d-note", text: "Every chapter and sortie is playable from the first launch. These dates track the school calendar; changing one keeps the schedule true without opening or closing anything. A quarter starts with its earliest chapter." }),
       ]),
       table,
     ]),

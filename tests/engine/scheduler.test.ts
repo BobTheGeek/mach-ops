@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
-  review, initialReview, reviewFor, isOverdue, isUnitOpen, activeUnit, isoToMs,
+  review, initialReview, reviewFor, isOverdue, isUnitOpen,
   DAY_MS, MAX_INTERVAL_DAYS, type Schedule,
 } from "../../src/engine/scheduler";
 import { fastCorrect, fastWrong, slowWrong, T0 } from "./helpers";
@@ -63,33 +63,15 @@ describe("spaced repetition", () => {
 });
 
 describe("chapter opening", () => {
-  const base = { schedule: SCHEDULE, bossesPassed: new Set<string>() };
+  // 2026-09-30 ruling: the whole campaign is playable from the first launch.
+  // Dates, /dad overrides and boss-pass early unlock are informational only.
+  const base = { schedule: SCHEDULE };
 
-  it("opens a unit on its schedule date", () => {
-    expect(isUnitOpen("ch1", { ...base, now: isoToMs("2026-08-09") })).toBe(false);
-    expect(isUnitOpen("ch1", { ...base, now: isoToMs("2026-08-10") })).toBe(true);
+  it("opens every scheduled unit, whatever the calendar says", () => {
+    for (const u of SCHEDULE.units) expect(isUnitOpen(u.id, base), u.id).toBe(true);
   });
 
-  it("keeps a later unit shut until its own date", () => {
-    expect(isUnitOpen("ch5", { ...base, now: isoToMs("2026-08-10") })).toBe(false);
-  });
-
-  it("opens the next unit early only when the parent allows it and the boss is passed", () => {
-    const now = isoToMs("2026-08-20"); // ch2 opens 2026-08-31
-    expect(isUnitOpen("ch2", { ...base, now, bossesPassed: new Set(["ch1"]) })).toBe(false);
-    expect(isUnitOpen("ch2", {
-      ...base, now, bossesPassed: new Set(["ch1"]),
-      toggles: { allowEarlyUnlockOnBossPass: true, honorsRequiredForBoss: false },
-    })).toBe(true);
-  });
-
-  it("lets a /dad override win over the schedule in both directions", () => {
-    const now = isoToMs("2026-08-20");
-    expect(isUnitOpen("ch7", { ...base, now, overrides: { ch7: true } })).toBe(true);
-    expect(isUnitOpen("ch1", { ...base, now, overrides: { ch1: false } })).toBe(false);
-  });
-
-  it("reports the latest open unit as the active one", () => {
-    expect(activeUnit({ ...base, now: isoToMs("2026-09-25") })?.id).toBe("ch3");
+  it("does not open a unit the schedule does not know", () => {
+    expect(isUnitOpen("ch99", base)).toBe(false);
   });
 });

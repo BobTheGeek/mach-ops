@@ -23,6 +23,37 @@ export const STRONG_AT = 85;
 export const FLAGGED_BELOW = 70;
 
 /**
+ * First tries a skill needs before its band is read at face value.
+ *
+ * Below this the percentage is real but thin, and a thin percentage is exactly
+ * what swings between corners: one early correct reads 100%, one early miss
+ * reads 0%, and either way the tile claims a confidence the data do not back.
+ * The engine will not call a skill mastered off a thin log either — it wants a
+ * full window and two correct transfers — so the heat map holds the same line.
+ */
+export const MIN_FIRST_TRIES = 4;
+
+/**
+ * Lower edge of the 95% Wilson score interval for k correct of n, in percent.
+ *
+ * A rate is two numbers, and this is the honest one to read when n is small:
+ * 1 of 1 bounds at 21, 4 of 4 at 51, 19 of 20 at 76. `wilsonLower(0, 0)` is 0,
+ * so an empty skill has nowhere to fall from.
+ */
+export function wilsonLower(k: number, n: number, z = 1.96): number {
+  if (n <= 0) return 0;
+  const p = k / n;
+  const z2 = z * z;
+  const centre = p + z2 / (2 * n);
+  const spread = z * Math.sqrt((p * (1 - p) + z2 / (4 * n)) / n);
+  return Math.round(((centre - spread) / (1 + z2 / n)) * 100);
+}
+
+/** Is this skill's reading backed by enough answers to claim its band? */
+export const isConfident = (firstTries: number): boolean =>
+  firstTries === 0 || firstTries >= MIN_FIRST_TRIES;
+
+/**
  * Which answers the headline accuracy was computed from.
  *
  * design/README.md asks for first-try accuracy, and `Attempt.firstTry` records
@@ -49,6 +80,14 @@ export interface SkillRow {
   accuracy: number | null;
   /** null exactly when accuracy is null */
   basis: AccuracyBasis | null;
+  /**
+   * 0..100, the lower edge of the 95% Wilson interval on first-try accuracy.
+   * null when nothing was answered, and null on the all-attempts basis, where
+   * no per-answer flag exists to count from.
+   */
+  accuracyLower: number | null;
+  /** true when `firstTries` clears MIN_FIRST_TRIES, so the band means what it says */
+  confident: boolean;
   /** epoch ms of the most recent attempt, or null */
   lastSeen: number | null;
   /** the error tag picked most often, and how often */
@@ -73,8 +112,16 @@ export interface ChapterGroup {
   quarter: number;
   open: boolean;
   skills: SkillRow[];
-  /** mean accuracy across attempted skills, or null when none attempted */
+  /**
+   * Pooled first-try accuracy across the chapter's attempted skills — every
+   * counted answer weighs once — or null when none was attempted. Pooling
+   * keeps a single thin skill from moving the figure a hundred points.
+   */
   accuracy: number | null;
+  /** the pooled answers behind that figure, 0 when there are none */
+  accuracyCount: number;
+  /** the pooled correct count behind that figure */
+  accuracyCorrect: number;
 }
 
 export interface QuarterGroup {
@@ -187,6 +234,7 @@ export function buildRow(input: ReportInput, skill: RegistrySkillLite, open: boo
   const ch = input.chapters.find((c) => c.id === chapter);
   const { accuracy, basis, firstTries, firstTryCorrect } = accuracyOf(attempts);
   const correctTimes = attempts.filter((a) => a.correct).map((a) => a.responseMs);
+  const confident = isConfident(firstTries);
   return {
     id: skill.id,
     name: skill.name,
@@ -200,6 +248,8 @@ export function buildRow(input: ReportInput, skill: RegistrySkillLite, open: boo
     firstTryCorrect,
     accuracy,
     basis,
+    accuracyLower: basis === "first-try" ? wilsonLower(firstTryCorrect, firstTries) : null,
+    confident,
     lastSeen: attempts.length === 0 ? null : Math.max(...attempts.map((a) => a.ts)),
     topError: topError(attempts),
     hints: attempts.reduce((n, a) => n + (a.hintsUsed ?? 0), 0),
@@ -208,15 +258,9 @@ export function buildRow(input: ReportInput, skill: RegistrySkillLite, open: boo
   };
 }
 
-/** Is this unit open right now, schedule or parent override or boss pass? */
+/** Is this unit open? Every scheduled chapter is, since the 2026-09-30 ruling. */
 export function unitOpen(input: ReportInput, unit: ScheduleUnit): boolean {
-  return isUnitOpen(unit.id, {
-    schedule: input.schedule,
-    now: input.now,
-    bossesPassed: new Set(input.file.bossesPassed),
-    overrides: input.file.scheduleOverrides,
-    toggles: input.file.parentToggles,
-  });
+  return isUnitOpen(unit.id, { schedule: input.schedule });
 }
 
 /** The whole heat map: quarter, then chapter, then sub-skill in registry order. */
@@ -233,7 +277,18 @@ export function buildReport(input: ReportInput): QuarterGroup[] {
         .filter((s) => chapterOf(s) === ch.id)
         .map((s) => buildRow(input, s, open));
 
-      const seen = skills.filter((s) => s.accuracy !== null);
+      // Pool every counted answer across the chapter's attempted skills, on
+      // the same basis a row uses — first tries where the log records them,
+      // every answer otherwise. A mean of percentages would weigh a one-answer
+      // skill the same as a twenty-answer one.
+      const counted = skills.filter((s) => s.accuracy !== null);
+      const firstTries = counted.reduce((n, s) => n + s.firstTries, 0);
+      const firstTryCorrect = counted.reduce((n, s) => n + s.firstTryCorrect, 0);
+      const allAttempts = counted.reduce((n, s) => n + s.attempts, 0);
+      const allCorrect = counted.reduce((n, s) => n + s.correct, 0);
+      const n = firstTries > 0 ? firstTries : allAttempts;
+      const k = firstTries > 0 ? firstTryCorrect : allCorrect;
+
       chapters.push({
         chapter: ch.id,
         n: ch.n,
@@ -241,9 +296,9 @@ export function buildReport(input: ReportInput): QuarterGroup[] {
         quarter: q.q,
         open,
         skills,
-        accuracy: seen.length === 0
-          ? null
-          : Math.round(seen.reduce((t, s) => t + (s.accuracy ?? 0), 0) / seen.length),
+        accuracy: n === 0 ? null : Math.round((k / n) * 100),
+        accuracyCount: n,
+        accuracyCorrect: k,
       });
     }
 
@@ -265,6 +320,8 @@ export interface Summary {
   online: number;
   flagged: number;
   unseen: number;
+  /** attempted skills whose reading is still thin, so no band is claimed */
+  provisional: number;
   attempts: number;
   /** 0..100, or null when nothing has been answered */
   accuracy: number | null;
@@ -282,8 +339,11 @@ export function summarise(report: QuarterGroup[], file: SaveFile): Summary {
   return {
     total: rows.length,
     online: rows.filter((r) => r.status === "ONLINE" || r.status === "OPTIMIZED").length,
-    flagged: rows.filter((r) => r.heat === "flagged").length,
+    // Only a confident flag is a flag: a single early miss must not read as a
+    // verdict to act on.
+    flagged: rows.filter((r) => r.heat === "flagged" && r.confident).length,
     unseen: rows.filter((r) => r.heat === "unseen" || r.heat === "unavailable").length,
+    provisional: rows.filter((r) => !r.confident && r.attempts > 0).length,
     attempts,
     accuracy: overall.accuracy,
     basis: overall.basis,
@@ -303,7 +363,8 @@ export function csvCell(value: string | number | null): string {
 export const CSV_HEADER = [
   "skill", "name", "chapter", "quarter", "honors", "status",
   "attempts", "correct", "first_tries", "first_try_correct",
-  "accuracy_pct", "accuracy_basis", "top_error", "top_error_count",
+  "accuracy_pct", "accuracy_basis", "accuracy_lower_pct", "confident",
+  "top_error", "top_error_count",
   "hints", "median_correct_ms", "last_seen_iso",
 ];
 
@@ -313,7 +374,7 @@ export function toCsv(rows: readonly SkillRow[]): string {
     lines.push([
       r.id, r.name, r.chapter, r.quarter, r.honors ? "yes" : "no", r.status,
       r.attempts, r.correct, r.firstTries, r.firstTryCorrect,
-      r.accuracy, r.basis,
+      r.accuracy, r.basis, r.accuracyLower, r.confident ? "yes" : "no",
       r.topError?.tag ?? null, r.topError?.count ?? null,
       r.hints, r.medianCorrectMs,
       r.lastSeen === null ? null : new Date(r.lastSeen).toISOString(),
@@ -330,10 +391,7 @@ export interface ScheduleRow {
   chapterName: string;
   /** the date in force: the parent's edit if there is one, else the shipped date */
   opens: string;
-  open: boolean;
-  /** forced open or closed by the parent, rather than by the date */
-  overridden: boolean;
-  /** the parent has moved this chapter's date */
+  /** the parent has moved this chapter's date. Informational since 2026-09-30. */
   moved: boolean;
   /** the airframe passing this unit's boss earns, or null */
   earns: string | null;
@@ -348,8 +406,6 @@ export function scheduleRows(
     unit,
     chapterName: chapters.find((c) => c.id === unit.id)?.name ?? unit.name,
     opens: unit.opens,
-    open: unitOpen(input, unit),
-    overridden: Object.prototype.hasOwnProperty.call(input.file.scheduleOverrides, unit.id),
     moved: Object.prototype.hasOwnProperty.call(input.file.scheduleDates, unit.id),
     earns: unlocks[unit.id] ?? null,
   }));

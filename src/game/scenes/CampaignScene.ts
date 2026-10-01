@@ -63,25 +63,19 @@ export class CampaignScene extends Phaser.Scene {
     missions.forEach((m, i) => {
       const x = SCREEN_PAD + (i % cols) * (w + gap);
       const y = 76 + Math.floor(i / cols) * (h + gap);
-      this.missionCard(x, y, w, h, m, i, missions);
+      this.missionCard(x, y, w, h, m);
     });
   }
 
-  /** A sortie opens once the one before it has been flown; the first is always open. */
-  private isOpen(index: number, all: Mission[]): boolean {
-    if (index === 0) return true;
-    const prev = all[index - 1]!;
-    return gameState.file.missionsFlown.includes(prev.id);
-  }
-
-  private missionCard(x: number, y: number, w: number, h: number, m: Mission, i: number, all: Mission[]): void {
+  private missionCard(x: number, y: number, w: number, h: number, m: Mission): void {
+    // Every sortie is open from the first launch (2026-09-30 unlock ruling);
+    // the only progression left in this scene is the record on each card.
     const flown = gameState.file.missionsFlown.includes(m.id);
-    const open = this.isOpen(i, all);
     const boss = m.kind === "boss";
 
     panel(this, x, y, w, h, {
       fill: C.panelRaised,
-      border: boss && open ? C.lock : open ? C.border : C.gridLine,
+      border: boss ? C.lock : C.border,
     });
 
     const ctaW = 120;
@@ -89,7 +83,7 @@ export class CampaignScene extends Phaser.Scene {
     // Header row: sortie number left, its shape right, clear of the CTA. The
     // brief then owns the rest of the card instead of fighting a footer row.
     const num = capsLabel(this, x + 14, y + 12, `SORTIE ${String(m.n).padStart(2, "0")}`,
-      boss ? C.lock : open ? C.hud : C.textMuted, TRACK.readout);
+      boss ? C.lock : C.hud, TRACK.readout);
 
     // "BOSS" rides on the right-hand detail, not the left label: the left label
     // is fixed width so the two can never collide however long the detail gets.
@@ -111,7 +105,7 @@ export class CampaignScene extends Phaser.Scene {
     detail.setX(Math.max(num.x + num.width + 16, x + w - 14 - ctaW - 16 - detail.width));
 
     const name = this.add.text(x + 14, y + 12 + SIZE.label + 6, m.name, {
-      ...TEXT.h3, fontSize: "18px", color: open ? C.text : C.textMuted,
+      ...TEXT.h3, fontSize: "18px", color: C.text,
     });
 
     const brief = this.add.text(x + 14, name.y + name.height + 4, m.brief, {
@@ -123,10 +117,9 @@ export class CampaignScene extends Phaser.Scene {
       x: x + w - 14 - ctaW,
       y: y + 12,
       width: ctaW,
-      label: flown ? "FLY AGAIN" : open ? "BRIEF" : "LOCKED",
-      variant: open ? (boss ? "secondary" : "primary") : "disabled",
+      label: flown ? "FLY AGAIN" : "BRIEF",
+      variant: boss ? "secondary" : "primary",
       onClick: () => {
-        if (!open) return;
         this.scene.start("Briefing", { unitId: this.unitId, missionId: m.id });
       },
     });

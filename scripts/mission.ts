@@ -6,7 +6,7 @@
 import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { buildQueue, type QueueSkill } from "../src/engine/queue";
-import { activeUnit, openUnits, isoToMs, DAY_MS, type Schedule } from "../src/engine/scheduler";
+import { openUnits, isoToMs, DAY_MS, type Schedule } from "../src/engine/scheduler";
 import { masteryScore, statusFor } from "../src/engine/mastery";
 import { generatorFor, IMPLEMENTED_SKILLS } from "../src/generators/index";
 import { mathKitFor, answerInputFor, MATH_KIT_NAME, ANSWER_INPUT_NAME } from "../src/engine/mathkit";
@@ -71,15 +71,16 @@ log.sort((a, b) => a.ts - b.ts);
 
 /* --------------------------------------------------------------- the mission */
 
-const open = openUnits({ schedule, now: NOW, bossesPassed: new Set() });
-const active = activeUnit({ schedule, now: NOW, bossesPassed: new Set() });
-if (!active) throw new Error("no chapter is open on this date");
+// Everything is open since the 2026-09-30 ruling; the sample stands in for a
+// pilot working Chapter 1, which is what drives the current-unit slice.
+const open = openUnits({ schedule });
+const activeUnitId = "ch1";
 
 const queue = buildQueue({
   skills,
   log,
   now: NOW,
-  activeUnitId: active.id,
+  activeUnitId,
   openUnitIds: open.map((u) => u.id),
   count: COUNT,
   seed: SEED,
@@ -89,7 +90,7 @@ const queue = buildQueue({
 
 const pad = (s: string, n: number): string => (s.length > n ? s.slice(0, n - 1) + "…" : s.padEnd(n));
 
-console.log(`\nMISSION · ${active.name} · ${open.length} chapter(s) open · seed ${SEED}`);
+console.log(`\nMISSION · ${activeUnitId} · ${open.length} chapter(s) open · seed ${SEED}`);
 console.log(`Phase 1: ${IMPLEMENTED_SKILLS.length} of ${curriculum.skills.length} skills have generators.\n`);
 
 console.log("SYSTEMS STATUS");

@@ -2,13 +2,13 @@ import { describe, it, expect } from "vitest";
 import {
   attemptsOf, topError, heatOf, chapterOf, buildRow, buildReport, allRows, accuracyOf,
   summarise, csvCell, toCsv, CSV_HEADER, scheduleRows, activityByDay, localDay,
-  STRONG_AT, FLAGGED_BELOW,
+  wilsonLower, STRONG_AT, FLAGGED_BELOW,
   type ReportInput, type RegistrySkillLite, type ChapterLite,
 } from "../../src/dad/report";
 import { newSave, type SaveFile } from "../../src/game/save";
 import { BOSS_UNLOCKS } from "../../src/data/campaign";
 import type { Attempt } from "../../src/engine/types";
-import type { Schedule } from "../../src/engine/scheduler";
+import { withDateOverrides, type Schedule } from "../../src/engine/scheduler";
 import curriculumJson from "../../src/data/curriculum.json";
 import scheduleJson from "../../src/data/schedule.json";
 
@@ -30,9 +30,16 @@ function withLog(log: Attempt[]): SaveFile {
   return { ...newSave(), log };
 }
 
-/** Everything open, so availability never masks what a test is checking. */
+/** Everything open, so availability never masks what a test is checking.
+ *  Date edits fold in the way the app's own input() does. */
 function input(file: SaveFile, now = Date.parse("2027-06-01T00:00:00Z")): ReportInput {
-  return { file, skills: curriculum.skills, chapters: curriculum.chapters, schedule, now };
+  return {
+    file,
+    skills: curriculum.skills,
+    chapters: curriculum.chapters,
+    schedule: withDateOverrides(schedule, file.scheduleDates),
+    now,
+  };
 }
 
 describe("attemptsOf", () => {
@@ -119,19 +126,24 @@ describe("buildRow", () => {
   });
 
   it("scores on first tries alone once the log records them", () => {
-    // Right first time, then wrong twice on retries of other problems.
+    // Right first time, then wrong twice on retries of other problems. Three
+    // more first tries, because a thin sample is provisional rather than strong.
     const log = [
       attempt("ns.1.1", true, { firstTry: true }),
       attempt("ns.1.1", false, { firstTry: false }),
       attempt("ns.1.1", false, { firstTry: false }),
+      attempt("ns.1.1", true, { firstTry: true }),
+      attempt("ns.1.1", true, { firstTry: true }),
+      attempt("ns.1.1", true, { firstTry: true }),
     ];
     const row = buildRow(input(withLog(log)), skill, true);
-    expect(row.attempts).toBe(3);
-    expect(row.correct).toBe(1);
-    expect(row.firstTries).toBe(1);
-    expect(row.firstTryCorrect).toBe(1);
+    expect(row.attempts).toBe(6);
+    expect(row.correct).toBe(4);
+    expect(row.firstTries).toBe(4);
+    expect(row.firstTryCorrect).toBe(4);
     expect(row.accuracy).toBe(100);
     expect(row.basis).toBe("first-try");
+    expect(row.confident).toBe(true);
     expect(row.heat).toBe("strong");
   });
 
@@ -184,10 +196,11 @@ describe("buildReport", () => {
     expect(ch.accuracy).toBeNull();
   });
 
-  it("marks skills in a chapter the schedule has not opened as unavailable", () => {
-    // Before the first quarter starts, nothing is open.
+  it("never dashes a chapter as unavailable, whatever the calendar says", () => {
+    // Since the 2026-09-30 unlock ruling every chapter is playable from the
+    // first launch, so an unattempted skill reads unseen, not unavailable.
     const early = buildReport(input(newSave(), Date.parse("2026-01-01T00:00:00Z")));
-    expect(allRows(early).every((r) => r.heat === "unavailable")).toBe(true);
+    expect(allRows(early).every((r) => r.heat === "unseen")).toBe(true);
   });
 });
 
@@ -253,19 +266,12 @@ describe("scheduleRows", () => {
     expect(rows.find((r) => r.unit.id === "ch1")!.earns).toBeNull();
   });
 
-  it("marks a unit the parent has forced as overridden", () => {
-    const file: SaveFile = { ...newSave(), scheduleOverrides: { ch5: true } };
-    const forced = scheduleRows(input(file), curriculum.chapters, BOSS_UNLOCKS);
-    expect(forced.find((r) => r.unit.id === "ch5")!.overridden).toBe(true);
-    expect(forced.find((r) => r.unit.id === "ch5")!.open).toBe(true);
-    expect(forced.find((r) => r.unit.id === "ch6")!.overridden).toBe(false);
-  });
-
-  it("lets the parent force a unit shut even after its date", () => {
-    const file: SaveFile = { ...newSave(), scheduleOverrides: { ch1: false } };
-    const late = Date.parse("2027-06-01T00:00:00Z");
-    const forced = scheduleRows(input(file, late), curriculum.chapters, BOSS_UNLOCKS);
-    expect(forced.find((r) => r.unit.id === "ch1")!.open).toBe(false);
+  it("reports the date in force, and which dates the parent moved", () => {
+    const file: SaveFile = { ...newSave(), scheduleDates: { ch5: "2027-01-04" } };
+    const moved = scheduleRows(input(file), curriculum.chapters, BOSS_UNLOCKS);
+    expect(moved.find((r) => r.unit.id === "ch5")!.opens).toBe("2027-01-04");
+    expect(moved.find((r) => r.unit.id === "ch5")!.moved).toBe(true);
+    expect(moved.find((r) => r.unit.id === "ch6")!.moved).toBe(false);
   });
 });
 
@@ -355,6 +361,64 @@ describe("the summary uses the same rule as a row", () => {
     const s = summarise(buildReport(input(file)), file);
     expect(s.accuracy).toBe(50);
     expect(s.basis).toBe("all-attempts");
+  });
+});
+
+describe("wilsonLower", () => {
+  it("has nothing to say about no answers", () => {
+    expect(wilsonLower(0, 0)).toBe(0);
+    expect(wilsonLower(7, 0)).toBe(0);
+  });
+
+  it("orders two readings the same way accuracy does", () => {
+    expect(wilsonLower(19, 20)).toBeGreaterThan(wilsonLower(18, 20));
+    expect(wilsonLower(1, 1)).toBeGreaterThan(wilsonLower(0, 1));
+  });
+
+  it("widens with a smaller sample", () => {
+    expect(wilsonLower(99, 100)).toBeGreaterThan(wilsonLower(4, 4));
+    expect(wilsonLower(4, 4)).toBeGreaterThan(wilsonLower(1, 1));
+  });
+
+  it("never reads higher than the point estimate", () => {
+    for (let n = 1; n <= 40; n++) {
+      for (let k = 0; k <= n; k++) {
+        expect(wilsonLower(k, n), `${k}/${n}`).toBeLessThanOrEqual(Math.round((k / n) * 100));
+      }
+    }
+  });
+});
+
+describe("the provisional readout on a thin skill", () => {
+  const skill = curriculum.skills.find((s) => s.id === "ns.1.1")!;
+
+  it("reads a one-answer skill as provisional, not strong", () => {
+    const log = [attempt("ns.1.1", true, { firstTry: true })];
+    const row = buildRow(input(withLog(log)), skill, true);
+    expect(row.accuracy).toBe(100);
+    expect(row.confident).toBe(false);
+    expect(row.accuracyLower).toBeLessThan(100);
+  });
+
+  it("becomes confident at four first tries, and reads the band then", () => {
+    const log = Array.from({ length: 4 }, () => attempt("ns.1.1", true, { firstTry: true }));
+    const row = buildRow(input(withLog(log)), skill, true);
+    expect(row.confident).toBe(true);
+    expect(row.heat).toBe("strong");
+  });
+
+  it("keeps a thin miss provisional rather than flagged", () => {
+    const log = [attempt("ns.1.1", false, { firstTry: true })];
+    const row = buildRow(input(withLog(log)), skill, true);
+    expect(row.accuracy).toBe(0);
+    expect(row.confident).toBe(false);
+  });
+
+  it("leaves a save with no first-try flag on the old footing", () => {
+    const log = [attempt("ns.1.1", true), attempt("ns.1.1", false)];
+    const row = buildRow(input(withLog(log)), skill, true);
+    expect(row.basis).toBe("all-attempts");
+    expect(row.confident).toBe(true);
   });
 });
 

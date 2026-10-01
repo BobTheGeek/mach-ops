@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { withDateOverrides, isUnitOpen, isoToMs, type Schedule } from "../../src/engine/scheduler";
+import { withDateOverrides, isUnitOpen, type Schedule } from "../../src/engine/scheduler";
 
 const base: Schedule = {
   quarters: [{ q: 1, starts: "2026-08-10" }, { q: 2, starts: "2026-11-02" }],
@@ -12,8 +12,8 @@ const base: Schedule = {
   blackbirdQualification: { opens: "2027-05-01" },
 };
 
-const open = (id: string, s: Schedule, now: number): boolean =>
-  isUnitOpen(id, { schedule: s, now, bossesPassed: new Set() });
+const open = (id: string, s: Schedule): boolean =>
+  isUnitOpen(id, { schedule: s });
 
 describe("withDateOverrides", () => {
   it("returns the same object when there is nothing to apply", () => {
@@ -59,14 +59,12 @@ describe("withDateOverrides", () => {
     expect(s.quarters.find((q) => q.q === 1)!.starts).toBe("2026-08-10");
   });
 
-  it("gates on the moved date, not the shipped one", () => {
-    const sept = isoToMs("2026-09-10");
-    expect(open("ch2", base, sept)).toBe(true);
-    const later = withDateOverrides(base, { ch2: "2026-10-05" });
-    expect(open("ch2", later, sept)).toBe(false);
-
-    const earlier = withDateOverrides(base, { ch3: "2026-08-15" });
-    expect(open("ch3", base, sept)).toBe(false);
-    expect(open("ch3", earlier, sept)).toBe(true);
+  // Since the 2026-09-30 unlock ruling a moved date is informational: it no
+  // longer opens or closes anything, in either direction.
+  it("no longer gates on the moved date", () => {
+    expect(open("ch2", base)).toBe(true);
+    expect(open("ch2", withDateOverrides(base, { ch2: "2026-10-05" }))).toBe(true);
+    expect(open("ch3", base)).toBe(true);
+    expect(open("ch3", withDateOverrides(base, { ch3: "2026-08-15" }))).toBe(true);
   });
 });

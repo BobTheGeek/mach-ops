@@ -72,17 +72,6 @@ export interface Schedule {
   blackbirdQualification: { opens: string };
 }
 
-/** Parent toggles from the /dad view. Both default off. */
-export interface ParentToggles {
-  allowEarlyUnlockOnBossPass: boolean;
-  honorsRequiredForBoss: boolean;
-}
-
-export const DEFAULT_TOGGLES: ParentToggles = {
-  allowEarlyUnlockOnBossPass: false,
-  honorsRequiredForBoss: false,
-};
-
 /** Midnight UTC of an ISO date. Dates are calendar days, not instants. */
 export function isoToMs(iso: string): number {
   return Date.parse(`${iso}T00:00:00Z`);
@@ -94,9 +83,13 @@ export function isoToMs(iso: string): number {
  * schedule.json ships the district's placeholder dates and the game fetches it
  * from a deployed URL, so the browser cannot write to it. A parent who moves a
  * chapter is really adding an override to their own save, and this folds those
- * overrides back into a Schedule so everything downstream — isUnitOpen,
- * openUnits, activeUnit, the hangar, the heat map — keeps reading one shape and
- * cannot disagree about what the dates are.
+ * overrides back into a Schedule so every reader — the hangar, the /dad
+ * schedule tab, the heat map — sees one shape and cannot disagree about what
+ * the dates are.
+ *
+ * Since the 2026-09-30 unlock ruling the dates are informational: they no
+ * longer open or close anything. Moving one keeps the schedule matching the
+ * real school calendar.
  *
  * A quarter's start is not a separate setting: it is the earliest chapter in
  * that quarter, so moving the first chapter moves the quarter with it and the
@@ -121,48 +114,22 @@ export function withDateOverrides(
   return { ...schedule, units, quarters };
 }
 
+/**
+ * The unlock policy, stated once: every scheduled unit is open.
+ *
+ * 2026-09-30 ruling — the whole campaign is playable from the first launch.
+ * Schedule dates, /dad overrides and boss-pass early unlock are informational
+ * only; nothing waits on a date to open a chapter or a sortie.
+ */
 export interface UnlockInput {
   schedule: Schedule;
-  now: number;
-  /** unit ids whose boss sortie has been passed */
-  bossesPassed: ReadonlySet<string>;
-  /** /dad overrides: unit id -> forced open/closed. Wins over everything until cleared. */
-  overrides?: Readonly<Record<string, boolean>>;
-  toggles?: ParentToggles;
 }
 
-/**
- * Is a unit open?
- *
- * Precedence: /dad override > schedule date > previous boss passed
- * (the last only when the parent has enabled early unlock).
- */
+/** Is this a chapter the schedule knows? Openness is policy, not a date. */
 export function isUnitOpen(unitId: string, input: UnlockInput): boolean {
-  const { schedule, now, bossesPassed, overrides, toggles = DEFAULT_TOGGLES } = input;
-
-  const override = overrides?.[unitId];
-  if (override !== undefined) return override;
-
-  const index = schedule.units.findIndex((u) => u.id === unitId);
-  if (index < 0) return false;
-  const unit = schedule.units[index]!;
-
-  if (now >= isoToMs(unit.opens)) return true;
-
-  if (toggles.allowEarlyUnlockOnBossPass) {
-    if (index === 0) return true;
-    const prev = schedule.units[index - 1]!;
-    return bossesPassed.has(prev.id);
-  }
-  return false;
+  return input.schedule.units.some((u) => u.id === unitId);
 }
 
 export function openUnits(input: UnlockInput): ScheduleUnit[] {
   return input.schedule.units.filter((u) => isUnitOpen(u.id, input));
-}
-
-/** The active chapter: the last open unit, i.e. where the class currently is. */
-export function activeUnit(input: UnlockInput): ScheduleUnit | null {
-  const open = openUnits(input);
-  return open.length ? open[open.length - 1]! : null;
 }

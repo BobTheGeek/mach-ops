@@ -6,7 +6,7 @@
 import curriculumJson from "../data/curriculum.json";
 import scheduleJson from "../data/schedule.json";
 import { load, save as persist, type SaveFile } from "./save";
-import { activeUnit, openUnits, withDateOverrides, type Schedule, type ScheduleUnit } from "../engine/scheduler";
+import { openUnits, withDateOverrides, type Schedule, type ScheduleUnit } from "../engine/scheduler";
 import { statusFor, masteryScore } from "../engine/mastery";
 import { tierFor } from "../engine/tiers";
 import type { QueueSkill } from "../engine/queue";
@@ -151,22 +151,15 @@ export class GameState {
 
   private unlockInput() {
     return {
-      // this.schedule, not the raw JSON: a chapter the parent has moved must
-      // gate on its new date.
+      // this.schedule, not the raw JSON: the parent's date edits fold in here.
+      // Since the 2026-09-30 unlock ruling the dates no longer gate anything;
+      // every scheduled unit is open.
       schedule: this.schedule,
-      now: now(),
-      bossesPassed: new Set(this.file.bossesPassed),
-      overrides: this.file.scheduleOverrides,
-      toggles: this.file.parentToggles,
     };
   }
 
   get openUnits(): ScheduleUnit[] {
     return openUnits(this.unlockInput());
-  }
-
-  get activeUnit(): ScheduleUnit | null {
-    return activeUnit(this.unlockInput());
   }
 
   isOpen(unitId: string): boolean {
