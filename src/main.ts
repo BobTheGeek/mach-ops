@@ -70,6 +70,39 @@ game.events.once(Phaser.Core.Events.READY, () => {
 window.addEventListener("pointerdown", () => music.resume());
 window.addEventListener("keydown", () => music.resume());
 
+/* ------------------------------------------------------------ touch shell */
+
+// Browser chrome has no place over the cockpit: a right-click on the canvas
+// should not open the long-press menu, and a two-finger pinch should not zoom
+// the page under the game. The canvas alone is covered, so a right-click beside
+// it still reaches devtools.
+game.canvas.addEventListener("contextmenu", (event) => event.preventDefault());
+
+// WebKit fires gesturestart for a pinch; Chrome never fires it at all, so the
+// feature check keeps other engines from registering a listener they can't run.
+if ("ongesturestart" in game.canvas) {
+  game.canvas.addEventListener("gesturestart", (event) => event.preventDefault());
+}
+
+// A coarse pointer in portrait is a tablet held the wrong way. Sleeping the
+// TimeStep stops update and render outright, so the sortie behind the overlay
+// cannot progress; waking on landscape resumes exactly where it stopped.
+//
+// The canvas exists as soon as the Game is constructed, but its TimeStep only
+// starts once textures have loaded, so a sleep() here would be a no-op at
+// startup. The first STEP is the earliest the loop can be stopped; re-checking
+// on each step keeps the portrait gate authoritative over anything else that
+// might resume the loop.
+const portrait = window.matchMedia("(orientation: portrait) and (pointer: coarse)");
+const applyOrientation = (isPortrait: boolean): void => {
+  if (isPortrait) game.loop.sleep();
+  else game.loop.wake();
+};
+game.events.on(Phaser.Core.Events.STEP, () => {
+  if (portrait.matches) game.loop.sleep();
+});
+portrait.addEventListener("change", (event) => applyOrientation(event.matches));
+
 // Dev-only handle so a QA script can jump straight to a scene instead of
 // clicking the whole funnel. Stripped from production builds.
 if (import.meta.env.DEV) {
