@@ -39,6 +39,15 @@ describe("new save", () => {
   });
 });
 
+describe("the keypad default", () => {
+  it("defaults the keypad on for a touch device", () => {
+    expect(newSave(true).settings.keypadEntry).toBe(true);
+  });
+  it("defaults the keypad off without touch", () => {
+    expect(newSave(false).settings.keypadEntry).toBe(false);
+  });
+});
+
 describe("recordAttempt", () => {
   it("pays base credits for a correct answer and 1.5x for a fast one", () => {
     const slow = recordAttempt(file, { attempt: attempt(true), fastBonus: false, hash: "a", nextTier: 1 });

@@ -14,6 +14,7 @@ import { C, N, SIZE, FONT, TEXT, TRACK, RADIUS, STROKE, HIT, INPUT, hex } from "
 import { panel, capsLabel } from "./kit";
 import { renderFigure } from "./figures";
 import { createGridInput, sameGridAnswer, type GridInput, type GridMode } from "./gridInput";
+import { buildKeypad, applyKey } from "./keypad";
 import { parseRational, fmtFraction, MINUS } from "../../engine/rational";
 import { audio } from "../audio";
 import { gameState } from "../state";
@@ -182,9 +183,22 @@ export class ProblemCard {
     // the keypad waits below it rather than covering the diagram.
     const typed = !mode && !this.isPick && !this.isOrder;
     const keypadTop = inputTop + Math.max(HIT.min, figure ? FIGURE_H : 0) + GAP;
-    const keypadHeight = typed && this.keypadOn
-      ? this.buildKeypad(PAD, keypadTop, CARD_W - PAD * 2)
-      : 0;
+    const keypad = typed && this.keypadOn
+      ? buildKeypad({
+          scene: this.scene,
+          x: PAD,
+          y: keypadTop,
+          width: CARD_W - PAD * 2,
+          onKey: (label) => {
+            if (this.locked) return;
+            this.typed = applyKey(this.typed, label);
+            this.refreshTyped();
+          },
+          onCommit: () => this.commit(),
+        })
+      : null;
+    const keypadHeight = keypad?.height ?? 0;
+    if (keypad) this.keypad = keypad.container;
 
     y = keypadHeight
       ? keypadTop + keypadHeight + GAP
@@ -281,54 +295,6 @@ export class ProblemCard {
 
   private get keypadOn(): boolean {
     return gameState.file.settings.keypadEntry;
-  }
-
-  /**
-   * THE keypad: digits, the fraction and sign keys, backspace and commit.
-   *
-   * HP1 has promised "ON-SCREEN KEYPAD FOR ANSWERS" on touchpad-only
-   * Chromebooks since the design shipped, and the Settings toggle stored a
-   * preference nothing read. Both are true now.
-   */
-  private buildKeypad(x: number, y: number, w: number): number {
-    const s = this.scene;
-    const rows = [
-      ["1", "2", "3", "/"],
-      ["4", "5", "6", MINUS],
-      ["7", "8", "9", "."],
-      ["\u232B", "0", "%", "\u2713"],
-    ];
-    const gap = 6;
-    const keyW = (w - gap * 3) / 4;
-    const keyH = HIT.min;
-    const items: Phaser.GameObjects.GameObject[] = [];
-
-    rows.forEach((row, r) => {
-      row.forEach((label, c) => {
-        const kx = x + c * (keyW + gap);
-        const ky = y + r * (keyH + gap);
-        const g = s.add.graphics();
-        g.lineStyle(STROKE.hairline, hex(C.border), 1);
-        g.strokeRoundedRect(kx, ky, keyW, keyH, RADIUS.input);
-        const t = s.add.text(kx + keyW / 2, ky + keyH / 2, label, {
-          ...TEXT.value, fontSize: "18px",
-        }).setOrigin(0.5, 0.5);
-        const zone = s.add.zone(kx, ky, keyW, keyH).setOrigin(0, 0).setInteractive({ useHandCursor: true });
-        zone.on("pointerup", () => this.keypadPress(label));
-        items.push(g, t, zone);
-      });
-    });
-
-    this.keypad = s.add.container(0, 0, items);
-    return rows.length * keyH + (rows.length - 1) * gap;
-  }
-
-  private keypadPress(label: string): void {
-    if (this.locked) return;
-    if (label === "\u2713") { this.commit(); return; }
-    this.typed = label === "\u232B" ? this.typed.slice(0, -1) : this.typed + label;
-    audio.play("keyTick");
-    this.refreshTyped();
   }
 
   private drawTypedBox(x: number, y: number, w: number, state: CardState): void {

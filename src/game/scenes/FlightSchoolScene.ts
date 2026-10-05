@@ -8,6 +8,7 @@
 import Phaser from "phaser";
 import { C, N, SIZE, TEXT, TRACK, CANVAS, SCREEN_PAD, STROKE, HIT, MOTION, hex } from "../../ui/tokens";
 import { panel, capsLabel, button, resourceBar, missilePips, readout, dim } from "../ui/kit";
+import { buildKeypad, applyKey } from "../ui/keypad";
 import { gameState } from "../state";
 import { audio } from "../audio";
 import { dossier } from "../../data/intel";
@@ -677,6 +678,27 @@ export class FlightSchoolScene extends Phaser.Scene {
       const t = this.add.text(x + 36, top + 8, `${this.typed || "_"}  ${step.units ?? ""}`, { ...TEXT.valueLg });
       parts.push(g, t);
       bodyH = HIT.min + 8;
+
+      // Touch answer entry, shared with the sortie card. The digits-and-dot
+      // filter is the same one the keydown handler uses, so the lesson accepts
+      // exactly what it accepted before.
+      if (step.kind === "type" && gameState.file.settings.keypadEntry) {
+        const keypad = buildKeypad({
+          scene: this,
+          x: x + 20,
+          y: top + HIT.min + 14,
+          width: w - 40,
+          onKey: (label) => {
+            if (this.answered) return;
+            if (label === "\u232B") this.typed = applyKey(this.typed, label);
+            else if (/^[0-9.]$/.test(label)) this.typed += label;
+            this.render();
+          },
+          onCommit: () => this.commit(),
+        });
+        parts.push(keypad.container);
+        bodyH += 14 + keypad.height;
+      }
     }
 
     const cardH = 52 + prompt.height + 14 + bodyH + (this.answered ? 52 : 28);

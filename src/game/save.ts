@@ -7,6 +7,7 @@
 import type { Attempt, Tier } from "../engine/types";
 import { MEDAL_CREDITS, type MedalTier } from "../engine/medals";
 import { STRUCTURE } from "../ui/tokens";
+import { touchMode } from "./touch";
 
 export const SAVE_KEY = "machops.save.v1";
 
@@ -150,7 +151,12 @@ export function gradeSortie(input: {
   return "CALIBRATING";
 }
 
-export function newSave(): SaveFile {
+/**
+ * A fresh file. On a touch device the keypad starts on, which is what the
+ * touchpad-only Chromebook it exists for needs from the first sortie; existing
+ * saves keep whatever the pilot chose, via load()'s merge.
+ */
+export function newSave(touch: boolean = touchMode()): SaveFile {
   const firstAirframe = STRUCTURE.airframes[0] ?? "t38";
   return {
     version: 1,
@@ -174,7 +180,7 @@ export function newSave(): SaveFile {
     missionBests: {},
     tipsSeen: [],
     flightSchoolDone: false,
-    settings: { volume: 0.7, keypadEntry: false, colorblindHud: false, reducedMotion: false },
+    settings: { volume: 0.7, keypadEntry: touch, colorblindHud: false, reducedMotion: false },
     scheduleOverrides: {},
     scheduleDates: {},
     parentToggles: { allowEarlyUnlockOnBossPass: false, honorsRequiredForBoss: false },
