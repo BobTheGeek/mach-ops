@@ -191,9 +191,11 @@ export class SortieScene extends Phaser.Scene {
         onPause: () => this.openPause(),
       });
       // A resumed scene never re-fires create, so the controls are brought
-      // back here. The shutdown pair keeps a restarted sortie from stacking
-      // handlers on the scene's event emitter.
-      const onResume = (): void => this.touch?.setVisible(true);
+      // back here. A card or the manual may still be up (ESC is unguarded),
+      // and the controls belong hidden for as long as one is. The shutdown
+      // pair keeps a restarted sortie from stacking handlers on the scene's
+      // event emitter.
+      const onResume = (): void => this.touch?.setVisible(!this.locked && !this.paused);
       this.events.on(Phaser.Scenes.Events.RESUME, onResume);
       this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
         this.events.off(Phaser.Scenes.Events.RESUME, onResume);
@@ -514,6 +516,9 @@ export class SortieScene extends Phaser.Scene {
 
     const problem = generatorFor(TANKER_SKILL)(2, Math.floor(this.time.now) % 10000);
     this.locked = true;
+    // Every card hides the controls; the tanker is a card too. clearLock()
+    // brings them back on both refuel outcomes.
+    this.touch?.setVisible(false);
     audio.play("lockAcquire");
     this.bulletTimeIn();
 
