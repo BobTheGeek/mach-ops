@@ -409,7 +409,7 @@ The footer's `ENTER · COMMIT` text is a label with no pointer path, and pick/gr
 
 - [ ] **Step 2: Make MANUAL and HINT tappable**
 
-Two `Zone`s with `height: HIT.min` sit over the `MANUAL` and `HINT` phrases (positions derived from the footer text's x/width, at least 8 px from each other and clear of the COMMIT button), each `pointerup`-calling `opts.onManual()` / `opts.onHint()`. Added to the card container so they are destroyed with it; work while `this.locked` (mid-problem help), matching the `M`/`H` keys.
+Two `Zone`s with `height: HIT.min` sit over the `MANUAL` and `HINT` phrases (positions derived from the footer text's x/width, at least 8 px from each other and clear of the COMMIT button), each `pointerup` → `if (this.locked) return;` then `opts.onManual()` / `opts.onHint()`, matching the `M`/`H` keys exactly. Mid-problem (pre-commit) help works; the post-commit result window cannot open a manual or spend a hint on an answered problem. Zones are added to the card container so they are destroyed with it.
 
 - [ ] **Step 3: Typecheck, build, browser check**
 
