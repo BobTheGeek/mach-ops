@@ -17,7 +17,7 @@ const TOGGLES: Toggle[] = [
   {
     key: "keypadEntry",
     label: "ANSWER ENTRY",
-    note: "An on-screen keypad for touchpad-only Chromebooks.",
+    note: "An on-screen keypad for touch devices.",
     on: "ON-SCREEN KEYPAD",
     off: "KEYBOARD",
   },

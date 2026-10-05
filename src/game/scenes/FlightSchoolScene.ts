@@ -474,7 +474,7 @@ export class FlightSchoolScene extends Phaser.Scene {
     });
     const skip = button(this, {
       x: (CANVAS.width - 260) / 2, y: 440 + HIT.lg + 12, width: 260,
-      label: "SKIP · ESC", variant: "ghost", onClick: () => this.finish(true),
+      label: touchMode() ? "SKIP" : "SKIP · ESC", variant: "ghost", onClick: () => this.finish(true),
     });
     this.add2(start.container, skip.container);
 

@@ -33,7 +33,7 @@ const CARDS: Card[] = [
   {
     id: "HP1",
     title: "CONTROLS",
-    lead: "Keyboard first. Everything also works on a Chromebook touchpad.",
+    lead: "Keyboard first. On a tablet, the next card covers touch controls.",
     rows: [
       { key: "W A S D", text: "Steer · or the arrow keys" },
       { key: "SPACE", text: "Lock the nearest bogey" },
@@ -43,7 +43,20 @@ const CARDS: Card[] = [
       { key: "H · M", text: "Hint · Manual" },
       { key: "ESC", text: "Pause" },
     ],
-    footer: "TOUCHPAD · CLICK A BOGEY TO LOCK · ON-SCREEN KEYPAD FOR ANSWERS",
+    footer: "SPACE · OR THE ON-SCREEN LOCK BUTTON ON TOUCH · KEYPAD ON BY DEFAULT FOR TOUCH DEVICES",
+  },
+  {
+    id: "HP-TOUCH",
+    title: "TOUCH CONTROLS",
+    lead: "On a tablet, fly with the on-screen controls. A keyboard still works if one is attached.",
+    rows: [
+      { key: "◀ ▶", text: "Hold to steer" },
+      { key: "LOCK", text: "Tap when a bogey is in range" },
+      { key: "PAUSE", text: "The two bars, top right" },
+      { key: "ANSWERS", text: "Tap an option · type on the on-screen keypad" },
+      { key: "MANUAL · HINT", text: "Tap the words on the problem card" },
+      { key: "DRAG", text: "Scroll a manual page" },
+    ],
   },
   {
     id: "HP2",
