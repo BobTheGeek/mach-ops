@@ -35,7 +35,7 @@ export function attachNativeEntry(o: NativeEntryOpts): { focus(): void; destroy(
   input.type = "text";
   // Never display:none: iOS refuses to focus that.
   input.style.cssText =
-    "position: fixed; opacity: 0; width: 1px; height: 1px; border: 0; padding: 0; font-size: 16px;";
+    "position: fixed; top: 0; left: 0; opacity: 0; width: 1px; height: 1px; border: 0; padding: 0; font-size: 16px;";
   input.setAttribute("autocapitalize", "characters");
   input.setAttribute("autocomplete", "off");
   input.setAttribute("autocorrect", "off");
@@ -52,8 +52,14 @@ export function attachNativeEntry(o: NativeEntryOpts): { focus(): void; destroy(
     o.onDraft(draft);
   };
   const onKeyDown = (e: KeyboardEvent): void => {
-    if (e.key === "Enter") { e.preventDefault(); o.onCommit(draft); return; }
-    if (e.key === "Escape") { e.preventDefault(); o.onCancel(); }
+    // The focused field owns the keystroke stream. Stopping propagation keeps
+    // the window-level handler that runs on every device (so a hardware
+    // keyboard works before the field is tapped) from processing the same key
+    // a second time. Backspace and characters are handled by the input's own
+    // default action, which must keep running, so they are not prevented.
+    if (e.key === "Enter") { e.stopPropagation(); e.preventDefault(); o.onCommit(draft); return; }
+    if (e.key === "Escape") { e.stopPropagation(); e.preventDefault(); o.onCancel(); return; }
+    if (e.key === "Backspace" || isCallsignChar(e.key)) e.stopPropagation();
   };
 
   input.addEventListener("input", onInput);

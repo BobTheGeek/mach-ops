@@ -53,3 +53,10 @@ describe("applyHold", () => {
     expect(applyHold(both, "release-all")).toEqual(NO_HOLD);
   });
 });
+
+describe("holdTurn", () => {
+  it("banks a single held side", () => {
+    expect(holdTurn(applyHold(NO_HOLD, "left-down"))).toBe(-1);
+    expect(holdTurn(applyHold(NO_HOLD, "right-down"))).toBe(1);
+  });
+});

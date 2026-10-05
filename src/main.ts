@@ -101,7 +101,14 @@ const applyOrientation = (isPortrait: boolean): void => {
 game.events.on(Phaser.Core.Events.STEP, () => {
   if (portrait.matches) game.loop.sleep();
 });
-portrait.addEventListener("change", (event) => applyOrientation(event.matches));
+const onPortraitChange = (event: { matches: boolean }): void => applyOrientation(event.matches);
+if (typeof portrait.addEventListener === "function") {
+  portrait.addEventListener("change", onPortraitChange);
+} else {
+  // iPadOS < 14 predates EventTarget on MediaQueryList; the legacy call hands
+  // the list itself to the callback, which still carries the same matches flag.
+  portrait.addListener(onPortraitChange);
+}
 
 // Dev-only handle so a QA script can jump straight to a scene instead of
 // clicking the whole funnel. Stripped from production builds.

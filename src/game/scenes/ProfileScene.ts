@@ -25,6 +25,7 @@ export class ProfileScene extends Phaser.Scene {
   private caret?: Phaser.GameObjects.Rectangle;
   private keyHandler?: (e: KeyboardEvent) => void;
   private nativeEntry?: ReturnType<typeof attachNativeEntry>;
+  private callsignZone?: Phaser.GameObjects.Zone;
   private paintRow?: Phaser.GameObjects.Container;
 
   constructor() {
@@ -158,10 +159,32 @@ export class ProfileScene extends Phaser.Scene {
     if (this.editing) return;
     this.editing = true;
     this.draft = "";
+    // The touch zone under the line needs the width the line had: an empty
+    // text object has none, and the callsign is what a finger aims at.
+    const hitWidth = Math.max(this.callsignText.width, HIT.min);
     this.callsignText.setText("");
     this.caret = this.add.rectangle(this.callsignText.x + 3, this.callsignText.y + 14, 2, 22, hex(C.hud))
       .setOrigin(0, 0.5);
     this.tweens.add({ targets: this.caret, alpha: 0, duration: 500, yoyo: true, repeat: -1 });
+
+    // The keyboard arrives through the window in both modes: a touch device
+    // with a hardware keyboard still types before anyone taps the field. Once
+    // the field is focused its own handler stops propagation, so nothing is
+    // processed twice.
+    this.keyHandler = (e: KeyboardEvent) => {
+      if (!this.editing) return;
+      if (e.key === "Enter") { e.preventDefault(); this.commitEdit(); return; }
+      if (e.key === "Escape") { e.preventDefault(); this.cancelEdit(); return; }
+      if (e.key === "Backspace") { e.preventDefault(); this.draft = this.draft.slice(0, -1); }
+      else if (isCallsignChar(e.key) && this.draft.length < MAX_CALLSIGN) {
+        e.preventDefault();
+        this.draft += e.key.toUpperCase();
+      } else return;
+      audio.play("keyTick");
+      this.callsignText.setText(this.draft);
+      this.caret?.setX(this.callsignText.x + this.callsignText.width + 3);
+    };
+    window.addEventListener("keydown", this.keyHandler);
 
     if (touchMode()) {
       // The tap on CHANGE CALLSIGN is the gesture that lets this focus raise
@@ -179,23 +202,17 @@ export class ProfileScene extends Phaser.Scene {
         onCancel: () => this.cancelEdit(),
       });
       this.nativeEntry.focus();
-      return;
-    }
 
-    this.keyHandler = (e: KeyboardEvent) => {
-      if (!this.editing) return;
-      if (e.key === "Enter") { e.preventDefault(); this.commitEdit(); return; }
-      if (e.key === "Escape") { e.preventDefault(); this.cancelEdit(); return; }
-      if (e.key === "Backspace") { e.preventDefault(); this.draft = this.draft.slice(0, -1); }
-      else if (isCallsignChar(e.key) && this.draft.length < MAX_CALLSIGN) {
-        e.preventDefault();
-        this.draft += e.key.toUpperCase();
-      } else return;
-      audio.play("keyTick");
-      this.callsignText.setText(this.draft);
-      this.caret?.setX(this.callsignText.x + this.callsignText.width + 3);
-    };
-    window.addEventListener("keydown", this.keyHandler);
+      // Dismissing the keyboard leaves the edit live, so the line itself is a
+      // way back in: invisible, it spans the callsign row at tap height.
+      this.callsignZone = this.add.zone(
+        this.callsignText.x,
+        this.callsignText.y - (HIT.min - this.callsignText.height) / 2,
+        hitWidth,
+        HIT.min,
+      ).setOrigin(0, 0).setInteractive({ useHandCursor: true });
+      this.callsignZone.on("pointerup", () => this.nativeEntry?.focus());
+    }
   }
 
   private commitEdit(): void {
@@ -210,6 +227,8 @@ export class ProfileScene extends Phaser.Scene {
     this.detachKeys();
     this.nativeEntry?.destroy();
     this.nativeEntry = undefined;
+    this.callsignZone?.destroy();
+    this.callsignZone = undefined;
     this.caret?.destroy();
     this.caret = undefined;
     this.callsignText.setText(gameState.file.callsign);

@@ -130,6 +130,11 @@ export function showCallsignPrompt(
     audio.play("keyTick");
     drawEntry();
   };
+  // The window handler runs on every device: on a touch-capable Chromebook
+  // with a hardware keyboard, activeElement is still body until the field is
+  // tapped, so typing must not wait for a tap. Once the field is focused its
+  // own handler stops propagation, so nothing is processed twice.
+  window.addEventListener("keydown", keyHandler);
   if (touch) {
     entry = attachNativeEntry({
       initial: "",
@@ -142,8 +147,6 @@ export function showCallsignPrompt(
       onCommit: () => { if (draft.length > 0) commit(); },
       onCancel: () => close(false),
     });
-  } else {
-    window.addEventListener("keydown", keyHandler);
   }
   drawEntry();
 
