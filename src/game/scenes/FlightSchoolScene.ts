@@ -210,7 +210,7 @@ export class FlightSchoolScene extends Phaser.Scene {
 
       if (step.kind === "pick" && /^[1-9]$/.test(e.key)) {
         const i = Number(e.key) - 1;
-        if (i < (step.options?.length ?? 0)) { e.preventDefault(); this.picked = i; this.render(); }
+        if (i < (step.options?.length ?? 0)) { e.preventDefault(); this.pickOption(i); }
         return;
       }
       if (step.kind === "type") {
@@ -269,6 +269,15 @@ export class FlightSchoolScene extends Phaser.Scene {
       return;
     }
     this.answered = true;
+    this.render();
+  }
+
+  /** Select a pick option. Shared by the number keys and the tappable rows. */
+  private pickOption(i: number): void {
+    const step = STEPS[this.step];
+    if (!step || step.kind !== "pick" || this.answered) return;
+    if (i < 0 || i >= (step.options?.length ?? 0)) return;
+    this.picked = i;
     this.render();
   }
 
@@ -666,7 +675,9 @@ export class FlightSchoolScene extends Phaser.Scene {
         g.strokeRoundedRect(x + 20, top, w - 40, rowH, 8);
         if (right) { g.fillStyle(hex(C.correctFill), 1); g.fillRoundedRect(x + 20, top, w - 40, rowH, 8); }
         const t = this.add.text(x + 36, top + 16, `${i + 1}   ${opt}`, { ...TEXT.value });
-        parts.push(g, t);
+        const zone = this.add.zone(x + 20, top, w - 40, rowH).setOrigin(0, 0).setInteractive({ useHandCursor: true });
+        zone.on("pointerup", () => this.pickOption(i));
+        parts.push(g, t, zone);
         bodyH = top + rowH - (y + 52 + prompt.height + 14) + 8;
       });
     } else {
