@@ -38,6 +38,8 @@ export class ManualPanel {
   private scroll = 0;
   private dragging = false;
   private lastY = 0;
+  /** A press that began on the scrim; cleared when the gesture ends anywhere. */
+  private scrimPressed = false;
   private body!: Phaser.GameObjects.Container;
   private bodyHeight = 0;
   private keyHandler?: (e: KeyboardEvent) => void;
@@ -54,11 +56,10 @@ export class ManualPanel {
     // Close only when the press both started and ended on the scrim. A press
     // that began on the panel body and wandered out to the scrim is a drag,
     // not a tap, and must leave the panel open.
-    let scrimPressed = false;
-    scrim.on("pointerdown", () => { scrimPressed = true; });
+    scrim.on("pointerdown", () => { this.scrimPressed = true; });
     scrim.on("pointerup", () => {
-      const tapped = scrimPressed;
-      scrimPressed = false;
+      const tapped = this.scrimPressed;
+      this.scrimPressed = false;
       if (tapped) this.close();
     });
 
@@ -138,6 +139,9 @@ export class ManualPanel {
       .setOrigin(0, 0)
       .setInteractive();
     dragZone.on("pointerdown", (p: Phaser.Input.Pointer) => {
+      // A fresh body gesture: a scrim press that never got its pointerup is
+      // irrelevant now and must not let this drag's release close the panel.
+      this.scrimPressed = false;
       this.dragging = true;
       this.lastY = p.y;
     });
@@ -287,6 +291,9 @@ export class ManualPanel {
     this.bodyHeight = y;
   }
 
+  /** Clears the scrim latch on any release, wherever the gesture ended. */
+  private readonly clearScrimLatch = (): void => { this.scrimPressed = false; };
+
   private attachKeys(): void {
     this.keyHandler = (e: KeyboardEvent) => {
       if (e.key === "Escape" || e.key === "m" || e.key === "M") { e.preventDefault(); this.close(); return; }
@@ -296,6 +303,11 @@ export class ManualPanel {
     window.addEventListener("keydown", this.keyHandler, true);
 
     this.scene.input.on("wheel", (_p: unknown, _o: unknown, _dx: number, dy: number) => this.scrollBy(dy * 0.5));
+
+    // A scrim press whose release lands on the panel (or off-canvas) never
+    // fires the scrim's own pointerup, so clear the latch on every release.
+    this.scene.input.on("pointerup", this.clearScrimLatch);
+    this.scene.input.on("pointerupoutside", this.clearScrimLatch);
   }
 
   private bodyOriginY = 0;
@@ -314,6 +326,8 @@ export class ManualPanel {
 
   destroy(): void {
     if (this.keyHandler) window.removeEventListener("keydown", this.keyHandler, true);
+    this.scene.input.off("pointerup", this.clearScrimLatch);
+    this.scene.input.off("pointerupoutside", this.clearScrimLatch);
     this.scene.input.off("wheel");
     this.container.destroy(true);
   }
