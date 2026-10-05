@@ -24,6 +24,8 @@ export interface TouchControlsOpts {
 export interface TouchControls {
   setLockable(v: boolean): void;
   setVisible(v: boolean): void;
+  /** Raise the controls above host objects created after the mount. */
+  bringToTop(): void;
   destroy(): void;
 }
 
@@ -193,6 +195,11 @@ export function mountTouchControls(scene: Phaser.Scene, opts: TouchControlsOpts)
     setVisible(v) {
       if (!v) releaseAll();
       root.setVisible(v);
+    },
+    // A host that draws over the controls after the mount (Flight School
+    // rebuilds its lesson layer every step) calls this to keep them on top.
+    bringToTop() {
+      scene.children.bringToTop(root);
     },
     destroy() {
       scene.input.off("pointerup", onPointerUp);

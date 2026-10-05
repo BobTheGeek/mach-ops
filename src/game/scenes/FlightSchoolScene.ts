@@ -127,8 +127,6 @@ export class FlightSchoolScene extends Phaser.Scene {
   private keyHandler?: (e: KeyboardEvent) => void;
   private touch?: TouchControls;
   private touchTurn: -1 | 0 | 1 = 0;
-  /** the controls' root container, kept so the flown steps can raise it */
-  private touchRoot?: Phaser.GameObjects.Container;
 
   /** the flown lessons (kind "fly" and "lock") */
   private flight: Flight = newFlight();
@@ -181,11 +179,6 @@ export class FlightSchoolScene extends Phaser.Scene {
         onTurn: (t) => { this.touchTurn = t; },
         onLock: () => this.trySchoolLock(),
       });
-      // The mount's root is the first thing on the display list, because
-      // nothing has been drawn yet. render() rebuilds the lesson layer above
-      // everything each step, so keep the root to raise the controls over the
-      // terrain and the callout on the flown steps.
-      this.touchRoot = this.children.list[0] as Phaser.GameObjects.Container;
       // Flight School opens on the menu and the lesson cards; the controls
       // appear on the flown steps, where render() shows them, and never before.
       this.touch.setVisible(false);
@@ -365,6 +358,7 @@ export class FlightSchoolScene extends Phaser.Scene {
 
     const d = Phaser.Math.Distance.Between(PLAYER_POS.x, PLAYER_POS.y, b.x, b.y);
     b.setAlpha(d <= LOCK_RANGE ? 1 : 0.4);
+    this.touch?.setLockable(d <= LOCK_RANGE);
     if (d <= LOCK_RANGE) {
       this.flyStatus?.setText(touchMode() ? "IN RANGE · TAP LOCK" : "IN RANGE · SPACE TO LOCK");
       this.flyStatus?.setColor(C.lock);
@@ -417,6 +411,9 @@ export class FlightSchoolScene extends Phaser.Scene {
 
     const step = STEPS[this.step]!;
     this.touch?.setVisible(step.kind === "fly" || step.kind === "lock");
+    // The accent is live state from stepBogey; a stale one must not survive a
+    // step change.
+    this.touch?.setLockable(false);
     if (step.kind === "fly") { this.renderRollRingStep(step); return; }
     if (step.kind === "lock") { this.renderLockStep(step); return; }
 
@@ -493,7 +490,7 @@ export class FlightSchoolScene extends Phaser.Scene {
     if (this.layer) this.children.bringToTop(this.layer);
     // The controls ride above the layer too, or the terrain and the callout
     // would bury the paddles and LOCK.
-    if (this.touchRoot) this.children.bringToTop(this.touchRoot);
+    this.touch?.bringToTop();
     this.player = this.add.image(PLAYER_POS.x, PLAYER_POS.y, "t38-top-flame").setDisplaySize(FS_PLAYER_W, FS_PLAYER_H);
     this.add2(this.player);
     this.renderChrome(step);
@@ -619,11 +616,14 @@ export class FlightSchoolScene extends Phaser.Scene {
 
   private renderChrome(step: Step): void {
     const y = 20;
+    const touch = touchMode();
     if (step.lesson <= 2) {
       this.add2(readout(this, SCREEN_PAD, y, "ALT", "12,400 FT").label);
       this.add2(readout(this, SCREEN_PAD + 150, y, "SPD", "430 KT").label);
-      this.add2(resourceBar(this, SCREEN_PAD, CANVAS.height - 110, "FUEL", C.hud).container);
-      this.add2(resourceBar(this, SCREEN_PAD, CANVAS.height - 66, "SHLD", C.shield).container);
+      // On touch the steer paddles own the bottom-left, so the resource stack
+      // moves up to clear them; the keyboard layout keeps its bottom row.
+      this.add2(resourceBar(this, SCREEN_PAD, touch ? 504 : CANVAS.height - 110, "FUEL", C.hud).container);
+      this.add2(resourceBar(this, SCREEN_PAD, touch ? 548 : CANVAS.height - 66, "SHLD", C.shield).container);
       this.add2(missilePips(this, CANVAS.width - SCREEN_PAD - 100, CANVAS.height - 66, 6).container);
     }
 
