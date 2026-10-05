@@ -14,6 +14,8 @@ import { panel, capsLabel, button, dim } from "./kit";
 import { gameState } from "../state";
 import { isCallsignChar, needsPilotName, setCallsign, MAX_CALLSIGN } from "../save";
 import { audio } from "../audio";
+import { attachNativeEntry } from "./callsignInput";
+import { touchMode } from "../touch";
 
 const W = 560;
 const H = 340;
@@ -34,12 +36,14 @@ export function showCallsignPrompt(
 ): Phaser.GameObjects.Container | null {
   if (!needsPilotName(gameState.file)) return null;
 
+  const touch = touchMode();
   const x = (CANVAS.width - W) / 2;
   const y = (CANVAS.height - H) / 2;
 
   const scrim = dim(scene);
 
   const items: Phaser.GameObjects.GameObject[] = [];
+  let entry: ReturnType<typeof attachNativeEntry> | undefined;
   items.push(panel(scene, 0, 0, W, H, { fill: C.panelRaised, border: C.lock }));
 
   const badge = capsLabel(scene, 24, 20, "PILOT REGISTRY", C.lock, TRACK.readout);
@@ -61,6 +65,17 @@ export function showCallsignPrompt(
   const caret = scene.add.rectangle(callsignText.x + 3, callsignText.y + 14, 2, 22, hex(C.hud)).setOrigin(0, 0.5);
   items.push(caret);
   scene.tweens.add({ targets: caret, alpha: 0, duration: 500, yoyo: true, repeat: -1 });
+
+  if (touch) {
+    // The line is the tap target that raises the native keyboard. It spans the
+    // card so the thin text is not what has to be hit.
+    const zone = scene.add
+      .zone(0, callsignText.y - (HIT.min - callsignText.height) / 2, W, HIT.min)
+      .setOrigin(0, 0)
+      .setInteractive({ useHandCursor: true });
+    zone.on("pointerup", () => entry?.focus());
+    items.push(zone);
+  }
 
   const confirm = button(scene, {
     x: 24, y: H - 24 - HIT.lg, width: 220, height: HIT.lg,
@@ -91,6 +106,8 @@ export function showCallsignPrompt(
   const close = (confirmed: boolean): void => {
     editing = false;
     window.removeEventListener("keydown", keyHandler);
+    entry?.destroy();
+    entry = undefined;
     scene.tweens.killTweensOf(caret);
     scrim.destroy();
     container.destroy(true);
@@ -113,7 +130,21 @@ export function showCallsignPrompt(
     audio.play("keyTick");
     drawEntry();
   };
-  window.addEventListener("keydown", keyHandler);
+  if (touch) {
+    entry = attachNativeEntry({
+      initial: "",
+      onDraft: (next) => {
+        if (next === draft) return;
+        draft = next;
+        audio.play("keyTick");
+        drawEntry();
+      },
+      onCommit: () => { if (draft.length > 0) commit(); },
+      onCancel: () => close(false),
+    });
+  } else {
+    window.addEventListener("keydown", keyHandler);
+  }
   drawEntry();
 
   if (!gameState.file.settings.reducedMotion) {

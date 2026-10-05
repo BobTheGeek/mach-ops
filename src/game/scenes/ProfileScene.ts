@@ -15,6 +15,8 @@ import { FLEET } from "../../data/fleet";
 import { loadSprites, phase2Variants, loadMedalSprites, medalKey } from "../assets";
 import { MEDAL_METAL } from "../../ui/tokens";
 import { audio } from "../audio";
+import { attachNativeEntry } from "../ui/callsignInput";
+import { touchMode } from "../touch";
 
 export class ProfileScene extends Phaser.Scene {
   private editing = false;
@@ -22,6 +24,7 @@ export class ProfileScene extends Phaser.Scene {
   private callsignText!: Phaser.GameObjects.Text;
   private caret?: Phaser.GameObjects.Rectangle;
   private keyHandler?: (e: KeyboardEvent) => void;
+  private nativeEntry?: ReturnType<typeof attachNativeEntry>;
   private paintRow?: Phaser.GameObjects.Container;
 
   constructor() {
@@ -50,7 +53,12 @@ export class ProfileScene extends Phaser.Scene {
     // The rack's sheets rasterise asynchronously, like every other sprite.
     void this.rack();
 
-    this.events.once("shutdown", () => this.detachKeys());
+    this.events.once("shutdown", () => {
+      this.detachKeys();
+      // A scene left mid-edit must not strand a focused input on the page.
+      this.nativeEntry?.destroy();
+      this.nativeEntry = undefined;
+    });
   }
 
   /* -------------------------------------------------------------- rack */
@@ -155,6 +163,25 @@ export class ProfileScene extends Phaser.Scene {
       .setOrigin(0, 0.5);
     this.tweens.add({ targets: this.caret, alpha: 0, duration: 500, yoyo: true, repeat: -1 });
 
+    if (touchMode()) {
+      // The tap on CHANGE CALLSIGN is the gesture that lets this focus raise
+      // the OS keyboard; all typing then arrives through the input.
+      this.nativeEntry = attachNativeEntry({
+        initial: "",
+        onDraft: (next) => {
+          if (next === this.draft) return;
+          this.draft = next;
+          audio.play("keyTick");
+          this.callsignText.setText(this.draft);
+          this.caret?.setX(this.callsignText.x + this.callsignText.width + 3);
+        },
+        onCommit: () => this.commitEdit(),
+        onCancel: () => this.cancelEdit(),
+      });
+      this.nativeEntry.focus();
+      return;
+    }
+
     this.keyHandler = (e: KeyboardEvent) => {
       if (!this.editing) return;
       if (e.key === "Enter") { e.preventDefault(); this.commitEdit(); return; }
@@ -181,6 +208,8 @@ export class ProfileScene extends Phaser.Scene {
   private cancelEdit(): void {
     this.editing = false;
     this.detachKeys();
+    this.nativeEntry?.destroy();
+    this.nativeEntry = undefined;
     this.caret?.destroy();
     this.caret = undefined;
     this.callsignText.setText(gameState.file.callsign);
