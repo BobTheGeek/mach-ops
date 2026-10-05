@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mach Ops app icon: a #0a1018 rounded square (ground) with the T-38
+     top-down airframe from design/svg/t38-top-silhouette.svg centred on it in
+     the HUD accent (#86F0A3, design/tokens.json). No text.
+     scripts/make-icons.ts rasterizes this file; the maskable export pads the
+     artwork ~20% inside the same background. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="112" fill="#0a1018"/>
+  <g id="airframe" fill="#86F0A3" transform="translate(256 256) scale(0.34) translate(0 -500)">
+    <polygon id="wing-r" points="40,560 272,660 272,700 40,760"/>
+    <polygon id="wing-l" points="-40,560 -272,660 -272,700 -40,760"/>
+    <polygon id="stab-r" points="30,880 150,950 150,975 30,990"/>
+    <polygon id="stab-l" points="-30,880 -150,950 -150,975 -30,990"/>
+    <polygon id="fin" points="0,760 6,800 6,980 12,1000 -12,1000 -6,980 -6,800"/>
+    <path id="fuselage" d="M0 0 L12 50 22 100 30 200 34 300 36 450 44 520 46 700 42 900 36 1000 L-36 1000 -42 900 -46 700 -44 520 -36 450 -34 300 -30 200 -22 100 -12 50 Z"/>
+    <path id="radome" d="M0 0 L12 50 22 100 L-22 100 -12 50 Z"/>
+  </g>
+</svg>

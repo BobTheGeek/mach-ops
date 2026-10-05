@@ -10,20 +10,24 @@
   "packageManager": "pnpm@8.6.12",
   "scripts": {
     "dev": "vite",
+    "preview": "vite preview",
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "curriculum": "tsx scripts/build-curriculum.ts",
+    "icons": "tsx scripts/make-icons.ts",
     "mission": "tsx scripts/mission.ts"
   },
   "devDependencies": {
     "@types/node": "^20.14.10",
     "ajv": "^8.17.1",
     "fast-check": "^3.19.0",
+    "sharp": "^0.35.5",
     "tsx": "^4.16.2",
     "typescript": "^5.5.3",
     "vite": "^5.3.3",
+    "vite-plugin-pwa": "^2.0.0",
     "vitest": "^1.6.0"
   },
   "dependencies": {

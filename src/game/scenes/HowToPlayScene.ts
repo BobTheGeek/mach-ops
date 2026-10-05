@@ -57,6 +57,7 @@ const CARDS: Card[] = [
       { key: "MANUAL · HINT", text: "Tap the words on the problem card" },
       { key: "DRAG", text: "Scroll a manual page" },
     ],
+    footer: "ADD TO HOME SCREEN TO PLAY OFFLINE",
   },
   {
     id: "HP2",
