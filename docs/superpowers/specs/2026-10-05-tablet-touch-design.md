@@ -161,8 +161,12 @@ Scene integration:
    (today number-key-only); step actions (`NEXT · ENTER`, `PICK B`, `TYPE 40`)
    become buttons, always clickable (mouse users gain the same affordance);
    keyboard shortcuts stay.
-5. **MANUAL and HINT in the problem card** become tappable labels with 44 px
-   targets beside their existing `M` / `H` shortcuts.
+5. **The problem card gains a tappable COMMIT control**, and MANUAL and HINT
+   become tappable too. `ENTER · COMMIT` is a label with no pointer path today,
+   and pick/grid/order answers can only be submitted by keyboard — on a tablet
+   the answer is unsubmittable. COMMIT is a 44 px kit button calling the
+   existing `commit()` (whose guards already match Enter's), and MANUAL/HINT sit
+   beside it with 44 px targets. `M` / `H` / Enter keep working.
 6. **Copy**: touch variants for the sortie status line and hints; a Touch
    Controls page in How to Play (steer, lock, pause, answers, hint, manual);
    the Settings keypad note stops saying "Chromebooks only"; How to Play's

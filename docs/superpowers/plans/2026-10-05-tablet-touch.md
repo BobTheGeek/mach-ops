@@ -394,28 +394,32 @@ git commit -m "feat(touch): tap flight school pick options"
 
 ---
 
-### Task 7: MANUAL and HINT are tappable on the problem card
+### Task 7: Problem-card footer: COMMIT, MANUAL and HINT are tappable
 
 **Files:**
 - Modify: `src/game/ui/problemCard.ts` (footer ~205-210, key handler ~483)
 
 **Interfaces:**
-- Consumes: `opts.onManual`, `opts.onHint`, `HIT.min`, `PAD`.
+- Consumes: `opts.onManual`, `opts.onHint`, `button` from `./kit`, `HIT.min`, `PAD`, `CARD_W`.
 - Produces: nothing other tasks import.
 
-- [ ] **Step 1: Implement**
+- [ ] **Step 1: Add the tappable COMMIT control**
 
-The footer text stays for keyboard players, but two `Zone`s with `height: HIT.min` sit over the `MANUAL` and `HINT` phrases (positions derived from the footer text's x/width, with at least 8 px between them), each `pointerup`-calling `opts.onManual()` / `opts.onHint()`. They must be added to the card container so they are destroyed with it, and they must work while `this.locked` (the whole point is mid-problem help).
+The footer's `ENTER · COMMIT` text is a label with no pointer path, and pick/grid/order answers have no other submit affordance — on a tablet the answer cannot be submitted. Replace that label with a real control: `button(scene, { x: PAD, y, width: 150, height: HIT.min, label: "COMMIT", variant: "primary", onClick: () => this.commit() })`, added to the card container. Grow the footer height from `SIZE.label` to `HIT.min` in the card's height calculation so nothing overlaps. `commit()`'s existing guards (`locked`, empty typed, no pick, grid null) make a premature tap a no-op, exactly as Enter behaves today. Keyboard Enter stays; mouse users gain click-to-commit, matching Flight School's existing CHECK button.
 
-- [ ] **Step 2: Typecheck, build, browser check**
+- [ ] **Step 2: Make MANUAL and HINT tappable**
 
-Run: `pnpm typecheck && pnpm build`, then in device mode open a sortie card and tap MANUAL and HINT; the manual panel and hint behaviour match the M and H keys.
+Two `Zone`s with `height: HIT.min` sit over the `MANUAL` and `HINT` phrases (positions derived from the footer text's x/width, at least 8 px from each other and clear of the COMMIT button), each `pointerup`-calling `opts.onManual()` / `opts.onHint()`. Added to the card container so they are destroyed with it; work while `this.locked` (mid-problem help), matching the `M`/`H` keys.
 
-- [ ] **Step 3: Commit**
+- [ ] **Step 3: Typecheck, build, browser check**
+
+Run: `pnpm typecheck && pnpm build`, then in device mode: pick an option and tap COMMIT (submits); repeat for a typed answer with the keypad setting off and for a grid answer; tap COMMIT with nothing entered (no-op, like Enter); tap MANUAL and HINT (matching `M`/`H`); confirm Enter still commits and the card layout in sortie, tanker and briefing modes has no overlap.
+
+- [ ] **Step 4: Commit**
 
 ```bash
 git add src/game/ui/problemCard.ts
-git commit -m "feat(touch): tap manual and hint from the problem card"
+git commit -m "feat(touch): tap commit, manual and hint on the problem card"
 ```
 
 ---
