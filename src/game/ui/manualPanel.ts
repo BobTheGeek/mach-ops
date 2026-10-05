@@ -36,6 +36,8 @@ export class ManualPanel {
   private readonly opts: ManualPanelOpts;
   private worked: Problem;
   private scroll = 0;
+  private dragging = false;
+  private lastY = 0;
   private body!: Phaser.GameObjects.Container;
   private bodyHeight = 0;
   private keyHandler?: (e: KeyboardEvent) => void;
@@ -49,7 +51,16 @@ export class ManualPanel {
     this.worked = generatorFor(opts.skill)(opts.tier, Date.now() % 100000);
 
     const scrim = dim(this.scene);
-    scrim.on("pointerup", () => this.close());
+    // Close only when the press both started and ended on the scrim. A press
+    // that began on the panel body and wandered out to the scrim is a drag,
+    // not a tap, and must leave the panel open.
+    let scrimPressed = false;
+    scrim.on("pointerdown", () => { scrimPressed = true; });
+    scrim.on("pointerup", () => {
+      const tapped = scrimPressed;
+      scrimPressed = false;
+      if (tapped) this.close();
+    });
 
     this.container = this.scene.add.container(0, 0, [scrim]);
     this.build();
@@ -117,6 +128,29 @@ export class ManualPanel {
     const maskShape = s.make.graphics({});
     maskShape.fillRect(x, bodyTop, PANEL_W, h - bodyTop - FOOTER_H);
     this.body.setMask(maskShape.createGeometryMask());
+
+    // Touch surface over the scrolling body only: the header (title, status,
+    // close) and the footer (lesson link, key hint) stay clear. It sits above
+    // the scrim, so a press here never reaches the scrim's tap-to-close; drag
+    // one-to-one with the finger, no inertia, clamped by scrollBy.
+    const dragZone = s.add
+      .zone(x, this.bodyOriginY, PANEL_W, h - this.bodyOriginY - FOOTER_H)
+      .setOrigin(0, 0)
+      .setInteractive();
+    dragZone.on("pointerdown", (p: Phaser.Input.Pointer) => {
+      this.dragging = true;
+      this.lastY = p.y;
+    });
+    dragZone.on("pointermove", (p: Phaser.Input.Pointer) => {
+      if (!this.dragging) return;
+      this.scrollBy(this.lastY - p.y);
+      this.lastY = p.y;
+    });
+    const endDrag = (): void => { this.dragging = false; };
+    dragZone.on("pointerup", endDrag);
+    dragZone.on("pointerout", endDrag);
+    dragZone.on("pointerupoutside", endDrag);
+    this.container.add(dragZone);
 
     // The lesson link lives in the footer, not in the scrolling body. A mask
     // hides pixels but not hit areas, so a button inside the body stays
