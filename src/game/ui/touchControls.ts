@@ -152,10 +152,22 @@ export function mountTouchControls(scene: Phaser.Scene, opts: TouchControlsOpts)
       y: PAUSE_Y,
       width: HIT.lg,
       height: HIT.lg,
-      label: "II",
+      // Blank label: the bars are drawn, because the mono font's "II" reads as
+      // two serifed letters rather than as a pause glyph.
+      label: "",
       variant: "ghost",
       onClick: onPause,
     });
+    const barW = 6;
+    const barH = 20;
+    const gap = 8;
+    const bx = (HIT.lg - (barW * 2 + gap)) / 2;
+    const by = (HIT.lg - barH) / 2;
+    const bars = scene.add.graphics();
+    bars.fillStyle(N.textMuted, 1);
+    bars.fillRect(bx, by, barW, barH);
+    bars.fillRect(bx + barW + gap, by, barW, barH);
+    pause.container.add(bars);
     root.add(pause.container);
   }
 

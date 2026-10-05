@@ -30,8 +30,10 @@ import type { SortieLoadout } from "./BriefingScene";
 import { MAX_MISSILES } from "./BriefingScene";
 import { mission as findMission, type Mission } from "../../data/campaign";
 import { createTerrain, type Terrain } from "../ui/terrain";
+import { mountTouchControls, type TouchControls } from "../ui/touchControls";
 import { LOCK_RANGE, BOSS_LOCK_RANGE, LANE_OFFSETS, patrolWeave, BINGO_SECONDS, TANKER_SECONDS } from "../sortieRules";
 import { BANK_ANGLE, BANK_FORESHORTEN, PLAYER_H, PLAYER_W, newFlight, stepFlight } from "../flight";
+import { mergeTurn, touchMode } from "../touch";
 import { generatorFor } from "../../generators/index";
 import { loadSprites, phase2Variants } from "../assets";
 
@@ -102,6 +104,8 @@ export class SortieScene extends Phaser.Scene {
   private lockedBogey = -1;
   private locked = false;
   private paused = false;
+  private touch?: TouchControls;
+  private touchTurn: -1 | 0 | 1 = 0;
 
   private card?: ProblemCard;
   private manual?: ManualPanel;
@@ -157,6 +161,7 @@ export class SortieScene extends Phaser.Scene {
     this.sharpened = new Set();
     this.bogeys = [];
     this.flight = newFlight();
+    this.touchTurn = 0;
     this.elapsed = 0;
   }
 
@@ -179,6 +184,21 @@ export class SortieScene extends Phaser.Scene {
 
     this.world();
     this.hud();
+    if (touchMode()) {
+      this.touch = mountTouchControls(this, {
+        onTurn: (t) => { this.touchTurn = t; },
+        onLock: () => this.tryLock(),
+        onPause: () => this.openPause(),
+      });
+      // A resumed scene never re-fires create, so the controls are brought
+      // back here. The shutdown pair keeps a restarted sortie from stacking
+      // handlers on the scene's event emitter.
+      const onResume = (): void => this.touch?.setVisible(true);
+      this.events.on(Phaser.Scenes.Events.RESUME, onResume);
+      this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+        this.events.off(Phaser.Scenes.Events.RESUME, onResume);
+      });
+    }
     this.spawnBogeys();
 
     // The boss rule, stated rather than left to be discovered by losing.
@@ -261,6 +281,7 @@ export class SortieScene extends Phaser.Scene {
 
   private hud(): void {
     const y = TOPBAR_PAD_Y;
+    const touch = touchMode();
     this.altOut = readout(this, SCREEN_PAD, y, "ALT", "12,400 FT");
     readout(this, SCREEN_PAD + 150, y, "SPD", "430 KT");
     // Every instrument takes the worn HUD colour, which is the whole of what a
@@ -282,15 +303,19 @@ export class SortieScene extends Phaser.Scene {
     this.timerOut = readout(this, CANVAS.width - SCREEN_PAD - 120, y, "FUEL", "5:00", C.hud);
 
     // Bottom-left resource stack; the footer hint bar sits centred below it so
-    // the two never share a row.
-    this.fuelBar = resourceBar(this, SCREEN_PAD, CANVAS.height - 110, "FUEL", accent);
-    this.shieldBar = resourceBar(this, SCREEN_PAD, CANVAS.height - 66, "SHLD", C.shield);
-    this.pips = missilePips(this, CANVAS.width - SCREEN_PAD - MAX_MISSILES * 16, CANVAS.height - 66, MAX_MISSILES);
-    const aimLabel = capsLabel(this, CANVAS.width - SCREEN_PAD - MAX_MISSILES * 16, CANVAS.height - 88, "AIM", C.textMuted, TRACK.readout);
+    // the two never share a row. On touch, the stack moves up to the top-left
+    // and the bottom belongs to the controls.
+    this.fuelBar = resourceBar(this, SCREEN_PAD, touch ? 64 : CANVAS.height - 110, "FUEL", accent);
+    this.shieldBar = resourceBar(this, SCREEN_PAD, touch ? 108 : CANVAS.height - 66, "SHLD", C.shield);
+    this.pips = missilePips(this, CANVAS.width - SCREEN_PAD - MAX_MISSILES * 16, touch ? 556 : CANVAS.height - 66, MAX_MISSILES);
+    const aimLabel = capsLabel(this, CANVAS.width - SCREEN_PAD - MAX_MISSILES * 16, touch ? 534 : CANVAS.height - 88, "AIM", C.textMuted, TRACK.readout);
     void aimLabel;
 
-    const hint = capsLabel(this, 0, CANVAS.height - 26, "A D · STEER   SPACE · LOCK   M · MANUAL   ESC · PAUSE", C.textMuted, TRACK.readout);
-    hint.setX((CANVAS.width - hint.width) / 2);
+    // The hint names keys a tablet does not have; the controls say it instead.
+    if (!touch) {
+      const hint = capsLabel(this, 0, CANVAS.height - 26, "A D · STEER   SPACE · LOCK   M · MANUAL   ESC · PAUSE", C.textMuted, TRACK.readout);
+      hint.setX((CANVAS.width - hint.width) / 2);
+    }
 
     this.refreshHud();
   }
@@ -383,7 +408,7 @@ export class SortieScene extends Phaser.Scene {
    */
   private fly(dt: number): void {
     const down = (keys: Phaser.Input.Keyboard.Key[]): boolean => keys.some((k) => k.isDown);
-    const turn = (down(this.keys.right) ? 1 : 0) - (down(this.keys.left) ? 1 : 0);
+    const turn = mergeTurn((down(this.keys.right) ? 1 : 0) - (down(this.keys.left) ? 1 : 0), this.touchTurn);
 
     // The shared model turns the heading and eases the roll; the world delta it
     // returns is what moves the terrain, the bogeys and the player's own frame.
@@ -432,10 +457,11 @@ export class SortieScene extends Phaser.Scene {
     }
     if (Number.isFinite(nearest)) {
       const inRange = nearest <= this.lockRange;
+      this.touch?.setLockable(inRange);
       this.tgtOut.set(`${(nearest / PX_PER_NM).toFixed(1)} NM`);
       this.tgtOut.value.setColor(inRange ? C.lock : C.textMuted);
       if (inRange && !this.locked) {
-        this.statusText.setText("IN RANGE · SPACE TO LOCK");
+        this.statusText.setText(touchMode() ? "IN RANGE · TAP LOCK" : "IN RANGE · SPACE TO LOCK");
         this.statusText.setColor(C.lock);
       } else if (!this.locked && this.statusText.text !== "NO TARGET IN RANGE") {
         this.statusText.setText("SCANNING");
@@ -443,6 +469,7 @@ export class SortieScene extends Phaser.Scene {
       }
     } else {
       this.tgtOut.set("— NM");
+      this.touch?.setLockable(false);
     }
     // Altitude drifts with the turn, so the ALT readout is live rather than a
     // prop: a banked aircraft loses a little height.
@@ -645,6 +672,7 @@ export class SortieScene extends Phaser.Scene {
   }
 
   private showProblem(): void {
+    this.touch?.setVisible(false);
     const mp = this.queue[this.index]!;
     this.shownAt = this.time.now;
     this.pausedFor = 0;
@@ -960,6 +988,7 @@ export class SortieScene extends Phaser.Scene {
   private clearLock(): void {
     audio.setDucked(false);
     music.setDucked(false);
+    this.touch?.setVisible(true);
     this.locked = false;
     this.card?.destroy();
     this.card = undefined;
@@ -985,6 +1014,7 @@ export class SortieScene extends Phaser.Scene {
     if (this.scene.isActive("Pause")) return;
     const m = Math.floor(Math.max(0, this.fuelLeft) / 60);
     const sec = Math.floor(Math.max(0, this.fuelLeft) % 60);
+    this.touch?.setVisible(false);
     this.scene.pause();
     this.scene.launch("Pause", {
       subtitle: `SORTIE ${String(this.mission.n).padStart(2, "0")} · ${m}:${String(sec).padStart(2, "0")}`,
