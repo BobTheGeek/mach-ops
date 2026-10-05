@@ -624,7 +624,13 @@ export class FlightSchoolScene extends Phaser.Scene {
       // moves up to clear them; the keyboard layout keeps its bottom row.
       this.add2(resourceBar(this, SCREEN_PAD, touch ? 504 : CANVAS.height - 110, "FUEL", C.hud).container);
       this.add2(resourceBar(this, SCREEN_PAD, touch ? 548 : CANVAS.height - 66, "SHLD", C.shield).container);
-      this.add2(missilePips(this, CANVAS.width - SCREEN_PAD - 100, CANVAS.height - 66, 6).container);
+      // The flown steps put LOCK on the bottom-right, so the pips move up to
+      // clear it. y 556 sits behind the fly callout (x 828-1248, y 510-630),
+      // so they ride just above the callout instead; the card steps keep the
+      // bottom row and have no controls.
+      const flying = step.kind === "fly" || step.kind === "lock";
+      const pipsY = touch && flying ? 488 : CANVAS.height - 66;
+      this.add2(missilePips(this, CANVAS.width - SCREEN_PAD - 100, pipsY, 6).container);
     }
 
     const label = capsLabel(this, 0, y, `FLIGHT SCHOOL ${step.lesson}/4 · ${LESSON_NAMES[step.lesson] ?? ""}`, C.hud, TRACK.readout);
