@@ -11,7 +11,7 @@
 
 import Phaser from "phaser";
 import { C, N, SIZE, FONT, TEXT, TRACK, RADIUS, STROKE, HIT, INPUT, hex } from "../../ui/tokens";
-import { panel, capsLabel } from "./kit";
+import { panel, capsLabel, button } from "./kit";
 import { renderFigure } from "./figures";
 import { createGridInput, sameGridAnswer, type GridInput, type GridMode } from "./gridInput";
 import { buildKeypad, applyKey } from "./keypad";
@@ -216,14 +216,40 @@ export class ProblemCard {
     this.feedback = s.add.text(PAD, y, "", { ...TEXT.label, color: C.alert });
     y += SIZE.label + GAP;
 
-    // footer hints
-    const commitHint = capsLabel(s, PAD, y, "ENTER · COMMIT", C.textMuted, TRACK.readout);
+    // footer: COMMIT is a real control (Enter's twin, same guards); MANUAL and
+    // HINT are tappable phrases (M/H's twins, and they work while locked).
+    const commit = button(s, {
+      x: PAD,
+      y,
+      width: 150,
+      height: HIT.min,
+      label: "COMMIT",
+      variant: "primary",
+      onClick: () => this.commit(),
+    });
     const helpText = this.opts.hintCost > 0
       ? `M · MANUAL   H · HINT ${MINUS}${this.opts.hintCost} CR`
       : "M · MANUAL   H · HINT";
     const helpHint = capsLabel(s, 0, y, helpText, C.textMuted, TRACK.readout);
     helpHint.setX(CARD_W - PAD - helpHint.width);
-    y += SIZE.label + PAD;
+    helpHint.setY(y + (HIT.min - helpHint.height) / 2);
+
+    // The help line is mono, so one character step slices the right-aligned
+    // text into phrases. Each gets a full-height zone; the small bleed widens
+    // the touch target without coming near COMMIT or the other phrase.
+    const step = helpHint.width / helpText.length;
+    const bleed = 4;
+    const phraseZone = (phrase: string, tap: () => void): Phaser.GameObjects.Zone => {
+      const zone = s.add
+        .zone(helpHint.x + helpText.indexOf(phrase) * step - bleed, y, phrase.length * step + bleed * 2, HIT.min)
+        .setOrigin(0, 0)
+        .setInteractive({ useHandCursor: true });
+      zone.on("pointerup", tap);
+      return zone;
+    };
+    const manualZone = phraseZone("MANUAL", () => this.opts.onManual());
+    const hintZone = phraseZone("HINT", () => this.opts.onHint());
+    y += HIT.min + PAD;
 
     this.height = y;
 
@@ -231,7 +257,7 @@ export class ProblemCard {
     this.frame = panel(this.scene, 0, 0, CARD_W, this.height, { border: this.borderColor() });
     this.container.add([this.frame, this.header, this.timerText, prompt]);
     if (figure) this.container.add(figure);
-    this.container.add([this.feedback, commitHint, helpHint]);
+    this.container.add([this.feedback, commit.container, helpHint, manualZone, hintZone]);
     this.container.sendToBack(this.frame);
     for (const r of this.optionRows) this.container.add([r.g, r.label]);
     for (const r of this.orderRows) this.container.add([r.g, r.label]);
