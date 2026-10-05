@@ -217,7 +217,7 @@ export class ProblemCard {
     y += SIZE.label + GAP;
 
     // footer: COMMIT is a real control (Enter's twin, same guards); MANUAL and
-    // HINT are tappable phrases (M/H's twins, and they work while locked).
+    // HINT are tappable phrases (M/H's twins, same locked guard).
     const commit = button(s, {
       x: PAD,
       y,
@@ -236,7 +236,9 @@ export class ProblemCard {
 
     // The help line is mono, so one character step slices the right-aligned
     // text into phrases. Each gets a full-height zone; the small bleed widens
-    // the touch target without coming near COMMIT or the other phrase.
+    // the touch target without coming near COMMIT or the other phrase. The
+    // listener copies the key handler's early return: a tap after a commit
+    // must not spend a hint (or open the manual) on a settled card.
     const step = helpHint.width / helpText.length;
     const bleed = 4;
     const phraseZone = (phrase: string, tap: () => void): Phaser.GameObjects.Zone => {
@@ -244,7 +246,10 @@ export class ProblemCard {
         .zone(helpHint.x + helpText.indexOf(phrase) * step - bleed, y, phrase.length * step + bleed * 2, HIT.min)
         .setOrigin(0, 0)
         .setInteractive({ useHandCursor: true });
-      zone.on("pointerup", tap);
+      zone.on("pointerup", () => {
+        if (this.locked) return;
+        tap();
+      });
       return zone;
     };
     const manualZone = phraseZone("MANUAL", () => this.opts.onManual());
